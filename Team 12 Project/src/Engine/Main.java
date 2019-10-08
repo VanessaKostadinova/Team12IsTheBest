@@ -1,8 +1,6 @@
 package Engine;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.glfw.GLFWVidMode.*;
-
 import org.lwjgl.glfw.GLFWVidMode;
 
 public class Main implements Runnable {
