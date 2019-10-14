@@ -1,2 +1,4 @@
 # Team12IsTheBest
-Team 12's 2nd Year Group Project
+This is team 12's group project.
+
+Proposed name: Plague Doctor.
