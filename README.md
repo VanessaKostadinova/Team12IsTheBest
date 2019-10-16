@@ -10,7 +10,7 @@ Since the import is now working, this is the code which our final work we can be
 6. Import all branches for now
 7. Set the directory to where ever you want, this would be your local version of the program.
 8. Make sure the working tree is highlighted and import existing eclipse projects is selected.
-9. Then select the following folder: LibGDX, Core, Desktop
+9. Then select the following folders: LibGDX, Core, Desktop
 10. Click Finish and the code will be there for you to work on.
 
 # Notice
