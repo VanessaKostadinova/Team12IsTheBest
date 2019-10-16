@@ -14,4 +14,6 @@ Since the import is now working, this is the code which our final work we can be
 10. Click Finish and the code will be there for you to work on.
 
 # Notice
-If you haven't used LibGDX, please try to download it seperately to this and mess around with it. This is purely for implementations of the program, **NOT FOR GETTING THE HANDLE OF LIBGDX.**. 
+If you haven't used LibGDX, please try to download it seperately to this and mess around with it. This is purely for implementations of the program, **NOT FOR GETTING THE HANDLE OF LIBGDX.**
+
+Have a good day :)
