@@ -11,6 +11,7 @@ public class InsideHouseScreen implements Screen {
 	MainScreen screen;
 	Texture img;
 	Sprite sprite;
+	InputHandler handler;
 	
 	public InsideHouseScreen(MainScreen mainScreen) {
 		this.screen = mainScreen;
@@ -19,6 +20,7 @@ public class InsideHouseScreen implements Screen {
 		//sprite.setBounds(0, 0, img.getWidth(), img.getHeight());
 		//sprite.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
 		sprite.setScale(0.5f);
+		Gdx.input.setInputProcessor(this.handler);
 	}
 
 	@Override
