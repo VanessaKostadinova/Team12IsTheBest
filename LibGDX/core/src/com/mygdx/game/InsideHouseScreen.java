@@ -4,15 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class InsideHouseScreen implements Screen {
 	
 	MainScreen screen;
 	Texture img;
+	Sprite sprite;
 	
 	public InsideHouseScreen(MainScreen mainScreen) {
 		this.screen = mainScreen;
-		img = new Texture("assets/main_menu_assets/mask.png");
+		img = new Texture((Gdx.files.internal("main_menu_assets/mask.png")));
+		sprite = new Sprite();
+		sprite.setTexture(img);
+		sprite.setPosition(0, 0);
+		//sprite.scale(0.1f);
 	}
 
 	@Override
@@ -26,7 +32,8 @@ public class InsideHouseScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		screen.batch.begin();
-		screen.batch.draw(img, 0, 0);
+		//screen.batch.draw(head.getTexture(), 0, 0);
+		screen.batch.draw(sprite, sprite.getX(), sprite.getY(), sprite.getWidth()/2, sprite.getHeight()/2, sprite.getWidth(), sprite.getHeight(), sprite.getScaleX(), sprite.getScaleY(), sprite.getRotation());
 		screen.batch.end();
 	}
 
