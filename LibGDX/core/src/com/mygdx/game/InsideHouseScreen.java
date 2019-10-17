@@ -12,7 +12,7 @@ public class InsideHouseScreen implements Screen {
 	
 	public InsideHouseScreen(MainScreen mainScreen) {
 		this.screen = mainScreen;
-		img = new Texture("main_menu_assets/.jpg");
+		img = new Texture("assets/main_menu_assets/mask.png");
 	}
 
 	@Override
