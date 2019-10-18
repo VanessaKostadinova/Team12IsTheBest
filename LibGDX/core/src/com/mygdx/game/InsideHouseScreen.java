@@ -15,12 +15,14 @@ public class InsideHouseScreen implements Screen {
 
 	MainScreen screen;
 	Texture img;
-
+	
+	//parser variables
 	String fileLocation;
 	BufferedReader reader;
 	String line;
 	final String splitter = ",";
 
+	//textures
 	Texture floor;
 	Texture wall;
 
@@ -43,7 +45,7 @@ public class InsideHouseScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		screen.batch.begin();
-		csvParse();
+		renderMap();
 		screen.batch.end();
 	}
 
@@ -73,10 +75,13 @@ public class InsideHouseScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		img.dispose();		
+		img.dispose();
+		floor.dispose();
+		wall.dispose();
 	}
 
-	private void csvParse() {
+	//renders map
+	private void renderMap() {
 		try {
 			//load reader
 			reader = new BufferedReader(new FileReader(fileLocation));
