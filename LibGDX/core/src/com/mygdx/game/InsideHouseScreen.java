@@ -9,18 +9,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import com.badlogic.gdx.graphics.g2d.Sprite;
-
 
 public class InsideHouseScreen implements Screen {
 
 	MainScreen screen;
 	Texture img;
-	Sprite sprite;
-	InputHandler handler;
 	
 	//parser variables
 	String fileLocation;
@@ -34,15 +28,11 @@ public class InsideHouseScreen implements Screen {
 
 	public InsideHouseScreen(MainScreen mainScreen) {
 		this.screen = mainScreen;
-		
+		img = new Texture("badlogic.jpg");
 		fileLocation = "C:\\Users\\vanes\\Desktop\\test.csv";
 		screen.batch = new SpriteBatch();
 		floor = new Texture("Wooden_Floor.gif");
 		wall = new Texture("Floor_Stone.gif");
-
-		//sprite.setBounds(0, 0, img.getWidth(), img.getHeight());
-		//sprite.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-		Gdx.input.setInputProcessor(this.handler);
 	}
 
 	@Override
@@ -56,8 +46,6 @@ public class InsideHouseScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		screen.batch.begin();
 		renderMap();
-		//screen.batch.draw(head.getTexture(), 0, 0);
-		//sprite.draw(screen.batch);
 		screen.batch.end();
 	}
 
