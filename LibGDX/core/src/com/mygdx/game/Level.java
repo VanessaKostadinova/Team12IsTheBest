@@ -29,12 +29,20 @@ public class Level {
 		return height;
 	}
 	
+	/**
+	 * To Inder:
+	 * I am storing the textures in a hashmap, this is a hardcoded version
+	 * but it allows us to change the textures each bit represents more easily.
+	 * 
+	 * We could store the information about each level in the nodes used for 
+	 * the graph and then just edit this hashMap method accordingly.
+	 */
 	private void fillHashMap() {
 		Texture wall = new Texture(Gdx.files.internal("Wooden_Floor.gif"));
 		Texture floor = new Texture(Gdx.files.internal("Floor_Stone.gif"));
 		
-		textures.put(1, wall);
-		textures.put(0,floor);
+		textures.put(0, wall);
+		textures.put(1, floor);
 	}
 	
 	public int[][] getLevel() {

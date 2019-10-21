@@ -62,6 +62,10 @@ public class InsideHouseScreen implements Screen {
 		img.dispose();		
 	}
 	
+	/**
+	 * To Inder:
+	 * This doesn't reopen the csv every time it's called.
+	 */
 	//renders map
 	private void renderMap() {
 		int[][] workingArray = new int[25][25];
