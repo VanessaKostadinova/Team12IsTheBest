@@ -9,10 +9,12 @@ public class InsideHouseScreen implements Screen {
 	
 	MainScreen screen;
 	Texture img;
+	Level testLevel;
 	
 	public InsideHouseScreen(MainScreen mainScreen) {
 		this.screen = mainScreen;
-		img = new Texture("badlogic.jpg");
+		//img = new Texture("Wooden_Floor.png");
+		testLevel = new Level(25,25,"test.csv");
 	}
 
 	@Override
@@ -26,7 +28,8 @@ public class InsideHouseScreen implements Screen {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		screen.batch.begin();
-		screen.batch.draw(img, 0, 0);
+		renderMap();
+		//screen.batch.draw(img, 0, 0);
 		screen.batch.end();
 	}
 
@@ -58,5 +61,24 @@ public class InsideHouseScreen implements Screen {
 	public void dispose() {
 		img.dispose();		
 	}
+	
+	//renders map
+	private void renderMap() {
+		int[][] workingArray = new int[25][25];
+		workingArray = testLevel.getLevel();
+		int yCoord = 0;
+		
+		for(int[] i : workingArray) {
+			int xCoord = 0;
+			
+			for(int r : i) {
+				screen.batch.draw(testLevel.getTexture(r), xCoord, yCoord);
+				xCoord += 32;
+			}
+			yCoord += 32;
+		}
+		
+	}
+
 
 }
