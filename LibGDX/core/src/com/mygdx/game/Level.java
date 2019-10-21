@@ -17,7 +17,7 @@ public class Level {
 	private HashMap<Integer, Texture> textures;
 	
 	public Level(int width, int height,String file) {
-		level = new int[width][height];
+		level = new int[height][width];
 		this.height = height;
 		this.file = file;
 		textures = new HashMap<Integer, Texture>();
@@ -60,23 +60,24 @@ public class Level {
 			final String splitter = ",";
 			//load reader
 			reader = new BufferedReader(new FileReader(file));
-			//stores the array's height
-			int arrayHeight = 0;
+			//stores the array's height (height-1 to make 0,0 bottom left not top right)
+			int arrayHeight = height-1;
 			//check if there is next line
 			while((line = reader.readLine()) != null) {
 				//creates an array with every element in the current line
 				String[] currentLine = line.split(splitter);
+				System.out.println(line);
 				//stores the current position in the array
 				int arrayPosition = 0;
 				//for every element in the current line
 				for(String i:currentLine) {
 					//creates array
-					level[arrayPosition][arrayHeight] = Integer.valueOf(i);
+					level[arrayHeight][arrayPosition] = Integer.valueOf(i);
 					//increment array position
 					arrayPosition++;
 				}
 				//increment array height location
-				arrayHeight++;
+				arrayHeight--;
 			}
 			reader.close();
 		} catch (FileNotFoundException e) {
