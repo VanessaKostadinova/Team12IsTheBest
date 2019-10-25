@@ -6,10 +6,9 @@ public abstract class Character {
 	
 	protected float x;
 	protected float y;
-	protected float initialX;
-	protected float initialY;
 	protected Sprite sprite;
 	
+	// Methods focused around the setting and getting of sprite and its position
 	public Sprite getSprite() {
 		return sprite;
 	}
@@ -22,8 +21,6 @@ public abstract class Character {
 		sprite.setPosition(x, y);
 		this.x = sprite.getX();
 		this.y = sprite.getY();
-		this.initialX = this.x;
-		this.initialY = this.y;
 	}
 	
 	
