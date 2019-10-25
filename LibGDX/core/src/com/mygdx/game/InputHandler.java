@@ -125,7 +125,7 @@ public class InputHandler implements InputProcessor {
 	 */
 	private void spriteRotations(int screenX, int screenY) {
 		float spriteX = player.getX()+player.getSprite().getWidth()/2;
-		float spriteY = player.getY()-player.getSprite().getHeight()/2;
+		float spriteY = player.getY()+player.getSprite().getHeight()/2;
 		
 		Vector3 mouse = camera.getCamera().unproject(new Vector3(screenX, screenY, 0));
 		
