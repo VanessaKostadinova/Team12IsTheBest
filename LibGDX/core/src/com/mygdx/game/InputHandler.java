@@ -31,7 +31,9 @@ public class InputHandler implements InputProcessor {
 		 * I ended up using Polling over events since they were essentially doing the same thing. We probably want to use delta to move the character.
 		 * However this is the first implementation so far.
 		 * 
-		 * In W and D I took away speed from the second arguments to make sure that the player is able to pass through the gaps.
+		 * In W and S I took away speed from the second arguments to make sure that the player is able to pass through the gaps.
+		 * 
+		 * In S and A I also took away speed from Y and X respectively to make sure that the collision happens on the outside not within.
 		 * 
 		 * Otherwise the camera and player both move at the same pace.
 		 */
@@ -43,14 +45,14 @@ public class InputHandler implements InputProcessor {
 			}
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.A)) {
-			if(!collision(player.getX(), player.getY()) && !collision(player.getX(), player.getY()+player.getSprite().getHeight())) {
+			if(!collision(player.getX()-speed, player.getY()) && !collision(player.getX()-speed, player.getY()+player.getSprite().getHeight())) {
 				camera.getCamera().translate(-speed, 0f);
 				camera.updateCamera();
 				player.updateXY(-speed, 0);
 			}
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.S)) {
-			if(!collision(player.getX(), player.getY()) && !collision(player.getX()+player.getSprite().getWidth()- speed, player.getY())) {
+			if(!collision(player.getX(), player.getY()-speed) && !collision(player.getX()+player.getSprite().getWidth()- speed, player.getY()-speed)) {
 				camera.getCamera().translate(0f, -speed);
 				player.updateXY(0, -speed);
 				camera.updateCamera();
