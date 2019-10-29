@@ -1,9 +1,15 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.camera.Camera;
 import com.mygdx.character.Player;
 
@@ -17,6 +23,9 @@ public class InsideHouseScreen implements Screen {
 	private int viewWidth;
 	private Player player;
 	private InputHandler handler;
+	private InputMultiplexer input;
+	private Window pause;
+	private Skin skin;
 
 	
 	public InsideHouseScreen(MainScreen mainScreen) {
@@ -57,8 +66,19 @@ public class InsideHouseScreen implements Screen {
 		player = new Player();
 		player.setSpritePosition(camera.getViewport().getWorldWidth()/2-player.getSprite().getWidth()/2, camera.getViewport().getWorldHeight()/2-player.getSprite().getHeight()/2);
 		
-		handler = new InputHandler(player, camera, testLevel.getLevel());
-		Gdx.input.setInputProcessor(handler);
+		skin = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
+		pauseGame();
+		handler = new InputHandler(player, camera, testLevel.getLevel(), pause);
+		
+		/*
+		 * This allows us to use two inputhandlers, in this case:
+		 * One is for the UI
+		 * One is for the Movement.
+		 */
+		input = new InputMultiplexer();
+		input.addProcessor(handler);
+		input.addProcessor(screen.ui);
+        Gdx.input.setInputProcessor(input);
 
 	}
 
@@ -81,6 +101,9 @@ public class InsideHouseScreen implements Screen {
 		renderMap();
 		player.getSprite().draw(screen.batch);
 		screen.batch.end();
+		
+		//Draws the UI parts of house.
+		screen.ui.draw();
 		
 	}
 
@@ -143,6 +166,55 @@ public class InsideHouseScreen implements Screen {
 		}
 		
 	}
+	
+	
+	/*
+	 * This class is used to create the window elements for the pause menu
+	 * 
+	 * Creates a window and then has two different text buttons within
+	 * 
+	 *  - RESUME (hides window when clicked and allows movement)
+	 *  - EXIT (exits the game)
+	 *  
+	 * This is done through add listeners to each of the the buttons
+	 * 
+	 * The window containing all the values is called pause
+	 */
+    public void pauseGame() {
+        float windowWidth = 200, windowHeight = 200;
+        pause = new Window("", skin);
+        pause.setMovable(false); //So the user can't move the window
+        final TextButton button1 = new TextButton("Resume", skin);
+        button1.getLabel().setFontScale(windowHeight/200, windowHeight/200 );
+        button1.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                handler.togglePaused();
+                pause.setVisible(false);
+            }
+        });
+        TextButton button2 = new TextButton("Exit", skin);
+        button2.getLabel().setFontScale(windowHeight/200, windowHeight/200 );
 
+        button2.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.exit(0);
+            }
+        });
+        
+        pause.add(button1).row(); 
+        pause.row();
+        pause.add(button2).row(); 
+        pause.pack(); //Important! Correctly scales the window after adding new elements
+
+        //Centre window on screen.
+        pause.setBounds((Gdx.graphics.getWidth() - windowWidth  ) / 2,
+        (Gdx.graphics.getHeight() - windowHeight) / 2, windowWidth  , windowHeight );
+        //Sets the menu as invisible
+        pause.setVisible(false);
+        //Adds it to the UI Screen.
+        screen.ui.addActor(pause);
+    }
 
 }
