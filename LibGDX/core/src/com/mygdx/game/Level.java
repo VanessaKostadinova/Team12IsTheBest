@@ -13,36 +13,55 @@ public class Level {
 	
 	private int[][] level;
 	private int height;
+	private int width;
 	private String file;
+	private String levelFile;
 	private HashMap<Integer, Texture> textures;
 	
-	public Level(int width, int height,String file) {
-		level = new int[height][width];
-		this.height = height;
+	public Level(String file) {
+		//sets the file
 		this.file = file;
+		//initiate the hashmap
 		textures = new HashMap<Integer, Texture>();
-		fillHashMap();
-		createLevel();
+		//read the level
+		readLevelInformation();
+		//initialise the array
+		level = new int[width][height];
+		//create the array
+		createLevelArray();
 	}
 	
 	public int getHeight() {
 		return height;
 	}
 	
-	/**
-	 * To Inder:
-	 * I am storing the textures in a hashmap, this is a hardcoded version
-	 * but it allows us to change the textures each bit represents more easily.
-	 * 
-	 * We could store the information about each level in the nodes used for 
-	 * the graph and then just edit this hashMap method accordingly.
-	 */
-	private void fillHashMap() {
-		Texture wall = new Texture(Gdx.files.internal("Wooden_Floor.gif"));
-		Texture floor = new Texture(Gdx.files.internal("Floor_Stone.gif"));
-		
-		textures.put(0, wall);
-		textures.put(1, floor);
+	private void readLevelInformation() {
+		try {
+			//create reader
+			BufferedReader reader;
+			//create line
+			String line;
+			//initialise reader
+			reader = new BufferedReader(new FileReader(file));
+			//initialise counter
+			int i = 0;
+			//sets level file
+			levelFile = reader.readLine();
+			//sets height
+			height =  Integer.valueOf(reader.readLine());
+			//sets width
+			width = Integer.valueOf(reader.readLine());
+			//go through the file setting each texture
+			while((line = reader.readLine()) != null) {
+				textures.put(i, new Texture(Gdx.files.internal(line)));
+				i++;
+			}
+			reader.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public int[][] getLevel() {
@@ -53,31 +72,30 @@ public class Level {
 		return textures.get(key);
 	}
 	
-	private void createLevel() {
+	private void createLevelArray() {
 		try {
 			BufferedReader reader;
 			String line;
 			final String splitter = ",";
 			//load reader
-			reader = new BufferedReader(new FileReader(file));
-			//stores the array's height (height-1 to make 0,0 bottom left not top right)
-			int arrayHeight = height-1;
+			reader = new BufferedReader(new FileReader(levelFile));
+			//stores the array's height
+			int arrayHeight = 0;
 			//check if there is next line
 			while((line = reader.readLine()) != null) {
 				//creates an array with every element in the current line
 				String[] currentLine = line.split(splitter);
-				System.out.println(line);
 				//stores the current position in the array
 				int arrayPosition = 0;
 				//for every element in the current line
 				for(String i:currentLine) {
 					//creates array
-					level[arrayHeight][arrayPosition] = Integer.valueOf(i);
+					level[arrayPosition][arrayHeight] = Integer.valueOf(i);
 					//increment array position
 					arrayPosition++;
 				}
 				//increment array height location
-				arrayHeight--;
+				arrayHeight++;
 			}
 			reader.close();
 		} catch (FileNotFoundException e) {
@@ -86,5 +104,4 @@ public class Level {
 			e.printStackTrace();
 		}
 	}
-
 }

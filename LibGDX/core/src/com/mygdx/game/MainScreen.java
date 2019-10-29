@@ -15,7 +15,7 @@ public class MainScreen extends Game  {
 		ui = new Stage();
 		setScreen(new InsideHouseScreen(this));
 	}
-		
+
 	@Override
 	public void render() {
 		super.render();

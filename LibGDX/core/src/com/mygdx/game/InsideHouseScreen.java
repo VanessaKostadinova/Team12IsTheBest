@@ -22,7 +22,7 @@ public class InsideHouseScreen implements Screen {
 	public InsideHouseScreen(MainScreen mainScreen) {
 		this.screen = mainScreen;
 		//img = new Texture("Wooden_Floor.png");
-		testLevel = new Level(25,25,"test.csv");
+		testLevel = new Level("testLevel.txt");
 		
 		/**
 		 * To Vanessa:
