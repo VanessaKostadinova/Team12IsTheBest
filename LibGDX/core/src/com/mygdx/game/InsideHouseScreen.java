@@ -26,13 +26,14 @@ public class InsideHouseScreen implements Screen {
 	private InputMultiplexer input;
 	private Window pause;
 	private Skin skin;
+	private float stateTime;
 
 	
 	public InsideHouseScreen(MainScreen mainScreen) {
 		this.screen = mainScreen;
 		//img = new Texture("Wooden_Floor.png");
 		testLevel = new Level("testLevel.txt");
-		
+		stateTime = 0f;
 		/**
 		 * To Vanessa:
 		 * 
@@ -93,8 +94,10 @@ public class InsideHouseScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+
 		// Allows player to move.
-		handler.movement();
+		handler.movement(player.getAnimation().getKeyFrame(stateTime, true), delta);
+		stateTime = stateTime + delta;
 
 	    screen.batch.setProjectionMatrix(camera.getCamera().combined);
 		screen.batch.begin();

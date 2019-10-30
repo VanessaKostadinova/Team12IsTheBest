@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
@@ -24,12 +25,12 @@ public class InputHandler implements InputProcessor {
 		this.player = player;
 		this.camera = camera;
 		this.level = level;
-		this.speed = 2f;
+		this.speed = 2f*60f;
 		this.isPaused = false;
 		this.pause = pause;
 	}
 	
-	public void movement() {
+	public void movement(TextureRegion region, float delta) {
 	
 		/**
 		 * To Vanessa:
@@ -45,31 +46,35 @@ public class InputHandler implements InputProcessor {
 		 */
 		if(!isPaused) {
 			if(Gdx.input.isKeyPressed(Input.Keys.W)) {
-				if(!collision(player.getX(), player.getY()+player.getSprite().getHeight()) && !collision(player.getX()+player.getSprite().getWidth()- speed, player.getY()+player.getSprite().getHeight())) {
-					camera.getCamera().translate(0f, speed);
-					player.updateXY(0, speed);
+				if(!collision(player.getX(), player.getY()+player.getSprite().getHeight()) && !collision(player.getX()+player.getSprite().getWidth()- speed*delta, player.getY()+player.getSprite().getHeight())) {
+					camera.getCamera().translate(0f, speed* delta);
+					player.updateXY(0, speed* delta);
 					camera.updateCamera();
+					player.getSprite().setRegion(region);
 				}
 			}
 			if(Gdx.input.isKeyPressed(Input.Keys.A)) {
-				if(!collision(player.getX()-speed, player.getY()) && !collision(player.getX()-speed, player.getY()+player.getSprite().getHeight()-1)) {
-					camera.getCamera().translate(-speed, 0f);
+				if(!collision(player.getX()-speed*delta, player.getY()) && !collision(player.getX()-speed*delta, player.getY()+player.getSprite().getHeight()-2)) {
+					camera.getCamera().translate(-speed*delta, 0f);
 					camera.updateCamera();
-					player.updateXY(-speed, 0);
+					player.updateXY(-speed*delta, 0);
+					player.getSprite().setRegion(region);
 				}
 			}
 			if(Gdx.input.isKeyPressed(Input.Keys.S)) {
-				if(!collision(player.getX(), player.getY()-speed) && !collision(player.getX()+player.getSprite().getWidth()- speed, player.getY()-speed)) {
-					camera.getCamera().translate(0f, -speed);
-					player.updateXY(0, -speed);
+				if(!collision(player.getX(), player.getY()-speed*delta) && !collision(player.getX()+player.getSprite().getWidth()- speed*delta, player.getY()-speed*delta)) {
+					camera.getCamera().translate(0f, -speed*delta);
+					player.updateXY(0, -speed*delta);
 					camera.updateCamera();
+					player.getSprite().setRegion(region);
 				}
 			}
 			if(Gdx.input.isKeyPressed(Input.Keys.D)) {
-				if(!collision(player.getX()+player.getSprite().getWidth(), player.getY()) && !collision(player.getX()+player.getSprite().getWidth(), player.getY()+player.getSprite().getHeight()-1)) {
-					camera.getCamera().translate(speed, 0f);
+				if(!collision(player.getX()+player.getSprite().getWidth(), player.getY()) && !collision(player.getX()+player.getSprite().getWidth(), player.getY()+player.getSprite().getHeight()-2)) {
+					camera.getCamera().translate(speed*delta, 0f);
 					camera.updateCamera();
-					player.updateXY(+speed, 0);
+					player.updateXY(+speed* delta, 0);
+					player.getSprite().setRegion(region);
 				}
 			}
 		}
@@ -110,7 +115,7 @@ public class InputHandler implements InputProcessor {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
+		player.playerReset();
 		return false;
 	}
 
@@ -150,7 +155,7 @@ public class InputHandler implements InputProcessor {
 		
 		Vector3 mouse = camera.getCamera().unproject(new Vector3(screenX, screenY, 0));
 		
-	    float rotation = (float)MathUtils.radiansToDegrees * MathUtils.atan2(mouse.y - spriteY, mouse.x - spriteX) - 90;
+	    float rotation = (float)MathUtils.radiansToDegrees * MathUtils.atan2(mouse.y - spriteY, mouse.x - spriteX);
 	    if (rotation < 0) rotation += 360;
 	    player.getSprite().setRotation(rotation);
 	}
