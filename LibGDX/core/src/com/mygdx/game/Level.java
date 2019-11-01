@@ -20,7 +20,6 @@ public class Level {
 	private String file;
 	private String levelFile;
 	private HashMap<Integer, Texture> textures;
-	//private int population;
 	
 	public Level(String file) {
 		//sets the file
@@ -34,7 +33,7 @@ public class Level {
 		//create the array
 		createLevelArray();
 		//create test NPC
-		testNPC = new NPC("Sick", 6 * 32, 3 * 32);
+		testNPC = new NPC(6 * 32, 3 * 32);
 		//test array
 		NPCs = new NPC[1];
 		NPCs[0] = testNPC;

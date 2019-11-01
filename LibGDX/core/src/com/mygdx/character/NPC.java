@@ -8,10 +8,12 @@ public class NPC extends Character {
 	private String status;
 	private int health;
 	private float susceptibility;
+	private int gold;
 
-	public NPC(String status, float coordX, float coordY) {
+	public NPC(float coordX, float coordY) {
 		Texture tempSprite = new Texture(Gdx.files.internal(status + "_NPC.gif"));
 		sprite = new Sprite(tempSprite);
+		status = "Alive";
 		this.x = coordX;
 		this.y = coordY;
 	}
@@ -27,6 +29,14 @@ public class NPC extends Character {
 			status = "Dead";
 			sprite.setTexture(new Texture(Gdx.files.internal("Dead_NPC")));
 		}
+	}
+	
+	public void cure() {
+		if(status == "Dead") {
+			throw new IllegalStateException("They're dead!");
+		}
+		status = "Alive";
+		susceptibility += 0.1;
 	}
 	
 	public int getHealth() {

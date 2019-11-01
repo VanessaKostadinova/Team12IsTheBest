@@ -29,7 +29,6 @@ public class NPC_OR_VILLAGER
         daysInfected = 0;
         immunity = 0;
         isInfected = false;
-        
     }
 
     /**

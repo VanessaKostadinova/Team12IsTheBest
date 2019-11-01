@@ -12,6 +12,9 @@ public class Player extends Character {
 	private static final int FRAME_ROWS = 2;
 	private Animation<TextureRegion> walkAnimation;
 	private TextureRegion[] walkFrames;
+	private int ammoGun;
+	private int ammoSpray;
+	private int sanity;
 
 	// General constructor to create player.
 	public Player() {
