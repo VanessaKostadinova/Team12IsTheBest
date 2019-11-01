@@ -1,0 +1,5 @@
+test.csv
+25
+25
+Wooden_Floor.gif
+Floor_Stone.gif

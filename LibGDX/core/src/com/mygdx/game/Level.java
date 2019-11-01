@@ -30,7 +30,7 @@ public class Level {
 		//read the level
 		readLevelInformation();
 		//initialise the array
-		level = new int[width][height];
+		level = new int[height][width];
 		//create the array
 		createLevelArray();
 		//create test NPC
@@ -97,7 +97,7 @@ public class Level {
 			//load reader
 			reader = new BufferedReader(new FileReader(levelFile));
 			//stores the array's height
-			int arrayHeight = 0;
+			int arrayHeight = height-1;
 			//check if there is next line
 			while((line = reader.readLine()) != null) {
 				//creates an array with every element in the current line
@@ -107,12 +107,12 @@ public class Level {
 				//for every element in the current line
 				for(String i:currentLine) {
 					//creates array
-					level[arrayPosition][arrayHeight] = Integer.valueOf(i);
+					level[arrayHeight][arrayPosition] = Integer.valueOf(i);
 					//increment array position
 					arrayPosition++;
 				}
 				//increment array height location
-				arrayHeight++;
+				arrayHeight--;
 			}
 			reader.close();
 		} catch (FileNotFoundException e) {
