@@ -8,15 +8,19 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.character.NPC;
 
 public class Level {
 	
+	private NPC testNPC;
 	private int[][] level;
+	private NPC[] NPCs;
 	private int height;
 	private int width;
 	private String file;
 	private String levelFile;
 	private HashMap<Integer, Texture> textures;
+	//private int population;
 	
 	public Level(String file) {
 		//sets the file
@@ -29,6 +33,11 @@ public class Level {
 		level = new int[width][height];
 		//create the array
 		createLevelArray();
+		//create test NPC
+		testNPC = new NPC("Sick", 6 * 32, 3 * 32);
+		//test array
+		NPCs = new NPC[1];
+		NPCs[0] = testNPC;
 	}
 	
 	public int getHeight() {
@@ -66,6 +75,14 @@ public class Level {
 	
 	public int[][] getLevel() {
 		return level;
+	}
+	
+	public NPC getNPC(int index) {
+		return NPCs[index];
+	}
+	
+	public int getNumNPCs() {
+		return NPCs.length;
 	}
 	
 	public Texture getTexture(int key) {

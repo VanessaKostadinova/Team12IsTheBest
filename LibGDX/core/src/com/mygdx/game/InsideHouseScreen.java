@@ -10,7 +10,6 @@ import com.mygdx.character.Player;
 public class InsideHouseScreen implements Screen {
 	
 	MainScreen screen;
-	Texture img;
 	Level testLevel;
 	
 	private Camera camera;
@@ -79,6 +78,7 @@ public class InsideHouseScreen implements Screen {
 	    screen.batch.setProjectionMatrix(camera.getCamera().combined);
 		screen.batch.begin();
 		renderMap();
+		drawNPCs();
 		player.getSprite().draw(screen.batch);
 		screen.batch.end();
 		
@@ -119,7 +119,6 @@ public class InsideHouseScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		img.dispose();
 	}
 	
 	/**
@@ -142,6 +141,12 @@ public class InsideHouseScreen implements Screen {
 			yCoord += 32;
 		}
 		
+	}
+	
+	private void drawNPCs() {
+		for(int i = 0; i < testLevel.getNumNPCs(); i++) {
+			screen.batch.draw(testLevel.getNPC(i).getSprite(),testLevel.getNPC(i).getX(),testLevel.getNPC(i).getY());
+		}
 	}
 
 
