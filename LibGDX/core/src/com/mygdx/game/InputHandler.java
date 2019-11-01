@@ -183,13 +183,13 @@ public class InputHandler implements InputProcessor {
 		    float rotation = (float)MathUtils.radiansToDegrees * MathUtils.atan2(mouse.y - spriteY, mouse.x - spriteX);
 		    if (rotation < 0) rotation += 360;
 		    player.getSprite().setRotation(rotation);
-		    player.getSpray().update(rotation, spriteX-player.getSprite().getWidth()/2, spriteY-player.getSprite().getHeight()/2, npcs, player.getSprite().getHeight());
+		    player.getSpray().update(rotation, spriteX-player.getSprite().getWidth()/2, spriteY-player.getSprite().getHeight()/2, npcs);
 		    player.getSpray().rotate(rotation);
 
 		}
 	}
 
-	/*
+	/*                        
 	 * Each tile is 32*32
 	 * Hence we divide the coordinates by 32 and round down.
 	 * This will be = to the tile the player is interacting with.

@@ -6,12 +6,21 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+/**
+ * A type of spray, which burns the villagers.
+ * @author Team 12
+ */
 public class Cure extends Spray {
 	
-
+	/**
+	 * Creates an instance of the cure spray.
+	 * @param x Float value of the spray's position in the X-Axis.
+	 * @param y Float value of the spray's position in the Y-Axis.
+	 * @param angle Ensure's that the sprite looks in the correct direction.
+	 * @see Spray
+	 */
 	public Cure(float x, float y, float angle) {
 		super(x, y, angle);
-		
         Texture texture = new Texture(Gdx.files.internal("spray/empty.png"));
         sprite = new Sprite(texture);
     	sprite.setPosition(x, y);
