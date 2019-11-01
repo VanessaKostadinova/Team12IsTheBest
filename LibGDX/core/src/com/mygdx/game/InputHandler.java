@@ -54,7 +54,7 @@ public class InputHandler implements InputProcessor {
 		 */
 		if(!isPaused) {
 			if(Gdx.input.isKeyPressed(Input.Keys.W)) {
-				if(!collision(playerX, playerY + playerHeight)) && !collision(playerX + playerWidth - speed*delta, playerY + playerHeight)) {
+				if(!collision(playerX, playerY + playerHeight) && !collision(playerX + playerWidth - speed*delta, playerY + playerHeight)) {
 					camera.getCamera().translate(0f, speed* delta);
 					player.updateXY(0, speed* delta);
 					camera.updateCamera();
@@ -62,7 +62,7 @@ public class InputHandler implements InputProcessor {
 				}
 			}
 			if(Gdx.input.isKeyPressed(Input.Keys.A)) {
-				if(!collision(playerX - speed*delta, playerY && !collision(playerX - speed*delta, playerY + playerHeight - 2)) {
+				if(!collision(playerX - speed*delta, playerY) && !collision(playerX - speed*delta, playerY + playerHeight - 2)) {
 					camera.getCamera().translate(-speed*delta, 0f);
 					camera.updateCamera();
 					player.updateXY(-speed*delta, 0);
@@ -78,7 +78,7 @@ public class InputHandler implements InputProcessor {
 				}
 			}
 			if(Gdx.input.isKeyPressed(Input.Keys.D)) {
-				if(!collision(playerX + playerWidth, playerY && !collision(playerX + playerWidth, playerY + playerHeight - 2)) {
+				if(!collision(playerX + playerWidth, playerY) && !collision(playerX + playerWidth, playerY + playerHeight - 2)) {
 					camera.getCamera().translate(speed*delta, 0f);
 					camera.updateCamera();
 					player.updateXY(+speed* delta, 0);
