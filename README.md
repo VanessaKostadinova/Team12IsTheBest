@@ -7,7 +7,7 @@ Since the import is now working, this is the code which our final work we can be
 3. Clone URL (or Existing local repository if you've already made one skip to Step 8)
 4. In URL type this: https://github.com/DankusMemeus/Team12IsTheBest/
 5. Enter your GitHub Username and Password in the Authentication section.
-6. Import all branches for now
+6. Import LibGDXShared, and not any other branch.
 7. Set the directory to where ever you want, this would be your local version of the program.
 8. Make sure the working tree is highlighted and import existing eclipse projects is selected.
 9. Then select the following folders: LibGDX, Core, Desktop
