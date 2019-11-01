@@ -35,8 +35,9 @@ public class Shop
     public void buyUpgrade(String name)
     {
         for (int i=0;i<upgrades.length;i++){
-            if(upgrades[i].getName() == name){
+            if(upgrades[i].getName().equals(name)){
                 upgrades[i].increaseLevel();
+                
             }
         }
 
@@ -44,7 +45,7 @@ public class Shop
     public void sellUpgrade(String name)
     {
         for (int i=0;i<upgrades.length;i++){
-            if(upgrades[i].getName() == name){
+            if(upgrades[i].getName().equals(name)){
                 upgrades[i].decreaseLevel();
             }
         }
@@ -52,7 +53,7 @@ public class Shop
     public Upgrade getUpgrade(String name)
     {
         for (int i=0;i<upgrades.length;i++){
-            if(upgrades[i].getName() == name){
+            if(upgrades[i].equals(name)){
                 return upgrades[i];
             }
         }
