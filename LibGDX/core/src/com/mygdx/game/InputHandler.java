@@ -106,6 +106,7 @@ public class InputHandler implements InputProcessor {
 
 	@Override
 	public boolean keyUp(int keycode) {
+		player.playerStanding();
 		return false;
 	}
 
@@ -123,21 +124,18 @@ public class InputHandler implements InputProcessor {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		player.playerReset();
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// TODO Auto-generated method stub
+		spriteRotations(screenX, screenY);
 		return false;
 	}
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
-		if(!isPaused) {
-			spriteRotations(screenX, screenY);
-		}
+		spriteRotations(screenX, screenY);
 		return true;
 	}
 
@@ -158,14 +156,16 @@ public class InputHandler implements InputProcessor {
 	 * Then we set the sprites rotation.
 	 */
 	private void spriteRotations(int screenX, int screenY) {
-		float spriteX = player.getX()+player.getSprite().getWidth()/2;
-		float spriteY = player.getY()+player.getSprite().getHeight()/2;
-
-		Vector3 mouse = camera.getCamera().unproject(new Vector3(screenX, screenY, 0));
-
-	    float rotation = (float)MathUtils.radiansToDegrees * MathUtils.atan2(mouse.y - spriteY, mouse.x - spriteX);
-	    if (rotation < 0) rotation += 360;
-	    player.getSprite().setRotation(rotation);
+		if(!isPaused) {
+			float spriteX = player.getX()+player.getSprite().getWidth()/2;
+			float spriteY = player.getY()+player.getSprite().getHeight()/2;
+	
+			Vector3 mouse = camera.getCamera().unproject(new Vector3(screenX, screenY, 0));
+	
+		    float rotation = (float)MathUtils.radiansToDegrees * MathUtils.atan2(mouse.y - spriteY, mouse.x - spriteX);
+		    if (rotation < 0) rotation += 360;
+		    player.getSprite().setRotation(rotation);
+		}
 	}
 
 	/*

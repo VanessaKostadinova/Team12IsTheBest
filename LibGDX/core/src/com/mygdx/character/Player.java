@@ -41,7 +41,7 @@ public class Player extends Character {
 		return walkAnimation;
 	}
 	
-	public void playerReset() {
+	public void playerStanding() {
 		sprite.setRegion(walkFrames[1]);
 	}
 	
