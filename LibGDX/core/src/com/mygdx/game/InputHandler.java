@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.mygdx.camera.Camera;
+import com.mygdx.character.NPC;
 import com.mygdx.character.Player;
 
 public class InputHandler implements InputProcessor {
@@ -21,18 +22,21 @@ public class InputHandler implements InputProcessor {
 	private float speed;
 	private Boolean isPaused;
 	private Window pause;
+	private boolean mousePressed;
+	
+	private NPC[] npcs;
 
-
-	public InputHandler(Player player, Camera camera, int[][] level, Window pause) {
+	public InputHandler(Player player, Camera camera, int[][] level, Window pause, NPC[] npcs) {
 		this.player = player;
 		this.camera = camera;
 		this.level = level;
 		this.playerWidth = player.getSprite().getWidth();
 		this.playerHeight = player.getSprite().getHeight();
-
+		this.mousePressed = false;
 		this.speed = 2f*60f;
 		this.isPaused = false;
 		this.pause = pause;
+		this.npcs = npcs;
 	}
 
 	public void movement(TextureRegion region, float delta) {
@@ -57,6 +61,7 @@ public class InputHandler implements InputProcessor {
 				if(!collision(playerX, playerY + playerHeight) && !collision(playerX + playerWidth - speed*delta, playerY + playerHeight)) {
 					camera.getCamera().translate(0f, speed* delta);
 					player.updateXY(0, speed* delta);
+					player.getSpray().updatePosition(0f, speed*delta);
 					camera.updateCamera();
 					player.getSprite().setRegion(region);
 				}
@@ -66,6 +71,7 @@ public class InputHandler implements InputProcessor {
 					camera.getCamera().translate(-speed*delta, 0f);
 					camera.updateCamera();
 					player.updateXY(-speed*delta, 0);
+					player.getSpray().updatePosition(-speed*delta, 0f);
 					player.getSprite().setRegion(region);
 				}
 			}
@@ -73,6 +79,7 @@ public class InputHandler implements InputProcessor {
 				if(!collision(playerX, playerY - speed*delta) && !collision(playerX + playerWidth - speed*delta, playerY - speed*delta)) {
 					camera.getCamera().translate(0f, -speed*delta);
 					player.updateXY(0, -speed*delta);
+					player.getSpray().updatePosition(0f, -speed*delta);
 					camera.updateCamera();
 					player.getSprite().setRegion(region);
 				}
@@ -82,6 +89,7 @@ public class InputHandler implements InputProcessor {
 					camera.getCamera().translate(speed*delta, 0f);
 					camera.updateCamera();
 					player.updateXY(+speed* delta, 0);
+					player.getSpray().updatePosition(speed*delta, 0f);
 					player.getSprite().setRegion(region);
 				}
 			}
@@ -101,6 +109,10 @@ public class InputHandler implements InputProcessor {
 				togglePaused();
 			}
 		}
+		
+		if(keycode == Keys.Q) {
+			player.switchSolution();
+		}
 		return false;
 	}
 
@@ -112,18 +124,18 @@ public class InputHandler implements InputProcessor {
 
 	@Override
 	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
+		mousePressed = true;
 		return false;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		mousePressed = false;
 		return false;
 	}
 
@@ -143,6 +155,12 @@ public class InputHandler implements InputProcessor {
 	public boolean scrolled(int amount) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	public void spray() {
+		if(!isPaused) {
+			player.getSpray().setVisible(mousePressed);
+		}
 	}
 
 	/*
@@ -165,6 +183,9 @@ public class InputHandler implements InputProcessor {
 		    float rotation = (float)MathUtils.radiansToDegrees * MathUtils.atan2(mouse.y - spriteY, mouse.x - spriteX);
 		    if (rotation < 0) rotation += 360;
 		    player.getSprite().setRotation(rotation);
+		    player.getSpray().update(rotation, spriteX-player.getSprite().getWidth()/2, spriteY-player.getSprite().getHeight()/2, npcs, player.getSprite().getHeight());
+		    player.getSpray().rotate(rotation);
+
 		}
 	}
 

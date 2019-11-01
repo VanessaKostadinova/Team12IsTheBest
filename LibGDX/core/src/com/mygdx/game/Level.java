@@ -81,6 +81,10 @@ public class Level {
 		return NPCs[index];
 	}
 	
+	public NPC[] getAllNPCS() {
+		return NPCs;
+	}
+	
 	public int getNumNPCs() {
 		return NPCs.length;
 	}

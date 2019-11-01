@@ -25,7 +25,7 @@ public class InsideHouseScreen implements Screen {
 	private Window pause;
 	private Skin skin;
 	private float stateTime;
-
+	
 
 	public InsideHouseScreen(MainScreen mainScreen) {
 		this.screen = mainScreen;
@@ -67,7 +67,7 @@ public class InsideHouseScreen implements Screen {
 
 		skin = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
 		pauseGame();
-		handler = new InputHandler(player, camera, testLevel.getLevel(), pause);
+		handler = new InputHandler(player, camera, testLevel.getLevel(), pause, testLevel.getAllNPCS());
 
 		/*
 		 * This allows us to use two inputhandlers, in this case:
@@ -95,12 +95,15 @@ public class InsideHouseScreen implements Screen {
 
 		// Allows player to move.
 		handler.movement(player.getAnimation().getKeyFrame(stateTime, true), delta);
+		player.getSpray().setTextureRegion(player.getSpray().getAnimation().getKeyFrame(stateTime, true));
 		stateTime = stateTime + delta;
 
 	    screen.batch.setProjectionMatrix(camera.getCamera().combined);
 		screen.batch.begin();
 		renderMap();
 		drawNPCs();
+		handler.spray();
+		player.getSpray().Sprite().draw(screen.batch);
 		player.getSprite().draw(screen.batch);
 		screen.batch.end();
 
@@ -118,6 +121,7 @@ public class InsideHouseScreen implements Screen {
 		 * when the window is resized. Then of course updates, the camera.
 		 *
 		 */
+		screen.ui.getViewport().update(width, height);
 		camera.getViewport().update(width, height);
 		camera.getCamera().viewportHeight = viewWidth*((float)height/(float) width);
 		camera.getViewport().apply();

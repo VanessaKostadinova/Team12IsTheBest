@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.mygdx.weapon.Cure;
+import com.mygdx.weapon.Fire;
+import com.mygdx.weapon.Spray;
 
 public class Player extends Character {
 	
@@ -12,11 +15,18 @@ public class Player extends Character {
 	private static final int FRAME_ROWS = 2;
 	private Animation<TextureRegion> walkAnimation;
 	private TextureRegion[] walkFrames;
+	private Spray[] spray;
+	private int currentSpray;
+
 
 	// General constructor to create player.
 	public Player() {
         loadWalkingAnimation();
         sprite = new Sprite(walkFrames[1]);
+        spray = new Spray[2];
+		spray[0] = new Cure(x-sprite.getWidth()/2, y+sprite.getHeight(), 90);
+		spray[1] = new Fire(x-sprite.getWidth()/2, y+sprite.getHeight(), 90);
+		currentSpray = 0;
 	}
 	
 	public void loadWalkingAnimation() {
@@ -36,6 +46,24 @@ public class Player extends Character {
 		
 		walkAnimation = new Animation<TextureRegion>(0.3f, walkFrames);
 	}
+	
+	public void switchSolution() {
+		if(currentSpray == 0) {
+			currentSpray = 1;
+			spray[1].setPosition(spray[0].getX(), spray[0].getY());
+			spray[1].rotate(spray[0].getRotation());
+		}
+		else {
+			currentSpray = 0;
+			spray[0].setPosition(spray[1].getX(), spray[1].getY());
+			spray[0].rotate(spray[1].getRotation());
+		}
+	}
+	
+	public Spray getSpray() {
+		return spray[currentSpray];
+	}
+
 	
 	public Animation<TextureRegion> getAnimation() {
 		return walkAnimation;
