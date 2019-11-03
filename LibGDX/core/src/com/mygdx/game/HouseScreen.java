@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Scaling;
 
 public class HouseScreen implements Screen {
 
@@ -26,6 +27,11 @@ public class HouseScreen implements Screen {
 	Boolean isPaused;
 	
 	public HouseScreen(MainScreen mainScreen) {
+		
+		float width = Gdx.graphics.getWidth();
+		float scaleItem = width/1920;
+		
+		
 		this.isPaused = false;
 		this.screen = mainScreen;
 		this.skin = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
@@ -39,7 +45,9 @@ public class HouseScreen implements Screen {
 		t.addActor(mask);
 		
 		final Image house = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("houses/HOUSE.png")))));
-		house.setPosition(Gdx.graphics.getWidth()/2 - house.getWidth()/2 - 100f, Gdx.graphics.getHeight()/2 - house.getHeight()/2);
+		house.setScaling(Scaling.fit);
+		house.setSize(house.getWidth()*scaleItem, house.getHeight()*scaleItem);
+		house.setPosition(Gdx.graphics.getWidth()/2 - house.getWidth()/2- 100f*scaleItem, Gdx.graphics.getHeight()/2 - house.getHeight()/2);
 		house.addListener(new ClickListener(){
 		    @Override
 		    public void clicked(InputEvent event, float x, float y) {
@@ -64,13 +72,15 @@ public class HouseScreen implements Screen {
 		t.addActor(house);
 		
 		final Image shop = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("houses/SHOP.png")))));
+		shop.setScaling(Scaling.fit);
+		shop.setSize(shop.getWidth()*scaleItem, shop.getHeight()*scaleItem);
 		shop.setPosition(Gdx.graphics.getWidth()/2 - house.getWidth()/2 + shop.getWidth(), Gdx.graphics.getHeight()/2 - house.getHeight()/2);
 		shop.addListener(new ClickListener(){
 		    @Override
 		    public void clicked(InputEvent event, float x, float y) {
 		    	if(!isPaused) {
 		    		dispose();
-		    		screen.setScreen(new Shop(screen));
+		    		screen.setScreen(new ShopScreen(screen));
 		    	}
 		    }
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
