@@ -13,7 +13,7 @@ public class MainScreen extends Game  {
 	public void create() {
 		batch = new SpriteBatch();
 		ui = new Stage();
-		setScreen(new InsideHouseScreen(this));
+		setScreen(new HouseScreen(this));
 	}
 
 	@Override
