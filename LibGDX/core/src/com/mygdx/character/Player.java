@@ -18,6 +18,7 @@ public class Player extends Character {
 	private Spray[] spray;
 	private int currentSpray;
 
+	private int coin;
 
 	// General constructor to create player.
 	public Player() {
@@ -27,6 +28,7 @@ public class Player extends Character {
 		spray[0] = new Cure(x-sprite.getWidth()/2, y+sprite.getHeight(), 90);
 		spray[1] = new Fire(x-sprite.getWidth()/2, y+sprite.getHeight(), 90);
 		currentSpray = 0;
+		coin = 0;
 	}
 	
 	public void loadWalkingAnimation() {
@@ -58,6 +60,15 @@ public class Player extends Character {
 			spray[0].setPosition(spray[1].getX(), spray[1].getY());
 			spray[0].rotate(spray[1].getRotation());
 		}
+	}
+	
+	
+	public int getCoins() {
+		return coin;
+	}
+	
+	public void setCoins(int coin) {
+		this.coin = coin;
 	}
 	
 	public Spray getSpray() {
