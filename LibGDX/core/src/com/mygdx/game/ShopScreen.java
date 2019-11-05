@@ -18,7 +18,12 @@ public class ShopScreen implements Screen {
 	MainScreen screen;
 	Table t = new Table();
 	private float scaleItem;
+	private Boolean isClicked;
+	private int XArray = -1;
+	private int YArray = -1;
 	
+	private Image[][] item;
+
 	
 	public ShopScreen(MainScreen screen1) {
 		
@@ -38,6 +43,9 @@ public class ShopScreen implements Screen {
 		Title.setSize(Title.getWidth()*scaleItem, Title.getHeight()*scaleItem);
 		t.addActor(Title);
 		
+		isClicked = false;
+		item = new Image[5][5];
+
 		createItemSlots();
 
 		final Image Leave = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("shop/LEAVE.png")))));
@@ -90,14 +98,30 @@ public class ShopScreen implements Screen {
 	public void createItemSlots() {
 		for(int y = 0; y < 5; y++) {
 			for(int x = 0; x < 5; x++) {
+				final int X = x;
+				final int Y = y;
+				
+				
 				final Image ItemSlot1 = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("shop/ITEM.png")))));
 				ItemSlot1.setScaling(Scaling.fit);
 				ItemSlot1.setPosition(50f*scaleItem + ItemSlot1.getWidth()*x*scaleItem, Gdx.graphics.getHeight() - ItemSlot1.getHeight()*scaleItem - 200f*scaleItem - ItemSlot1.getHeight()*y*scaleItem);
 				ItemSlot1.setSize(ItemSlot1.getWidth()*scaleItem, ItemSlot1.getHeight()*scaleItem);
+				
 				ItemSlot1.addListener(new ClickListener(){
 					@Override
 				    public void clicked(InputEvent event, float x, float y) {
 			    		TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("shop/ITEMHOVER.png"))));
+			    		if(isClicked) {
+				    		TextureRegionDrawable t2 = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("shop/ITEM.png"))));
+			    			item[YArray][XArray].setDrawable(t2);
+			    			YArray = Y;
+			    			XArray = X;
+			    		}
+			    		else {
+				    		isClicked = true;
+			    			YArray = Y;
+			    			XArray = X;
+			    		}
 			    		ItemSlot1.setDrawable(t);
 				    }
 				    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
@@ -105,14 +129,21 @@ public class ShopScreen implements Screen {
 			    		ItemSlot1.setDrawable(t);
 				    }
 				    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-			    		TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("shop/ITEM.png"))));
-			    		ItemSlot1.setDrawable(t);
+				    	if(!(X == XArray) || !(Y == YArray)) {
+				    		TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("shop/ITEM.png"))));
+			    			ItemSlot1.setDrawable(t);
+				    	}
 				    }
 				});
+				item[Y][X] = ItemSlot1;
 				t.addActor(ItemSlot1);
 			}
 		}
 	}
+	
+	
+
+	
 
 
 
