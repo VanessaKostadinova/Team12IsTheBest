@@ -44,37 +44,14 @@ public class HouseScreen implements Screen {
 		mask.setHeight(Gdx.graphics.getHeight());
 		t.addActor(mask);
 		
-		final Image house = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("houses/HOUSE.png")))));
-		house.setScaling(Scaling.fit);
-		house.setSize(house.getWidth()*scaleItem, house.getHeight()*scaleItem);
-		house.setPosition(Gdx.graphics.getWidth()/2 - house.getWidth()/2- 100f*scaleItem, Gdx.graphics.getHeight()/2 - house.getHeight()/2);
-		house.addListener(new ClickListener(){
-		    @Override
-		    public void clicked(InputEvent event, float x, float y) {
-		    	if(!isPaused) {
-			    	dispose();
-			    	screen.setScreen(new InsideHouseScreen(screen));
-		    	}
-		    }
-		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-		    	if(!isPaused) {
-		    		TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("houses/HOUSEMOUSE.png"))));
-			    	house.setDrawable(t);
-		    	}
-		    }
-		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-			    if(!isPaused) {
-			    	TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("houses/HOUSE.png"))));
-			    	house.setDrawable(t);
-			    }
-		    }
-		});
-		t.addActor(house);
+		
+		setHouse(scaleItem, Gdx.graphics.getWidth()/2 - 245/2- 100f*scaleItem, Gdx.graphics.getHeight()/2 - 344/2);
+
 		
 		final Image shop = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("houses/SHOP.png")))));
 		shop.setScaling(Scaling.fit);
 		shop.setSize(shop.getWidth()*scaleItem, shop.getHeight()*scaleItem);
-		shop.setPosition(Gdx.graphics.getWidth()/2 - house.getWidth()/2 + shop.getWidth(), Gdx.graphics.getHeight()/2 - house.getHeight()/2);
+		shop.setPosition(Gdx.graphics.getWidth()/2 - 245/2 + shop.getWidth(), Gdx.graphics.getHeight()/2 - 344/2);
 		shop.addListener(new ClickListener(){
 		    @Override
 		    public void clicked(InputEvent event, float x, float y) {
@@ -106,6 +83,35 @@ public class HouseScreen implements Screen {
 
 		screen.ui.addActor(t);
 
+	}
+	
+	public void setHouse(float scaleItem, float x, float y) {
+		final Image house = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("houses/HOUSE.png")))));
+		house.setScaling(Scaling.fit);
+		house.setSize(house.getWidth()*scaleItem, house.getHeight()*scaleItem);
+		house.setPosition(x, y);
+		house.addListener(new ClickListener(){
+		    @Override
+		    public void clicked(InputEvent event, float x, float y) {
+		    	if(!isPaused) {
+			    	dispose();
+			    	screen.setScreen(new InsideHouseScreen(screen));
+		    	}
+		    }
+		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+		    	if(!isPaused) {
+		    		TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("houses/HOUSEMOUSE.png"))));
+			    	house.setDrawable(t);
+		    	}
+		    }
+		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+			    if(!isPaused) {
+			    	TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("houses/HOUSE.png"))));
+			    	house.setDrawable(t);
+			    }
+		    }
+		});
+		t.addActor(house);
 	}
 
 	@Override
