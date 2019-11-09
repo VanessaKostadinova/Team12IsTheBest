@@ -4,13 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.camera.Camera;
-import com.mygdx.character.NPC;
 import com.mygdx.character.Player;
 
 public class InsideHouseScreen implements Screen {
@@ -26,11 +27,15 @@ public class InsideHouseScreen implements Screen {
 	private Window pause;
 	private Skin skin;
 	private float stateTime;
+    private BitmapFont font;
+    private Label label; 
+
 	
 
 	public InsideHouseScreen(MainScreen mainScreen) {
 		this.screen = mainScreen;
 		//img = new Texture("Wooden_Floor.png");
+		font = new BitmapFont();
 		testLevel = new Level("testLevel.txt");
 		stateTime = 0f;
 		/**
@@ -78,6 +83,10 @@ public class InsideHouseScreen implements Screen {
 		input.addProcessor(handler);
 		input.addProcessor(screen.ui);
         Gdx.input.setInputProcessor(input);
+		label = new Label("Player Gold: " +player.getCoins(), skin);
+		label.setPosition(Gdx.graphics.getWidth()-label.getWidth()-40, Gdx.graphics.getHeight()-label.getHeight()-40);
+		screen.ui.addActor(label);
+        
 
 	}
 
@@ -108,6 +117,7 @@ public class InsideHouseScreen implements Screen {
 		player.getSprite().draw(screen.batch);
 		screen.batch.end();
 
+		label.setText("Player Gold: " + player.getCoins());
 		//Draws the UI parts of house.
 		screen.ui.draw();
 
