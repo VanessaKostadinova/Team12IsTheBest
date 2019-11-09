@@ -27,9 +27,6 @@ public class ShopScreen implements Screen {
 	
 	public ShopScreen(MainScreen screen1) {
 		
-		// TODO Auto-generated constructor stub
-		
-
 		this.screen = screen1;
 		this.t = new Table();
 		this.t.setFillParent(true);
@@ -141,12 +138,6 @@ public class ShopScreen implements Screen {
 		}
 	}
 	
-	
-
-	
-
-
-
 		
 	@Override
 	public void show() {

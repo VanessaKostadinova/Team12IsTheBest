@@ -17,15 +17,32 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class HouseScreen.
+ */
 public class HouseScreen implements Screen {
 
+	/** The main screen. */
 	MainScreen screen;
+	
+	/** The table for the ui. */
 	Table t;
+	
+	/** The ui skin. */
 	Skin skin;
+	
+	/** The window pause. */
 	Window pause;
 	
+	/** If pause menu is active. */
 	Boolean isPaused;
 	
+	/**
+	 * Instantiates a new house screen.
+	 *
+	 * @param mainScreen the main screen
+	 */
 	public HouseScreen(MainScreen mainScreen) {
 		
 		float width = Gdx.graphics.getWidth();
@@ -37,6 +54,10 @@ public class HouseScreen implements Screen {
 		this.skin = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
 		this.t = new Table();
 		this.t.setFillParent(true);
+		
+		/*
+		 * Sets up the shop, and the background of the shop.
+		 */
 		Image mask = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("houses/background.png")))));
 		mask.setWidth(Gdx.graphics.getWidth());
 		mask.setHeight(Gdx.graphics.getHeight());
@@ -47,7 +68,9 @@ public class HouseScreen implements Screen {
 		
 		setHouse(scaleItem, Gdx.graphics.getWidth()/2 - 245/2- 100f*scaleItem, Gdx.graphics.getHeight()/2 - 344/2);
 
-		
+		/*
+		 * Sets up the shop, and the interaction with the shop.
+		 */
 		final Image shop = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("houses/SHOP.png")))));
 		shop.setScaling(Scaling.fit);
 		shop.setSize(shop.getWidth()*scaleItem, shop.getHeight()*scaleItem);
@@ -85,7 +108,17 @@ public class HouseScreen implements Screen {
 
 	}
 	
+	/**
+	 * Sets the house.
+	 *
+	 * @param scaleItem the scale item to resolution
+	 * @param x the x coordinate of the house
+	 * @param y the y coordinate of the house
+	 */
 	public void setHouse(float scaleItem, float x, float y) {
+		/*
+		 * Adds the houses onto the screen as well as adding the ability for each to clicked independantly.
+		 */
 		final Image house = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("houses/HOUSE.png")))));
 		house.setScaling(Scaling.fit);
 		house.setSize(house.getWidth()*scaleItem, house.getHeight()*scaleItem);
@@ -114,12 +147,18 @@ public class HouseScreen implements Screen {
 		t.addActor(house);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.badlogic.gdx.Screen#show()
+	 */
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.badlogic.gdx.Screen#render(float)
+	 */
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -139,6 +178,9 @@ public class HouseScreen implements Screen {
 	}
 	
 	
+	/**
+	 * Toggle isPaused variable.
+	 */
 	public void togglePaused() {
 		if(isPaused) {
 			isPaused = false;
@@ -149,6 +191,10 @@ public class HouseScreen implements Screen {
 	}
 	
 	
+    /**
+     * Pause game.
+     * @see InsideHouseScreen
+     */
     public void pauseGame() {
         float windowWidth = 200, windowHeight = 200;
         pause = new Window("", skin);
@@ -186,30 +232,45 @@ public class HouseScreen implements Screen {
         screen.ui.addActor(pause);
     }
 
+	/* (non-Javadoc)
+	 * @see com.badlogic.gdx.Screen#resize(int, int)
+	 */
 	@Override
 	public void resize(int width, int height) {
 		screen.ui.getViewport().update(width, height, true);
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.badlogic.gdx.Screen#pause()
+	 */
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.badlogic.gdx.Screen#resume()
+	 */
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.badlogic.gdx.Screen#hide()
+	 */
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.badlogic.gdx.Screen#dispose()
+	 */
 	@Override
 	public void dispose() {
 		screen.ui.clear();

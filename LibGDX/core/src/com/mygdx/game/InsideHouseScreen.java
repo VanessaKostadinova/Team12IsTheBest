@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -14,32 +13,57 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.camera.Camera;
 import com.mygdx.character.Player;
 
+/**
+ * The Class InsideHouseScreen.
+ * @author Team 12
+ */
 public class InsideHouseScreen implements Screen {
 
+	/** The game screen. */
 	MainScreen screen;
+	
+	/** The level and holds level information. */
 	Level testLevel;
 
+	/** The camera of the screen. */
 	private Camera camera;
+	
+	/** The view width of the screen. */
 	private int viewWidth;
+	
+	/** The player. */
 	private Player player;
+	
+	/** The Inputhandler for the player. */
 	private InputHandler handler;
+	
+	/** The Multiplexer to allow for two different inputs UI and InputHandler. */
 	private InputMultiplexer input;
+	
+	/** The pause window. */
 	private Window pause;
+	
+	/** The ui skin. */
 	private Skin skin;
+	
+	/** The state time. */
 	private float stateTime;
-    private BitmapFont font;
+    
+    /** The Player gold label. */
     private Label label; 
 
 	
-
+	/**
+	 * Instantiates a new inside house screen.
+	 *
+	 * @param mainScreen the main screen
+	 */
 	public InsideHouseScreen(MainScreen mainScreen) {
 		this.screen = mainScreen;
 		//img = new Texture("Wooden_Floor.png");
-		font = new BitmapFont();
 		testLevel = new Level("testLevel.txt");
 		stateTime = 0f;
-		/**
-		 * To Vanessa:
+		/*
 		 *
 		 * Added some basic implementation of the camera
 		 * The constructor of the camera is ViewPointWidth and ViewPointHeight currently set it at 256x(256*scale)
@@ -75,7 +99,7 @@ public class InsideHouseScreen implements Screen {
 		handler = new InputHandler(player, camera, testLevel.getLevel(), pause, testLevel.getAllNPCS());
 
 		/*
-		 * This allows us to use two inputhandlers, in this case:
+		 * This allows us to use two input handlers, in this case:
 		 * One is for the UI
 		 * One is for the Movement.
 		 */
@@ -90,12 +114,18 @@ public class InsideHouseScreen implements Screen {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.badlogic.gdx.Screen#show()
+	 */
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.badlogic.gdx.Screen#render(float)
+	 */
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -123,10 +153,12 @@ public class InsideHouseScreen implements Screen {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.badlogic.gdx.Screen#resize(int, int)
+	 */
 	@Override
 	public void resize(int width, int height) {
-		/**
-		 * To Vanessa:
+		/*
 		 *
 		 * Similar to what we have done above, however this just resizes the viewport
 		 * when the window is resized. Then of course updates, the camera.
@@ -139,30 +171,44 @@ public class InsideHouseScreen implements Screen {
 		camera.updateCamera();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.badlogic.gdx.Screen#pause()
+	 */
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.badlogic.gdx.Screen#resume()
+	 */
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.badlogic.gdx.Screen#hide()
+	 */
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.badlogic.gdx.Screen#dispose()
+	 */
 	@Override
 	public void dispose() {
 	}
 
 
-	//renders map
+	/**
+	 * Renders map.
+	 */
 	private void renderMap() {
 		int[][] workingArray = new int[25][25];
 		workingArray = testLevel.getLevel();
@@ -180,12 +226,18 @@ public class InsideHouseScreen implements Screen {
 
 	}
 
+	/**
+	 * Draw all the NPCs onto the screen.
+	 */
 	private void drawNPCs() {
 		for(int i = 0; i < testLevel.getNumNPCs(); i++) {
 			testLevel.getNPC(i).getSprite().draw(screen.batch);
 		}
 	}
 
+    /**
+     * Holds the window for the pause menu.
+     */
     public void pauseGame() {
     	
     	/*
