@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.character.NPC;
 
 public class Level {
-	
+
 	private NPC testNPC;
 	private int[][] level;
 	private NPC[] NPCs;
@@ -20,7 +20,7 @@ public class Level {
 	private String file;
 	private String levelFile;
 	private HashMap<Integer, Texture> textures;
-	
+
 	public Level(String file) {
 		//sets the file
 		this.file = file;
@@ -33,16 +33,16 @@ public class Level {
 		//create the array
 		createLevelArray();
 		//create test NPC
-		testNPC = new NPC(6 * 32, 3 * 32);
+		testNPC = new NPC("Sick", 6 * 32, 3 * 32, 60);
 		//test array
 		NPCs = new NPC[1];
 		NPCs[0] = testNPC;
 	}
-	
+
 	public int getHeight() {
 		return height;
 	}
-	
+
 	private void readLevelInformation() {
 		try {
 			//create reader
@@ -71,23 +71,27 @@ public class Level {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public int[][] getLevel() {
 		return level;
 	}
-	
+
 	public NPC getNPC(int index) {
 		return NPCs[index];
 	}
-	
+
+	public NPC[] getAllNPCS() {
+		return NPCs;
+	}
+
 	public int getNumNPCs() {
 		return NPCs.length;
 	}
-	
+
 	public Texture getTexture(int key) {
 		return textures.get(key);
 	}
-	
+
 	private void createLevelArray() {
 		try {
 			BufferedReader reader;
