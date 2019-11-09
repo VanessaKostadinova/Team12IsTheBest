@@ -34,7 +34,7 @@ public class Level {
 		//create the array
 		createLevelArray();
 		//create test NPC
-		testNPC = new NPC("Sick", 6 * 32, 3 * 32);
+		testNPC = new NPC("Sick", 6 * 32, 3 * 32, 60);
 		//test array
 		NPCs = new NPC[1];
 		NPCs[0] = testNPC;

@@ -67,7 +67,6 @@ public abstract class Spray {
 
 		System.out.println("x: " + x);
 		System.out.println("y: " + y);
-		collision(npcs);
 		System.out.println("");
 
 	}
@@ -130,15 +129,29 @@ public abstract class Spray {
 	 * Checks for collisions between the spray sprite and NPC Sprite.
 	 * @param npcs An array of NPC characters
 	 */
-	public void collision(NPC[] npcs) {
+	public Boolean collision(NPC[] npcs, int spray) {
 		for(NPC npc : npcs) {
 			if(npc.getSprite().getBoundingRectangle().overlaps(sprite.getBoundingRectangle())) {
 				if(isActive) {
-					System.out.println("HIT");
+					if(npc.getStatus().equals("Dead") && spray == 1) {
+						npc.decreaseHealth(); 
+					}
+					else if(npc.getStatus().equals("Sick")) {
+						if(spray == 0) {
+							npc.increaseHealth(); 
+							if(npc.getHealed() && !npc.getMoneyGiven()) {
+								npc.moneyGiven(true);
+								return true;
+							}
+						}
+						else {
+							npc.decreaseHealth(); 
+						}
+					}
 				}
 			}
 		}
-
+		return false;
 	}
 	
 	public Sprite Sprite() {

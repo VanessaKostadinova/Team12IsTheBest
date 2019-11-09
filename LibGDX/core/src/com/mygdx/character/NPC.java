@@ -8,12 +8,21 @@ public class NPC extends Character {
 	private String status;
 	private int health;
 	private float susceptibility;
+	private Boolean isHealed;
+	private Boolean moneyGiven;
 
-	public NPC(String status, float coordX, float coordY) {
+	public NPC(String status, float coordX, float coordY, int health) {
 		Texture tempSprite = new Texture(Gdx.files.internal(status + "_NPC.gif"));
 		sprite = new Sprite(tempSprite);
 		this.x = coordX;
 		this.y = coordY;
+		setSpritePosition(x, y);
+		this.health = health;
+		this.status = status;
+		
+		this.isHealed = false;
+		this.moneyGiven = false;
+		
 	}
 	
 	public void makeSick() {
@@ -21,12 +30,41 @@ public class NPC extends Character {
 		sprite.setTexture(new Texture(Gdx.files.internal("Sick_NPC")));
 	}
 	
+	public void moneyGiven(Boolean given) {
+		this.moneyGiven = given;
+	}
+	
 	public void decreaseHealth() {
 		health--;
 		if(health == 0) {
 			status = "Dead";
-			sprite.setTexture(new Texture(Gdx.files.internal("Dead_NPC")));
+			updateTexture();
 		}
+		if(health == -100) {
+			status = "Burnt";
+			updateTexture();
+		}
+		
+		if(health < -100) {
+			health = -100;
+		}
+	}
+	
+	public void increaseHealth() {
+		health++;
+		if(health == 100) {
+			status = "Alive";
+			isHealed = true;
+			updateTexture();
+		}
+		if(health > 100) {
+			health = 100;
+		}
+	}
+	
+	public void updateTexture() {
+		Texture tempSprite = new Texture(Gdx.files.internal(status + "_NPC.gif"));
+		sprite.setTexture(tempSprite);
 	}
 	
 	public int getHealth() {
@@ -39,5 +77,13 @@ public class NPC extends Character {
 	
 	public String getStatus() {
 		return status;
+	}
+	
+	public Boolean getHealed() {
+		return this.isHealed;
+	}
+	
+	public Boolean getMoneyGiven() {
+		return this.moneyGiven;
 	}
 }

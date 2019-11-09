@@ -84,5 +84,9 @@ public class Player extends Character {
 		sprite.setRegion(walkFrames[1]);
 	}
 	
+	public int getSprayType() {
+		return currentSpray;
+	}
+	
 	
 }

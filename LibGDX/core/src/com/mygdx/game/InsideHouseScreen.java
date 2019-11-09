@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.camera.Camera;
+import com.mygdx.character.NPC;
 import com.mygdx.character.Player;
 
 public class InsideHouseScreen implements Screen {
@@ -64,7 +65,6 @@ public class InsideHouseScreen implements Screen {
 
 		player = new Player();
 		player.setSpritePosition(camera.getViewport().getWorldWidth()/2-player.getSprite().getWidth()/2, camera.getViewport().getWorldHeight()/2-player.getSprite().getHeight()/2);
-
 		skin = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
 		pauseGame();
 		handler = new InputHandler(player, camera, testLevel.getLevel(), pause, testLevel.getAllNPCS());
@@ -97,6 +97,7 @@ public class InsideHouseScreen implements Screen {
 		handler.movement(player.getAnimation().getKeyFrame(stateTime, true), delta);
 		player.getSpray().setTextureRegion(player.getSpray().getAnimation().getKeyFrame(stateTime, true));
 		stateTime = stateTime + delta;
+		handler.sprayWithVillagerCollision(testLevel.getAllNPCS());
 
 	    screen.batch.setProjectionMatrix(camera.getCamera().combined);
 		screen.batch.begin();
@@ -150,10 +151,7 @@ public class InsideHouseScreen implements Screen {
 	public void dispose() {
 	}
 
-	/**
-	 * To Inder:
-	 * This doesn't reopen the csv every time it's called.
-	 */
+
 	//renders map
 	private void renderMap() {
 		int[][] workingArray = new int[25][25];
@@ -174,22 +172,25 @@ public class InsideHouseScreen implements Screen {
 
 	private void drawNPCs() {
 		for(int i = 0; i < testLevel.getNumNPCs(); i++) {
-			screen.batch.draw(testLevel.getNPC(i).getSprite(),testLevel.getNPC(i).getX(),testLevel.getNPC(i).getY());
+			testLevel.getNPC(i).getSprite().draw(screen.batch);
 		}
 	}
-	/*
-	 * This class is used to create the window elements for the pause menu
-	 *
-	 * Creates a window and then has two different text buttons within
-	 *
-	 *  - RESUME (hides window when clicked and allows movement)
-	 *  - EXIT (exits the game)
-	 *
-	 * This is done through add listeners to each of the the buttons
-	 *
-	 * The window containing all the values is called pause
-	 */
+
     public void pauseGame() {
+    	
+    	/*
+    	 * This method is used to create the window elements for the pause menu
+    	 *
+    	 * Creates a window and then has two different text buttons within
+    	 *
+    	 *  - RESUME (hides window when clicked and allows movement)
+    	 *  - EXIT (exits the game)
+    	 *
+    	 * This is done through add listeners to each of the the buttons
+    	 *
+    	 * The window containing all the values is called pause
+    	 */
+    	
         float windowWidth = 200, windowHeight = 200;
         pause = new Window("", skin);
         pause.setMovable(false); //So the user can't move the window

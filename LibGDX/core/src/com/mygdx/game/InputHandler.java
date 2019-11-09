@@ -95,6 +95,13 @@ public class InputHandler implements InputProcessor {
 			}
 		}
 	}
+	
+	public void sprayWithVillagerCollision(NPC[] npc) {
+		Boolean value = player.getSpray().collision(npc, player.getSprayType());
+		if(value) {
+			player.setCoins(player.getCoins() + 5);
+		}
+	}
 
 	@Override
 	public boolean keyDown(int keycode) {
