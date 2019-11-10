@@ -1,9 +1,9 @@
 package com.mygdx.character;
 
 /**
- * Write a description of class Disease here.
+ * This class is part of an updated and not working version of the game so for this hack it is not implemented.
  *
- * @author (your name)
+ * @author Ali
  * @version (a version number or a date)
  */
 public class Disease extends NPC_OR_VILLAGER

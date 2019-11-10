@@ -115,9 +115,9 @@ public class NPC extends Character {
 	}
 
 	/**
-	 * Gets the succeptibility of the villager.
+	 * Gets the susceptibility of the villager.
 	 *
-	 * @return the succeptibility
+	 * @return the susceptibility
 	 */
 	public float getSucceptibility() {
 		return susceptibility;

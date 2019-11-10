@@ -4,7 +4,7 @@ package com.mygdx.character;
 /**
  * Write a description of class NPC_OR_VILLAGER here.
  *
- * @author (your name)
+ * @author Ali
  * @version (a version number or a date)
  */
 public class NPC_OR_VILLAGER
@@ -32,24 +32,32 @@ public class NPC_OR_VILLAGER
     }
 
     /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
+     * Increases the days an NPC has been infected for. Used for updating.
      */
     public void addInfectedDay()
     {
-        // put your code here
         daysInfected++;
     }
+    /**
+     * Getter for the days an NPC has been infected.
+     * @return Days NPC has been infected
+     */
     public int getDaysInfected()
     {
         return daysInfected;
     }
+    /**
+     * Tells you whether an NPC has been infected or not.
+     * @return Boolean, whether NPC is infected.
+     */
     public boolean isInfected()
     {
         return isInfected;
     }
+    /**
+     * Infects the NPC
+     * @param disease
+     */
     public void addDisease(Disease disease){
         this.disease = disease;
     }

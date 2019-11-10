@@ -13,6 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 
+/**
+ * This class is part of an updated and not working version of the game so for this hack it is not implemented.
+ * @author Ali
+ *
+ */
 public class ShopScreen implements Screen {
 	
 	MainScreen screen;

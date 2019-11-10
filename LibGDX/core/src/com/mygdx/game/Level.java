@@ -9,18 +9,51 @@ import java.util.HashMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.character.NPC;
-
+/**
+ * The class level deals with the level textures and coordinates.
+ *
+ * @author Vanessa
+ * @version 09/11/19
+ */
 public class Level {
 
+	/**
+	 * A test NPC for debugging.
+	 */
 	private NPC testNPC;
+	/**
+	 * The level array used for drawing the level.
+	 */
 	private int[][] level;
+	/**
+	 * An array of every NPC in the level
+	 */
 	private NPC[] NPCs;
+	/**
+	 * The height of the array
+	 */
 	private int height;
+	/**
+	 * The width of the array
+	 */
 	private int width;
+	/**
+	 * The name of the file used for the basic level information
+	 */
 	private String file;
+	/**
+	 * The name of the CSV file used for the level array.
+	 */
 	private String levelFile;
+	/**
+	 * A hashmap of all the textures.
+	 */
 	private HashMap<Integer, Texture> textures;
 
+	/**
+	 * Constructor for the level, it needs the file name
+	 * @param file The name of the file
+	 */
 	public Level(String file) {
 		//sets the file
 		this.file = file;
@@ -39,10 +72,18 @@ public class Level {
 		NPCs[0] = testNPC;
 	}
 
+	/**
+	 * Getter for the height of the level array.
+	 * @return The height of the level array.
+	 */
 	public int getHeight() {
 		return height;
 	}
 
+	/**
+	 * Reads the level file given and sets up the height and width of the level array.
+	 * Also sets the textures for the level.
+	 */
 	private void readLevelInformation() {
 		try {
 			//create reader
@@ -72,26 +113,50 @@ public class Level {
 		}
 	}
 
+	/**
+	 * Getter for the level array.
+	 * @return The level array.
+	 */
 	public int[][] getLevel() {
 		return level;
 	}
 
+	/**
+	 * 
+	 * @param index The NPC you need
+	 * @return The NPC object at a given index.
+	 */
 	public NPC getNPC(int index) {
 		return NPCs[index];
 	}
 
+	/**
+	 * Getter for all NPCs in the level
+	 * @return All the NPCs in the level.
+	 */
 	public NPC[] getAllNPCS() {
 		return NPCs;
 	}
 
+	/**
+	 * Getter for the number of NPCs in level.
+	 * @return Number of NPCs in level.
+	 */
 	public int getNumNPCs() {
 		return NPCs.length;
 	}
 
+	/**
+	 * Getter for required texture.
+	 * @return All the NPCs in the level.
+	 */
 	public Texture getTexture(int key) {
 		return textures.get(key);
 	}
 
+	/**
+	 * Creates the level array
+	 */
 	private void createLevelArray() {
 		try {
 			BufferedReader reader;
