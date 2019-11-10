@@ -2,9 +2,9 @@ package com.mygdx.character;
 
 import java.util.ArrayList;
 /**
- * Write a description of class Shop here.
+ * This class is part of an updated and not working version of the game so for this hack it is not implemented.
  *
- * @author (your name)
+ * @author Ali
  * @version (a version number or a date)
  */
 public class Shop

@@ -2,7 +2,7 @@ package com.mygdx.character;
 
 
 /**
- * Write a description of class NPC_OR_VILLAGER here.
+ * This class is part of an updated and not working version of the game so for this hack it is not implemented.
  *
  * @author Ali
  * @version (a version number or a date)

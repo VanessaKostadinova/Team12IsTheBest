@@ -5,6 +5,13 @@ import java.util.Random;
 
 import com.mygdx.character.NPC;
 
+/**
+ * This class is part of an updated and not working version of the game so for this hack it is not implemented.
+ *
+ * @author Vanessa
+ * @version 09/11/19
+ */
+
 public class Node {
 	
 	private Level level;
