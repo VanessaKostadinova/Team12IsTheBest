@@ -1,16 +1,18 @@
 package com.mygdx.camera;
 
+import java.io.Serializable;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
- * Represents the camera which can be created in any scene.
- * One Screen may only have many cameras.
- * @author Team 12
- *
- */
-public class Camera {
+* Represents the camera which can be created in any scene.
+* One Screen may only have many cameras.
+* @author Team 12
+*
+*/
+public class Camera implements Serializable {
 	
 	/**
 	 * The instance of the camera.
@@ -31,6 +33,15 @@ public class Camera {
 	 * @param height The height of the window.
 	 * @param width The width of the window.
 	 */
+	
+	private float dx = 0;
+	private float dy = 0;
+	
+	private float maxDx = 0;
+	private float maxDy = 0;
+	
+	
+	
 	public Camera(float viewWidth, float height, float width) {
 		camera = new OrthographicCamera(viewWidth,viewWidth*(height/width));
 		/*
@@ -42,6 +53,32 @@ public class Camera {
 		viewport = new FitViewport(viewWidth, viewWidth*(height/width),camera);
 		viewport.apply();
 		camera.update();
+	}
+	
+	public void setMaxValues (float maxDx, float maxDy) {
+		this.maxDx = maxDx;
+		this.maxDy = maxDy;
+	}
+	
+	
+	public void updateCameraPosition(float dx, float dy) {
+		if(this.dx <= this.maxDx && this.dy < this.maxDy) {
+			this.dx += dx;
+			this.dy += dy;
+			camera.translate(dx, dy);
+		}
+		camera.update();
+	}
+	
+	public void zoomOut(float dZoom) {
+		camera.update();
+	}
+	
+	public void zoomIn(float dZoom) {
+		if(camera.zoom+dZoom > 0 && camera.zoom+dZoom < 7) {
+			camera.zoom += dZoom;
+			camera.update();
+		}
 	}
 
 	/**
@@ -65,6 +102,14 @@ public class Camera {
 	 */
 	public void updateCamera() {
 		camera.update();
+	}
+	
+	public float getdx() {
+		return dx;
+	}
+	
+	public float getdy() {
+		return dy;
 	}
 	
 
