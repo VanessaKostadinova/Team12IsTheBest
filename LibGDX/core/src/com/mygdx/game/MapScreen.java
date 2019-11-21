@@ -11,10 +11,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 import com.mygdx.map.Map;
 import com.mygdx.renderable.Node;
 import com.mygdx.shop.Shop;
@@ -48,7 +51,6 @@ public class MapScreen implements Screen {
 	private Sprite inspectHouse;
 	
 	private Sprite baseUI;
-	private Sprite currentDay;
 	private Sprite foodLabel;
 	private Sprite forwardButton;
 	
@@ -74,6 +76,12 @@ public class MapScreen implements Screen {
 	
 	private float darkness;
 	private boolean darken;
+	
+	private int day;
+	private Label dayLabel;
+	private float dayAnimationTime;
+	
+	private boolean initialDone;
 
 	
 	public MapScreen(Main main) {	
@@ -81,13 +89,13 @@ public class MapScreen implements Screen {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
-		cameraMap = new Camera(viewWidth, 1080f, 1920f);
+		cameraMap = new Camera(viewWidth, h, w);
 		cameraMap.getCamera().position.set(
 				cameraMap.getCamera().viewportWidth / 2f , 
 				cameraMap.getCamera().viewportHeight / 2f, 0);
 		cameraMap.setMaxValues(WORLD_WIDTH, WORLD_HEIGHT);
 		
-		cameraUI = new Camera(viewWidth, 1080f, 1920f);
+		cameraUI = new Camera(viewWidth, 1080, 1920);
 		cameraUI.getCamera().position.set(
 				cameraUI.getCamera().viewportWidth / 2f , 
 				cameraUI.getCamera().viewportHeight / 2f, 0);
@@ -101,15 +109,17 @@ public class MapScreen implements Screen {
 		behindBackground.scale(2f);
 		//background.setScale(WORLD_WIDTH/background.getWidth(), WORLD_HEIGHT/background.getHeight());
 		
-		this.darkness = 1f;
+		this.darkness = 0f;
 		this.world = new World(new Vector2(0,0), false);
 		this.rayHandler = new RayHandler(world);
 		this.rayHandler.setAmbientLight(darkness);
 		this.darken = false;
 		this.main = main;
 		this.map = new Map(main.assets);
+		this.initialDone = false;
 		createUIElements();
 		stateTime = 0;
+		dayAnimationTime = 0;
 		
 		Gdx.input.setInputProcessor(main.ui);
 				
@@ -133,7 +143,7 @@ public class MapScreen implements Screen {
 		
 		this.enterHouse = new Sprite(main.assets.manager.get("house/MAP_ENTERHOUSE.png", Texture.class));
 		enterHouse.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
-		enterHouse.setPosition(-75, -80);
+		enterHouse.setPosition(-72.5f, -80);
 		enterHouse.setAlpha(houseAlpha);
 		
 		this.inspectHouse = new Sprite(main.assets.manager.get("house/MAP_INSPECT.png", Texture.class));
@@ -143,17 +153,17 @@ public class MapScreen implements Screen {
 		
 		this.houseText = new Sprite(main.assets.manager.get("house/MAP_HOUSE.png", Texture.class));
 		houseText.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
-		houseText.setPosition(-63, 70);
+		houseText.setPosition(-66f, 72f);
 		houseText.setAlpha(houseAlpha);
 
 		this.enterShop = new Sprite(main.assets.manager.get("shop/ENTER_SHOP.png", Texture.class));
 		enterShop.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
-		enterShop.setPosition(-75, -80);
+		enterShop.setPosition(-72.5f, -80);
 		enterShop.setAlpha(shopAlpha);
 		
 		this.shopText = new Sprite(main.assets.manager.get("shop/SHOP.png", Texture.class));
 		shopText.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
-		shopText.setPosition(-63, 70);
+		shopText.setPosition(-64.5f, 72.5f);
 		shopText.setAlpha(shopAlpha);
 		
 		this.baseUI = new Sprite(main.assets.manager.get("player/MAPUI/BaseUI.png", Texture.class));
@@ -163,10 +173,6 @@ public class MapScreen implements Screen {
 		this.foodLabel = new Sprite(main.assets.manager.get("player/MAPUI/FoodLabel.png", Texture.class));
 		foodLabel.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
 		foodLabel.setPosition(47, 74.5f);
-		
-		this.currentDay = new Sprite(main.assets.manager.get("player/MAPUI/DayLabel.png", Texture.class));
-		currentDay.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
-		currentDay.setPosition(47, 74.5f-8.5f);
 		
 		this.energyBar1 = new Sprite(main.assets.manager.get("player/MAPUI/HealthBar.png", Texture.class));
 		energyBar1.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
@@ -179,6 +185,12 @@ public class MapScreen implements Screen {
 		this.energyBar3 = new Sprite(main.assets.manager.get("player/MAPUI/HealthBar.png", Texture.class));
 		energyBar3.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
 		energyBar3.setPosition(190.3f+4f, 90.3f);
+		
+		dayLabel = new Label("Day " + day, skin);
+		dayLabel.setPosition(main.ui.getWidth()/2, main.ui.getHeight()/2);
+		dayLabel.setVisible(false);
+		
+		main.ui.addActor(dayLabel);
 	}
 	
 	@Override
@@ -195,6 +207,7 @@ public class MapScreen implements Screen {
 		stateTime = stateTime + delta;
 		fadeAnimationHouseUI();
 		fadeAnimationShopUI();
+		initalSceneTransitions(delta);
 		
 		localInputHandler(delta);
 		
@@ -222,7 +235,6 @@ public class MapScreen implements Screen {
 			
 			baseUI.draw(main.batch);
 			foodLabel.draw(main.batch);
-			currentDay.draw(main.batch);
 			
 			energyBar1.draw(main.batch);
 			energyBar2.draw(main.batch);
@@ -286,29 +298,56 @@ public class MapScreen implements Screen {
 		if(Gdx.input.isKeyPressed(Keys.N)) {
 			darken = true;
 		}
-		if(Gdx.input.isKeyPressed(Keys.M)) {
-			darken = false;
-		}
+
 		
 	}
 	
 	public void makeSceneDark() {
-		if (darken) {
-			if(darkness >= 0) {
-				darkness-= (1f/60f);
-			}
-		}
-		else {
-			if(darkness <= 1) {
-				darkness+= (1f/60f);
+		
+		if(initialDone) {
+			if (darken) {
+				if(darkness >= 0) {
+					darkness-= (1f/60f);
+					if(darkness <= 0) {
+						initialDone = false;
+						darken = false;
+						day++;
+						dayLabel.setText("Day " + day);
+						
+					}
+				}
 			}
 		}
 		this.rayHandler.setAmbientLight(darkness);
 	}
+	
+	
+	public void initalSceneTransitions(float delta) {
+		if(!initialDone) {
+			dayLabel.setVisible(true);
+			Boolean fade = false;
+			dayAnimationTime = dayAnimationTime + delta;
+			System.out.println(delta);
+			
+			if(dayAnimationTime > 2) {
+				if(darkness < 1) {
+					dayLabel.setVisible(false);
+					darkness+= (1f/60f);
+					this.rayHandler.setAmbientLight(darkness);
+					System.out.println(darkness);
+				}
+				if(darkness >= 1 && !initialDone) {
+					initialDone = true;
+					dayAnimationTime = 0;
+				}
+			}
+			
+		}
+	}
 
 	@Override
 	public void resize(int width, int height) {	
-		main.ui.getViewport().update(width, height);
+		
 		cameraMap.getViewport().update(width, height);
 		cameraMap.getCamera().viewportHeight = viewWidth*((float)height/(float) width);
 		cameraMap.getViewport().apply();
@@ -318,6 +357,9 @@ public class MapScreen implements Screen {
 		cameraUI.getCamera().viewportHeight = viewWidth*((float)height/(float) width);
 		cameraUI.getViewport().apply();
 		cameraUI.updateCamera();
+		
+		main.ui.getViewport().update(width, height);
+
 	}
 	
 
