@@ -4,14 +4,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -186,8 +192,8 @@ public class MapScreen implements Screen {
 		energyBar3.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
 		energyBar3.setPosition(190.3f+4f, 90.3f);
 		
-		dayLabel = new Label("Day " + day, skin);
-		dayLabel.setPosition(main.ui.getWidth()/2, main.ui.getHeight()/2);
+		dayLabel = new Label("DAY " + day , createLabelStyleWithBackground());
+		dayLabel.setPosition(main.ui.getWidth()/2-dayLabel.getWidth()/2, main.ui.getHeight()/2-dayLabel.getHeight()/2);
 		dayLabel.setVisible(false);
 		
 		main.ui.addActor(dayLabel);
@@ -504,8 +510,9 @@ public class MapScreen implements Screen {
         float windowWidth = 200*scaleItem, windowHeight = 200*scaleItem;
         pause = new Window("", skin);
         pause.setMovable(false); //So the user can't move the window
-        final TextButton button1 = new TextButton("Resume", skin);
-        button1.getLabel().setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
+        //final TextButton button1 = new TextButton("Resume", skin);
+        final Label button1 = new Label("RESUME", createLabelStyleWithBackground());
+        button1.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
         button1.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -513,8 +520,8 @@ public class MapScreen implements Screen {
                 pause.setVisible(false);
             }
         });
-        TextButton button2 = new TextButton("Exit", skin);
-        button2.getLabel().setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
+        Label button2 = new Label("EXIT", createLabelStyleWithBackground());
+        button2.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
         button2.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -537,6 +544,18 @@ public class MapScreen implements Screen {
         pause.setSize(pause.getWidth()*scaleItem, pause.getHeight()*scaleItem);
         //Adds it to the UI Screen.
         main.ui.addActor(pause);
+    }
+    
+    private LabelStyle createLabelStyleWithBackground() {
+    	///core/assets/font/Pixel.ttf
+    	FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
+    	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
+    	FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+    	parameter.size = 24;
+        LabelStyle labelStyle = new LabelStyle();
+        labelStyle.font = generator.generateFont(parameter);
+        labelStyle.fontColor = Color.WHITE;
+        return labelStyle;
     }
     
 	/**

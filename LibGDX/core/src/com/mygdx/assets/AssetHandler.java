@@ -3,6 +3,8 @@ package com.mygdx.assets;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 
 public class AssetHandler {
     public AssetManager manager = new AssetManager();
@@ -38,6 +40,14 @@ public class AssetHandler {
     public static final AssetDescriptor<Texture> shopLeaverHoverUI = new AssetDescriptor<Texture>("shop/screen/LEAVEMOUSE.png", Texture.class);
     public static final AssetDescriptor<Texture> shopTextUI = new AssetDescriptor<Texture>("shop/screen/SHOP.png", Texture.class);
     
+   // FreetypeFontLoader.FreeTypeFontLoaderParameter params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+
+    //params.fontFileName = "fonts/coastershadow.ttf";
+    //params.fontParameters.size = 30;
+    
+   // public static final AssetDescriptor<BitmapFont> textureFont = new AssetDescriptor<BitmapFont>("font/Pixel.tff", BitmapFont.class, params);
+
+    
     //"skin/terra-mother-ui.json"
 
     
@@ -70,7 +80,7 @@ public class AssetHandler {
     	manager.load(shopLeaveUI);
     	manager.load(shopLeaverHoverUI);
     	manager.load(shopTextUI);
-
+    	//manager.load(textureFont);
 
 
 
