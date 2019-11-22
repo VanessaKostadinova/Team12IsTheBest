@@ -333,14 +333,12 @@ public class MapScreen implements Screen {
 			dayLabel.setVisible(true);
 			Boolean fade = false;
 			dayAnimationTime = dayAnimationTime + delta;
-			System.out.println(delta);
 			
 			if(dayAnimationTime > 2) {
 				if(darkness < 1) {
 					dayLabel.setVisible(false);
 					darkness+= (1f/60f);
 					this.rayHandler.setAmbientLight(darkness);
-					System.out.println(darkness);
 				}
 				if(darkness >= 1 && !initialDone) {
 					initialDone = true;
