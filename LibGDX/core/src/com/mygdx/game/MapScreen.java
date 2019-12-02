@@ -218,12 +218,7 @@ public class MapScreen implements Screen {
 			background.draw(main.batch);
 			for(Node node: this.map.getNodes()) {
 				if(node != null) {
-
 					node.draw(main.batch);
-					for(NodeConnection line : node.getConnections()) {
-						System.out.println("HIT A BUNCH OF NODES");
-						line.getSprite().draw(main.batch);
-					}
 				}
 			}
 			map.getShop().draw(main.batch);

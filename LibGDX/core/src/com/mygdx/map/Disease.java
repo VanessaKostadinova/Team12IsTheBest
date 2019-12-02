@@ -6,7 +6,6 @@ import java.util.Random;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.mygdx.renderable.Node;
-import com.mygdx.renderable.NodeConnection;
 
 public class Disease {
 	

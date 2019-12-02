@@ -34,7 +34,6 @@ public class Node extends Renderable {
 		isDiseased = false;
 		residents = new ArrayList<>();
 		notes = new HashMap<>();
-		nodeLines = new ArrayList<>();
 		printAllArray(attributes);
 		this.house = new House(attributes);
 		
