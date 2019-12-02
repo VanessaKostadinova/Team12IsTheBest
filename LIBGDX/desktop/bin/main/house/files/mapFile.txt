@@ -1,3 +1,0 @@
-house1.txt
-house2.txt
-house3.txt
