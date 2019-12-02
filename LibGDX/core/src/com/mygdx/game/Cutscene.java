@@ -124,7 +124,6 @@ public class Cutscene implements Screen {
 	
 	public void changeScreen() {
 		if(totalTime.isEmpty()) {
-			System.out.println("HIT IT");
 			main.ui.clear();
 			main.setScreen(new MapScreen(main));
 		}

@@ -98,7 +98,6 @@ public class HouseInputHandler implements InputProcessor {
 		float playerY = player.getSprite().getY();
 		
 		
-		System.out.println(player.getSprite().getRotation());
 		
 		if(lastInput.length() > 2) {
 			lastInput = "";

@@ -26,8 +26,10 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
+import com.mygdx.map.Disease;
 import com.mygdx.map.Map;
 import com.mygdx.renderable.Node;
+import com.mygdx.renderable.NodeConnection;
 import com.mygdx.renderable.Player;
 import com.mygdx.shop.Shop;
 
@@ -63,8 +65,6 @@ public class MapScreen implements Screen {
 	private Sprite foodLabel;
 	private Sprite forwardButton;
 	
-
-	
 	private float movement =(12000f/60f);
 	private float houseAlpha = 0;
 	private float shopAlpha = 0;
@@ -93,6 +93,9 @@ public class MapScreen implements Screen {
 	private int getIndex;
 	private Label energy;
 	private Player p;
+	private Disease disease;
+	
+	private Node nodeHit;
 	
 	
 	public MapScreen(Main main) {	
@@ -128,6 +131,7 @@ public class MapScreen implements Screen {
 		this.darken = false;
 		this.main = main;
 		this.map = new Map(main.assets);
+		this.disease = map.getDisease();
 		this.initialDone = false;
 		this.getIndex = -1;
 		createUIElements();
@@ -206,14 +210,20 @@ public class MapScreen implements Screen {
 		initalSceneTransitions(delta);
 		
 		localInputHandler(delta);
-		
+	    main.shape.setProjectionMatrix(cameraMap.getCamera().combined);
+
 	    main.batch.setProjectionMatrix(cameraMap.getCamera().combined);
 		main.batch.begin();
 			behindBackground.draw(main.batch);
 			background.draw(main.batch);
 			for(Node node: this.map.getNodes()) {
 				if(node != null) {
+
 					node.draw(main.batch);
+					for(NodeConnection line : node.getConnections()) {
+						System.out.println("HIT A BUNCH OF NODES");
+						line.getSprite().draw(main.batch);
+					}
 				}
 			}
 			map.getShop().draw(main.batch);
@@ -233,6 +243,9 @@ public class MapScreen implements Screen {
 			foodLabel.draw(main.batch);
 			
 		main.batch.end();
+		
+
+		
 		
 		makeSceneDark();
 		rayHandler.render();
@@ -469,12 +482,14 @@ public class MapScreen implements Screen {
 				if(node.pointIsWithinSprite(x, y)) {
 					getIndex = value;
 					enterHouse(node);
+					disease.draw(map.getNodes(), node, main.shape);
 					break;
 				}
 				else {
 					if(houseHit) {
 						houseHit = false;
 					}
+					//disease.clear();
 				}
 				value++;
 			}
@@ -598,7 +613,6 @@ public class MapScreen implements Screen {
 	public Player readPlayer() {
 		FileHandle handle = Gdx.files.local("data/player.txt");
 		String[] values= handle.readString().split(",");
-		System.out.println(values.toString());
 		Player p = new Player(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6]), Float.parseFloat(values[7]));
 		return p;
 	}

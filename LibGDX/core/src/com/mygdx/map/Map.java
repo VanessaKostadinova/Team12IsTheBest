@@ -23,6 +23,10 @@ public class Map implements Serializable{
 	public Map(AssetHandler assets) {
 		nodes = new ArrayList<Node>();
 		readMapFile(assets);
+		this.disease = new Disease();
+		for(Node n : nodes) {
+			System.out.println(n.getCentreCoords());
+		}
 		shop = new Shop(assets.manager.get("house/Shop.gif", Texture.class), 200.0f, 200.0f);
 		checkIfPlayerExist();
 		resetPlayerFile();
@@ -74,6 +78,10 @@ public class Map implements Serializable{
 	
 	public void updatePlayerEnergyValue() {
 		
+	}
+
+	public Disease getDisease() {
+		return disease;
 	}
 	
 	

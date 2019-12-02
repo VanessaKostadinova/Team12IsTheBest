@@ -28,13 +28,17 @@ public class Node extends Renderable {
 	private Map<Vector2, String> notes; 
 	private Boolean isDiseased;
 	
+	private List<NodeConnection> nodeLines;
+	
 	public Node(Texture textureOfHouse, float x, float y, String[] attributes) {
 		super.setSprite(textureOfHouse, x, y);
 		isDiseased = false;
 		residents = new ArrayList<>();
 		notes = new HashMap<>();
+		nodeLines = new ArrayList<>();
 		printAllArray(attributes);
 		this.house = new House(attributes);
+		
 	}
 	
 	
@@ -108,7 +112,6 @@ public class Node extends Renderable {
 		for(NPC npc : residents) {
 			s = s + npc.getHealth()+","+npc.getSprite().getX()+","+npc.getSprite().getY() + "\n";
 		}
-		System.out.println(s);
 		handle.writeString(s, false);
 	}
 	
@@ -122,7 +125,6 @@ public class Node extends Renderable {
 			n.updateSprite(Float.valueOf(values[1]), Float.valueOf(values[2]));
         	residents.add(n);
         }
-        System.out.println("RESSETED");
 	}
 
 
@@ -134,6 +136,14 @@ public class Node extends Renderable {
 			residents.get(rand.nextInt(residents.size())).infect();
 		}
 		
+	}
+	
+	public void addConnections(NodeConnection connection) {
+		nodeLines.add(connection);
+	}
+	
+	public List<NodeConnection> getConnections() {
+		return nodeLines;
 	}
 
 }

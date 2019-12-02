@@ -1,4 +1,4 @@
-package com.mygdx.camera;
+ package com.mygdx.camera;
 
 import java.io.Serializable;
 

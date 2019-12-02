@@ -37,8 +37,6 @@ public class MyContactListener implements ContactListener {
 			AHit = true;
 		}
 		
-		System.out.println("WHit = " + WHit);
-		System.out.println("DHit = " + DHit);
 
 
 	}
@@ -66,8 +64,6 @@ public class MyContactListener implements ContactListener {
 			AHit = false;
 		}
 		
-		System.out.println("WHit = " + WHit);
-		System.out.println("DHit = " + DHit);
 		
 	}
 

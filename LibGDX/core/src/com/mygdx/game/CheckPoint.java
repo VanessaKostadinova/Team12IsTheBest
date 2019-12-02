@@ -65,7 +65,6 @@ public class CheckPoint implements Screen {
     }
 	
 	public void changeScreen() {
-		System.out.println("HIT IT");
 		main.ui.clear();
 		main.setScreen(new HouseScreen(main, initialNode, mapScreen));
 	}

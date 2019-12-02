@@ -6,6 +6,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.assets.AssetHandler;
 import com.mygdx.assets.LoadingScreen;
@@ -15,6 +16,8 @@ public class Main extends Game implements Serializable {
 	
     /** The sprite batch. */
     public SpriteBatch batch;
+    
+    public ShapeRenderer shape;
     
     /** The stage for the ui. */
     public Stage ui;
@@ -27,7 +30,7 @@ public class Main extends Game implements Serializable {
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		
+		shape = new ShapeRenderer();
 		camera = new Camera(2160f, 1080f, 1920f);
 		camera.getCamera().position.set(
 				camera.getCamera().viewportWidth / 2f , 
