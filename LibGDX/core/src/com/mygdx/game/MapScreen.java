@@ -29,7 +29,6 @@ import com.badlogic.gdx.utils.Timer.Task;
 import com.mygdx.map.Disease;
 import com.mygdx.map.Map;
 import com.mygdx.renderable.Node;
-import com.mygdx.renderable.NodeConnection;
 import com.mygdx.renderable.Player;
 import com.mygdx.shop.Shop;
 
@@ -211,6 +210,7 @@ public class MapScreen implements Screen {
 		
 		localInputHandler(delta);
 	    main.shape.setProjectionMatrix(cameraMap.getCamera().combined);
+		checkIfClicked(pointer.getX(), pointer.getY());
 
 	    main.batch.setProjectionMatrix(cameraMap.getCamera().combined);
 		main.batch.begin();
@@ -222,7 +222,10 @@ public class MapScreen implements Screen {
 				}
 			}
 			map.getShop().draw(main.batch);
-			
+	   main.batch.end();
+		checkIfClicked(pointer.getX(), pointer.getY());
+
+	   main.batch.begin();
 			pointer.draw(main.batch);
 			
 		    main.batch.setProjectionMatrix(cameraUI.getCamera().combined);
@@ -240,14 +243,13 @@ public class MapScreen implements Screen {
 		main.batch.end();
 		
 
-		
+
 		
 		makeSceneDark();
 		rayHandler.render();
-		checkIfClicked(pointer.getX(), pointer.getY());
 		
 		main.ui.draw();
-		
+
 		
 	}
 	
