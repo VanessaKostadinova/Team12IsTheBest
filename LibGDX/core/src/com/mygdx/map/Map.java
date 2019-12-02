@@ -34,7 +34,7 @@ public class Map implements Serializable{
 	
 	public void resetPlayerFile() {
 		FileHandle handle = Gdx.files.local("data/player.txt");
-		handle.writeString(1000f+","+5.0f+","+0f+","+10f+","+0.10f+","+-0.40f+","+2f+","+1f, false);
+		handle.writeString(1000f+","+5.0f+","+0f+","+10f+","+0.10f+","+-0.40f+","+2f+","+100f, false);
 	}
 	
 	public List<Node> getNodes() {

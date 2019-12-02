@@ -59,6 +59,7 @@ public class MapScreen implements Screen {
 	private Sprite houseText;
 	private Sprite enterHouse;
 	private Sprite inspectHouse;
+	private Sprite inspectDialog;
 	
 	private Sprite baseUI;
 	private Sprite foodLabel;
@@ -166,6 +167,13 @@ public class MapScreen implements Screen {
 		inspectHouse.setPosition(-240, -80);
 		inspectHouse.setAlpha(houseAlpha);
 		
+		this.inspectDialog = new Sprite(new Texture(Gdx.files.internal("player/MAPUI/dialog.png")));
+		inspectDialog.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
+		inspectDialog.setScale(0.125f);
+		inspectDialog.setScale(0.128f, 0.132f);
+		inspectDialog.setPosition(-252, -290);
+		inspectDialog.setAlpha(houseAlpha);
+		
 		this.houseText = new Sprite(main.assets.manager.get("house/MAP_HOUSE.png", Texture.class));
 		houseText.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
 		houseText.setPosition(-66f, 72f);
@@ -216,22 +224,23 @@ public class MapScreen implements Screen {
 		main.batch.begin();
 			behindBackground.draw(main.batch);
 			background.draw(main.batch);
+			map.getShop().draw(main.batch);
+	   main.batch.end();
+	   checkIfClicked(pointer.getX(), pointer.getY());
+
+	   main.batch.begin();
 			for(Node node: this.map.getNodes()) {
 				if(node != null) {
 					node.draw(main.batch);
 				}
 			}
-			map.getShop().draw(main.batch);
-	   main.batch.end();
-		checkIfClicked(pointer.getX(), pointer.getY());
-
-	   main.batch.begin();
 			pointer.draw(main.batch);
 			
 		    main.batch.setProjectionMatrix(cameraUI.getCamera().combined);
 
 			enterHouse.draw(main.batch);
 			inspectHouse.draw(main.batch);
+			inspectDialog.draw(main.batch);
 			houseText.draw(main.batch);
 			
 			shopText.draw(main.batch);
@@ -316,7 +325,7 @@ public class MapScreen implements Screen {
 					if(darkness <= 0) {
 						Player p = readPlayer();
 						p.resetEnergy();
-						energy.setText(p.getEnergy()*100f+"");
+						energy.setText(p.getEnergy()+"");
 						p.writeToPlayerFile();
 						initialDone = false;
 						darken = false;
@@ -385,11 +394,13 @@ public class MapScreen implements Screen {
 				houseAlpha += (1f/10f);
 				enterHouse.setAlpha(houseAlpha);
 				inspectHouse.setAlpha(houseAlpha);
+				inspectDialog.setAlpha(houseAlpha);
 				houseText.setAlpha(houseAlpha);
 			}
 			else {
 				enterHouse.setAlpha(1);
 				inspectHouse.setAlpha(1);
+				inspectDialog.setAlpha(1);
 				houseText.setAlpha(1);
 			}
 		}
@@ -398,11 +409,13 @@ public class MapScreen implements Screen {
 				houseAlpha -= (1f/10f);
 				enterHouse.setAlpha(houseAlpha);
 				inspectHouse.setAlpha(houseAlpha);
+				inspectDialog.setAlpha(houseAlpha);
 				houseText.setAlpha(houseAlpha);
 			}
 			else {
 				enterHouse.setAlpha(0);
 				inspectHouse.setAlpha(0);
+				inspectDialog.setAlpha(0);
 				houseText.setAlpha(0);
 			}
 		}
@@ -457,7 +470,7 @@ public class MapScreen implements Screen {
 			main.ui.clear();
 			enterBuilding = false;
 			node.serializeVillagers();
-			p.deltaEnergy(0.3f);
+			p.deltaEnergy(30);
 			p.writeToPlayerFile();
 			main.setScreen(new HouseScreen(main, node, this));
 		}	
@@ -569,7 +582,7 @@ public class MapScreen implements Screen {
 		main.ui.addActor(dayLabel);
 
 		
-		energy = new Label(readPlayer().getEnergy()*100f+"", createLabelStyleWithBackground());
+		energy = new Label(readPlayer().getEnergy()+"", createLabelStyleWithBackground());
 		energy.setWidth(450f);
 		energy.setFontScale(2.5f);
 		energy.setAlignment(Align.center);

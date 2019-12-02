@@ -38,7 +38,7 @@ public class Player extends Renderable implements Living {
 	
 	private float amountOfFood;
 	
-	private float energy;
+	private int energy;
 	
 	private Body body;
 	private Body sprayBody;
@@ -62,7 +62,7 @@ public class Player extends Renderable implements Living {
 		
 		
 		this.mask = mask;
-		this.energy = energy;
+		this.energy = (int) energy;
 	}
 	
 	public void switchSpray() {
@@ -285,12 +285,12 @@ public class Player extends Renderable implements Living {
 		return sprayBody;
 	}
 	
-	public void deltaEnergy(float removeEnergy) {
+	public void deltaEnergy(int removeEnergy) {
 		this.energy = this.energy - removeEnergy;
 	}
 	
 	public void resetEnergy() {
-		this.energy = 1f;
+		this.energy = 100;
 	}
 
 
