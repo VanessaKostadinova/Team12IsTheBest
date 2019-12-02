@@ -1,8 +1,0 @@
-300
-300
-700,400,50
-500,250,20
-level2.csv
-Wooden_Floor.gif
-Floor_Stone.gif
-Door.gif
