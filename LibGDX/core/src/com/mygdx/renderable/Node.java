@@ -28,7 +28,6 @@ public class Node extends Renderable {
 	private Map<Vector2, String> notes; 
 	private Boolean isDiseased;
 	
-	private List<NodeConnection> nodeLines;
 	
 	public Node(Texture textureOfHouse, float x, float y, String[] attributes) {
 		super.setSprite(textureOfHouse, x, y);
@@ -138,12 +137,5 @@ public class Node extends Renderable {
 		
 	}
 	
-	public void addConnections(NodeConnection connection) {
-		nodeLines.add(connection);
-	}
-	
-	public List<NodeConnection> getConnections() {
-		return nodeLines;
-	}
 
 }
