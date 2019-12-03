@@ -1,0 +1,8 @@
+500	
+900
+700,400,90
+500,250,100
+level1.csv
+Wooden_Floor.gif
+Floor_Stone.gif
+Door.gif
