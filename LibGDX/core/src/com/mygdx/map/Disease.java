@@ -22,16 +22,16 @@ public class Disease {
 				float distance = spreader.getCentreCoords().dst(reciever.getCentreCoords());
 				if(distance < spreadRadius) {
 					if(spreader.isDiseased() && reciever.isDiseased()) {
-						shapeRenderer.setColor(0, 1, 0, 0.1f); // Red line
+						shapeRenderer.setColor(0, 1, 0, 0.1f); // GREEN line
 					}
 					if(spreader.isDiseased() && !reciever.isDiseased()) {
-						shapeRenderer.setColor(0, 0, 1, 0.1f); // Red line
+						shapeRenderer.setColor(0, 0, 1, 0.1f); // BLUE line
 					}
 					if(!spreader.isDiseased() && reciever.isDiseased()) {
-						shapeRenderer.setColor(1, 0, 0, 0.1f); 
+						shapeRenderer.setColor(1, 0, 0, 0.1f); // RED LINE
 					}
 					if(!spreader.isDiseased() && !reciever.isDiseased()) {
-						shapeRenderer.setColor(1, 1, 1, 0.1f);
+						shapeRenderer.setColor(1, 1, 1, 0.1f); // WHITE LINE
 					}
 					shapeRenderer.rectLine(spreader.getCentreCoords(),reciever.getCentreCoords(),8);				
 				}
@@ -39,12 +39,8 @@ public class Disease {
 		}
 		shapeRenderer.end();
 	}
-
-
 	
-	
-	
-	public void update(List<Node> disease) {
+	public void diseaseSpread(List<Node> disease) {
 		for(Node spreader : disease) {
 			if(spreader.isDiseased()) {
 				for(Node reciever : disease) {
@@ -52,9 +48,12 @@ public class Disease {
 						if(!(spreader.equals(reciever))) {
 							float distance = spreader.getCentreCoords().dst(reciever.getCentreCoords());
 							if(distance < spreadRadius && diseaseImpacted()) {
-								reciever.setDiseased(true);
+								reciever.infectRandom(probabilty);
 							}
 						}
+					}
+					else {
+						reciever.infectRandom(probabilty);
 					}
 				}
 			}
@@ -74,13 +73,5 @@ public class Disease {
 		return spreadRadius;
 	}
 
-
-
-
-
-	public void clear(ShapeRenderer shapeRenderer) {
-		//shapeRenderer.
-	}
-	
 	
 }

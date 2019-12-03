@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -96,6 +97,14 @@ public class MapScreen implements Screen {
 	private Disease disease;
 	
 	private Node nodeHit;
+	private Label numberOfCharacter;
+	private Label numberOfcharacterTitle;
+	private Label numberOfcharacterSickTitle;
+	private Label numberOfCharacterSick;
+	private Label numberOfcharacterDiseasedTitle;
+	private Label numberOfCharacterDiseased;
+	
+	private Node hoverNode;
 	
 	
 	public MapScreen(Main main) {	
@@ -103,6 +112,7 @@ public class MapScreen implements Screen {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
+		isPaused = false;
 		cameraMap = new Camera(viewWidth, 1080, 1920);
 		cameraMap.getCamera().position.set(
 				cameraMap.getCamera().viewportWidth / 2f , 
@@ -232,6 +242,8 @@ public class MapScreen implements Screen {
 			for(Node node: this.map.getNodes()) {
 				if(node != null) {
 					node.draw(main.batch);
+					node.updateHouseDiseased();
+					System.out.println("is diseased: "+node.isDiseased());
 				}
 			}
 			pointer.draw(main.batch);
@@ -264,40 +276,40 @@ public class MapScreen implements Screen {
 	
 	
 	public void localInputHandler(float delta) {
-		if(Gdx.input.isKeyPressed(Keys.W)) {
+		if(Gdx.input.isKeyPressed(Keys.W) && !isPaused) {
 			if(pointer.getY()+pointer.getHeight()+movement*delta < background.getHeight()) {
 				cameraMap.updateCameraPosition(0 , movement*delta);
 				pointer.setPosition(pointer.getX(), pointer.getY() + movement*delta);
 			}
 		}
-		if(Gdx.input.isKeyPressed(Keys.S)) {
+		if(Gdx.input.isKeyPressed(Keys.S) && !isPaused) {
 			if(pointer.getY()-movement*delta > 0) {
 				cameraMap.updateCameraPosition(0 , -movement*delta);
 				pointer.setPosition(pointer.getX(), pointer.getY() - movement*delta);
 			}
 		}
-		if(Gdx.input.isKeyPressed(Keys.D)) {
+		if(Gdx.input.isKeyPressed(Keys.D) && !isPaused) {
 			if(pointer.getX()+pointer.getWidth()+movement*delta < background.getWidth()) {
 				cameraMap.updateCameraPosition(movement*delta, 0);
 				pointer.setPosition(pointer.getX()+ movement*delta, pointer.getY());
 			}
 		}
-		if(Gdx.input.isKeyPressed(Keys.A)) {
+		if(Gdx.input.isKeyPressed(Keys.A) && !isPaused) {
 			if(pointer.getX()-movement*delta > 0) {
 				cameraMap.updateCameraPosition(-movement*delta , 0);
 				pointer.setPosition(pointer.getX()- movement*delta, pointer.getY());
 			}
 		}
 		
-		if(Gdx.input.isKeyJustPressed(Keys.Z)) {
+		if(Gdx.input.isKeyJustPressed(Keys.Z) && !isPaused) {
 			cameraMap.zoomIn(1);
 		}
 		
-		if(Gdx.input.isKeyJustPressed(Keys.C)) {
+		if(Gdx.input.isKeyJustPressed(Keys.C) && !isPaused) {
 			cameraMap.zoomIn(-1);
 		}
 		
-		if(Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+		if(Gdx.input.isKeyJustPressed(Keys.ENTER) && !isPaused) {
 			enterBuilding = true;
 		} else {
 			enterBuilding = false;
@@ -308,10 +320,18 @@ public class MapScreen implements Screen {
 			pause.setVisible(isPaused);
 		}
 		
-		if(Gdx.input.isKeyPressed(Keys.N)) {
+		if(Gdx.input.isKeyPressed(Keys.N) && !isPaused) {
 			darken = true;
 		}
 
+		if(Gdx.input.isKeyJustPressed(Keys.E) && !isPaused) {
+			p = readPlayer();
+			if(p.getEnergy() >=  5 && !hoverNode.reachedMaxLevel()) {
+				hoverNode.upgradeLevelKnown();
+				p.deltaEnergy(5);
+				p.writeToPlayerFile();
+			}
+		}
 		
 	}
 	
@@ -320,12 +340,19 @@ public class MapScreen implements Screen {
 		if(initialDone) {
 			if (darken) {
 				energy.setVisible(false);
+				numberOfCharacter.setVisible(false);
+				numberOfcharacterTitle.setVisible(false);
+				numberOfcharacterSickTitle.setVisible(false);
+				numberOfCharacterSick.setVisible(false);
+				numberOfcharacterDiseasedTitle.setVisible(false);
+				numberOfCharacterDiseased.setVisible(false);
 				if(darkness >= 0) {
 					darkness-= (1f/60f);
 					if(darkness <= 0) {
 						Player p = readPlayer();
 						p.resetEnergy();
 						energy.setText(p.getEnergy()+"");
+						disease.diseaseSpread(map.getNodes());
 						p.writeToPlayerFile();
 						initialDone = false;
 						darken = false;
@@ -334,18 +361,63 @@ public class MapScreen implements Screen {
 
 					}
 				}
+				else {
+					numberOfCharacter.setVisible(false);
+					numberOfcharacterTitle.setVisible(false);
+					numberOfcharacterSickTitle.setVisible(false);
+					numberOfCharacterSick.setVisible(false);
+					numberOfcharacterDiseasedTitle.setVisible(false);
+					numberOfCharacterDiseased.setVisible(false);
+				}
 			}
 			else {
-				energy.setVisible(true);
+				energy.setVisible(true);				
 			}
 		}
 		this.rayHandler.setAmbientLight(darkness);
 	}
 	
 	
+	
+	public void updateText(Node n, Player p) {
+		energy.setText(p.getEnergy()+"");
+		if(n.getLevel1()) {
+			numberOfCharacter.setText(n.getNumberOfResidents());
+		} else {
+			numberOfCharacter.setText("NOT KNOWN");
+		}
+		
+		if(n.getLevel2()) {
+			numberOfCharacterSick.setText(n.getNumberOfSick());
+		} else {
+			numberOfCharacterSick.setText("NOT KNOWN");
+		}
+		
+		if(n.getLevel3()) {
+			numberOfCharacterDiseased.setText(n.getNumberOfInfected());
+		} else {
+			numberOfCharacterDiseased.setText("NOT KNOWN");
+		}
+
+	}
+	
+	public void resetLabels() {
+		numberOfCharacter.setText("NOT KNOWN");
+		numberOfCharacter.setText("NOT KNOWN");
+		numberOfCharacter.setText("NOT KNOWN");
+	}
+	
 	public void initalSceneTransitions(float delta) {
 		if(!initialDone) {
 			dayLabel.setVisible(true);
+			
+			numberOfCharacter.setVisible(false);
+			numberOfcharacterTitle.setVisible(false);
+			numberOfcharacterSickTitle.setVisible(false);
+			numberOfCharacterSick.setVisible(false);
+			numberOfcharacterDiseasedTitle.setVisible(false);
+			numberOfCharacterDiseased.setVisible(false);
+			
 			Boolean fade = false;
 			dayAnimationTime = dayAnimationTime + delta;
 			
@@ -354,10 +426,22 @@ public class MapScreen implements Screen {
 					dayLabel.setVisible(false);
 					darkness+= (1f/60f);
 					this.rayHandler.setAmbientLight(darkness);
+					numberOfCharacter.setVisible(false);
+					numberOfcharacterTitle.setVisible(false);
+					numberOfcharacterSickTitle.setVisible(false);
+					numberOfCharacterSick.setVisible(false);
+					numberOfcharacterDiseasedTitle.setVisible(false);
+					numberOfCharacterDiseased.setVisible(false);
 				}
 				if(darkness >= 1 && !initialDone) {
 					initialDone = true;
 					dayAnimationTime = 0;
+					numberOfCharacter.setVisible(false);
+					numberOfcharacterTitle.setVisible(false);
+					numberOfcharacterSickTitle.setVisible(false);
+					numberOfCharacterSick.setVisible(false);
+					numberOfcharacterDiseasedTitle.setVisible(false);
+					numberOfCharacterDiseased.setVisible(false);
 				}
 			}
 			
@@ -402,9 +486,20 @@ public class MapScreen implements Screen {
 				inspectHouse.setAlpha(1);
 				inspectDialog.setAlpha(1);
 				houseText.setAlpha(1);
+				
+				
+				numberOfCharacter.setVisible(true);
+				numberOfcharacterTitle.setVisible(true);
+				numberOfcharacterSickTitle.setVisible(true);
+				numberOfCharacterSick.setVisible(true);
+				numberOfcharacterDiseasedTitle.setVisible(true);
+				numberOfCharacterDiseased.setVisible(true);
 			}
 		}
 		else { 
+			
+
+			
 			if(houseAlpha > 0.1) { 
 				houseAlpha -= (1f/10f);
 				enterHouse.setAlpha(houseAlpha);
@@ -417,6 +512,13 @@ public class MapScreen implements Screen {
 				inspectHouse.setAlpha(0);
 				inspectDialog.setAlpha(0);
 				houseText.setAlpha(0);
+				
+				numberOfCharacter.setVisible(false);
+				numberOfcharacterTitle.setVisible(false);
+				numberOfcharacterSickTitle.setVisible(false);
+				numberOfCharacterSick.setVisible(false);
+				numberOfcharacterDiseasedTitle.setVisible(false);
+				numberOfCharacterDiseased.setVisible(false);
 			}
 		}
 	}
@@ -463,10 +565,12 @@ public class MapScreen implements Screen {
 	}
 	
 	public void enterHouse(Node node) {
-		
 		houseHit = true;
 		Player p = readPlayer();
-		if(enterBuilding && p.getEnergy() >= 0.3) {
+		updateText(node, p);
+		hoverNode = node;
+		
+		if(enterBuilding && p.getEnergy() >= 30) {
 			main.ui.clear();
 			enterBuilding = false;
 			node.serializeVillagers();
@@ -498,6 +602,7 @@ public class MapScreen implements Screen {
 				else {
 					if(houseHit) {
 						houseHit = false;
+						node = null;
 					}
 					//disease.clear();
 				}
@@ -590,6 +695,47 @@ public class MapScreen implements Screen {
 		energy.setVisible(false);
 		//energy.setVisible(false);
 		main.ui.addActor(energy);
+		
+		numberOfcharacterTitle = new Label("NUMBER OF CHARACTERS: ", createLabelStyleWithBackground());
+		numberOfcharacterTitle.setWidth(500f);
+		numberOfcharacterTitle.setFontScale(1.3f);
+		numberOfcharacterTitle.setPosition(90, main.ui.getHeight() - 150);
+		numberOfcharacterTitle.setVisible(false);
+		main.ui.addActor(numberOfcharacterTitle);
+		
+		numberOfCharacter = new Label("NOT KNOWN", createLabelStyleWithBackground());
+		numberOfCharacter.setWidth(500f);
+		numberOfCharacter.setPosition(90, main.ui.getHeight() - 150 -numberOfcharacterTitle.getHeight());
+		numberOfCharacter.setVisible(false);
+		main.ui.addActor(numberOfCharacter);
+		
+		
+		numberOfcharacterSickTitle = new Label("NUMBER OF SICK: ", createLabelStyleWithBackground());
+		numberOfcharacterSickTitle.setWidth(500f);
+		numberOfcharacterSickTitle.setFontScale(1.3f);
+		numberOfcharacterSickTitle.setPosition(90, main.ui.getHeight() - 150 -numberOfCharacter.getHeight()-numberOfcharacterTitle.getHeight());
+		numberOfcharacterSickTitle.setVisible(false);
+		main.ui.addActor(numberOfcharacterSickTitle);
+		
+		numberOfCharacterSick = new Label("NOT KNOWN", createLabelStyleWithBackground());
+		numberOfCharacterSick.setWidth(500f);
+		numberOfCharacterSick.setPosition(90, main.ui.getHeight() - 150 -numberOfcharacterSickTitle.getHeight()-numberOfCharacter.getHeight()-numberOfcharacterTitle.getHeight());
+		numberOfCharacterSick.setVisible(false);
+		main.ui.addActor(numberOfCharacterSick);
+		
+		numberOfcharacterDiseasedTitle = new Label("NUMBER OF DISEASED: ", createLabelStyleWithBackground());
+		numberOfcharacterDiseasedTitle.setWidth(500f);
+		numberOfcharacterDiseasedTitle.setFontScale(1.3f);
+		numberOfcharacterDiseasedTitle.setPosition(90, main.ui.getHeight() - 150 -numberOfCharacterSick.getHeight()-numberOfcharacterSickTitle.getHeight()-numberOfCharacter.getHeight()-numberOfcharacterTitle.getHeight());
+		numberOfcharacterDiseasedTitle.setVisible(false);
+		main.ui.addActor(numberOfcharacterDiseasedTitle);
+		
+		numberOfCharacterDiseased = new Label("NOT KNOWN", createLabelStyleWithBackground());
+		numberOfCharacterDiseased.setWidth(500f);
+		numberOfCharacterDiseased.setPosition(90, main.ui.getHeight() - 150 -numberOfcharacterDiseasedTitle.getHeight() -numberOfCharacterSick.getHeight()-numberOfcharacterSickTitle.getHeight()-numberOfCharacter.getHeight()-numberOfcharacterTitle.getHeight());
+		numberOfCharacterDiseased.setVisible(false);
+		main.ui.addActor(numberOfCharacterDiseased);
+		
 		
 		Gdx.input.setInputProcessor(main.ui);
 

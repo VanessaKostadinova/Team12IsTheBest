@@ -29,18 +29,23 @@ public class Node extends Renderable {
 	private Boolean isDiseased;
 	
 	
+	private boolean level1Researched = false;
+	private boolean level2Researched = false;
+	private boolean level3Researched = false;
+	
+	
 	public Node(Texture textureOfHouse, float x, float y, String[] attributes) {
 		super.setSprite(textureOfHouse, x, y);
 		isDiseased = false;
 		residents = new ArrayList<>();
 		notes = new HashMap<>();
-		printAllArray(attributes);
+		setAllVillagers(attributes);
 		this.house = new House(attributes);
-		
+		updateHouseDiseased();
 	}
 	
 	
-	public void printAllArray(String[] attributes) {
+	public void setAllVillagers(String[] attributes) {
 		for(String s : attributes) {
 			if(s.contains(",") && !s.contains("(")) {
 				String[] values = s.split(",");
@@ -53,6 +58,8 @@ public class Node extends Renderable {
 				notes.put(new Vector2(Float.valueOf(values[1]), Float.valueOf(values[2])), values[0].substring(1));
 			}
 		}
+		
+
 	}
 	
 	public int generateNumOfNPCs(int highBound, int lowBound) {
@@ -73,16 +80,19 @@ public class Node extends Renderable {
 		return house.getArray();
 	}
 	
-	public void readFile() {
-		
-	}
 	
 	public Boolean isDiseased() {
 		return isDiseased;
 	}
 	
-	public void setDiseased(Boolean isDiseased) {
-		this.isDiseased = isDiseased;
+	public void updateHouseDiseased() {
+		this.isDiseased = false;
+		for(NPC n : residents) {
+			if(n.getStatus().equals("Sick") || n.getStatus().equals("Dead")) {
+				this.isDiseased = true;
+				break;
+			}
+		}
 	}
 	
 	
@@ -91,9 +101,23 @@ public class Node extends Renderable {
 		int x = 0;
 		for(NPC resident : residents)
 		{
-			if(resident.getStatus()=="Sick") x++;
+			if(resident.getStatus().equals("Sick") || resident.getStatus().equals("Dead")) x++;
 		}
 		return x;
+	}
+	
+	public int getNumberOfSick()
+	{
+		int x = 0;
+		for(NPC resident : residents)
+		{
+			if(resident.getStatus().equals("Sick")) x++;
+		}
+		return x;
+	}
+	
+	public int getNumberOfResidents() {
+		return residents.size();
 	}
 
 	public House getHouse() {
@@ -136,5 +160,47 @@ public class Node extends Renderable {
 		
 	}
 	
+	public void upgradeLevelKnown() {
+		if(!level1Researched) {
+			level1Researched = true;
+		}
+		else if(!level2Researched && level1Researched) {
+			level2Researched = true;
+		}
+		else if(!level3Researched && level2Researched && level1Researched) {
+			level3Researched = true;
+		}
+	}
+	
+	public Boolean reachedMaxLevel() {
+		if(level3Researched) {
+			return true;
+		}
+		return false;
+	}
+	
+	public Boolean getLevel1() {
+		return level1Researched;
+	}
+	
+	public Boolean getLevel2() {
+		return level2Researched;
+	}
+	
+	public Boolean getLevel3() {
+		return level3Researched;
+	}
+	
+	public Boolean setLevel1(Boolean value) {
+		return level1Researched = value;
+	}
+	
+	public Boolean setLevel2(Boolean value) {
+		return level2Researched = value;
+	}
+	
+	public Boolean setLevel3(Boolean value) {
+		return level3Researched = value;
+	}
 
 }

@@ -23,7 +23,6 @@ public class NPC extends Renderable implements Living {
 	private boolean foodGiven;
 	private boolean isHealed;
 	
-	
 	private boolean sanityAdd;
 	
 	private Rectangle rectangle;
@@ -188,11 +187,13 @@ public class NPC extends Renderable implements Living {
 	}
 
 	public void infect() {
-		Random r = new Random();
-		float random = 1 + r.nextFloat() * (30 - 1);
-		
-		this.health = this.health - random;
-		this.update();
+		if(!status.equals("Dead")) {
+			Random r = new Random();
+			float random = 1 + r.nextFloat() * (30 - 1);
+			this.health = this.health - random;
+			this.update();
+		}
 	}
+	
 
 }
