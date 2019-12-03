@@ -1,3 +1,10 @@
 house1.txt
 house2.txt
 house3.txt
+house4.txt
+house5.txt
+house6.txt
+house7.txt
+house8.txt
+house9.txt
+house10.txt
