@@ -10,7 +10,7 @@ import com.mygdx.renderable.Node;
 public class Disease {
 	
 	private final float spreadRadius = 310.0f;
-	private final float probabilty = 30.0f;
+	private final float probabilty = 50.0f;
 	
 
 	

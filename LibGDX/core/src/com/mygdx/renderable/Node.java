@@ -153,9 +153,11 @@ public class Node extends Renderable {
 	public void infectRandom(float probabilty)
 	{
 		Random rand = new Random();
-		if(rand.nextFloat()<probabilty)
-		{
-			residents.get(rand.nextInt(residents.size())).infect();
+		for(NPC resident : residents) {
+			if(rand.nextFloat()<probabilty)
+			{
+				resident.infect();
+			}
 		}
 		
 	}
