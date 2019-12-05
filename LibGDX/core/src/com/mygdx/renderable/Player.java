@@ -243,7 +243,7 @@ public class Player extends Renderable implements Living {
 		BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("spray/spray.json"));
 
         BodyDef bodyDef3 = new BodyDef();
-        bodyDef3.type = BodyType.StaticBody;
+        bodyDef3.type = BodyType.DynamicBody;
         bodyDef3.position.set(0, 0);
         bodyDef3.fixedRotation = true;
 
@@ -266,8 +266,8 @@ public class Player extends Renderable implements Living {
 		sprayBody.setTransform(getSprite().getX()+16, getSprite().getY()+16, sprayBody.getAngle());
 	}
 	
-	public void updateBody() {
-		body.setTransform(sprite.getX()+16, sprite.getY()+16, body.getAngle());
+	public void updateBody(float dx, float dy) {
+		body.setTransform(sprite.getX()+16-dx/1.5f, sprite.getY()+16-dy/1.5f, body.getAngle());
 	}
 	
 	public void updateRotation(float rotation) {

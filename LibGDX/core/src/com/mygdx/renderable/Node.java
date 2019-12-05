@@ -26,6 +26,7 @@ public class Node extends Renderable {
 	private ArrayList<NPC> residents;
 
 	private Map<Vector2, String> notes; 
+	private Map<String, Boolean> noteSeen;
 	private Boolean isDiseased;
 	
 	
@@ -39,6 +40,7 @@ public class Node extends Renderable {
 		isDiseased = false;
 		residents = new ArrayList<>();
 		notes = new HashMap<>();
+		noteSeen = new HashMap<>();
 		setAllVillagers(attributes);
 		this.house = new House(attributes);
 		updateHouseDiseased();
@@ -56,6 +58,7 @@ public class Node extends Renderable {
 			else if (s.contains(",")) {
 				String[] values = s.split(",");
 				notes.put(new Vector2(Float.valueOf(values[1]), Float.valueOf(values[2])), values[0].substring(1));
+				noteSeen.put(values[0].substring(1), false);
 			}
 		}
 		
@@ -126,6 +129,14 @@ public class Node extends Renderable {
 	
 	public Map<Vector2, String> getNotes() {
 		return notes;
+	}
+	
+	public Map<String, Boolean> getNoteValidation() {
+		return noteSeen;
+	}
+	
+	public void setNoteSeen(String Message) {
+		noteSeen.put(Message, true);
 	}
 	
 	public void serializeVillagers() {    

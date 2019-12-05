@@ -117,7 +117,7 @@ public class HouseInputHandler implements InputProcessor {
 					camera.getCamera().translate(0f, speed* delta);
 					player.updateSprite(0, speed* delta);
 					player.updateSprayPosition();
-					player.updateBody();
+					player.updateBody(0, speed* delta);
 					camera.updateCamera();
 					player.getSprite().setRegion(region);
 					player.getSpray().updateSprite(0f, speed*delta);
@@ -136,7 +136,7 @@ public class HouseInputHandler implements InputProcessor {
 					camera.updateCamera();
 					player.updateSprite(-speed*delta, 0);
 					player.updateSprayPosition();
-					player.updateBody();
+					player.updateBody(-speed*delta, 0f);
 					player.getSprite().setRegion(region);
 					player.getSpray().updateSprite(-speed*delta, 0);
 					if(shouldExit(playerX - speed*delta, playerY) && shouldExit(playerX - speed*delta, playerY + playerHeight - 4)) {
@@ -154,7 +154,7 @@ public class HouseInputHandler implements InputProcessor {
 					camera.getCamera().translate(0f, -speed*delta);
 					player.updateSprite(0,-speed*delta);
 					player.updateSprayPosition();
-					player.updateBody();
+					player.updateBody(0f, -speed*delta);
 					camera.updateCamera();
 					player.getSprite().setRegion(region);
 					player.getSpray().updateSprite(0f, -speed*delta);
@@ -174,7 +174,7 @@ public class HouseInputHandler implements InputProcessor {
 					camera.getCamera().translate(speed*delta, 0);
 					camera.updateCamera();
 					player.updateSprayPosition();
-					player.updateBody();
+					player.updateBody(speed*delta, 0);
 					player.getSprite().setRegion(region);
 					player.getSpray().updateSprite(speed*delta, 0f);
 					if(shouldExit(playerX + playerWidth, playerY) && shouldExit(playerX + playerWidth, playerY + playerHeight - 4)) {
@@ -189,7 +189,6 @@ public class HouseInputHandler implements InputProcessor {
 			
 		}
 		
-        world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 
 		if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 			if(letter.isVisible()) {
@@ -374,7 +373,6 @@ public class HouseInputHandler implements InputProcessor {
 			player.updateSpray(rotation * (float)(Math.PI/180));
 
 		}
-        world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 	}
 	
 	public void setPaused(Boolean isPaused) {

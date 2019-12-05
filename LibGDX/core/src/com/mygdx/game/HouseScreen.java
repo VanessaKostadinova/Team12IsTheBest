@@ -397,9 +397,11 @@ public class HouseScreen implements Screen {
 		private void setAllItemPickups() {
 			pickups = new ArrayList<>();
 			for(Vector2 vector : node.getNotes().keySet()) {
-				Sprite s = new Sprite(main.assets.manager.get("pickups/letter/PICKUP.png", Texture.class));
-				s.setPosition(vector.x, vector.y);
-				pickups.add(s);
+				if(!node.getNoteValidation().get(node.getNotes().get(vector))) {
+					Sprite s = new Sprite(main.assets.manager.get("pickups/letter/PICKUP.png", Texture.class));
+					s.setPosition(vector.x, vector.y);
+					pickups.add(s);
+				}
 			}
 		}
 		
@@ -408,12 +410,16 @@ public class HouseScreen implements Screen {
 				s.draw(batch);
 				
 				if(p.getSprite().getBoundingRectangle().overlaps(s.getBoundingRectangle()) && s.getColor().a == 1) {
-					handler.setPaused(true);
-					paragraph.setText(node.getNotes().get(new Vector2(s.getX(), s.getY())));
-					paragraph.setVisible(true);
-					updateParagraphPosition();
-					letter.setVisible(true);;
-					s.setAlpha(0);
+					String message = node.getNotes().get(new Vector2(s.getX(), s.getY()));
+					if(!node.getNoteValidation().get(message)) {
+						handler.setPaused(true);
+						paragraph.setText(message);
+						paragraph.setVisible(true);
+						updateParagraphPosition();
+						letter.setVisible(true);;
+						s.setAlpha(0);
+						node.setNoteSeen(message);
+					}
 				}
 			}
 		}

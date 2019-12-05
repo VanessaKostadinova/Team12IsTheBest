@@ -1,21 +1,15 @@
 package com.mygdx.map;
 
-import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.assets.AssetHandler;
 import com.mygdx.renderable.Node;
 import com.mygdx.shop.Shop;
 
-public class Map implements Serializable{
-	
-	private String mapFile;
+public class Map {
 	private List<Node> nodes;
 	private Shop shop; 
 	private Disease disease;
@@ -34,7 +28,7 @@ public class Map implements Serializable{
 	
 	public void resetPlayerFile() {
 		FileHandle handle = Gdx.files.local("data/player.txt");
-		handle.writeString(1000f+","+5.0f+","+0f+","+10f+","+0.10f+","+-0.40f+","+2f+","+100f, false);
+		handle.writeString(1000f+","+5.0f+","+0f+","+30f+","+0.10f+","+-0.40f+","+2f+","+100f+","+0.05f+","+0.01f, false);
 	}
 	
 	public List<Node> getNodes() {
