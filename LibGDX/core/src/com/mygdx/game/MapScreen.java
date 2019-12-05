@@ -326,10 +326,14 @@ public class MapScreen implements Screen {
 
 		if(Gdx.input.isKeyJustPressed(Keys.E) && !isPaused) {
 			p = readPlayer();
-			if(p.getEnergy() >=  5 && !hoverNode.reachedMaxLevel()) {
-				hoverNode.upgradeLevelKnown();
-				p.deltaEnergy(5);
-				p.writeToPlayerFile();
+			try {
+				if(p.getEnergy() >=  5 && !hoverNode.reachedMaxLevel()) {
+					hoverNode.upgradeLevelKnown();
+					p.deltaEnergy(5);
+					p.writeToPlayerFile();
+				}
+			} catch(NullPointerException e) {
+				Gdx.app.log("E pressed outside of house", "Caught exception outside of the house.");
 			}
 		}
 		
@@ -357,7 +361,7 @@ public class MapScreen implements Screen {
 						initialDone = false;
 						darken = false;
 						day++;
-						dayLabel.setText("Day " + day);
+						dayLabel.setText("DAY " + day);
 
 					}
 				}
@@ -681,7 +685,7 @@ public class MapScreen implements Screen {
         //Adds it to the UI Screen.
         main.ui.addActor(pause);
         
-		dayLabel = new Label("DAY " + day , createLabelStyleWithBackground());
+		dayLabel = new Label("DAY " + day , createLabelStyleWithBackgroundFont48());
 		dayLabel.setPosition(main.ui.getWidth()/2-dayLabel.getWidth()/2, main.ui.getHeight()/2-dayLabel.getHeight()/2);
 		dayLabel.setVisible(false);
 		main.ui.addActor(dayLabel);
@@ -754,6 +758,18 @@ public class MapScreen implements Screen {
         return labelStyle;
     }
     
+    
+    private LabelStyle createLabelStyleWithBackgroundFont48() {
+    	///core/assets/font/Pixel.ttf
+    	FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
+    	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
+    	FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+    	parameter.size = 48;
+        LabelStyle labelStyle = new LabelStyle();
+        labelStyle.font = generator.generateFont(parameter);
+        labelStyle.fontColor = Color.WHITE;
+        return labelStyle;
+    }
 	/**
 	 * Toggle isPaused variable.
 	 */
