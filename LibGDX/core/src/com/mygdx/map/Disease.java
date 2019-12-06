@@ -25,10 +25,20 @@ public class Disease {
 						shapeRenderer.setColor(0, 1, 0, 0.1f); // GREEN line
 					}
 					if(spreader.isDiseased() && !reciever.isDiseased()) {
-						shapeRenderer.setColor(0, 0, 1, 0.1f); // BLUE line
+						if(reciever.everyoneBurnt()) {
+							shapeRenderer.setColor(0, 0, 0, 0.1f);
+						}
+						else {
+							shapeRenderer.setColor(0, 0, 1, 0.1f);
+						}// BLUE line
 					}
 					if(!spreader.isDiseased() && reciever.isDiseased()) {
-						shapeRenderer.setColor(1, 0, 0, 0.1f); // RED LINE
+						if(spreader.everyoneBurnt()) {
+							shapeRenderer.setColor(0, 0, 0, 0.1f);
+						}
+						else {
+							shapeRenderer.setColor(1, 0, 0, 0.1f); // RED LINE
+						}
 					}
 					if(!spreader.isDiseased() && !reciever.isDiseased()) {
 						shapeRenderer.setColor(1, 1, 1, 0.1f); // WHITE LINE

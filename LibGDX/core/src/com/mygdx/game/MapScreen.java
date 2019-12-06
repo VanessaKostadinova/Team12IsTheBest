@@ -269,8 +269,23 @@ public class MapScreen implements Screen {
 		rayHandler.render();
 		
 		main.ui.draw();
-
 		
+		checkEndGame();
+		
+	}
+	
+	public void checkEndGame() {
+		Boolean endGame = true;
+		for(Node n : map.getNodes()) {
+			if(!n.shouldGameEnd()) {
+				endGame = false;
+			}
+		}
+		
+		if(endGame) {
+			main.ui.clear();
+			main.setScreen(new EndGame(main));
+		}
 	}
 	
 	

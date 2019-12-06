@@ -303,24 +303,6 @@ public class HouseScreen implements Screen {
 			paragraph.setPosition(main.ui.getWidth()/2-letter.getWidth()/2 + 50, main.ui.getHeight()/2);
 		}
 		
-	
-		private void updateBar() {
-			if((bar.getWidth() >= 1f)) {
-				bar.setWidth(250 * (p.getHealth()/p.getInitialMask()));
-			}
-			else {
-				bar.setWidth(0f);
-				darkness = 0f;
-				main.ui.clear();
-				
-				node.resetVillagers();
-				
-				main.setScreen(new CheckPoint(main, node, mapScreen));
-			}
-			
-			
-		}
-		
 		public void drawUI(SpriteBatch batch) {
 			updateBar();
 			goldLabel.setText(p.getFood()+"");
@@ -419,6 +401,24 @@ public class HouseScreen implements Screen {
 					}
 				}
 			}
+		}
+		
+		
+		private void updateBar() {
+			if((bar.getWidth() >= 1f)) {
+				bar.setWidth(250 * (p.getHealth()/p.getInitialMask()));
+			}
+			else {
+				bar.setWidth(0f);
+				darkness = 0f;
+				main.ui.clear();
+				
+				node.resetVillagers();
+				
+				main.setScreen(new CheckPoint(main, node, mapScreen));
+			}
+			
+			
 		}
 		
 		private void drawNPC(SpriteBatch batch) {

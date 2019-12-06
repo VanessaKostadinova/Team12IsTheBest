@@ -119,6 +119,30 @@ public class Node extends Renderable {
 		return x;
 	}
 	
+	public Boolean everyoneBurnt()
+	{
+		for(NPC resident : residents)
+		{
+			if(!resident.getStatus().equals("Burnt")) return false;
+		}
+		return true;
+	}
+	
+	public Boolean shouldGameEnd()
+	{
+		for(NPC resident : residents)
+		{
+			System.out.println(resident.getStatus());
+			if(resident.getStatus().equals("Sick")) {
+				return false;
+			}
+			else if(resident.getStatus().equals("Dead")) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	public int getNumberOfResidents() {
 		return residents.size();
 	}
