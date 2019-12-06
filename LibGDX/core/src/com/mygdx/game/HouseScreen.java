@@ -72,18 +72,15 @@ public class HouseScreen implements Screen {
 	private RayHandler rayHandler;
 	private float darkness;
 	
-	private Node initialNode;
-	private Player initialPlayer;
+
 	private float scaleItem;
 	private Window pause;
 	private Skin skin;
 	
 	private InputMultiplexer input;
 	
-	private static HouseScreen initialScreen;
 	private Light light;
-    private Box2DDebugRenderer b2dr;
-    private float trackSpray;
+    //private Box2DDebugRenderer b2dr;
     
     
     private SpriteDrawable fire;
@@ -146,7 +143,7 @@ public class HouseScreen implements Screen {
 			player.setSoftnessLength(1f);
 			player.attachToBody(p.getBody());
 	        setTorchLights();
-	        b2dr = new Box2DDebugRenderer();
+	        //b2dr = new Box2DDebugRenderer();
 
 	        
 			input = new InputMultiplexer();

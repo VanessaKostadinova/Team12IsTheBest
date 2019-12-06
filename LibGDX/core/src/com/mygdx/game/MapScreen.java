@@ -63,8 +63,6 @@ public class MapScreen implements Screen {
 	private Sprite inspectDialog;
 	
 	private Sprite baseUI;
-	private Sprite foodLabel;
-	private Sprite forwardButton;
 	
 	private float movement =(12000f/60f);
 	private float houseAlpha = 0;
@@ -96,7 +94,6 @@ public class MapScreen implements Screen {
 	private Player p;
 	private Disease disease;
 	
-	private Node nodeHit;
 	private Label numberOfCharacter;
 	private Label numberOfcharacterTitle;
 	private Label numberOfcharacterSickTitle;
@@ -203,11 +200,6 @@ public class MapScreen implements Screen {
 		baseUI.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
 		baseUI.setPosition(-5, 30);
 		
-		this.foodLabel = new Sprite(main.assets.manager.get("player/MAPUI/FoodLabel.png", Texture.class));
-		foodLabel.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
-		foodLabel.setPosition(47, 74.5f);
-	
-		
 	}
 	
 	@Override
@@ -258,7 +250,6 @@ public class MapScreen implements Screen {
 			enterShop.draw(main.batch);
 			
 			baseUI.draw(main.batch);
-			foodLabel.draw(main.batch);
 			
 		main.batch.end();
 		
