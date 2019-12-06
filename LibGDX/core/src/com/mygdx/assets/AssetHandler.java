@@ -31,9 +31,8 @@ public class AssetHandler {
     public static final AssetDescriptor<Texture> baseMapPlayerUI = new AssetDescriptor<Texture>("player/MAPUI/BaseUI.png", Texture.class);
     public static final AssetDescriptor<Texture> currentDayPlayerUI = new AssetDescriptor<Texture>("player/MAPUI/DayLabel.png", Texture.class);
     public static final AssetDescriptor<Texture> healthBarPlayerUI = new AssetDescriptor<Texture>("player/MAPUI/HealthBar.png", Texture.class);
-    public static final AssetDescriptor<Texture> foodLabelPlayerUI = new AssetDescriptor<Texture>("player/MAPUI/FoodLabel.png", Texture.class);
+    public static final AssetDescriptor<Texture> nextLabelPlayerUI = new AssetDescriptor<Texture>("player/MAPUI/NextLabel.png", Texture.class);
     public static final AssetDescriptor<Texture> forwardPlayerUI = new AssetDescriptor<Texture>("player/MAPUI/ForwardButton.png", Texture.class);
-
 
     public static final AssetDescriptor<Texture> shopBuyUI = new AssetDescriptor<Texture>("shop/screen/BUY.png", Texture.class);
     public static final AssetDescriptor<Texture> shopBuyHoverUI = new AssetDescriptor<Texture>("shop/screen/BUYMOUSE.png", Texture.class);
@@ -85,7 +84,7 @@ public class AssetHandler {
     	manager.load(baseMapPlayerUI);
     	manager.load(currentDayPlayerUI);
     	manager.load(healthBarPlayerUI);
-    	manager.load(foodLabelPlayerUI);
+    	manager.load(nextLabelPlayerUI);
     	manager.load(forwardPlayerUI);
     	
     	manager.load(shopBuyUI);
