@@ -29,7 +29,6 @@ public abstract class Renderable {
 		coordinates.add(x, y);
 		sprite.setPosition(x, y);
 		sprite.setRotation(rotation);
-		System.out.println(getCentreCoords().toString());
 	}
 	
 	public void setSprite(Texture image, float x, float y) {

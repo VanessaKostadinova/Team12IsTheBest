@@ -78,7 +78,6 @@ public class NPC extends Renderable implements Living {
 	public void updateTexture() {
 		Texture tempSprite = new Texture(Gdx.files.internal("NPC/"+status + "_NPC.gif"));
 		super.setSprite(tempSprite,super.getSprite().getX(),super.getSprite().getY());
-		System.out.println("NODE: "+ super.getSprite().getX()+ " " +super.getSprite().getY());
 	}
 	
 	public void update() {

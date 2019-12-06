@@ -142,9 +142,6 @@ public class Player extends Renderable implements Living {
 	}
 	
 	public void updateSpeed(float newSpeed) {
-		System.out.println(newSpeed);
-
-		System.out.println(newSpeed*60f);
 		this.speed = this.speed + newSpeed*60f;
 	}
 	

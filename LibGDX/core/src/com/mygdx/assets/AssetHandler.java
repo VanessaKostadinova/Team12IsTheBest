@@ -107,7 +107,6 @@ public class AssetHandler {
     	manager.load(MAINMENUSOUND);
 			
     	
-    	System.out.println(manager.isFinished());
 
 
     }

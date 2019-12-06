@@ -44,7 +44,6 @@ public class MyContactListener implements ContactListener {
 	@Override
 	public void endContact(Contact contact) {
 		WallHit = false;
-		System.out.println("END CONTACT");
 		
 		Fixture fixA = contact.getFixtureA();
 		Fixture fixB = contact.getFixtureB();

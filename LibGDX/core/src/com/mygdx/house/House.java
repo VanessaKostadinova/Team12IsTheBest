@@ -82,7 +82,6 @@ public class House {
             fixtureDef.density = 1.0f; 
             fixtureDef.filter.categoryBits = Constants.WALL;
                 
-            System.out.println("HIT");
             body.createFixture(fixtureDef);
             
 		}
@@ -94,7 +93,6 @@ public class House {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.StaticBody;
         bodyDef.position.set((y*32)+16, (x*32)+16);
-        System.out.println("X: " + ((y*32)) + " Y :" + ((x*32)));
         bodyDef.fixedRotation = true;
 		walls.add(bodyDef);
 	}
@@ -188,7 +186,6 @@ public class House {
 	    if(value > 0 && value < 5) {
 		    int positionX = y*32;
 		    int positionY = x*32;
-		    System.out.println(positionX + "," + positionY);
 		    
 		    
 		    
@@ -207,7 +204,6 @@ public class House {
 		    if(value == 4) {
 		    	torches.add(new Torch(positionX, positionY, 270f));
 		    }
-	    	System.out.println("X :" + positionX +" Y :" + positionY);
 
 	    }
 

@@ -18,9 +18,6 @@ public class Map {
 		nodes = new ArrayList<Node>();
 		readMapFile(assets);
 		this.disease = new Disease();
-		for(Node n : nodes) {
-			System.out.println(n.getCentreCoords());
-		}
 		shop = new Shop(assets.manager.get("house/Shop.gif", Texture.class), 200.0f, 200.0f);
 		checkIfPlayerExist();
 		resetPlayerFile();

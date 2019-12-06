@@ -90,7 +90,6 @@ public class Spray extends Renderable {
 							if(npc.getHealed() && !npc.foodGiven()) {
 								p.updateFood(10);
 								npc.setFoodGiven(true);
-								System.out.println("NPC GIVEN GOLD");
 								return true;
 							}
 						}

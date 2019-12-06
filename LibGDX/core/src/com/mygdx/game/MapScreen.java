@@ -243,7 +243,6 @@ public class MapScreen implements Screen {
 				if(node != null) {
 					node.draw(main.batch);
 					node.updateHouseDiseased();
-					System.out.println("is diseased: "+node.isDiseased());
 				}
 			}
 			pointer.draw(main.batch);
