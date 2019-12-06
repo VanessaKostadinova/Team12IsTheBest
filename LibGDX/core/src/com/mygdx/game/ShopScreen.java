@@ -104,7 +104,7 @@ public class ShopScreen implements Screen {
 		Title.setSize(Title.getWidth(), Title.getHeight());
 		t.addActor(Title);
 		
-		playerGold = new Label("PLAYER GOLD: " + readPlayer().getFood(), unClicked);
+		playerGold = new Label("PLAYER FOOD: " + readPlayer().getFood(), unClicked);
 		playerGold .setPosition(50f, Title.getY() - 100f);
 		main.ui.addActor(playerGold);
 
