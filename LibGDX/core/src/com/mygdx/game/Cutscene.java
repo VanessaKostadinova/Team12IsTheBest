@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Queue;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
@@ -16,12 +17,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.mygdx.camera.Camera;
 import com.mygdx.renderable.Node;
 
 public class Cutscene implements Screen {
@@ -46,7 +49,7 @@ public class Cutscene implements Screen {
 	
 	Music voiceOver;
 
-	public Cutscene(Main main, String cutscene, Screen screen, Boolean shouldLeave) {
+	public Cutscene(Main main, String cutscene, Boolean shouldLeave) {
 		this.main = main;
 		
 		totalTime = new LinkedList<>();
@@ -57,7 +60,6 @@ public class Cutscene implements Screen {
 		this.shouldLeave = shouldLeave;
 		
 		FileHandle handle = Gdx.files.internal(cutscene);
-		String file = handle.readString();
 		String[] properties = handle.readString().split("\\r?\\n");
 		for(String property : properties) {
 			if(property.contains("#")) {
@@ -109,6 +111,12 @@ public class Cutscene implements Screen {
 			stateTime = stateTime - waitTime;
 			changeScreen();
 		}
+		
+		
+		if(Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+			totalTime.clear();
+			this.changeScreen();
+		}
 	}
 	
 	
@@ -133,10 +141,20 @@ public class Cutscene implements Screen {
 	public void changeScreen() {
 		if(totalTime.isEmpty()) {
 			if(shouldLeave) {
-				System.exit(0);
+				main.ui.clear();
+				Camera camera = new Camera(2160f, 1080f, 1920f);
+				camera.getCamera().position.set(
+						camera.getCamera().viewportWidth / 2f , 
+						camera.getCamera().viewportHeight / 2f, 0);
+				main.ui = new Stage(camera.getViewport());
+				voiceOver.stop();
+				main.setScreen(new MainMenu(main));
 			}
-			main.ui.clear();
-			main.setScreen(new MapScreen(main));
+			else {
+				main.ui.clear();
+				voiceOver.stop();
+				main.setScreen(new MapScreen(main));
+			}
 		}
 		else {
 			l.setText(subtitles.remove());

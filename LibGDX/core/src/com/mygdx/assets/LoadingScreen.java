@@ -33,7 +33,7 @@ public class LoadingScreen implements Screen {
 		main.batch.end();
 		
 		if (main.assets.manager.update()) {
-			main.setScreen(new MainMenu(main));
+			main.setScreen(new MapScreen(main));
 		}
 	}
 
