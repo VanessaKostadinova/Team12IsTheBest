@@ -55,7 +55,7 @@ public class Map {
 			handle = Gdx.files.local("data/"+fileName);
 			String[] nodeProperties = handle.readString().split("\\r?\\n");
 			if(!(nodes.size() == 20)) {
-				nodes.add(new Node(new Texture(Gdx.files.internal("house/House1.gif")), Float.parseFloat(nodeProperties[0]), Float.parseFloat(nodeProperties[1]), nodeProperties));
+				nodes.add(new Node(new Texture(Gdx.files.internal("house/"+nodeProperties[0])), Float.parseFloat(nodeProperties[1]), Float.parseFloat(nodeProperties[2]), nodeProperties));
 			}
 			else {
 				Gdx.app.log("House Error", "More than 20 house are shown in the mapFile");

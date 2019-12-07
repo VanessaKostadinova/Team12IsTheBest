@@ -23,13 +23,13 @@ public class MainMenu implements Screen {
 	Skin skin;
 	float scaleItem;
 	Image head;
-	Music sound;
+	//Music sound;
 	
 	public MainMenu(Main mainScreen) {
 		/*
 		 * Simple sound file for the User Interface, loaded using LibGDX Audio library.
 		 */
-		this.sound = Gdx.audio.newMusic(Gdx.files.internal("main_menu_assets/music.mp3"));
+		//this.sound = Gdx.audio.newMusic(Gdx.files.internal("main_menu_assets/music.mp3"));
 
 		/*
 		 * This makes sure the UI fits within any size of screen
@@ -142,7 +142,8 @@ public class MainMenu implements Screen {
 		    @Override
 		    public void clicked(InputEvent event, float x, float y) {
 		    	dispose();
-		    	main.setScreen(new Cutscene(main, null));
+		    	main.ui.clear();
+		    	main.setScreen(new Cutscene(main, "cutscene/properties/cutscene1.txt", null, false));
 		    }
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 			    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0005_PLAY.png"))));
@@ -164,7 +165,7 @@ public class MainMenu implements Screen {
 		main.ui.addActor(exit);
 		
 		//Start playing the UI Soundtrack.
-		sound.play();
+		//sound.play();
 		
 		//Sets the input processor as Screen.ui as that is where the stage is contained.
 		Gdx.input.setInputProcessor(main.ui);
@@ -213,7 +214,7 @@ public class MainMenu implements Screen {
 	@Override
 	public void dispose() {
 		main.ui.clear();
-		sound.dispose();
+		//sound.dispose();
 	}
 
 

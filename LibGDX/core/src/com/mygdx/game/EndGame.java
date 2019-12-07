@@ -44,7 +44,7 @@ public class EndGame implements Screen {
 		main.ui.draw();
 		
 		
-		if(stateTime > 10) {
+		if(stateTime > 5) {
 			changeScreen();
 		}
 	}

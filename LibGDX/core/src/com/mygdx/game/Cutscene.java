@@ -41,16 +41,19 @@ public class Cutscene implements Screen {
 	
 	float waitTime;
 	
+	Boolean shouldLeave;
+	
 
-	public Cutscene(Main main, String cutscene) {
+	public Cutscene(Main main, String cutscene, Screen screen, Boolean shouldLeave) {
 		this.main = main;
 		
 		totalTime = new LinkedList<>();
 		subtitles = new LinkedList<>();
 		background = new LinkedList<>();
 
+		this.shouldLeave = shouldLeave;
 		
-		FileHandle handle = Gdx.files.internal("cutscene/properties/cutscene1.txt");
+		FileHandle handle = Gdx.files.internal(cutscene);
 		String file = handle.readString();
 		String[] properties = handle.readString().split("\\r?\\n");
 		for(String property : properties) {
@@ -91,11 +94,8 @@ public class Cutscene implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);	
 		stateTime = stateTime + delta;
-		
-		
-
+	
 		main.ui.draw();
-		
 		
 		if(stateTime > waitTime) {
 			stateTime = stateTime - waitTime;
@@ -124,6 +124,9 @@ public class Cutscene implements Screen {
 	
 	public void changeScreen() {
 		if(totalTime.isEmpty()) {
+			if(shouldLeave) {
+				System.exit(0);
+			}
 			main.ui.clear();
 			main.setScreen(new MapScreen(main));
 		}
