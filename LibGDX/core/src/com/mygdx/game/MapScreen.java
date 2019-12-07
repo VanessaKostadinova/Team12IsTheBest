@@ -1,6 +1,10 @@
 package com.mygdx.game;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -21,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
@@ -29,6 +34,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.mygdx.map.Disease;
 import com.mygdx.map.Map;
+import com.mygdx.renderable.NPC;
 import com.mygdx.renderable.Node;
 import com.mygdx.renderable.Player;
 import com.mygdx.shop.Shop;
@@ -106,6 +112,7 @@ public class MapScreen implements Screen {
 	
 	private Node hoverNode;
 	
+	private List<String> checkForKC;	
 	
 	public MapScreen(Main main) {	
 		this.viewWidth = 256;
@@ -144,6 +151,8 @@ public class MapScreen implements Screen {
 		this.disease = map.getDisease();
 		this.initialDone = false;
 		this.getIndex = -1;
+		
+		this.checkForKC = new ArrayList<>();
 		createUIElements();
 		stateTime = 0;
 		dayAnimationTime = 0;
@@ -262,7 +271,7 @@ public class MapScreen implements Screen {
 			
 		main.batch.end();
 		
-
+		checkKC();
 
 		
 		makeSceneDark();
@@ -351,6 +360,19 @@ public class MapScreen implements Screen {
 			}
 		}
 		
+		if(Gdx.input.isKeyJustPressed(Keys.UP)) {
+			checkForKC.add("UP");
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.DOWN)) {
+			checkForKC.add("DOWN");
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.LEFT)) {
+			checkForKC.add("LEFT");
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
+			checkForKC.add("RIGHT");
+		}
+		
 	}
 	
 	public void makeSceneDark() {
@@ -393,6 +415,30 @@ public class MapScreen implements Screen {
 			}
 		}
 		this.rayHandler.setAmbientLight(darkness);
+	}
+	
+	
+	public void checkKC() {
+		String value = "";
+		if(checkForKC.size() == 8) {
+			for(String key : checkForKC) {
+				value += key;
+			}
+			System.out.println(value);
+
+			if(value.equals("UPUPDOWNDOWNLEFTRIGHTLEFTRIGHT")) {
+				for(Node n : map.getNodes()) {
+					for(NPC v : n.getResidents()) {
+						v.setHealth(100);
+						v.update();
+					}
+				}
+				checkForKC.clear();
+			}
+			else {
+				checkForKC.clear();
+			}
+		}
 	}
 	
 	

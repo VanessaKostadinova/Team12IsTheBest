@@ -194,5 +194,9 @@ public class NPC extends Renderable implements Living {
 		}
 	}
 	
+	public void setHealth(float newHealth) {
+		this.health = newHealth;
+	}
+	
 
 }

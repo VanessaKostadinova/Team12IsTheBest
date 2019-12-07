@@ -132,7 +132,6 @@ public class Node extends Renderable {
 	{
 		for(NPC resident : residents)
 		{
-			System.out.println(resident.getStatus());
 			if(resident.getStatus().equals("Sick")) {
 				return false;
 			}
@@ -149,6 +148,10 @@ public class Node extends Renderable {
 
 	public House getHouse() {
 		return house;
+	}
+	
+	public ArrayList<NPC> getResidents() {
+		return residents;
 	}
 	
 	public Map<Vector2, String> getNotes() {
