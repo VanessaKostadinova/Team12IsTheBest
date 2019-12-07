@@ -7,6 +7,7 @@ import java.util.Queue;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -43,6 +44,7 @@ public class Cutscene implements Screen {
 	
 	Boolean shouldLeave;
 	
+	Music voiceOver;
 
 	public Cutscene(Main main, String cutscene, Screen screen, Boolean shouldLeave) {
 		this.main = main;
@@ -50,6 +52,7 @@ public class Cutscene implements Screen {
 		totalTime = new LinkedList<>();
 		subtitles = new LinkedList<>();
 		background = new LinkedList<>();
+		
 
 		this.shouldLeave = shouldLeave;
 		
@@ -57,11 +60,14 @@ public class Cutscene implements Screen {
 		String file = handle.readString();
 		String[] properties = handle.readString().split("\\r?\\n");
 		for(String property : properties) {
-			if(property.contains(",")) {
+			if(property.contains("#")) {
 				String values[] = property.split("#");
 				totalTime.add(Float.parseFloat(values[1]));
 				subtitles.add(values[2]);
 				background.add(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("cutscene/"+values[0])))));
+			}
+			else {
+				voiceOver = Gdx.audio.newMusic(Gdx.files.internal("cutscene/"+property));
 			}
 		}
 		
@@ -81,6 +87,8 @@ public class Cutscene implements Screen {
 		
 		l.setText(subtitles.remove());
 		waitTime = totalTime.remove();
+		
+		voiceOver.play();
 	}
 
 	@Override
@@ -164,8 +172,7 @@ public class Cutscene implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-		
+		voiceOver.dispose();
 	}
 
 }
