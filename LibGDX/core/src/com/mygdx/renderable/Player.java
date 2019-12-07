@@ -235,7 +235,7 @@ public class Player extends Renderable implements Living {
         return body;
     }
 	
-	public Body setSprayBody(World world) {
+	/*public Body setSprayBody(World world) {
 		
 		BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("spray/spray.json"));
 
@@ -253,15 +253,15 @@ public class Player extends Renderable implements Living {
         loader.attachFixture(sprayBody, "Name", fixtureDef, 32f);
 
         return sprayBody;
-    }
+    }*/
 	
-	public void updateSpray(float rotation) {
+	/*public void updateSpray(float rotation) {
 		sprayBody.setTransform(getSprite().getX()+16, getSprite().getY()+16, rotation);
 	}
 	
 	public void updateSprayPosition() {
 		sprayBody.setTransform(getSprite().getX()+16, getSprite().getY()+16, sprayBody.getAngle());
-	}
+	}*/
 	
 	public void updateBody(float dx, float dy) {
 		body.setTransform(sprite.getX()+16-dx/1.5f, sprite.getY()+16-dy/1.5f, body.getAngle());
@@ -277,10 +277,10 @@ public class Player extends Renderable implements Living {
 		return body;
 	}
 	
-	public Body getSprayBody() {
+	/*public Body getSprayBody() {
 		// TODO Auto-generated method stub
 		return sprayBody;
-	}
+	}*/
 	
 	public void deltaEnergy(int removeEnergy) {
 		this.energy = this.energy - removeEnergy;

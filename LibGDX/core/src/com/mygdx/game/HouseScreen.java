@@ -130,7 +130,7 @@ public class HouseScreen implements Screen {
 	
 			node.getHouse().createBodies(world);
 			p.setBody(world);
-			p.setSprayBody(world);
+			//p.setSprayBody(world);
 			this.rayHandler = new RayHandler(world);
 			this.rayHandler.setAmbientLight(darkness);
 			this.rayHandler.setShadows(true);
@@ -367,7 +367,6 @@ public class HouseScreen implements Screen {
 		private void setTorchLights() {
 			for(Torch t :node.getHouse().getTorches()) {
 				Light l = new PointLight(rayHandler, 100, Color.ORANGE, 200f, t.getSprite().getX() + t.getSprite().getWidth()/2, t.getSprite().getY() + t.getSprite().getHeight()/2);
-				l.setContactFilter(Constants.PLAYER, Constants.PLAYER, Constants.PLAYER);
 				l.setSoftnessLength(5f);
 				
 			}

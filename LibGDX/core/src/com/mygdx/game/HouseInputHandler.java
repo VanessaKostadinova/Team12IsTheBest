@@ -116,7 +116,7 @@ public class HouseInputHandler implements InputProcessor {
 				if(!collision(playerX, playerY + playerHeight) && !collision(playerX + playerWidth - speed*delta, playerY + playerHeight)) {
 					camera.getCamera().translate(0f, speed* delta);
 					player.updateSprite(0, speed* delta);
-					player.updateSprayPosition();
+					//player.updateSprayPosition();
 					player.updateBody(0, speed* delta);
 					camera.updateCamera();
 					player.getSprite().setRegion(region);
@@ -135,7 +135,7 @@ public class HouseInputHandler implements InputProcessor {
 					camera.getCamera().translate(-speed*delta, 0f);
 					camera.updateCamera();
 					player.updateSprite(-speed*delta, 0);
-					player.updateSprayPosition();
+					//player.updateSprayPosition();
 					player.updateBody(-speed*delta, 0f);
 					player.getSprite().setRegion(region);
 					player.getSpray().updateSprite(-speed*delta, 0);
@@ -153,7 +153,7 @@ public class HouseInputHandler implements InputProcessor {
 				if(!collision(playerX+2, playerY - speed*delta) && !collision(playerX + playerWidth - speed*delta, playerY - speed*delta)) {
 					camera.getCamera().translate(0f, -speed*delta);
 					player.updateSprite(0,-speed*delta);
-					player.updateSprayPosition();
+					//player.updateSprayPosition();
 					player.updateBody(0f, -speed*delta);
 					camera.updateCamera();
 					player.getSprite().setRegion(region);
@@ -173,7 +173,7 @@ public class HouseInputHandler implements InputProcessor {
 					player.updateSprite(speed* delta, 0);
 					camera.getCamera().translate(speed*delta, 0);
 					camera.updateCamera();
-					player.updateSprayPosition();
+					//player.updateSprayPosition();
 					player.updateBody(speed*delta, 0);
 					player.getSprite().setRegion(region);
 					player.getSpray().updateSprite(speed*delta, 0f);
@@ -370,7 +370,7 @@ public class HouseInputHandler implements InputProcessor {
 			player.updateRotation(rotation * (float)(Math.PI/180) );
 		    
 			rotation = rotation - 90f;
-			player.updateSpray(rotation * (float)(Math.PI/180));
+			//player.updateSpray(rotation * (float)(Math.PI/180));
 
 		}
 	}
