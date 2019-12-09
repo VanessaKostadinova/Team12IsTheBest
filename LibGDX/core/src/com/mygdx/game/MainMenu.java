@@ -23,13 +23,13 @@ public class MainMenu implements Screen {
 	Skin skin;
 	float scaleItem;
 	Image head;
-	//Music sound;
+	Music sound;
 	
 	public MainMenu(Main mainScreen) {
 		/*
 		 * Simple sound file for the User Interface, loaded using LibGDX Audio library.
 		 */
-		//this.sound = Gdx.audio.newMusic(Gdx.files.internal("main_menu_assets/music.mp3"));
+		this.sound = Gdx.audio.newMusic(Gdx.files.internal("main_menu_assets/music.wav"));
 
 		/*
 		 * This makes sure the UI fits within any size of screen
@@ -165,7 +165,7 @@ public class MainMenu implements Screen {
 		main.ui.addActor(exit);
 		
 		//Start playing the UI Soundtrack.
-		//sound.play();
+		sound.play();
 		
 		//Sets the input processor as Screen.ui as that is where the stage is contained.
 		Gdx.input.setInputProcessor(main.ui);
@@ -214,7 +214,7 @@ public class MainMenu implements Screen {
 	@Override
 	public void dispose() {
 		main.ui.clear();
-		//sound.dispose();
+		sound.dispose();
 	}
 
 

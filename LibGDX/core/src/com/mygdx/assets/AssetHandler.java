@@ -51,7 +51,6 @@ public class AssetHandler {
     public static final AssetDescriptor<Texture> BAR = new AssetDescriptor<Texture>("house/UI/BAR.png", Texture.class);
     
     public static final AssetDescriptor<Texture> HEALTHBAR = new AssetDescriptor<Texture>("house/UI/HEALTH.png", Texture.class);
-    public static final AssetDescriptor<Music> MAINMENUSOUND = new AssetDescriptor<Music>("main_menu_assets/music.mp3", Music.class);
 
 
    // FreetypeFontLoader.FreeTypeFontLoaderParameter params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
@@ -103,7 +102,6 @@ public class AssetHandler {
     	manager.load(UI);
     	manager.load(BAR);
     	manager.load(HEALTHBAR);
-    	manager.load(MAINMENUSOUND);
 			
     	
 
