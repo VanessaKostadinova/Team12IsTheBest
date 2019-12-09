@@ -93,9 +93,17 @@ public class Node extends Renderable {
 		for(NPC n : residents) {
 			if(n.getStatus().equals("Sick") || n.getStatus().equals("Dead")) {
 				this.isDiseased = true;
-				break;
 			}
 		}
+	}
+	
+	public Boolean isAllInHouseDiseased() {
+		for(NPC n : residents) {
+			if(n.getStatus().equals("Alive")) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	

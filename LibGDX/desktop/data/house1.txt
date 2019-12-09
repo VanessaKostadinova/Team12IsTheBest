@@ -3,7 +3,7 @@ house1.gif
 90
 20,100,100
 500,250,70
-500,500,0
+500,450,0
 level1.csv
 Wooden_Floor.gif
 Floor_Stone.gif

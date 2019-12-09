@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.mygdx.renderable.NPC;
 import com.mygdx.renderable.Node;
 
 public class Disease {
@@ -63,7 +64,28 @@ public class Disease {
 						}
 					}
 					else {
-						reciever.infectRandom(probabilty);
+						if(!(spreader.equals(reciever))) {
+							if(!reciever.isAllInHouseDiseased()) {
+								float distance = spreader.getCentreCoords().dst(reciever.getCentreCoords());
+								if(distance < spreadRadius && diseaseImpacted()) {
+									reciever.infectRandom(probabilty);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public void diseaseAffect(List<Node> disease) {
+		for(Node spreader : disease) {
+			if(spreader.isDiseased()) {
+				for(NPC villagers : spreader.getResidents()) {
+					if(!villagers.getStatus().equals("Dead") && !villagers.getStatus().equals("Burnt")) {
+						double x = (Math.random()*((5-1)+1))+1; 
+						x = x * -1;
+						villagers.changeHealth((float) x);
 					}
 				}
 			}

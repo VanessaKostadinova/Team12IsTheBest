@@ -393,6 +393,7 @@ public class MapScreen implements Screen {
 						p.resetEnergy();
 						energy.setText(p.getEnergy()+"");
 						disease.diseaseSpread(map.getNodes());
+						disease.diseaseAffect(map.getNodes());
 						p.writeToPlayerFile();
 						initialDone = false;
 						darken = false;
