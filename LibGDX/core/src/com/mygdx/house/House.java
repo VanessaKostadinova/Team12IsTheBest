@@ -56,7 +56,7 @@ public class House {
 			}
 		}
 		for(String attribute : attributes) {
-			if(attribute.contains(".gif") && !attribute.contains("house")) {
+			if(attribute.contains(".gif") && !attribute.contains("house") && !attribute.contains("House")) {
 				Texture t = new Texture(Gdx.files.internal("levels/" + attribute));
 				textures.put(indicator, t);
 

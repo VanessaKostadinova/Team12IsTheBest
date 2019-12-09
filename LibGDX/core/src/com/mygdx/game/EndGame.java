@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.utils.Align;
 import com.mygdx.renderable.Node;
 
 public class EndGame implements Screen {
@@ -19,10 +20,24 @@ public class EndGame implements Screen {
 	Node initialNode;
 	MapScreen mapScreen;
 	
-	public EndGame(Main main) {
+	Boolean allAreDead;
+	
+	public EndGame(Main main, Boolean allDead) {
+		this.allAreDead = allDead;
 		this.main = main;
 		Label l = new Label("GAME OVER", createLabelStyleWithBackground(Color.WHITE));
-		l.setPosition(main.ui.getWidth()/2-l.getWidth()/2, main.ui.getHeight()/2-l.getHeight()/2);
+		l.setPosition(20, main.ui.getHeight()/2-l.getHeight()/2);
+		
+		l.setWidth(main.ui.getWidth());
+		l.setAlignment(Align.center);
+		l.setWrap(true);
+		
+		if(allAreDead) {
+			l.setText("GAME OVER" + "\n" + "ALL RESIDENTS ARE DEAD!");
+		}
+		else {
+			l.setText("GAME OVER");
+		}
 		
 		main.ui.addActor(l);
 	}
