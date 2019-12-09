@@ -1,14 +1,26 @@
-1/video.mp3
-1/1.png#2#The year, 2023.
-1/1.png#9#Humanity had grown exponentially to the point of overcrowding, food prices were rising, global warming had hit, and famine was on its way.
-1/2.png#6#So, as we have done for generations, we began to tear each other apart for whatever scraps we could find.
-1/2.png#10#Society was on the brink of collapse, disparity grew, people were starving in the streets and the world leaders scrambled to find some solution that did not involve all-out war. 
-1/3.png#2#As usual they failed.
-1/3.png#2#The bombs dropped suddenly, and without warning.
-1/4.png#10#Who fired first is irrelevant, what matters is that no one stopped to think before firing back and before long what little remained of humanity destroyed itself. 
-1/4.png#3#Cities and civilisation reduced to ruins. 
-1/5.png#11#But they did not get everyone. It took a long time, no one knows how long, but we rebuilt. From the ashes rose a new world order, one that would not repeat the mistakes of the past. 
-1/5.png#3#Or, at least, that is what we have been told.
-1/5.png#10#Now, society consists of small settlements watched over by The Order, researchers who have harnessed what little of the old civilisations technology we could find to help us rebuild what was lost.
-1/5.png#11#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, has gone missing, presumed dead. 
-1/5.png#6#I hope to be able to uncover more about that during my stay in M-Attan, but we will have to see.
+1/Intro.wav
+1/1.png#7#-
+1/1.png#4#The year is 2023.
+1/1.png#3#Humanity had grown exponentially to the point of overcrowding, food prices rising, global warming hitting, and famine on its way.
+1/2.png#4#Humanity had grown exponentially to the point of overcrowding, food prices rising, global warming hitting, and famine on its way.
+1/3.png#5#Humanity had grown exponentially to the point of overcrowding, food prices rising, global warming hitting, and famine on its way.
+1/4.png#3#Humanity had grown exponentially to the point of overcrowding, food prices rising, global warming hitting, and famine on its way.
+1/5.png#6.5#So, as we have done for generations, we began to tear each other apart for whatever little scraps we could find.
+1/6.png#6#Society was on the brink of collapse, disparity grew, people were starving in the streets and the world leaders scrambled to find some solution that did not involve all-out war. 
+1/7.png#6#Society was on the brink of collapse, disparity grew, people were starving in the streets and the world leaders scrambled to find some solution that did not involve all-out war. 
+1/8.png#0.5#The bombs dropped suddenly, without warning.
+1/9.png#0.5#The bombs dropped suddenly, without warning.
+1/10.png#0.5#The bombs dropped suddenly, without warning.
+1/11.png#0.5#The bombs dropped suddenly, without warning.
+1/12.png#0.5#The bombs dropped suddenly, without warning.
+1/13.png#0.5#The bombs dropped suddenly, without warning.
+1/14.png#0.5#The bombs dropped suddenly, without warning.
+1/15.png#0.5#The bombs dropped suddenly, without warning.
+1/15.png#10#Who fired first here is irrelevant, what matters is that no one stopped to think before firing back and before long what little remained of humanity destroyed itself. 
+1/15.png#3.5#Cities and civilisation were reduced to ruins. 
+1/15.png#12#But they did not get everyone. It took a long time, no one knows how long, but we rebuilt. From the ashes rose a new world order, one that would not repeat the mistakes of the past. 
+1/15.png#3#Or, at least, that is what we have been told.
+1/15.png#12#Now, society consists of small settlements watched over by The Order, researchers who have harnessed what little technology the old civilisations had and we could find to rebuild what was lost.
+1/15.png#11#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
+1/15.png#8#I hope to be able to uncover more about that during my stay in M-Attan, but we will have to see.
+1/15.png#5#-
