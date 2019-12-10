@@ -33,6 +33,7 @@ public class Node extends Renderable {
 	private boolean level1Researched = false;
 	private boolean level2Researched = false;
 	private boolean level3Researched = false;
+	private boolean level4Researched = false;
 	
 	
 	public Node(Texture textureOfHouse, float x, float y, String[] attributes) {
@@ -112,7 +113,7 @@ public class Node extends Renderable {
 		int x = 0;
 		for(NPC resident : residents)
 		{
-			if(resident.getStatus().equals("Sick") || resident.getStatus().equals("Dead")) x++;
+			if(resident.getStatus().equals("Dead")) x++;
 		}
 		return x;
 	}
@@ -123,6 +124,16 @@ public class Node extends Renderable {
 		for(NPC resident : residents)
 		{
 			if(resident.getStatus().equals("Sick")) x++;
+		}
+		return x;
+	}
+	
+	public int getNumberOfAlive()
+	{
+		int x = 0;
+		for(NPC resident : residents)
+		{
+			if(resident.getStatus().equals("Alive")) x++;
 		}
 		return x;
 	}
@@ -209,14 +220,17 @@ public class Node extends Renderable {
 	}
 	
 	public void upgradeLevelKnown() {
-		if(!level1Researched) {
-			level1Researched = true;
+		if(!level4Researched && level3Researched && level2Researched && level1Researched) {
+			level4Researched = true;
+		}
+		else if(!level3Researched && level2Researched && level1Researched) {
+			level3Researched = true;
 		}
 		else if(!level2Researched && level1Researched) {
 			level2Researched = true;
 		}
-		else if(!level3Researched && level2Researched && level1Researched) {
-			level3Researched = true;
+		else if(!level1Researched) {
+			level1Researched = true;
 		}
 	}
 	
@@ -239,6 +253,10 @@ public class Node extends Renderable {
 		return level3Researched;
 	}
 	
+	public Boolean getLevel4() {
+		return level3Researched;
+	}
+	
 	public Boolean setLevel1(Boolean value) {
 		return level1Researched = value;
 	}
@@ -249,6 +267,10 @@ public class Node extends Renderable {
 	
 	public Boolean setLevel3(Boolean value) {
 		return level3Researched = value;
+	}
+	
+	public Boolean setLevel4(Boolean value) {
+		return level4Researched = value;
 	}
 	
 	public boolean areAllDead() {

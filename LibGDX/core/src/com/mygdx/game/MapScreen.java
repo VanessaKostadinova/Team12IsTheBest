@@ -462,7 +462,7 @@ public class MapScreen implements Screen {
 	public void updateText(Node n, Player p) {
 		energy.setText(p.getEnergy()+"");
 		if(n.getLevel1()) {
-			numberOfCharacter.setText(n.getNumberOfResidents());
+			numberOfCharacter.setText(n.getNumberOfAlive());
 		} else {
 			numberOfCharacter.setText("NOT KNOWN");
 		}
@@ -480,12 +480,7 @@ public class MapScreen implements Screen {
 		}
 
 	}
-	
-	public void resetLabels() {
-		numberOfCharacter.setText("NOT KNOWN");
-		numberOfCharacter.setText("NOT KNOWN");
-		numberOfCharacter.setText("NOT KNOWN");
-	}
+
 	
 	public void initalSceneTransitions(float delta) {
 		if(!initialDone) {
@@ -776,7 +771,7 @@ public class MapScreen implements Screen {
 		//energy.setVisible(false);
 		main.ui.addActor(energy);
 		
-		numberOfcharacterTitle = new Label("NUMBER OF CHARACTERS: ", createLabelStyleWithBackground());
+		numberOfcharacterTitle = new Label("NUMBER OF ALIVE: ", createLabelStyleWithBackground());
 		numberOfcharacterTitle.setWidth(500f);
 		numberOfcharacterTitle.setFontScale(1.3f);
 		numberOfcharacterTitle.setPosition(90, main.ui.getHeight() - 150);
@@ -803,7 +798,7 @@ public class MapScreen implements Screen {
 		numberOfCharacterSick.setVisible(false);
 		main.ui.addActor(numberOfCharacterSick);
 		
-		numberOfcharacterDiseasedTitle = new Label("NUMBER OF DISEASED: ", createLabelStyleWithBackground());
+		numberOfcharacterDiseasedTitle = new Label("NUMBER OF DEAD: ", createLabelStyleWithBackground());
 		numberOfcharacterDiseasedTitle.setWidth(500f);
 		numberOfcharacterDiseasedTitle.setFontScale(1.3f);
 		numberOfcharacterDiseasedTitle.setPosition(90, main.ui.getHeight() - 150 -numberOfCharacterSick.getHeight()-numberOfcharacterSickTitle.getHeight()-numberOfCharacter.getHeight()-numberOfcharacterTitle.getHeight());
@@ -815,6 +810,7 @@ public class MapScreen implements Screen {
 		numberOfCharacterDiseased.setPosition(90, main.ui.getHeight() - 150 -numberOfcharacterDiseasedTitle.getHeight() -numberOfCharacterSick.getHeight()-numberOfcharacterSickTitle.getHeight()-numberOfCharacter.getHeight()-numberOfcharacterTitle.getHeight());
 		numberOfCharacterDiseased.setVisible(false);
 		main.ui.addActor(numberOfCharacterDiseased);
+		
 		
 		
 		Gdx.input.setInputProcessor(main.ui);

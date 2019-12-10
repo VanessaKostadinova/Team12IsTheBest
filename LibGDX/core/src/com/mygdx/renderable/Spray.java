@@ -88,7 +88,7 @@ public class Spray extends Renderable {
 						if(f == 0) {
 							npc.changeHealth(deltaValue); 
 							if(npc.getHealed() && !npc.foodGiven()) {
-								p.updateFood(10);
+								p.updateFood(50);
 								npc.setFoodGiven(true);
 								return true;
 							}

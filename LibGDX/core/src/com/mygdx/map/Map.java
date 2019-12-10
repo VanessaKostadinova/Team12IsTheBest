@@ -25,7 +25,7 @@ public class Map {
 	
 	public void resetPlayerFile() {
 		FileHandle handle = Gdx.files.local("data/player.txt");
-		handle.writeString(500f+","+5.0f+","+0f+","+30f+","+0.10f+","+-0.40f+","+2f+","+100f+","+0.05f+","+0.01f, false);
+		handle.writeString(100f+","+5.0f+","+0f+","+30f+","+0.10f+","+-0.40f+","+2f+","+100f+","+0.05f+","+0.01f, false);
 	}
 	
 	public List<Node> getNodes() {
