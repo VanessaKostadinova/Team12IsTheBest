@@ -74,7 +74,6 @@ public abstract class Renderable {
     	if(isVisible) {
 	        if(x >= coordinates.x && x <= coordinates.x + sprite.getWidth()) {
 	            if(y >= coordinates.y && y <= coordinates.y + sprite.getHeight()) {
-	            	System.out.println("HIT");
 	                return true;
 	            }
 	        }	

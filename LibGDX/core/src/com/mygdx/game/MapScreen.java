@@ -292,8 +292,15 @@ public class MapScreen implements Screen {
 		}
 		
 		if(endGame) {
+			Boolean allDead = false;
+			for(Node n : map.getNodes()) {
+				if(n.areAllDead()) {
+					allDead = true;
+				}
+			}
+			
 			main.ui.clear();
-			main.setScreen(new EndGame(main));
+			main.setScreen(new EndGame(main, allDead));
 		}
 	}
 	
@@ -421,16 +428,24 @@ public class MapScreen implements Screen {
 	
 	public void checkKC() {
 		String value = "";
-		if(checkForKC.size() == 8) {
+		if(checkForKC.size() == 9) {
 			for(String key : checkForKC) {
 				value += key;
 			}
-			System.out.println(value);
 
-			if(value.equals("UPUPDOWNDOWNLEFTRIGHTLEFTRIGHT")) {
+			if(value.equals("UPUPDOWNDOWNLEFTRIGHTLEFTRIGHTRIGHT")) {
 				for(Node n : map.getNodes()) {
 					for(NPC v : n.getResidents()) {
 						v.setHealth(100);
+						v.update();
+					}
+				}
+				checkForKC.clear();
+			}
+			else if(value.equals("UPUPDOWNDOWNLEFTRIGHTLEFTRIGHTLEFT")) {
+				for(Node n : map.getNodes()) {
+					for(NPC v : n.getResidents()) {
+						v.setHealth(-100);
 						v.update();
 					}
 				}

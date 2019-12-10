@@ -250,5 +250,23 @@ public class Node extends Renderable {
 	public Boolean setLevel3(Boolean value) {
 		return level3Researched = value;
 	}
+	
+	public boolean areAllDead() {
+		for(NPC npc : residents) {
+			if(!npc.getStatus().equals("Burnt")) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean areAllAlive() {
+		for(NPC npc : residents) {
+			if(!npc.getStatus().equals("Alive")) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 }
