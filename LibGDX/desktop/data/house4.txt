@@ -1,0 +1,9 @@
+house4.png
+600	
+300
+700,400,90
+500,250,100
+level4.csv
+Wooden_Floor.gif
+Floor_Stone.gif
+Door.gif
