@@ -42,6 +42,11 @@ public class MainMenu implements Screen {
 		 * Skin required for some UI elements, not required so far here but will leave here just in case need.
 		 */
 		this.main = mainScreen;
+		
+		Image background = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/mainMenu.png")))));
+		background.setPosition(0, 0);
+		background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		main.ui.addActor(background);
 	
 		/*
 		 * Create an image which contains the texture, using GDX.files.internal
@@ -49,10 +54,10 @@ public class MainMenu implements Screen {
 		 * The head is offset from the left side of the screen by 40 Pixels.
 		 * Then it scales to make sure it fills the entire left side of the screen.
 		 */
-		Image mask = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/mask.png")))));
+		/*Image mask = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/mask.png")))));
 		mask.setPosition(0+40, 40);
 		float scale = mask.getWidth()/mask.getHeight();
-		mask.setSize(Gdx.graphics.getHeight()*scale, Gdx.graphics.getHeight());
+		mask.setSize(Gdx.graphics.getHeight()*scale, Gdx.graphics.getHeight());*/
 		
 		
 		/*
@@ -66,7 +71,7 @@ public class MainMenu implements Screen {
 		 */	
 		Image title = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0002_PLAGUE-DOCTOR.png")))));
 		title.setScaling(Scaling.fit);
-		title.setPosition(Gdx.graphics.getWidth()-title.getWidth()+225, Gdx.graphics.getHeight()+50 );
+		title.setPosition(20, Gdx.graphics.getHeight()+50 );
 		title.setSize(title.getWidth(), title.getHeight());
 		
 		/*
@@ -74,7 +79,7 @@ public class MainMenu implements Screen {
 		 */
 		Image subtitle = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0001_The-Price-of-our-Sins.png")))));
 		subtitle.setScaling(Scaling.fit);
-		subtitle.setPosition(Gdx.graphics.getWidth()-subtitle.getWidth()+225, Gdx.graphics.getHeight()-subtitle.getHeight()+ 20);
+		subtitle.setPosition(20, Gdx.graphics.getHeight()-subtitle.getHeight()+ 20);
 		subtitle.setSize(subtitle.getWidth(), subtitle.getHeight());
 		
 		/*
@@ -93,7 +98,7 @@ public class MainMenu implements Screen {
 		exit.setScaling(Scaling.fit);
 		exit.setScaleX(1.25f);
 		exit.setScaleY(1.05f);
-		exit.setPosition(Gdx.graphics.getWidth()-exit.getWidth()+172, 0 + 20 + exit.getHeight()*(1f-scaleItem));
+		exit.setPosition(20, 0 + 20 + exit.getHeight()*(1f-scaleItem));
 		exit.setSize(exit.getWidth()*scaleItem, exit.getHeight()*scaleItem);
 		exit.addListener(new ClickListener(){
 		    @Override
@@ -136,7 +141,7 @@ public class MainMenu implements Screen {
 		 */
 		final Image play = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0006_PLAY.png")))));
 		play.setScaling(Scaling.fit);
-		play.setPosition(Gdx.graphics.getWidth()-play.getWidth()+225 + play.getWidth()*(1f-scaleItem), 0 + 20 + play.getHeight()*(1f-scaleItem)+exit.getHeight()+40);
+		play.setPosition(22, 0 + 20 + play.getHeight()*(1f-scaleItem)+exit.getHeight()+40);
 		play.setSize(play.getWidth()*scaleItem, play.getHeight()*scaleItem);
 		play.addListener(new ClickListener(){
 		    @Override
@@ -157,7 +162,7 @@ public class MainMenu implements Screen {
 
 		
 		//Add all of the actors above to the stage.
-		main.ui.addActor(mask);
+		//main.ui.addActor(mask);
 		main.ui.addActor(title);
 		main.ui.addActor(subtitle);
 		main.ui.addActor(play);

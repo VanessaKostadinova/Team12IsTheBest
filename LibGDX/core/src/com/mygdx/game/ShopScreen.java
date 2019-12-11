@@ -173,7 +173,7 @@ public class ShopScreen implements Screen {
 						clickedShop.update();
 					}
 					setLabels(clickedShop);
-					playerGold.setText("PLAYER GOLD: " + readPlayer().getFood());
+					playerGold.setText("PLAYER FOOD: " + readPlayer().getFood());
 				}
 		    }
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {

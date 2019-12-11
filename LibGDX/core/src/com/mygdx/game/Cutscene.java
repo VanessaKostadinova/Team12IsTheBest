@@ -80,7 +80,7 @@ public class Cutscene implements Screen {
 		
 		l = new Label("VOID", createLabelStyleWithBackground(Color.WHITE));
 		l.setWidth(main.ui.getWidth()-50);
-		l.setHeight(300);
+		l.setHeight(200);
 		l.setWrap(true);
 		l.setFontScale(2f);
 		l.setAlignment(Align.center);
@@ -127,7 +127,7 @@ public class Cutscene implements Screen {
     	FileHandle fontFile = Gdx.files.internal("font/prstartk.ttf");
     	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
     	FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-    	parameter.size = 24;
+    	parameter.size = 12;
         LabelStyle labelStyle = new LabelStyle();
         labelStyle.font = generator.generateFont(parameter);
         labelStyle.fontColor = color;
