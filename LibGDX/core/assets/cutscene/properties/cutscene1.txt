@@ -28,11 +28,21 @@
 1/37.png#3#Or, at least, that is what we have been told.
 1/38.png#3#Now, society consists of small settlements watched over by The Order, researchers who have harnessed what little technology the old civilisations had and we could find to rebuild what was lost.
 1/39.png#9#Now, society consists of small settlements watched over by The Order, researchers who have harnessed what little technology the old civilisations had and we could find to rebuild what was lost.
-1/20.png#3#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
-1/21.png#3#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
-1/22.png#3#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
-1/23.png#2#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
-1/24.png#3#I hope to be able to uncover more about that during my stay in M-Attan, but we will have to see.
-1/25.png#3#I hope to be able to uncover more about that during my stay in M-Attan, but we will have to see.
-1/26.png#3#I hope to be able to uncover more about that during my stay in M-Attan, but we will have to see.
-1/27.png#3#I hope to be able to uncover more about that during my stay in M-Attan, but we will have to see.
+1/40.png#1.5#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
+1/40.png#1.5#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
+1/41.png#1#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
+1/42.png#1#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
+1/43.png#1#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
+1/44.png#1#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
+1/20.png#0.5#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
+1/21.png#0.5#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
+1/22.png#0.5#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
+1/23.png#0.5#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
+1/24.png#0.5#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
+1/25.png#0.5#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
+1/26.png#0.5#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
+1/27.png#1#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
+1/45.png#3#I hope to be able to uncover more about that during my stay in M-Attan, but we will have to see.
+1/45.png#3#I hope to be able to uncover more about that during my stay in M-Attan, but we will have to see.
+1/45.png#3#I hope to be able to uncover more about that during my stay in M-Attan, but we will have to see.
+1/45.png#3#I hope to be able to uncover more about that during my stay in M-Attan, but we will have to see.

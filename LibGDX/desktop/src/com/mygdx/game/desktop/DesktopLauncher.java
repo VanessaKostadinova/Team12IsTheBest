@@ -1,5 +1,6 @@
 package com.mygdx.game.desktop;
 
+import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -11,7 +12,8 @@ public class DesktopLauncher {
 		config.height = 1080;
 		config.width = 1920;
 		config.title = "Plague Doctor";
-		config.fullscreen = true;
+		config.fullscreen = false;
+		config.addIcon("icon.png", FileType.Internal);
 		new LwjglApplication(new Main(), config);
 	}
 }
