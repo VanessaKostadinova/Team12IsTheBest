@@ -148,16 +148,8 @@ public class CheckPoint implements Screen {
 	
 	
 	public void changeScreen() {
-		if(totalTime.isEmpty()) {
-			main.ui.clear();
-			main.setScreen(new HouseScreen(main, initialNode, mapScreen));
-		}
-		else {
-			l.setText(subtitles.remove());
-			l.setPosition(main.ui.getWidth()/2-l.getWidth()/2, l.getHeight()/10);
-			backgroundImage.setDrawable(background.remove());
-			waitTime = totalTime.remove();
-		}
+		main.ui.clear();
+		main.setScreen(new HouseScreen(main, initialNode, mapScreen));
 	}
 
 	@Override
