@@ -159,6 +159,17 @@ public class MainMenu implements Screen {
 			    play.setDrawable(t);
 		    }
 		});
+		
+		final Image logo = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/Team12_Logo.png")))));
+		logo.setScaling(Scaling.fit);
+		logo.setPosition(Gdx.graphics.getWidth()-Gdx.graphics.getWidth()/10, 0 + 20);
+		logo.setSize(play.getWidth()*scaleItem*2, play.getHeight()*scaleItem*2);
+		logo.addListener(new ClickListener(){
+		    @Override
+		    public void clicked(InputEvent event, float x, float y) {
+		    	Gdx.net.openURI("http://plaguedoctor.xyz/");
+		    }
+		});
 
 		
 		//Add all of the actors above to the stage.
@@ -168,6 +179,8 @@ public class MainMenu implements Screen {
 		main.ui.addActor(play);
 		//main.ui.addActor(settings);
 		main.ui.addActor(exit);
+		main.ui.addActor(logo);
+
 		
 		//Start playing the UI Soundtrack.
 		sound.play();

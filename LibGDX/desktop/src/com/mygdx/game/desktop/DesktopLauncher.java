@@ -12,7 +12,7 @@ public class DesktopLauncher {
 		config.height = 1080;
 		config.width = 1920;
 		config.title = "Plague Doctor";
-		config.fullscreen = false;
+		config.fullscreen = true;
 		config.addIcon("icon.png", FileType.Internal);
 		new LwjglApplication(new Main(), config);
 	}

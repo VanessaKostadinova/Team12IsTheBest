@@ -79,7 +79,8 @@ public class EndGame implements Screen {
 	public void changeScreen() {
 		dispose();
 		main.ui.clear();
-		main.setScreen(new Cutscene(main, "cutscene/properties/cutscene2.txt", true));
+		//main.setScreen(new Cutscene(main, "cutscene/properties/cutscene2.txt", true));
+		main.setScreen(new MainMenu(main));
 	}
 
 	@Override

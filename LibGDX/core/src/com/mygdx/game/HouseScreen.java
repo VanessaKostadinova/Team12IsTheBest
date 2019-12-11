@@ -258,7 +258,7 @@ public class HouseScreen implements Screen {
 		public void UIElements() {
 	
 			paragraph = new Label("VOID", createLabelStyleWithBackground(Color.BLACK));
-			paragraph.setWidth(letter.getWidth()-60);
+			paragraph.setWidth(letter.getWidth()-90);
 			paragraph.setWrap(true);
 			paragraph.setPosition(main.ui.getWidth()/2+50, main.ui.getHeight()/2);
 			paragraph.setVisible(false);
