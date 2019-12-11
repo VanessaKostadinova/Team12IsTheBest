@@ -17,10 +17,17 @@
 1/14.png#0.5#The bombs dropped suddenly, without warning.
 1/15.png#0.5#The bombs dropped suddenly, without warning.
 1/15.png#10#Who fired first here is irrelevant, what matters is that no one stopped to think before firing back and before long what little remained of humanity destroyed itself. 
-1/15.png#3.5#Cities and civilisation were reduced to ruins. 
-1/15.png#12#But they did not get everyone. It took a long time, no one knows how long, but we rebuilt. From the ashes rose a new world order, one that would not repeat the mistakes of the past. 
-1/15.png#3#Or, at least, that is what we have been told.
-1/15.png#12#Now, society consists of small settlements watched over by The Order, researchers who have harnessed what little technology the old civilisations had and we could find to rebuild what was lost.
+1/30.png#0.5#Cities and civilisation were reduced to ruins. 
+1/31.png#0.5#Cities and civilisation were reduced to ruins. 
+1/32.png#0.5#Cities and civilisation were reduced to ruins. 
+1/33.png#0.5#Cities and civilisation were reduced to ruins. 
+1/34.png#0.5#Cities and civilisation were reduced to ruins. 
+1/35.png#1.0#Cities and civilisation were reduced to ruins. 
+1/36.png#6#But they did not get everyone. It took a long time, no one knows how long, but we rebuilt. From the ashes rose a new world order, one that would not repeat the mistakes of the past. 
+1/37.png#6#But they did not get everyone. It took a long time, no one knows how long, but we rebuilt. From the ashes rose a new world order, one that would not repeat the mistakes of the past. 
+1/37.png#3#Or, at least, that is what we have been told.
+1/38.png#3#Now, society consists of small settlements watched over by The Order, researchers who have harnessed what little technology the old civilisations had and we could find to rebuild what was lost.
+1/39.png#9#Now, society consists of small settlements watched over by The Order, researchers who have harnessed what little technology the old civilisations had and we could find to rebuild what was lost.
 1/20.png#3#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
 1/21.png#3#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
 1/22.png#3#I am a Doctor from The Order, sent out to a village with a plague on its hands to replace their previous overseer who, as I have been told, went gone missing, presumed dead. 
