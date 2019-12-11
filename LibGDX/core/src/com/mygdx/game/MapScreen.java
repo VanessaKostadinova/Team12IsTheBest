@@ -57,7 +57,7 @@ public class MapScreen implements Screen {
 	private Camera cameraUI;
 	
 	protected Sprite background;
-	protected Sprite behindBackground;
+	//protected Sprite behindBackground;
 	private Sprite pointer;
 	
 	private Sprite shopText;
@@ -133,11 +133,12 @@ public class MapScreen implements Screen {
 		cameraUI.setMaxValues(WORLD_WIDTH, WORLD_HEIGHT);
 
 		background = new Sprite(main.assets.manager.get("house/background.png", Texture.class));
+		background.setScale(1920/background.getWidth());
 		background.setPosition(0, 0);
 		
-		behindBackground = new Sprite(main.assets.manager.get("house/water.png", Texture.class));
-		behindBackground.setPosition(0, 0);
-		behindBackground.scale(2f);
+		//behindBackground = new Sprite(main.assets.manager.get("house/water.png", Texture.class));
+		//behindBackground.setPosition(0, 0);
+		//behindBackground.scale(2f);
 		//background.setScale(WORLD_WIDTH/background.getWidth(), WORLD_HEIGHT/background.getHeight());
 		
 		
@@ -156,6 +157,11 @@ public class MapScreen implements Screen {
 		createUIElements();
 		stateTime = 0;
 		dayAnimationTime = 0;
+		
+		cameraMap.updateCameraPosition(500, 500);
+		cameraMap.getCamera().zoom = 7f;
+
+		pointer.setPosition(pointer.getX()+500, pointer.getY()+500);
 		
 				
 	}
@@ -227,7 +233,7 @@ public class MapScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0f, 0f, 0f, 1);
+		Gdx.gl.glClearColor(124/256f, 189/256f, 239/256f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		stateTime = stateTime + delta;
@@ -241,7 +247,7 @@ public class MapScreen implements Screen {
 
 	    main.batch.setProjectionMatrix(cameraMap.getCamera().combined);
 		main.batch.begin();
-			behindBackground.draw(main.batch);
+			//behindBackground.draw(main.batch);
 			background.draw(main.batch);
 			map.getShop().draw(main.batch);
 	   main.batch.end();

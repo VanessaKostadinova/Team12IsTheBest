@@ -18,7 +18,7 @@ public class Map {
 		nodes = new ArrayList<Node>();
 		readMapFile(assets);
 		this.disease = new Disease();
-		shop = new Shop(assets.manager.get("house/Shop.gif", Texture.class), 200.0f, 200.0f);
+		shop = new Shop(assets.manager.get("house/Shop.gif", Texture.class), 900.0f, 470.0f);
 		checkIfPlayerExist();
 		resetPlayerFile();
 	}

@@ -162,7 +162,7 @@ public class MainMenu implements Screen {
 		
 		final Image logo = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/Team12_Logo.png")))));
 		logo.setScaling(Scaling.fit);
-		logo.setPosition(Gdx.graphics.getWidth()-Gdx.graphics.getWidth()/10, 0 + 20);
+		logo.setPosition(Gdx.graphics.getWidth()-Gdx.graphics.getWidth()/18, 0 + 20);
 		logo.setSize(play.getWidth()*scaleItem*2, play.getHeight()*scaleItem*2);
 		logo.addListener(new ClickListener(){
 		    @Override
