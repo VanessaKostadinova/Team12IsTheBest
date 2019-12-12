@@ -90,7 +90,6 @@ public class Cutscene implements Screen {
 		l.setText(subtitles.remove());
 		waitTime = totalTime.remove();
 		
-		voiceOver.play();
 	}
 
 	@Override
@@ -101,21 +100,26 @@ public class Cutscene implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);	
-		stateTime = stateTime + delta;
-	
-		main.ui.draw();
+		if(	voiceOver.isPlaying()) {
+			Gdx.gl.glClearColor(0, 0, 0, 1);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);	
+			stateTime = stateTime + delta;
 		
-		if(stateTime > waitTime) {
-			stateTime = stateTime - waitTime;
-			changeScreen();
+			main.ui.draw();
+			
+			if(stateTime > waitTime) {
+				stateTime = stateTime - waitTime;
+				changeScreen();
+			}
+			
+			
+			if(Gdx.input.isKeyJustPressed(Keys.ENTER) ) {
+				totalTime.clear();
+				this.changeScreen();
+			}
 		}
-		
-		
-		if(Gdx.input.isKeyJustPressed(Keys.ENTER)) {
-			totalTime.clear();
-			this.changeScreen();
+		else {
+			voiceOver.play();
 		}
 	}
 	

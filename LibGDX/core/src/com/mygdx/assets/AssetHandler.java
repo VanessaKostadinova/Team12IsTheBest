@@ -102,6 +102,8 @@ public class AssetHandler {
     	manager.load(UI);
     	manager.load(BAR);
     	manager.load(HEALTHBAR);
+    	
+    	manager.load("cutscene/1/Intro.mp3", Music.class);
 			
     	
 

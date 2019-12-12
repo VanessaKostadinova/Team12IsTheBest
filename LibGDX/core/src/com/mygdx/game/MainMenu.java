@@ -29,7 +29,7 @@ public class MainMenu implements Screen {
 		/*
 		 * Simple sound file for the User Interface, loaded using LibGDX Audio library.
 		 */
-		this.sound = Gdx.audio.newMusic(Gdx.files.internal("main_menu_assets/music.wav"));
+		this.sound = Gdx.audio.newMusic(Gdx.files.internal("main_menu_assets/music.mp3"));
 		this.sound.setLooping(true);
 		/*
 		 * This makes sure the UI fits within any size of screen
@@ -146,6 +146,7 @@ public class MainMenu implements Screen {
 		play.addListener(new ClickListener(){
 		    @Override
 		    public void clicked(InputEvent event, float x, float y) {
+		    	sound.pause();
 		    	dispose();
 		    	main.ui.clear();
 		    	main.setScreen(new Cutscene(main, "cutscene/properties/cutscene1.txt", false));
