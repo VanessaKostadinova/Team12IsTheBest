@@ -29,7 +29,7 @@ public class LoadingScreen implements Screen {
 		loading = new Sprite(new Texture(Gdx.files.internal("loading/loading.png")));
 		loading.setPosition(Gdx.graphics.getWidth()/2-loading.getWidth()/2, Gdx.graphics.getHeight()/2-loading.getHeight()/2);
 		
-		loaded = new Label("0%", createLabelStyleWithBackground(Color.WHITE));
+		loaded = new Label("", createLabelStyleWithBackground(Color.WHITE));
 		loaded.setWidth(500);
 		loaded.setHeight(75);
 		loaded.setWrap(true);
