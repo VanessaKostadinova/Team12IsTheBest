@@ -83,7 +83,7 @@ public class Disease {
 			if(spreader.isDiseased()) {
 				for(NPC villagers : spreader.getResidents()) {
 					if(!villagers.getStatus().equals("Dead") && !villagers.getStatus().equals("Burnt")) {
-						double x = (Math.random()*((5-1)+1))+1; 
+						double x = (Math.random()*((40-20)+20))+20; 
 						x = x * -1;
 						villagers.changeHealth((float) x);
 					}

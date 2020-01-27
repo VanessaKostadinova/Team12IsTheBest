@@ -24,6 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.mygdx.assets.AssetHandler;
 import com.mygdx.camera.Camera;
 import com.mygdx.renderable.Node;
 
@@ -59,6 +60,8 @@ public class Cutscene implements Screen {
 
 		this.shouldLeave = shouldLeave;
 		
+		System.out.println("HIT1");
+
 		FileHandle handle = Gdx.files.internal(cutscene);
 		String[] properties = handle.readString().split("\\r?\\n");
 		for(String property : properties) {
@@ -66,13 +69,15 @@ public class Cutscene implements Screen {
 				String values[] = property.split("#");
 				totalTime.add(Float.parseFloat(values[1]));
 				subtitles.add(values[2]);
-				background.add(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("cutscene/"+values[0])))));
+				background.add(new TextureRegionDrawable(new TextureRegion(AssetHandler.manager.get("cutscene/"+values[0], Texture.class))));
 			}
 			else {
 				voiceOver = Gdx.audio.newMusic(Gdx.files.internal("cutscene/"+property));
 			}
 		}
 		
+		System.out.println("HIT2");
+
 		backgroundImage = new Image(background.remove());
 		backgroundImage.setWidth(main.ui.getWidth());
 		backgroundImage.setHeight(main.ui.getHeight());

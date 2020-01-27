@@ -45,7 +45,7 @@ public class MainMenu implements Screen {
 		
 		Image background = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/mainMenu.png")))));
 		background.setPosition(0, 0);
-		background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		background.setSize( main.ui.getCamera().viewportWidth, main.ui.getCamera().viewportHeight);
 		main.ui.addActor(background);
 	
 		/*
