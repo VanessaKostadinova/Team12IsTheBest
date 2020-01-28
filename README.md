@@ -34,10 +34,8 @@ The game will have multiple endings, depending on how the player went about the 
 - Jessica: Social Media
 - Roy: Programmer
 
-<div align="center">
- <a href="your link here"> <i class="fa fa-dribbble fa-4x"></i></a>
- <a href="your link here"> <i class="fa fa-behance-square fa-4x"></i></a>
- <a href="your link here"> <i class="fa fa-linkedin-square fa-4x"></i></a>
- <a href="your link here"> <i class="fa fa-twitter-square fa-4x"></i></a>
- <a href="your link here"> <i class="fa fa-facebook-square fa-4x"></i></a>
-</div>
+## Links <a name = "links"></a>
+[![Twitter](https://www.bing.com/th?id=OIP.NSqJBUp5ANzoR3x-myMgTQHaHa&pid=Api&rs=1)](https://play.google.com/store/apps/details?id=com.package.path)
+
+<!-- edit this image location -->
+[![Download on the AppStore](https://raw.github.com/repat/README-template/master/appstore.png)](https://itunes.apple.com/app/id123456)
