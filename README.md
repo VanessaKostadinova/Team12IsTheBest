@@ -35,7 +35,7 @@ The game will have multiple endings, depending on how the player went about the 
 - Roy: Programmer
 
 ## Links <a name = "links"></a>
-[![Twitter](https://www.bing.com/th?id=OIP.NSqJBUp5ANzoR3x-myMgTQHaHa&pid=Api&rs=1)](https://play.google.com/store/apps/details?id=com.package.path)
+[![Twitter](https://cdn3.iconfinder.com/data/icons/picons-social/57/43-twitter-64.png)](https://play.google.com/store/apps/details?id=com.package.path)
 
 <!-- edit this image location -->
 [![Download on the AppStore](https://raw.github.com/repat/README-template/master/appstore.png)](https://itunes.apple.com/app/id123456)
