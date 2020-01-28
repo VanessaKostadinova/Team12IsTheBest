@@ -35,7 +35,7 @@ The game will have multiple endings, depending on how the player went about the 
 - Roy: Programmer
 
 ## Links <a name = "links"></a>
-[![Twitter](https://cdn3.iconfinder.com/data/icons/picons-social/57/43-twitter-64.png)](https://play.google.com/store/apps/details?id=com.package.path)
+[![Twitter](https://cdn3.iconfinder.com/data/icons/picons-social/57/43-twitter-64.png)](https://twitter.com/plaguedoctor_tw)
 
 <!-- edit this image location -->
-[![Download on the AppStore](https://raw.github.com/repat/README-template/master/appstore.png)](https://itunes.apple.com/app/id123456)
+[![Instagram](https://cdn1.iconfinder.com/data/icons/andriod-app-logo/32/icon_instagram-64.png)](https://www.instagram.com/plaguedoctor_ig/)
