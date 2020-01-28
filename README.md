@@ -4,7 +4,7 @@
  <img src="https://i.imgur.com/Zb7EIIm.png" alt="Plague Doctor"></a>
 </p>
 
-<p align = "center">Created by Team 12</p>
+<p align = "center">Created by Team 12 - Aston University</p>
 
 ## Table of Contents
 
