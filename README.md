@@ -5,7 +5,6 @@
 </p>
 
 <p align = "center">Created by Team 12 - Aston University</p>
-<p align = "center">Built using Java</p>
 
 ## Table of Contents
 
