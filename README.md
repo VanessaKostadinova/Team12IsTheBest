@@ -28,13 +28,19 @@ The player's character is a Plague Doctor from the Order who has been sent to a 
 The game will have multiple endings, depending on how the player went about the game. One will be for those who healed a lot of the town. Another for those who euthanised a lot of the villagers and a final one if the town is overrun with the disease. Whether the player discovered the secrets of the story would also be featured in the ending. 
 
 ## The Team <a name = "team"></a>
-- Leon: Project Manager
-- Inder: Technical Lead
-- Vanessa: Graphics & Level Design
-- Hasan: Web Development
-- Ali: Programmer & Media Manager
-- Jessica: Social Media
-- Roy: Programmer
+- **Leon**: Project Manager
+- **Inder**: Technical Lead
+- **Vanessa**: Graphics & Level Design
+- **Hasan**: Web Development
+- **Ali**: Programmer & Media Manager
+- **Jessica**: Social Media
+- **Roy**: Programmer
+
+## Built With
+
+* [LibGDX](https://libgdx.badlogicgames.com/) - Java Game Development Framework
+* [Gradle](https://gradle.org/) - Build Automation
+* [Eclipse](https://www.eclipse.org/) - Development IDE
 
 ## Links <a name = "links"></a>
 [![Twitter](https://cdn3.iconfinder.com/data/icons/picons-social/57/43-twitter-64.png)](https://twitter.com/plaguedoctor_tw)
