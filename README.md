@@ -11,7 +11,7 @@
 - [Introduction](#introduction)
 - [What is the story?](#story)
 - [The Team](#team)
-- [Releases](#releases)
+- [Built With](#built)
 - [Links](#links)
 
 
@@ -36,7 +36,7 @@ The game will have multiple endings, depending on how the player went about the 
 - **Jessica**: Social Media
 - **Roy**: Programmer
 
-## Built With
+## Built With <a name = "built"></a>
 
 * [LibGDX](https://libgdx.badlogicgames.com/) - Java Game Development Framework
 * [Gradle](https://gradle.org/) - Build Automation
