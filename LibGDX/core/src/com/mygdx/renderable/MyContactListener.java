@@ -49,7 +49,7 @@ public class MyContactListener implements ContactListener {
 		Fixture fixB = contact.getFixtureB();
 		
 		if(fixA.getUserData() == "head" || fixB.getUserData() == "head") {
-			Fixture head = fixA.getUserData() == "head" ? fixA : fixB;
+			//Fixture head = fixA.getUserData() == "head" ? fixA : fixB;
 			WHit = false;
 			
 		}

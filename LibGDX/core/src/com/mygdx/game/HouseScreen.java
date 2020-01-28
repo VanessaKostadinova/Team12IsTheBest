@@ -1,9 +1,7 @@
 package com.mygdx.game;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
@@ -16,9 +14,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -28,14 +24,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.mygdx.assets.AssetHandler;
 import com.mygdx.camera.Camera;
 import com.mygdx.house.Torch;
 import com.mygdx.renderable.Constants;
 import com.mygdx.renderable.NPC;
 import com.mygdx.renderable.Node;
 import com.mygdx.renderable.Player;
-
-import box2dLight.ConeLight;
 import box2dLight.Light;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
@@ -114,7 +109,7 @@ public class HouseScreen implements Screen {
 		    p.setRotation(90);
 			setAllItemPickups();
 			
-			letter = new Image(new SpriteDrawable(new Sprite(main.assets.manager.get("pickups/letter/LETTER.png", Texture.class))));
+			letter = new Image(new SpriteDrawable(new Sprite(AssetHandler.manager.get("pickups/letter/LETTER.png", Texture.class))));
 			letter.setPosition(main.ui.getWidth()/2-letter.getWidth()/2, main.ui.getHeight()/2-letter.getHeight()/2);
 			letter.setVisible(false);
 			main.ui.addActor(letter);
@@ -265,7 +260,7 @@ public class HouseScreen implements Screen {
 			
 			main.ui.addActor(paragraph);
 			
-			icon = new Image(new SpriteDrawable(new Sprite(main.assets.manager.get("player/icon/ICON.png", Texture.class))));
+			icon = new Image(new SpriteDrawable(new Sprite(AssetHandler.manager.get("player/icon/ICON.png", Texture.class))));
 			icon.setPosition(main.ui.getWidth()/2+p.getSprite().getWidth()+icon.getWidth(), main.ui.getHeight()/2+p.getSprite().getHeight()+icon.getHeight());
 			icon.setVisible(false);
 			main.ui.addActor(icon);
@@ -275,7 +270,7 @@ public class HouseScreen implements Screen {
 			uiCurrentSpray.setPosition(10, main.ui.getHeight() - uiCurrentSpray.getHeight() - 10);		
 			main.ui.addActor(uiCurrentSpray);
 			
-			ui = new Image(new SpriteDrawable(new Sprite(main.assets.manager.get("house/UI/MAPUI.png", Texture.class))));
+			ui = new Image(new SpriteDrawable(new Sprite(AssetHandler.manager.get("house/UI/MAPUI.png", Texture.class))));
 			//ui.setDrawable(new SpriteDrawable(new Sprite(main.assets.manager.get("house/UI/MAPUI.png", Texture.class))));
 			ui.setPosition(10+uiCurrentSpray.getWidth(), main.ui.getHeight() - ui.getHeight() - 10);		
 			main.ui.addActor(ui);
@@ -291,7 +286,7 @@ public class HouseScreen implements Screen {
 			//sanityLabel.setFontScale(0.6f);
 			//main.ui.addActor(sanityLabel);
 			
-			maskBar = main.assets.manager.get("house/UI/BAR.png", Texture.class);
+			maskBar = AssetHandler.manager.get("house/UI/BAR.png", Texture.class);
 			bar = new Image(new SpriteDrawable(new Sprite(maskBar)));
 			bar.setPosition(200+uiCurrentSpray.getWidth(), main.ui.getHeight()-125);
 			bar.setWidth(250 * (p.getHealth()/p.getInitialMask()));
@@ -376,7 +371,7 @@ public class HouseScreen implements Screen {
 			pickups = new ArrayList<>();
 			for(Vector2 vector : node.getNotes().keySet()) {
 				if(!node.getNoteValidation().get(node.getNotes().get(vector))) {
-					Sprite s = new Sprite(main.assets.manager.get("pickups/letter/PICKUP.png", Texture.class));
+					Sprite s = new Sprite(AssetHandler.manager.get("pickups/letter/PICKUP.png", Texture.class));
 					s.setPosition(vector.x, vector.y);
 					pickups.add(s);
 				}

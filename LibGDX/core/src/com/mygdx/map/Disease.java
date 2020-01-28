@@ -1,10 +1,7 @@
 package com.mygdx.map;
 
 import java.util.List;
-import java.util.Random;
-
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.mygdx.renderable.NPC;
 import com.mygdx.renderable.Node;
 

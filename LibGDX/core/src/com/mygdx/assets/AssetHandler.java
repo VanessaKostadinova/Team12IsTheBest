@@ -1,9 +1,18 @@
 package com.mygdx.assets;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 public class AssetHandler {
     public static AssetManager manager = new AssetManager();
@@ -47,7 +56,7 @@ public class AssetHandler {
     private static final AssetDescriptor<Texture> BAR = new AssetDescriptor<Texture>("house/UI/BAR.png", Texture.class);
     
     private static final AssetDescriptor<Texture> HEALTHBAR = new AssetDescriptor<Texture>("house/UI/HEALTH.png", Texture.class);
-
+    private static final AssetDescriptor<Texture> DialogPlayer = new AssetDescriptor<Texture>("player/MAPUI/dialog.png", Texture.class);
     
     private static final AssetDescriptor<Texture> scene1Part1 = new AssetDescriptor<Texture>("cutscene/1/1.png", Texture.class);
     private static final AssetDescriptor<Texture> scene1Part2 = new AssetDescriptor<Texture>("cutscene/1/2.png", Texture.class);
@@ -90,7 +99,11 @@ public class AssetHandler {
     private static final AssetDescriptor<Texture> scene1Part39 = new AssetDescriptor<Texture>("cutscene/1/45.png", Texture.class);
     private static final AssetDescriptor<Texture> scene1Part40 = new AssetDescriptor<Texture>("cutscene/1/46.png", Texture.class);
 
-
+    
+    public static final Skin skinUI = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
+    public static final LabelStyle fontSize24 = createLabelStyleWithBackground();
+    public static final LabelStyle fontSize48 = createLabelStyleWithBackground2();
+    public static final LabelStyle fontSize12Subtitles = createLabelStyleWithBackground(Color.WHITE);
 
 
 
@@ -129,7 +142,7 @@ public class AssetHandler {
     	manager.load(healthBarPlayerUI);
     	manager.load(nextLabelPlayerUI);
     	manager.load(forwardPlayerUI);
-    	
+    	manager.load(DialogPlayer);
     	manager.load(shopBuyUI);
     	manager.load(shopBuyHoverUI);
     	manager.load(shopItemUI);
@@ -188,12 +201,53 @@ public class AssetHandler {
     	manager.load(scene1Part38);
     	manager.load(scene1Part39);
     	manager.load(scene1Part40);
-
     	manager.load("cutscene/1/Intro.mp3", Music.class);
-			
-    	
 
 
+    }
+    
+    private static LabelStyle createLabelStyleWithBackground() {
+
+    	///core/assets/font/Pixel.ttf
+    	FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
+    	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
+    	FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+    	parameter.size = 24;
+        LabelStyle labelStyle = new LabelStyle();
+        labelStyle.font = generator.generateFont(parameter);
+        labelStyle.fontColor = Color.WHITE;
+		
+        return labelStyle;
+    }
+    
+    private static LabelStyle createLabelStyleWithBackground2() {
+
+    	///core/assets/font/Pixel.ttf
+    	FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
+    	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
+    	FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+    	parameter.size = 48;
+        LabelStyle labelStyle = new LabelStyle();
+        labelStyle.font = generator.generateFont(parameter);
+        labelStyle.fontColor = Color.WHITE;
+		
+        return labelStyle;
+    }
+    
+    private static LabelStyle createLabelStyleWithBackground(Color color) {
+    	///core/assets/font/Pixel.ttf
+    	FileHandle fontFile = Gdx.files.internal("font/prstartk.ttf");
+    	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
+    	FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+    	parameter.size = 12;
+        LabelStyle labelStyle = new LabelStyle();
+        labelStyle.font = generator.generateFont(parameter);
+        labelStyle.fontColor = color;
+        Sprite s = new Sprite(new Texture(Gdx.files.internal("misc/white.png")));
+        s.setColor(Color.BLACK);
+        s.setAlpha(0.75f);
+        labelStyle.background = new SpriteDrawable(s);
+        return labelStyle;
     }
 
     public void dispose() {

@@ -1,6 +1,5 @@
 package com.mygdx.shop;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 public class Upgrade {
 	
@@ -9,8 +8,6 @@ public class Upgrade {
 	protected float increasingValue;
 	protected float cost;
 	protected int level;
-	
-
 	
 	public Upgrade(String name, String description, float increasingValue, float cost) {
 		this.name = name;

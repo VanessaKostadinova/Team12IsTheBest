@@ -1,10 +1,7 @@
 package com.mygdx.game;
 
 import java.io.Serializable;
-
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -14,7 +11,12 @@ import com.mygdx.camera.Camera;
 
 public class Main extends Game implements Serializable {
 	
-    /** The sprite batch. */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/** The sprite batch. */
     public SpriteBatch batch;
     
     public ShapeRenderer shape;

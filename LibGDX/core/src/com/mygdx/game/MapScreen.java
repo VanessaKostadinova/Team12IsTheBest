@@ -2,36 +2,21 @@ package com.mygdx.game;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 import com.mygdx.map.Disease;
 import com.mygdx.map.Map;
 import com.mygdx.renderable.NPC;
@@ -41,6 +26,7 @@ import com.mygdx.shop.Shop;
 
 import box2dLight.RayHandler;
 
+import com.mygdx.assets.AssetHandler;
 import com.mygdx.camera.Camera;;
 
 public class MapScreen implements Screen {
@@ -70,7 +56,6 @@ public class MapScreen implements Screen {
 	
 	private Sprite baseUI;
 	private Sprite foodLabel;
-	private Sprite forwardButton;
 	
 	private float movement =(12000f/60f);
 	private float houseAlpha = 0;
@@ -102,7 +87,6 @@ public class MapScreen implements Screen {
 	private Player p;
 	private Disease disease;
 	
-	private Node nodeHit;
 	private Label numberOfCharacter;
 	private Label numberOfcharacterTitle;
 	private Label numberOfcharacterSickTitle;
@@ -116,8 +100,6 @@ public class MapScreen implements Screen {
 	
 	public MapScreen(Main main) {	
 		this.viewWidth = 256;
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
 		
 		isPaused = false;
 		cameraMap = new Camera(viewWidth, 1080, 1920);
@@ -132,15 +114,9 @@ public class MapScreen implements Screen {
 				cameraUI.getCamera().viewportHeight / 2f, 0);
 		cameraUI.setMaxValues(WORLD_WIDTH, WORLD_HEIGHT);
 
-		background = new Sprite(main.assets.manager.get("house/background.png", Texture.class));
+		background = new Sprite(AssetHandler.manager.get("house/background.png", Texture.class));
 		background.setScale(1920/background.getWidth());
 		background.setPosition(0, 0);
-		
-		//behindBackground = new Sprite(main.assets.manager.get("house/water.png", Texture.class));
-		//behindBackground.setPosition(0, 0);
-		//behindBackground.scale(2f);
-		//background.setScale(WORLD_WIDTH/background.getWidth(), WORLD_HEIGHT/background.getHeight());
-		
 		
 		this.darkness = 0f;
 		this.world = new World(new Vector2(0,0), false);
@@ -172,53 +148,52 @@ public class MapScreen implements Screen {
 		if(scaleItem < 1) {
 			scaleItem = 1;
 		}
-		
-		this.skin = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
+		this.skin = AssetHandler.skinUI;
 		
 		pauseGame();
 		
-		this.pointer = new Sprite(main.assets.manager.get("house/aim.png", Texture.class));
+		this.pointer = new Sprite(AssetHandler.manager.get("house/aim.png", Texture.class));
 		pointer.setPosition(
 				cameraMap.getViewport().getWorldWidth()/2-pointer.getWidth()/2, 
 				cameraMap.getViewport().getWorldHeight()/2-pointer.getHeight()/2);
 		
-		this.enterHouse = new Sprite(main.assets.manager.get("house/MAP_ENTERHOUSE.png", Texture.class));
+		this.enterHouse = new Sprite(AssetHandler.manager.get("house/MAP_ENTERHOUSE.png", Texture.class));
 		enterHouse.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
 		enterHouse.setPosition(-72.5f, -80);
 		enterHouse.setAlpha(houseAlpha);
 		
-		this.inspectHouse = new Sprite(main.assets.manager.get("house/MAP_INSPECT.png", Texture.class));
+		this.inspectHouse = new Sprite(AssetHandler.manager.get("house/MAP_INSPECT.png", Texture.class));
 		inspectHouse.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
 		inspectHouse.setPosition(-240, -80);
 		inspectHouse.setAlpha(houseAlpha);
 		
-		this.inspectDialog = new Sprite(new Texture(Gdx.files.internal("player/MAPUI/dialog.png")));
+		this.inspectDialog = new Sprite(AssetHandler.manager.get("player/MAPUI/dialog.png", Texture.class));
 		inspectDialog.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
 		inspectDialog.setScale(0.125f);
 		inspectDialog.setScale(0.128f, 0.132f);
 		inspectDialog.setPosition(-252, -290);
 		inspectDialog.setAlpha(houseAlpha);
 		
-		this.houseText = new Sprite(main.assets.manager.get("house/MAP_HOUSE.png", Texture.class));
+		this.houseText = new Sprite(AssetHandler.manager.get("house/MAP_HOUSE.png", Texture.class));
 		houseText.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
 		houseText.setPosition(-66f, 72f);
 		houseText.setAlpha(houseAlpha);
 
-		this.enterShop = new Sprite(main.assets.manager.get("shop/ENTER_SHOP.png", Texture.class));
+		this.enterShop = new Sprite(AssetHandler.manager.get("shop/ENTER_SHOP.png", Texture.class));
 		enterShop.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
 		enterShop.setPosition(-72.5f, -80);
 		enterShop.setAlpha(shopAlpha);
 		
-		this.shopText = new Sprite(main.assets.manager.get("shop/SHOP.png", Texture.class));
+		this.shopText = new Sprite(AssetHandler.manager.get("shop/SHOP.png", Texture.class));
 		shopText.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
 		shopText.setPosition(-64.5f, 72.5f);
 		shopText.setAlpha(shopAlpha);
 		
-		this.baseUI = new Sprite(main.assets.manager.get("player/MAPUI/BaseUI.png", Texture.class));
+		this.baseUI = new Sprite(AssetHandler.manager.get("player/MAPUI/BaseUI.png", Texture.class));
 		baseUI.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
 		baseUI.setPosition(-5, 30);
 		
-		this.foodLabel = new Sprite(main.assets.manager.get("player/MAPUI/NextLabel.png", Texture.class));
+		this.foodLabel = new Sprite(AssetHandler.manager.get("player/MAPUI/NextLabel.png", Texture.class));
 		foodLabel.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
 		foodLabel.setPosition(47, 74.5f);
 	
@@ -233,6 +208,7 @@ public class MapScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
+		System.out.println("HIT!");
 		Gdx.gl.glClearColor(124/256f, 189/256f, 239/256f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
@@ -499,7 +475,6 @@ public class MapScreen implements Screen {
 			numberOfcharacterDiseasedTitle.setVisible(false);
 			numberOfCharacterDiseased.setVisible(false);
 			
-			Boolean fade = false;
 			dayAnimationTime = dayAnimationTime + delta;
 			
 			if(dayAnimationTime > 2) {
@@ -724,11 +699,13 @@ public class MapScreen implements Screen {
     	 *
     	 * The window containing all the values is called pause
     	 */
-        float windowWidth = 200*scaleItem, windowHeight = 200*scaleItem;
+        
+		float windowWidth = 200*scaleItem, windowHeight = 200*scaleItem;
         pause = new Window("", skin);
         pause.setMovable(false); //So the user can't move the window
         //final TextButton button1 = new TextButton("Resume", skin);
-        final Label button1 = new Label("RESUME", createLabelStyleWithBackground());
+
+        final Label button1 = new Label("RESUME", AssetHandler.fontSize24);
         button1.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
         button1.addListener(new ClickListener() {
             @Override
@@ -737,7 +714,8 @@ public class MapScreen implements Screen {
                 pause.setVisible(false);
             }
         });
-        Label button2 = new Label("EXIT", createLabelStyleWithBackground());
+		        
+        Label button2 = new Label("EXIT", AssetHandler.fontSize24);
         button2.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
         button2.addListener(new ClickListener() {
             @Override
@@ -762,13 +740,13 @@ public class MapScreen implements Screen {
         //Adds it to the UI Screen.
         main.ui.addActor(pause);
         
-		dayLabel = new Label("DAY " + day , createLabelStyleWithBackgroundFont48());
+		dayLabel = new Label("DAY " + day , AssetHandler.fontSize48);
 		dayLabel.setPosition(main.ui.getWidth()/2-dayLabel.getWidth()/2, main.ui.getHeight()/2-dayLabel.getHeight()/2);
 		dayLabel.setVisible(false);
 		main.ui.addActor(dayLabel);
 
 		
-		energy = new Label(readPlayer().getEnergy()+"", createLabelStyleWithBackground());
+		energy = new Label(readPlayer().getEnergy()+"", AssetHandler.fontSize24);
 		energy.setWidth(450f);
 		energy.setFontScale(2.5f);
 		energy.setAlignment(Align.center);
@@ -777,77 +755,52 @@ public class MapScreen implements Screen {
 		//energy.setVisible(false);
 		main.ui.addActor(energy);
 		
-		numberOfcharacterTitle = new Label("NUMBER OF ALIVE: ", createLabelStyleWithBackground());
+		numberOfcharacterTitle = new Label("NUMBER OF ALIVE: ", AssetHandler.fontSize24);
 		numberOfcharacterTitle.setWidth(500f);
 		numberOfcharacterTitle.setFontScale(1.3f);
 		numberOfcharacterTitle.setPosition(90, main.ui.getHeight() - 150);
 		numberOfcharacterTitle.setVisible(false);
 		main.ui.addActor(numberOfcharacterTitle);
 		
-		numberOfCharacter = new Label("NOT KNOWN", createLabelStyleWithBackground());
+		numberOfCharacter = new Label("NOT KNOWN", AssetHandler.fontSize24);
 		numberOfCharacter.setWidth(500f);
 		numberOfCharacter.setPosition(90, main.ui.getHeight() - 150 -numberOfcharacterTitle.getHeight());
 		numberOfCharacter.setVisible(false);
 		main.ui.addActor(numberOfCharacter);
 		
 		
-		numberOfcharacterSickTitle = new Label("NUMBER OF SICK: ", createLabelStyleWithBackground());
+		numberOfcharacterSickTitle = new Label("NUMBER OF SICK: ", AssetHandler.fontSize24);
 		numberOfcharacterSickTitle.setWidth(500f);
 		numberOfcharacterSickTitle.setFontScale(1.3f);
 		numberOfcharacterSickTitle.setPosition(90, main.ui.getHeight() - 150 -numberOfCharacter.getHeight()-numberOfcharacterTitle.getHeight());
 		numberOfcharacterSickTitle.setVisible(false);
 		main.ui.addActor(numberOfcharacterSickTitle);
 		
-		numberOfCharacterSick = new Label("NOT KNOWN", createLabelStyleWithBackground());
+		numberOfCharacterSick = new Label("NOT KNOWN", AssetHandler.fontSize24);
 		numberOfCharacterSick.setWidth(500f);
 		numberOfCharacterSick.setPosition(90, main.ui.getHeight() - 150 -numberOfcharacterSickTitle.getHeight()-numberOfCharacter.getHeight()-numberOfcharacterTitle.getHeight());
 		numberOfCharacterSick.setVisible(false);
 		main.ui.addActor(numberOfCharacterSick);
 		
-		numberOfcharacterDiseasedTitle = new Label("NUMBER OF DEAD: ", createLabelStyleWithBackground());
+		numberOfcharacterDiseasedTitle = new Label("NUMBER OF DEAD: ", AssetHandler.fontSize24);
 		numberOfcharacterDiseasedTitle.setWidth(500f);
 		numberOfcharacterDiseasedTitle.setFontScale(1.3f);
 		numberOfcharacterDiseasedTitle.setPosition(90, main.ui.getHeight() - 150 -numberOfCharacterSick.getHeight()-numberOfcharacterSickTitle.getHeight()-numberOfCharacter.getHeight()-numberOfcharacterTitle.getHeight());
 		numberOfcharacterDiseasedTitle.setVisible(false);
 		main.ui.addActor(numberOfcharacterDiseasedTitle);
 		
-		numberOfCharacterDiseased = new Label("NOT KNOWN", createLabelStyleWithBackground());
+		numberOfCharacterDiseased = new Label("NOT KNOWN", AssetHandler.fontSize24);
 		numberOfCharacterDiseased.setWidth(500f);
 		numberOfCharacterDiseased.setPosition(90, main.ui.getHeight() - 150 -numberOfcharacterDiseasedTitle.getHeight() -numberOfCharacterSick.getHeight()-numberOfcharacterSickTitle.getHeight()-numberOfCharacter.getHeight()-numberOfcharacterTitle.getHeight());
 		numberOfCharacterDiseased.setVisible(false);
 		main.ui.addActor(numberOfCharacterDiseased);
 		
-		
-		
 		Gdx.input.setInputProcessor(main.ui);
-
     }
     
     
-    private LabelStyle createLabelStyleWithBackground() {
-    	///core/assets/font/Pixel.ttf
-    	FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
-    	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
-    	FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-    	parameter.size = 24;
-        LabelStyle labelStyle = new LabelStyle();
-        labelStyle.font = generator.generateFont(parameter);
-        labelStyle.fontColor = Color.WHITE;
-        return labelStyle;
-    }
     
     
-    private LabelStyle createLabelStyleWithBackgroundFont48() {
-    	///core/assets/font/Pixel.ttf
-    	FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
-    	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
-    	FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-    	parameter.size = 48;
-        LabelStyle labelStyle = new LabelStyle();
-        labelStyle.font = generator.generateFont(parameter);
-        labelStyle.fontColor = Color.WHITE;
-        return labelStyle;
-    }
 	/**
 	 * Toggle isPaused variable.
 	 */

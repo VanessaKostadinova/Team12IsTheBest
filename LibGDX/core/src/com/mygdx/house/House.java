@@ -20,9 +20,7 @@ public class House {
 	
 	private int[][] background;
 	private int[][] backgroundProperties;
-	
-	private float width;
-	private float height;
+
 	
 	private List<Torch> torches;
 
@@ -106,8 +104,8 @@ public class House {
             String page  = handle.readString();
             String lines[] = page.split("\\r?\\n");
             background = new int[lines.length][(lines[0].length()+1)/2];
-            height = (lines[0].length()+1)/2;
-            width = lines.length;
+            //height = (lines[0].length()+1)/2;
+            //width = lines.length;
             
             
             final String splitter = ",";

@@ -1,27 +1,18 @@
 package com.mygdx.game;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.assets.AssetHandler;
@@ -83,7 +74,7 @@ public class Cutscene implements Screen {
 		backgroundImage.setHeight(main.ui.getHeight());
 		main.ui.addActor(backgroundImage);
 		
-		l = new Label("VOID", createLabelStyleWithBackground(Color.WHITE));
+		l = new Label("VOID", AssetHandler.fontSize12Subtitles);
 		l.setWidth(main.ui.getWidth()-50);
 		l.setHeight(200);
 		l.setWrap(true);
@@ -128,24 +119,6 @@ public class Cutscene implements Screen {
 		}
 	}
 	
-	
-	
-	
-    private LabelStyle createLabelStyleWithBackground(Color color) {
-    	///core/assets/font/Pixel.ttf
-    	FileHandle fontFile = Gdx.files.internal("font/prstartk.ttf");
-    	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
-    	FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-    	parameter.size = 12;
-        LabelStyle labelStyle = new LabelStyle();
-        labelStyle.font = generator.generateFont(parameter);
-        labelStyle.fontColor = color;
-        Sprite s = new Sprite(new Texture(Gdx.files.internal("misc/white.png")));
-        s.setColor(Color.BLACK);
-        s.setAlpha(0.75f);
-        labelStyle.background = new SpriteDrawable(s);
-        return labelStyle;
-    }
 	
 	public void changeScreen() {
 		if(totalTime.isEmpty()) {

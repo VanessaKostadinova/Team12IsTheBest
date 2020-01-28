@@ -1,23 +1,14 @@
 package com.mygdx.renderable;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.Json.Serializable;
-import com.badlogic.gdx.utils.JsonValue;
 import com.mygdx.house.House;
 
 public class Node extends Renderable {

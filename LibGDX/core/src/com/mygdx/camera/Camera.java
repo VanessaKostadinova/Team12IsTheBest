@@ -15,6 +15,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class Camera implements Serializable {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * The instance of the camera.
 	 */
 	private OrthographicCamera camera;

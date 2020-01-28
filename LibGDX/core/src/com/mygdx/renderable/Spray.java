@@ -9,15 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-
-import box2dLight.ConeLight;
-import box2dLight.RayHandler;
 
 public class Spray extends Renderable {
 	
@@ -26,7 +17,7 @@ public class Spray extends Renderable {
 	protected static final int FRAME_COLS = 2;
 	protected static final int FRAME_ROWS = 1;
 	protected Animation<TextureRegion> Animation;	
-	private ConeLight light;
+	//private ConeLight light;
 	private Color colorLight;
 	private float deltaValue;
 	

@@ -6,7 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
@@ -52,7 +51,6 @@ public class HouseInputHandler implements InputProcessor {
 	
 	private Image letter;
 	
-	private Boolean Up, Down, Left, Right;
 	
 	
 	/** The npcs. */
@@ -60,7 +58,6 @@ public class HouseInputHandler implements InputProcessor {
 
 	private Image icon;
 	
-	private World world;
 	
 	private MyContactListener listener;
 
@@ -80,16 +77,9 @@ public class HouseInputHandler implements InputProcessor {
 		this.icon = icon;
 		this.paragraph = paragraph;
 		this.letter = letter;
-		this.world = world;
 		listener = new MyContactListener();
 		world.setContactListener(listener);
 		lastInput = "";
-		
-		
-		Up = false;
-		Down = false;
-		Left = false;
-		Right = false;
 	}
 	
 	
@@ -343,8 +333,9 @@ public class HouseInputHandler implements InputProcessor {
 		return false;
 	}
 	
-	public void sprayWithVillagerCollision(List<NPC> list) {
+	public boolean sprayWithVillagerCollision(List<NPC> list) {
 		Boolean value = player.getSpray().collision(list, player.getSprayIndex(), player);
+		return value;
 	}
 	
 	private void spriteRotations(int screenX, int screenY) {

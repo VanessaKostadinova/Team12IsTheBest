@@ -19,7 +19,7 @@ public class NPC extends Renderable implements Living {
 	private static final int FRAME_ROWS = 2;
 	
 	private float health;
-	private float susceptibility;
+	//private float susceptibility;
 	private boolean foodGiven;
 	private boolean isHealed;
 	
