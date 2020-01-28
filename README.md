@@ -33,3 +33,11 @@ The game will have multiple endings, depending on how the player went about the 
 - Ali: Programmer & Media Manager
 - Jessica: Social Media
 - Roy: Programmer
+
+<div align="center">
+ <a href="your link here"> <i class="fa fa-dribbble fa-4x"></i></a>
+ <a href="your link here"> <i class="fa fa-behance-square fa-4x"></i></a>
+ <a href="your link here"> <i class="fa fa-linkedin-square fa-4x"></i></a>
+ <a href="your link here"> <i class="fa fa-twitter-square fa-4x"></i></a>
+ <a href="your link here"> <i class="fa fa-facebook-square fa-4x"></i></a>
+</div>
