@@ -34,8 +34,7 @@ The game will have multiple endings, depending on how the player went about the 
 - Jessica: Social Media
 - Roy: Programmer
 
-<p align="center">
 ## Links <a name = "links"></a>
 [![Twitter](https://cdn3.iconfinder.com/data/icons/picons-social/57/43-twitter-64.png)](https://twitter.com/plaguedoctor_tw) 
 [![Instagram](https://cdn1.iconfinder.com/data/icons/andriod-app-logo/32/icon_instagram-64.png)](https://www.instagram.com/plaguedoctor_ig/)
-</p>
+
