@@ -3,3 +3,9 @@
 <p align="center">
  <img src="https://i.imgur.com/Zb7EIIm.png" alt="Plague Doctor"></a>
 </p>
+
+<div align="center">
+  [![Status](https://img.shields.io/badge/status-active-success.svg)]()
+</div>
+
+<p align = "center">Created by Team 12</p>
