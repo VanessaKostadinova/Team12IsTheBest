@@ -11,6 +11,8 @@
 - [Introduction](#introduction)
 - [What is the story?](#story)
 - [The Team](#team)
+- [Releases](#releases)
+- [Links](#links)
 
 
 ## Introduction? <a name = "introduction"></a>
