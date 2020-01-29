@@ -43,7 +43,7 @@ The game will have multiple endings, depending on how the player went about the 
 * [Eclipse](https://www.eclipse.org/) - Development IDE
 
 ## Links <a name = "links"></a>
-[![Twitter](https://cdn3.iconfinder.com/data/icons/picons-social/57/43-twitter-64.png)](https://twitter.com/plaguedoctor_tw)
+[![Twitter](https://cdn3.iconfinder.com/data/icons/picons-social/57/43-twitter-64.png)](https://twitter.com/PDoctorGame)
 [![Instagram](https://cdn1.iconfinder.com/data/icons/andriod-app-logo/32/icon_instagram-64.png)](https://www.instagram.com/plaguedoctor_ig/)
 [![Youtube](https://cdn1.iconfinder.com/data/icons/andriod-app-logo/32/icon_youtube-64.png)](https://www.youtube.com/channel/UC85WuPRDuFAJgTmK5Cfw3vg)
 [![Website](https://cdn1.iconfinder.com/data/icons/button-glyph/64/button_2-27-64.png)](https://plaguedoctor.xyz/)
