@@ -11,12 +11,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.house.House;
 
+import static java.lang.Float.*;
+
+/**
+ *
+ */
 public class Node extends Renderable {
 	
 	private House house;
 	private ArrayList<NPC> residents;
 
-	private Map<Vector2, String> notes; 
+	private Map<Vector2, String> notes = new HashMap<>();
 	private Map<String, Boolean> noteSeen;
 	private Boolean isDiseased;
 	
@@ -31,7 +36,6 @@ public class Node extends Renderable {
 		super.setSprite(textureOfHouse, x, y);
 		isDiseased = false;
 		residents = new ArrayList<>();
-		notes = new HashMap<>();
 		noteSeen = new HashMap<>();
 		setAllVillagers(attributes);
 		this.house = new House(attributes);
@@ -43,13 +47,14 @@ public class Node extends Renderable {
 		for(String s : attributes) {
 			if(s.contains(",") && !s.contains("(")) {
 				String[] values = s.split(",");
-				NPC n = new NPC(Float.valueOf(values[2]));
-				n.updateSprite(Float.valueOf(values[0]), Float.valueOf(values[1]));
+				NPC n = new NPC(parseFloat(values[2]));
+				n.updateSprite(parseFloat(values[0]),
+						parseFloat(values[1]));
 				residents.add(n);
 			}
 			else if (s.contains(",")) {
 				String[] values = s.split(",");
-				notes.put(new Vector2(Float.valueOf(values[1]), Float.valueOf(values[2])), values[0].substring(1));
+				notes.put(new Vector2(parseFloat(values[1]), valueOf(values[2])), values[0].substring(1));
 				noteSeen.put(values[0].substring(1), false);
 			}
 		}
@@ -83,9 +88,11 @@ public class Node extends Renderable {
 	public void updateHouseDiseased() {
 		this.isDiseased = false;
 		for(NPC n : residents) {
-			if(n.getStatus().equals("Sick") || n.getStatus().equals("Dead")) {
-				this.isDiseased = true;
+			if (!n.getStatus().equals("Sick") && !n.getStatus().equals("Dead")) {
+				continue;
 			}
+			this.isDiseased = true;
+			break;
 		}
 	}
 	
@@ -178,23 +185,23 @@ public class Node extends Renderable {
 	
 	public void serializeVillagers() {    
 		FileHandle handle = Gdx.files.local("temp/villagers.temp");
-		String s = "";
+		StringBuilder s = new StringBuilder();
 		for(NPC npc : residents) {
-			s = s + npc.getHealth()+","+npc.getSprite().getX()+","+npc.getSprite().getY() + "\n";
+			s.append(npc.getHealth()).append(",").append(npc.getSprite().getX()).append(",").append(npc.getSprite().getY()).append("\n");
 		}
-		handle.writeString(s, false);
+		handle.writeString(s.toString(), false);
 	}
 	
 	public void resetVillagers() {
 		FileHandle handle = Gdx.files.local("temp/villagers.temp");
-        String lines[] = handle.readString().split("\\r?\\n");
+        String[] lines = handle.readString().split("\\r?\\n");
         residents.clear();
         for(int i = 0; i < lines.length; i++) {
-        	String values[] = lines[i].split(",");
-			NPC n = new NPC(Float.valueOf(values[0]));
-			n.updateSprite(Float.valueOf(values[1]), Float.valueOf(values[2]));
-        	residents.add(n);
-        }
+			String[] values = lines[i].split(",");
+			NPC n = new NPC(valueOf(values[0]));
+			n.updateSprite(valueOf(values[1]), valueOf(values[2]));
+			residents.add(n);
+		}
 	}
 
 
@@ -226,10 +233,7 @@ public class Node extends Renderable {
 	}
 	
 	public Boolean reachedMaxLevel() {
-		if(level3Researched) {
-			return true;
-		}
-		return false;
+		return level3Researched;
 	}
 	
 	public Boolean getLevel1() {

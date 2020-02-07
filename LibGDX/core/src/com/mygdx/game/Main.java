@@ -9,23 +9,31 @@ import com.mygdx.assets.AssetHandler;
 import com.mygdx.assets.LoadingScreen;
 import com.mygdx.camera.Camera;
 
+/**
+ * The Main class, which initialises the main assets and values in the game,
+ * @author Inder Panesar
+ * @version 1.5
+ */
 public class Main extends Game implements Serializable {
 	
     /**
-	 * 
+	 * Serialization Unique Identification value.
 	 */
 	private static final long serialVersionUID = 1L;
 
 	/** The sprite batch. */
     public SpriteBatch batch;
-    
+
+    /** The renderer for lines between houses */
     public ShapeRenderer shape;
     
     /** The stage for the ui. */
     public Stage ui;
-    
+
+    /** Initialises the assetHandler */
     public AssetHandler assets;
-    
+
+    /** The Main Camera for the UI */
     private Camera camera;
    
 

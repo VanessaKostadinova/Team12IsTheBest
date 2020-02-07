@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
 * Represents the camera which can be created in any scene.
 * One Screen may only have many cameras.
-* @author Team 12
+* @author Inder Panesar
 *
 */
 public class Camera implements Serializable {

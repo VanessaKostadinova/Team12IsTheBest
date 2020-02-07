@@ -23,17 +23,12 @@ import com.mygdx.renderable.NPC;
 import com.mygdx.renderable.Node;
 import com.mygdx.renderable.Player;
 import com.mygdx.shop.Shop;
-
 import box2dLight.RayHandler;
-
 import com.mygdx.assets.AssetHandler;
-import com.mygdx.camera.Camera;;
+import com.mygdx.camera.Camera;
 
 public class MapScreen implements Screen {
 
-	private final int WORLD_WIDTH = 1920*2;
-	private final int WORLD_HEIGHT = 1080*2;
-	
 	private float stateTime;
 	
 	private Main main;
@@ -56,8 +51,7 @@ public class MapScreen implements Screen {
 	
 	private Sprite baseUI;
 	private Sprite foodLabel;
-	
-	private float movement =(12000f/60f);
+
 	private float houseAlpha = 0;
 	private float shopAlpha = 0;
 	
@@ -69,10 +63,7 @@ public class MapScreen implements Screen {
 	private Window pause;
 	private Boolean isPaused;
 	private Skin skin;
-	
-	private World world;
 	private RayHandler rayHandler;
-	
 	private float darkness;
 	private boolean darken;
 	
@@ -81,10 +72,8 @@ public class MapScreen implements Screen {
 	private float dayAnimationTime;
 	
 	private boolean initialDone;
-	
-	private int getIndex;
+
 	private Label energy;
-	private Player p;
 	private Disease disease;
 	
 	private Label numberOfCharacter;
@@ -96,8 +85,13 @@ public class MapScreen implements Screen {
 	
 	private Node hoverNode;
 	
-	private List<String> checkForKC;	
-	
+	private List<String> checkForKC;
+
+	/**
+	 * Create the map screen, and handle the input and movements around the map.
+	 * @author Inder, Vanessa, Leon
+	 * @param main The main class and shouldn't be null.
+	 */
 	public MapScreen(Main main) {	
 		this.viewWidth = 256;
 		
@@ -106,6 +100,8 @@ public class MapScreen implements Screen {
 		cameraMap.getCamera().position.set(
 				cameraMap.getCamera().viewportWidth / 2f , 
 				cameraMap.getCamera().viewportHeight / 2f, 0);
+		int WORLD_WIDTH = 1920 * 2;
+		int WORLD_HEIGHT = 1080 * 2;
 		cameraMap.setMaxValues(WORLD_WIDTH, WORLD_HEIGHT);
 		
 		cameraUI = new Camera(viewWidth, 1080, 1920);
@@ -115,20 +111,19 @@ public class MapScreen implements Screen {
 		cameraUI.setMaxValues(WORLD_WIDTH, WORLD_HEIGHT);
 
 		background = new Sprite(AssetHandler.manager.get("house/background.png", Texture.class));
-		background.setScale(1920/background.getWidth());
+		//background.setScale(1920/1080);
 		background.setPosition(0, 0);
 		
 		this.darkness = 0f;
-		this.world = new World(new Vector2(0,0), false);
+		World world = new World(new Vector2(0, 0), false);
 		this.rayHandler = new RayHandler(world);
 		this.rayHandler.setAmbientLight(darkness);
 		this.darken = false;
 		this.main = main;
-		this.map = new Map(main.assets);
+		this.map = new Map();
 		this.disease = map.getDisease();
 		this.initialDone = false;
-		this.getIndex = -1;
-		
+
 		this.checkForKC = new ArrayList<>();
 		createUIElements();
 		stateTime = 0;
@@ -158,43 +153,43 @@ public class MapScreen implements Screen {
 				cameraMap.getViewport().getWorldHeight()/2-pointer.getHeight()/2);
 		
 		this.enterHouse = new Sprite(AssetHandler.manager.get("house/MAP_ENTERHOUSE.png", Texture.class));
-		enterHouse.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
+		enterHouse.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
 		enterHouse.setPosition(-72.5f, -80);
 		enterHouse.setAlpha(houseAlpha);
 		
 		this.inspectHouse = new Sprite(AssetHandler.manager.get("house/MAP_INSPECT.png", Texture.class));
-		inspectHouse.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
+		inspectHouse.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
 		inspectHouse.setPosition(-240, -80);
 		inspectHouse.setAlpha(houseAlpha);
 		
 		this.inspectDialog = new Sprite(AssetHandler.manager.get("player/MAPUI/dialog.png", Texture.class));
-		inspectDialog.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
+		inspectDialog.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
 		inspectDialog.setScale(0.125f);
 		inspectDialog.setScale(0.128f, 0.132f);
 		inspectDialog.setPosition(-252, -290);
 		inspectDialog.setAlpha(houseAlpha);
 		
 		this.houseText = new Sprite(AssetHandler.manager.get("house/MAP_HOUSE.png", Texture.class));
-		houseText.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
+		houseText.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
 		houseText.setPosition(-66f, 72f);
 		houseText.setAlpha(houseAlpha);
 
 		this.enterShop = new Sprite(AssetHandler.manager.get("shop/ENTER_SHOP.png", Texture.class));
-		enterShop.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
+		enterShop.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
 		enterShop.setPosition(-72.5f, -80);
 		enterShop.setAlpha(shopAlpha);
 		
 		this.shopText = new Sprite(AssetHandler.manager.get("shop/SHOP.png", Texture.class));
-		shopText.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
+		shopText.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
 		shopText.setPosition(-64.5f, 72.5f);
 		shopText.setAlpha(shopAlpha);
 		
 		this.baseUI = new Sprite(AssetHandler.manager.get("player/MAPUI/BaseUI.png", Texture.class));
-		baseUI.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
+		baseUI.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
 		baseUI.setPosition(-5, 30);
 		
 		this.foodLabel = new Sprite(AssetHandler.manager.get("player/MAPUI/NextLabel.png", Texture.class));
-		foodLabel.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));;
+		foodLabel.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
 		foodLabel.setPosition(47, 74.5f);
 	
 		
@@ -266,7 +261,7 @@ public class MapScreen implements Screen {
 	}
 	
 	public void checkEndGame() {
-		Boolean endGame = true;
+		boolean endGame = true;
 		for(Node n : map.getNodes()) {
 			if(!n.shouldGameEnd()) {
 				endGame = false;
@@ -274,12 +269,12 @@ public class MapScreen implements Screen {
 		}
 		
 		if(endGame) {
-			Boolean allDead = false;
-			for(Node n : map.getNodes()) {
+			//boolean allDead = false;
+			/*for(Node n : map.getNodes()) {
 				if(n.areAllDead()) {
-					allDead = true;
+					//allDead = true;
 				}
-			}
+			}*/
 			
 			main.ui.clear();
 			main.setScreen(new EndGame(main,false));
@@ -288,28 +283,29 @@ public class MapScreen implements Screen {
 	
 	
 	public void localInputHandler(float delta) {
+		float movement = (12000f / 60f);
 		if(Gdx.input.isKeyPressed(Keys.W) && !isPaused) {
-			if(pointer.getY()+pointer.getHeight()+movement*delta < background.getHeight()) {
-				cameraMap.updateCameraPosition(0 , movement*delta);
-				pointer.setPosition(pointer.getX(), pointer.getY() + movement*delta);
+			if(pointer.getY()+pointer.getHeight()+ movement *delta < background.getHeight()) {
+				cameraMap.updateCameraPosition(0 , movement *delta);
+				pointer.setPosition(pointer.getX(), pointer.getY() + movement *delta);
 			}
 		}
 		if(Gdx.input.isKeyPressed(Keys.S) && !isPaused) {
-			if(pointer.getY()-movement*delta > 0) {
-				cameraMap.updateCameraPosition(0 , -movement*delta);
-				pointer.setPosition(pointer.getX(), pointer.getY() - movement*delta);
+			if(pointer.getY()- movement *delta > 0) {
+				cameraMap.updateCameraPosition(0 , -movement *delta);
+				pointer.setPosition(pointer.getX(), pointer.getY() - movement *delta);
 			}
 		}
 		if(Gdx.input.isKeyPressed(Keys.D) && !isPaused) {
-			if(pointer.getX()+pointer.getWidth()+movement*delta < background.getWidth()) {
-				cameraMap.updateCameraPosition(movement*delta, 0);
-				pointer.setPosition(pointer.getX()+ movement*delta, pointer.getY());
+			if(pointer.getX()+pointer.getWidth()+ movement *delta < background.getWidth()) {
+				cameraMap.updateCameraPosition(movement *delta, 0);
+				pointer.setPosition(pointer.getX()+ movement *delta, pointer.getY());
 			}
 		}
 		if(Gdx.input.isKeyPressed(Keys.A) && !isPaused) {
-			if(pointer.getX()-movement*delta > 0) {
-				cameraMap.updateCameraPosition(-movement*delta , 0);
-				pointer.setPosition(pointer.getX()- movement*delta, pointer.getY());
+			if(pointer.getX()- movement *delta > 0) {
+				cameraMap.updateCameraPosition(-movement *delta , 0);
+				pointer.setPosition(pointer.getX()- movement *delta, pointer.getY());
 			}
 		}
 		
@@ -320,13 +316,9 @@ public class MapScreen implements Screen {
 		if(Gdx.input.isKeyJustPressed(Keys.C) && !isPaused) {
 			cameraMap.zoomIn(-1);
 		}
-		
-		if(Gdx.input.isKeyJustPressed(Keys.ENTER) && !isPaused) {
-			enterBuilding = true;
-		} else {
-			enterBuilding = false;
-		}
-		
+
+		enterBuilding = Gdx.input.isKeyJustPressed(Keys.ENTER) && !isPaused;
+
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			togglePaused();
 			pause.setVisible(isPaused);
@@ -337,7 +329,7 @@ public class MapScreen implements Screen {
 		}
 
 		if(Gdx.input.isKeyJustPressed(Keys.E) && !isPaused) {
-			p = readPlayer();
+			Player p = readPlayer();
 			try {
 				if(p.getEnergy() >=  5 && !hoverNode.reachedMaxLevel()) {
 					hoverNode.upgradeLevelKnown();
@@ -409,13 +401,13 @@ public class MapScreen implements Screen {
 	
 	
 	public void checkKC() {
-		String value = "";
+		StringBuilder value = new StringBuilder();
 		if(checkForKC.size() == 9) {
 			for(String key : checkForKC) {
-				value += key;
+				value.append(key);
 			}
 
-			if(value.equals("UPUPDOWNDOWNLEFTRIGHTLEFTRIGHTRIGHT")) {
+			if(value.toString().equals("UPUPDOWNDOWNLEFTRIGHTLEFTRIGHTRIGHT")) {
 				for(Node n : map.getNodes()) {
 					for(NPC v : n.getResidents()) {
 						v.setHealth(100);
@@ -424,7 +416,7 @@ public class MapScreen implements Screen {
 				}
 				checkForKC.clear();
 			}
-			else if(value.equals("UPUPDOWNDOWNLEFTRIGHTLEFTRIGHTLEFT")) {
+			else if(value.toString().equals("UPUPDOWNDOWNLEFTRIGHTLEFTRIGHTLEFT")) {
 				for(Node n : map.getNodes()) {
 					for(NPC v : n.getResidents()) {
 						v.setHealth(-100);
@@ -646,11 +638,9 @@ public class MapScreen implements Screen {
 	}
 	
 	public void checkIfClicked(float x, float y) {
-		int value = 0;
 		for(Node node : map.getNodes()) {
 			if(node != null) {
 				if(node.pointIsWithinSprite(x, y)) {
-					getIndex = value;
 					enterHouse(node);
 					disease.draw(map.getNodes(), node, main.shape);
 					break;
@@ -658,11 +648,10 @@ public class MapScreen implements Screen {
 				else {
 					if(houseHit) {
 						houseHit = false;
-						node = null;
+						//node = null;
 					}
 					//disease.clear();
 				}
-				value++;
 			}
 		}
 		
@@ -673,14 +662,7 @@ public class MapScreen implements Screen {
 			shopHit = false;
 		}
 	}
-	
-	public float getStateTime() {
-		return stateTime;
-	}
-	
-	public Camera getMapCamera() {
-		return cameraMap;
-	}
+
 	
     /**
      * Holds the window for the pause menu.
@@ -805,19 +787,13 @@ public class MapScreen implements Screen {
 	 * Toggle isPaused variable.
 	 */
 	public void togglePaused() {
-		if(!isPaused) {
-			isPaused = true;
-		}
-		else {
-			isPaused = false;
-		}
+		isPaused = !isPaused;
 	}
 	
 	public Player readPlayer() {
 		FileHandle handle = Gdx.files.local("data/player.txt");
 		String[] values= handle.readString().split(",");
-		Player p = new Player(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6]), Float.parseFloat(values[7]));
-		return p;
+		return new Player(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6]), Float.parseFloat(values[7]));
 	}
 	
 	

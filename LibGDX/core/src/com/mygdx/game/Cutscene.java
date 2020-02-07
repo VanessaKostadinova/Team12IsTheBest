@@ -20,37 +20,37 @@ import com.mygdx.camera.Camera;
 import com.mygdx.renderable.Node;
 
 public class Cutscene implements Screen {
-	
+
 	float stateTime = 0f;
-	
+
 	Main main;
 	Node initialNode;
 	MapScreen mapScreen;
-	
+
 	Label l;
-	
+
 	Queue<Float> totalTime;
 	Queue<String> subtitles;
 	Queue<TextureRegionDrawable> background;
-	
+
 	Image backgroundImage;
-	
+
 	float waitTime;
-	
+
 	Boolean shouldLeave;
-	
+
 	Music voiceOver;
 
 	public Cutscene(Main main, String cutscene, Boolean shouldLeave) {
 		this.main = main;
-		
+
 		totalTime = new LinkedList<>();
 		subtitles = new LinkedList<>();
 		background = new LinkedList<>();
-		
+
 
 		this.shouldLeave = shouldLeave;
-		
+
 		System.out.println("HIT1");
 
 		FileHandle handle = Gdx.files.internal(cutscene);
@@ -66,14 +66,14 @@ public class Cutscene implements Screen {
 				voiceOver = Gdx.audio.newMusic(Gdx.files.internal("cutscene/"+property));
 			}
 		}
-		
+
 		System.out.println("HIT2");
 
 		backgroundImage = new Image(background.remove());
 		backgroundImage.setWidth(main.ui.getWidth());
 		backgroundImage.setHeight(main.ui.getHeight());
 		main.ui.addActor(backgroundImage);
-		
+
 		l = new Label("VOID", AssetHandler.fontSize12Subtitles);
 		l.setWidth(main.ui.getWidth()-50);
 		l.setHeight(200);
@@ -82,33 +82,33 @@ public class Cutscene implements Screen {
 		l.setAlignment(Align.center);
 		l.setPosition(main.ui.getWidth()/2-l.getWidth()/2, l.getHeight()/10);
 		main.ui.addActor(l);
-		
+
 		l.setText(subtitles.remove());
 		waitTime = totalTime.remove();
-		
+
 	}
 
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void render(float delta) {
 		if(	voiceOver.isPlaying()) {
 			Gdx.gl.glClearColor(0, 0, 0, 1);
-			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);	
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 			stateTime = stateTime + delta;
-		
+
 			main.ui.draw();
-			
+
 			if(stateTime > waitTime) {
 				stateTime = stateTime - waitTime;
 				changeScreen();
 			}
-			
-			
+
+
 			if(Gdx.input.isKeyJustPressed(Keys.ENTER) ) {
 				totalTime.clear();
 				this.changeScreen();
@@ -118,15 +118,15 @@ public class Cutscene implements Screen {
 			voiceOver.play();
 		}
 	}
-	
-	
+
+
 	public void changeScreen() {
 		if(totalTime.isEmpty()) {
 			if(shouldLeave) {
 				main.ui.clear();
 				Camera camera = new Camera(2160f, 1080f, 1920f);
 				camera.getCamera().position.set(
-						camera.getCamera().viewportWidth / 2f , 
+						camera.getCamera().viewportWidth / 2f ,
 						camera.getCamera().viewportHeight / 2f, 0);
 				main.ui = new Stage(camera.getViewport());
 				voiceOver.stop();
@@ -149,25 +149,25 @@ public class Cutscene implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

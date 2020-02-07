@@ -18,6 +18,11 @@ import com.mygdx.renderable.MyContactListener;
 import com.mygdx.renderable.NPC;
 import com.mygdx.renderable.Player;
 
+/**
+ * Used to handle the input within the house.
+ * @author Inder, Vanessa
+ * @version 1.3
+ */
 public class HouseInputHandler implements InputProcessor {
 	
 	/** The player. */

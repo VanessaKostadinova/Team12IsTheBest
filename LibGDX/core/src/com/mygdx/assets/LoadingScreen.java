@@ -15,39 +15,46 @@ import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.Main;
 import com.mygdx.game.MainMenu;
 
+/**
+ * Creating the loading screen for showing the amount of progress in loading the assets in assetManager.
+ * @author Inder Panesar
+ * @version 1.0
+ */
 public class LoadingScreen implements Screen {
 	
 	private Main main;
 	private Sprite loading;
-	private Label loaded;
-	private Label loaded2;
+	private Label outerBar;
+	private Label innerBar;
 	
 	private int loadedAmount = 0;
 	
 	public LoadingScreen(Main main) {
+		//Set up the scene.
 		this.main = main;
 		loading = new Sprite(new Texture(Gdx.files.internal("loading/loading.png")));
 		loading.setPosition(Gdx.graphics.getWidth()/2-loading.getWidth()/2, Gdx.graphics.getHeight()/2-loading.getHeight()/2);
-		
-		loaded = new Label("", createLabelStyleWithBackground(Color.WHITE));
-		loaded.setWidth(500);
-		loaded.setHeight(75);
-		loaded.setWrap(true);
-		loaded.setFontScale(2f);
-		loaded.setAlignment(Align.center);
-		loaded.setPosition(main.ui.getWidth()/2-loaded.getWidth()/2, loaded.getHeight()/10);
-		main.ui.addActor(loaded);
-		
-		loaded2 = new Label("0%", createLabelStyleWithBackground(Color.RED));
-		loaded2.setWidth(450);
-		loaded2.setHeight(50);
-		loaded2.setWrap(true);
-		loaded2.setFontScale(2f);
-		loaded2.setAlignment(Align.center);
-		loaded2.setPosition(loaded.getX()+25, loaded.getY()+11);
-		loaded2.setWidth(0);
-		main.ui.addActor(loaded2);
-		
+
+		outerBar = new Label("", createLabelStyleWithBackground(Color.WHITE));
+		outerBar.setWidth(500);
+		outerBar.setHeight(75);
+		outerBar.setWrap(true);
+		outerBar.setFontScale(2f);
+		outerBar.setAlignment(Align.center);
+		outerBar.setPosition(main.ui.getWidth()/2-outerBar.getWidth()/2, outerBar.getHeight()/10);
+		main.ui.addActor(outerBar);
+
+		innerBar = new Label("0%", createLabelStyleWithBackground(Color.RED));
+		innerBar.setWidth(450);
+		innerBar.setHeight(50);
+		innerBar.setWrap(true);
+		innerBar.setFontScale(2f);
+		innerBar.setAlignment(Align.center);
+		innerBar.setPosition(outerBar.getX()+25, outerBar.getY()+11);
+		innerBar.setWidth(0);
+		main.ui.addActor(innerBar);
+
+		//Load the assets.
 		main.assets.load();
 	}
 
@@ -62,17 +69,17 @@ public class LoadingScreen implements Screen {
 		main.batch.begin();
 			loading.draw(main.batch);
 		main.batch.end();
-		
-		if (AssetHandler.manager.update()) {
-			loaded2.setText("Loaded!");
+
+		//If Asset Manager not complete then get loaded percentage. Otherwise change screen.
+		if (!AssetHandler.manager.update()) {
+			loadedAmount = (int) (AssetHandler.manager.getProgress()*100);
+			innerBar.setText(loadedAmount + "%");
+			innerBar.setWidth(AssetHandler.manager.getProgress() * 450);
+		} else {
+			innerBar.setText("Loaded!");
 			main.setScreen(new MainMenu(main));
 		}
-		else {
-			loadedAmount = (int) (AssetHandler.manager.getProgress()*100);
-			loaded2.setText(loadedAmount + "%");
-			loaded2.setWidth(AssetHandler.manager.getProgress() * 450);
-		}
-		
+
 		main.ui.draw();
 	}
 
@@ -105,7 +112,12 @@ public class LoadingScreen implements Screen {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
+	/**
+	 * Used to create a label with a background color and size 12 font text.
+	 * @param color The background color of the label.
+	 * @return The LabelStyle of the label. (setting/parameters of label).
+	 */
     private LabelStyle createLabelStyleWithBackground(Color color) {
     	///core/assets/font/Pixel.ttf
     	FileHandle fontFile = Gdx.files.internal("font/prstartk.ttf");

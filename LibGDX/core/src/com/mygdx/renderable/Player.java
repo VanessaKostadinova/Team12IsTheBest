@@ -275,7 +275,6 @@ public class Player extends Renderable implements Living {
 	}
 	
 	/*public Body getSprayBody() {
-		// TODO Auto-generated method stub
 		return sprayBody;
 	}*/
 	

@@ -14,31 +14,34 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
+/**
+ * Used to load assets into the game before playing the game, this reduces the load on a PC as well
+ * the loading times as assets are loaded before making loading times from a few seconds to a less than a millisecond.
+ *
+ * @author Inder Panesar (Team 12)
+ * @version 1.0
+ */
 public class AssetHandler {
+
+    //Static so can be called from anywhere.
     public static AssetManager manager = new AssetManager();
 
-    //private static final AssetDescriptor<Texture> someTexture = new AssetDescriptor<Texture>("images/sometexture.png", Texture.class);
-    //private static final AssetDescriptor<TextureAtlas> uiAtlas = new AssetDescriptor<TextureAtlas>("ui/uiskin.pack", TextureAtlas.class);
-    //private static final AssetDescriptor<Skin> uiSkin = new AssetDescriptor<Skin>("ui/uiskin.json", Skin.class, new SkinLoader.SkinParameter("ui/uiskin.pack"));
+    //All the assets we are loading as well as making them constants as they shouldn't change.
     private static final AssetDescriptor<Texture> house1 = new AssetDescriptor<Texture>("house/House1.gif", Texture.class);
     private static final AssetDescriptor<Texture> shop = new AssetDescriptor<Texture>("house/Shop.gif", Texture.class);
     private static final AssetDescriptor<Texture> background = new AssetDescriptor<Texture>("house/background.png", Texture.class);
     private static final AssetDescriptor<Texture> water = new AssetDescriptor<Texture>("house/water.png", Texture.class);
     private static final AssetDescriptor<Texture> mapTarget = new AssetDescriptor<Texture>("house/aim.png", Texture.class);
-    
     private static final AssetDescriptor<Texture> enterHouse = new AssetDescriptor<Texture>("house/MAP_ENTERHOUSE.png", Texture.class);
     private static final AssetDescriptor<Texture> houseText = new AssetDescriptor<Texture>("house/MAP_HOUSE.png", Texture.class);
     private static final AssetDescriptor<Texture> inspectHouse = new AssetDescriptor<Texture>("house/MAP_INSPECT.png", Texture.class);
-    
     private static final AssetDescriptor<Texture> shopText = new AssetDescriptor<Texture>("shop/SHOP.png", Texture.class);
     private static final AssetDescriptor<Texture> enterShop = new AssetDescriptor<Texture>("shop/ENTER_SHOP.png", Texture.class);
-    
     private static final AssetDescriptor<Texture> baseMapPlayerUI = new AssetDescriptor<Texture>("player/MAPUI/BaseUI.png", Texture.class);
     private static final AssetDescriptor<Texture> currentDayPlayerUI = new AssetDescriptor<Texture>("player/MAPUI/DayLabel.png", Texture.class);
     private static final AssetDescriptor<Texture> healthBarPlayerUI = new AssetDescriptor<Texture>("player/MAPUI/HealthBar.png", Texture.class);
     private static final AssetDescriptor<Texture> nextLabelPlayerUI = new AssetDescriptor<Texture>("player/MAPUI/NextLabel.png", Texture.class);
     private static final AssetDescriptor<Texture> forwardPlayerUI = new AssetDescriptor<Texture>("player/MAPUI/ForwardButton.png", Texture.class);
-
     private static final AssetDescriptor<Texture> shopBuyUI = new AssetDescriptor<Texture>("shop/screen/BUY.png", Texture.class);
     private static final AssetDescriptor<Texture> shopBuyHoverUI = new AssetDescriptor<Texture>("shop/screen/BUYMOUSE.png", Texture.class);
     private static final AssetDescriptor<Texture> shopItemUI = new AssetDescriptor<Texture>("shop/screen/ITEM.png", Texture.class);
@@ -46,18 +49,13 @@ public class AssetHandler {
     private static final AssetDescriptor<Texture> shopLeaveUI = new AssetDescriptor<Texture>("shop/screen/LEAVE.png", Texture.class);
     private static final AssetDescriptor<Texture> shopLeaverHoverUI = new AssetDescriptor<Texture>("shop/screen/LEAVEMOUSE.png", Texture.class);
     private static final AssetDescriptor<Texture> shopTextUI = new AssetDescriptor<Texture>("shop/screen/SHOP.png", Texture.class);
-    
     private static final AssetDescriptor<Texture> pickup = new AssetDescriptor<Texture>("pickups/letter/LETTER.png", Texture.class);
     private static final AssetDescriptor<Texture> letter = new AssetDescriptor<Texture>("pickups/letter/PICKUP.png", Texture.class);
-
     private static final AssetDescriptor<Texture> E = new AssetDescriptor<Texture>("player/icon/ICON.png", Texture.class);
-
     private static final AssetDescriptor<Texture> UI = new AssetDescriptor<Texture>("house/UI/MAPUI.png", Texture.class);
     private static final AssetDescriptor<Texture> BAR = new AssetDescriptor<Texture>("house/UI/BAR.png", Texture.class);
-    
     private static final AssetDescriptor<Texture> HEALTHBAR = new AssetDescriptor<Texture>("house/UI/HEALTH.png", Texture.class);
     private static final AssetDescriptor<Texture> DialogPlayer = new AssetDescriptor<Texture>("player/MAPUI/dialog.png", Texture.class);
-    
     private static final AssetDescriptor<Texture> scene1Part1 = new AssetDescriptor<Texture>("cutscene/1/1.png", Texture.class);
     private static final AssetDescriptor<Texture> scene1Part2 = new AssetDescriptor<Texture>("cutscene/1/2.png", Texture.class);
     private static final AssetDescriptor<Texture> scene1Part3 = new AssetDescriptor<Texture>("cutscene/1/3.png", Texture.class);
@@ -99,29 +97,12 @@ public class AssetHandler {
     private static final AssetDescriptor<Texture> scene1Part39 = new AssetDescriptor<Texture>("cutscene/1/45.png", Texture.class);
     private static final AssetDescriptor<Texture> scene1Part40 = new AssetDescriptor<Texture>("cutscene/1/46.png", Texture.class);
 
-    
     public static final Skin skinUI = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
     public static final LabelStyle fontSize24 = createLabelStyleWithBackground();
     public static final LabelStyle fontSize48 = createLabelStyleWithBackground2();
     public static final LabelStyle fontSize12Subtitles = createLabelStyleWithBackground(Color.WHITE);
 
 
-
-
-
-
-   // FreetypeFontLoader.FreeTypeFontLoaderParameter params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-
-    //params.fontFileName = "fonts/coastershadow.ttf";
-    //params.fontParameters.size = 30;
-    
-   // private static final AssetDescriptor<BitmapFont> textureFont = new AssetDescriptor<BitmapFont>("font/Pixel.tff", BitmapFont.class, params);
-
-    
-    //"skin/terra-mother-ui.json"
-
-    
-    
     
     public void load() {
         //manager.load(someTexture);
@@ -205,7 +186,11 @@ public class AssetHandler {
 
 
     }
-    
+
+    /**
+     * Used to create a label with no background and a font size of 24
+     * @return LabelStyle which is the settings/looks of the label.
+     */
     private static LabelStyle createLabelStyleWithBackground() {
 
     	///core/assets/font/Pixel.ttf
@@ -219,7 +204,11 @@ public class AssetHandler {
 		
         return labelStyle;
     }
-    
+
+    /**
+     * Used to create a label with no background and a font size of 48
+     * @return LabelStyle which is the settings/looks of the label
+     */
     private static LabelStyle createLabelStyleWithBackground2() {
 
     	///core/assets/font/Pixel.ttf
@@ -233,7 +222,12 @@ public class AssetHandler {
 		
         return labelStyle;
     }
-    
+
+    /**
+     * Used to create a label with no background and a font size of 24
+     * @param color is the background color.
+     * @return LabelStyle which is the settings/looks of the label.
+     */
     private static LabelStyle createLabelStyleWithBackground(Color color) {
     	///core/assets/font/Pixel.ttf
     	FileHandle fontFile = Gdx.files.internal("font/prstartk.ttf");

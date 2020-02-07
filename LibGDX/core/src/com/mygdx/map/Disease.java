@@ -9,9 +9,7 @@ public class Disease {
 	
 	private final float spreadRadius = 250.0f;
 	private final float probabilty = 50.0f;
-	
 
-	
 	public void draw(List<Node> disease, Node spreader, ShapeRenderer shapeRenderer) {
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 		for(Node reciever : disease) {
@@ -92,15 +90,9 @@ public class Disease {
 	
 	public boolean diseaseImpacted() {
 		float random = (float) (0 + Math.random() * (100));
-		if(random < probabilty) {
-			return true;
-		}
-		return false;
+		return random < probabilty;
 	}
-	
-	public float getSpreadRadius() {
-		return spreadRadius;
-	}
+
 
 	
 }

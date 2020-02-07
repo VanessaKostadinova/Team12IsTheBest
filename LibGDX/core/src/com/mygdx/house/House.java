@@ -32,7 +32,7 @@ public class House {
 	
 	
 	public House(String[] attributes) {
-		textures = new HashMap<Integer, Texture>();
+		textures = new HashMap<>();
 		torches = new ArrayList<>();
 		walls = new ArrayList<>();
 		setTextures(attributes);
@@ -73,7 +73,7 @@ public class House {
 		for(BodyDef def : walls) {
             Body body = world.createBody(def);
             PolygonShape shape = new PolygonShape();
-            shape.setAsBox(32/2, 32/2);
+            shape.setAsBox(32f/2f, 32f/2f);
 
             FixtureDef fixtureDef = new FixtureDef();
             fixtureDef.shape = shape;
@@ -102,7 +102,7 @@ public class House {
         try {
             handle = Gdx.files.internal(houseFile);
             String page  = handle.readString();
-            String lines[] = page.split("\\r?\\n");
+            String[] lines = page.split("\\r?\\n");
             background = new int[lines.length][(lines[0].length()+1)/2];
             //height = (lines[0].length()+1)/2;
             //width = lines.length;
@@ -121,8 +121,8 @@ public class House {
                 //for every element in the current line
                 for(String i:currentLine) {
                     //creates array
-                    background[arrayHeight][arrayPosition] = Integer.valueOf(i);
-                    if(Integer.valueOf(i) == 1) {
+                    background[arrayHeight][arrayPosition] = Integer.parseInt(i);
+                    if(Integer.parseInt(i) == 1) {
                     	createBodyDef(arrayHeight, arrayPosition);
                     }
                     //increment array position
@@ -141,8 +141,9 @@ public class House {
         try {
             handle = Gdx.files.internal(houseProperties);
             String page  = handle.readString();
-            String lines[] = page.split("\\r?\\n");
-            backgroundProperties = new int[lines.length][(lines[0].length()+1)/2];
+            String[] lines;
+			lines = page.split("\\r?\\n");
+			backgroundProperties = new int[lines.length][(lines[0].length()+1)/2];
             
             final String splitter = ",";
             //load reader
@@ -157,13 +158,13 @@ public class House {
                 //for every element in the current line
                 for(String i:currentLine) {
                     //creates array
-                    backgroundProperties[arrayHeight][arrayPosition] = Integer.valueOf(i);
+                    backgroundProperties[arrayHeight][arrayPosition] = Integer.parseInt(i);
                     generateTorches(arrayHeight, arrayPosition);
                     //increment array position
                     arrayPosition++;
                 }
                 //increment array height location
-                arrayHeight--;
+				arrayHeight -= 1;
             }
         } catch(GdxRuntimeException e) {
             e.printStackTrace();

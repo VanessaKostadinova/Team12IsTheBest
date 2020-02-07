@@ -1,40 +1,29 @@
 package com.mygdx.game;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
-import com.mygdx.camera.Camera;
+import com.mygdx.assets.AssetHandler;
 import com.mygdx.renderable.Player;
 import com.mygdx.shop.Shop;
 import com.mygdx.shop.Upgrade;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShopScreen implements Screen {
 
@@ -43,7 +32,7 @@ public class ShopScreen implements Screen {
 	private Main main;
 	private Shop shop;
 	
-	private Table t = new Table();
+	private Table t;
 	private float scaleItem;
 
 	/** The pause window. */
@@ -73,14 +62,12 @@ public class ShopScreen implements Screen {
 	private Image Buy;
 	
 	private Upgrade clickedShop;
-	private float alphaUI = 0f;
 
 
-	
 	public ShopScreen(final Main main, Shop shop, final MapScreen mapScreen) {
 		this.main = main;
 		this.shop = shop;
-		
+		this.t = new Table();
 		clickedShop = null;
 		
 		unClicked = createLabelStyleWithBackground(Color.WHITE);
@@ -98,7 +85,7 @@ public class ShopScreen implements Screen {
 		
 		setCatagories();
 		
-		final Image Title = new Image(new TextureRegionDrawable(new TextureRegion(main.assets.manager.get("shop/screen/SHOP.png", Texture.class))));
+		final Image Title = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.manager.get("shop/screen/SHOP.png", Texture.class))));
 		Title.setScaling(Scaling.fit);
 		Title.setPosition(50f, main.ui.getHeight()- Title.getHeight() - 50f);
 		Title.setSize(Title.getWidth(), Title.getHeight());
@@ -108,7 +95,7 @@ public class ShopScreen implements Screen {
 		playerGold .setPosition(50f, Title.getY() - 100f);
 		main.ui.addActor(playerGold);
 
-		Leave = new Image(new TextureRegionDrawable(new TextureRegion(new TextureRegion(main.assets.manager.get("shop/screen/LEAVE.png", Texture.class)))));
+		Leave = new Image(new TextureRegionDrawable(new TextureRegion(new TextureRegion(AssetHandler.manager.get("shop/screen/LEAVE.png", Texture.class)))));
 		Leave.setScaling(Scaling.fit);
 		Leave.setPosition((main.ui.getWidth())-40f-Leave.getWidth(),40f);
 		Leave.setSize(Leave.getWidth(), Leave.getHeight());
@@ -124,13 +111,13 @@ public class ShopScreen implements Screen {
 		    }
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 				if(!isPaused) {
-					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(main.assets.manager.get("shop/screen/LEAVEMOUSE.png", Texture.class))));
+					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(AssetHandler.manager.get("shop/screen/LEAVEMOUSE.png", Texture.class))));
 					Leave.setDrawable(t);
 				}
 		    }
 		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
 				if(!isPaused) {
-					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(main.assets.manager.get("shop/screen/LEAVE.png", Texture.class))));
+					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(AssetHandler.manager.get("shop/screen/LEAVE.png", Texture.class))));
 					Leave.setDrawable(t);
 				}
 		    }
@@ -138,7 +125,7 @@ public class ShopScreen implements Screen {
 		t.addActor(Leave);
 		
 
-		Buy = new Image(new TextureRegionDrawable((new TextureRegion(main.assets.manager.get("shop/screen/BUY.png", Texture.class)))));
+		Buy = new Image(new TextureRegionDrawable((new TextureRegion(AssetHandler.manager.get("shop/screen/BUY.png", Texture.class)))));
 		Buy.setScaling(Scaling.fit);
 		Buy.setPosition((main.ui.getWidth())-40f-Buy.getWidth(),40f*2f + Leave.getHeight());
 		Buy.setSize(Buy.getWidth(), Buy.getHeight());
@@ -178,13 +165,13 @@ public class ShopScreen implements Screen {
 		    }
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 				if(!isPaused) {
-					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(main.assets.manager.get("shop/screen/BUYMOUSE.png", Texture.class))));
+					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(AssetHandler.manager.get("shop/screen/BUYMOUSE.png", Texture.class))));
 					Buy.setDrawable(t);
 				}
 		    }
 		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
 				if(!isPaused) {
-					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(main.assets.manager.get("shop/screen/BUY.png", Texture.class))));
+					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(AssetHandler.manager.get("shop/screen/BUY.png", Texture.class))));
 					Buy.setDrawable(t);
 				}
 		    }
@@ -243,11 +230,10 @@ public class ShopScreen implements Screen {
 		pauseGame();
 	}
 	
-	public Player readPlayer() {
+	private Player readPlayer() {
 		FileHandle handle = Gdx.files.local("data/player.txt");
 		String[] values= handle.readString().split(",");
-		Player p = new Player(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6]), Float.parseFloat(values[7]));
-		return p;
+		return new Player(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6]), Float.parseFloat(values[7]));
 	}
 	
 	
@@ -525,13 +511,8 @@ public class ShopScreen implements Screen {
 	/**
 	 * Toggle isPaused variable.
 	 */
-	public void togglePaused() {
-		if(isPaused) {
-			isPaused = false;
-		}
-		else {
-			isPaused = true;
-		}
+	private void togglePaused() {
+		isPaused = !isPaused;
 	}
 	
     public void updateUI(Boolean hit) {

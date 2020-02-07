@@ -20,6 +20,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.renderable.Node;
 
+/**
+ * Used as a CheckPoint, so it is able to reset to the point to where
+ * you entered into the house. Ensuring that the villagers have been properly
+ * reset.
+ * @author Inder Panesar
+ * @version 1.0
+ */
 public class CheckPoint implements Screen {
 	
 	float stateTime = 0f;
@@ -29,14 +36,16 @@ public class CheckPoint implements Screen {
 	MapScreen mapScreen;
 	Label dead;
 
+	//Three list used to hold the totalTime, subtitles and background.
 	private LinkedList<Float> totalTime;
-
 	private LinkedList<String> subtitles;
-
 	private LinkedList<TextureRegionDrawable> background;
 
+	//The background image.
 	private Image backgroundImage;
-	private Label l;
+
+	//The subtitle itself.
+	private Label subtitleLabel;
 
 	private float waitTime;
 	
@@ -71,18 +80,18 @@ public class CheckPoint implements Screen {
 		backgroundImage.setHeight(main.ui.getHeight());
 		backgroundImage.setVisible(false);
 		main.ui.addActor(backgroundImage);
-		
-		l = new Label("VOID", createLabelStyleWithBackground(Color.WHITE));
-		l.setWidth(main.ui.getWidth()-50);
-		l.setHeight(300);
-		l.setWrap(true);
-		l.setFontScale(2f);
-		l.setAlignment(Align.center);
-		l.setPosition(main.ui.getWidth()/2-l.getWidth()/2, l.getHeight()/10);
-		l.setVisible(false);
-		main.ui.addActor(l);
-		
-		l.setText(subtitles.remove());
+
+		subtitleLabel = new Label("VOID", createLabelStyleWithBackground(Color.WHITE));
+		subtitleLabel.setWidth(main.ui.getWidth()-50);
+		subtitleLabel.setHeight(300);
+		subtitleLabel.setWrap(true);
+		subtitleLabel.setFontScale(2f);
+		subtitleLabel.setAlignment(Align.center);
+		subtitleLabel.setPosition(main.ui.getWidth()/2-subtitleLabel.getWidth()/2, subtitleLabel.getHeight()/10);
+		subtitleLabel.setVisible(false);
+		main.ui.addActor(subtitleLabel);
+
+		subtitleLabel.setText(subtitles.remove());
 		waitTime = totalTime.remove();
 
 	}
@@ -107,7 +116,7 @@ public class CheckPoint implements Screen {
 		if(stateTime > 3 && dead.isVisible()) {
 			stateTime = 0;
 			dead.setVisible(false);
-			l.setVisible(true);
+			subtitleLabel.setVisible(true);
 			backgroundImage.setVisible(true);
 		}
 		else {

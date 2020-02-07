@@ -12,12 +12,11 @@ import com.mygdx.shop.Shop;
 public class Map {
 	private List<Node> nodes;
 	private Shop shop; 
-	private Disease disease;
+	private Disease disease = new Disease();
 	
-	public Map(AssetHandler assets) {
-		nodes = new ArrayList<Node>();
-		readMapFile(assets);
-		this.disease = new Disease();
+	public Map() {
+		nodes = new ArrayList<>();
+		readMapFile();
 		shop = new Shop(AssetHandler.manager.get("house/Shop.gif", Texture.class), 900.0f, 470.0f);
 		checkIfPlayerExist();
 		resetPlayerFile();
@@ -48,17 +47,19 @@ public class Map {
 	}
 	
 	
-	public void readMapFile(AssetHandler assets) {
+	public void readMapFile() {
 		FileHandle handle = Gdx.files.internal("house/files/"+"mapFile.txt");
-		String nodeFilenames[] = handle.readString().split("\\r?\\n");
+		String[] nodeFilenames;
+		nodeFilenames = handle.readString().split("\\r?\\n");
 		for(String fileName : nodeFilenames) {
-			handle = Gdx.files.local("data/"+fileName);
+			handle = Gdx.files.local(String.format("data/%s", fileName));
 			String[] nodeProperties = handle.readString().split("\\r?\\n");
 			if(!(nodes.size() == 20)) {
 				nodes.add(new Node(new Texture(Gdx.files.internal("house/"+nodeProperties[0])), Float.parseFloat(nodeProperties[1]), Float.parseFloat(nodeProperties[2]), nodeProperties));
 			}
 			else {
-				Gdx.app.log("House Error", "More than 20 house are shown in the mapFile");
+				Gdx.app.log("House Error",
+						"More than 20 house are shown in the mapFile");
 			}	
 		}		
 	}

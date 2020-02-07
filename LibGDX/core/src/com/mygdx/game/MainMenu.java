@@ -15,6 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+/**
+ * The Main Menu of the game. Is the second scene the player will see and the first interactive scene
+ * that they will see.
+ *
+ * @author Inder, Hasan, Vanessa
+ * @version 1.3
+ */
 public class MainMenu implements Screen {
 
 	Main main;
@@ -46,18 +53,6 @@ public class MainMenu implements Screen {
 		background.setPosition(0, 0);
 		background.setSize( main.ui.getCamera().viewportWidth, main.ui.getCamera().viewportHeight);
 		main.ui.addActor(background);
-	
-		/*
-		 * Create an image which contains the texture, using GDX.files.internal
-		 * This is used for the Doctor Mask.
-		 * The head is offset from the left side of the screen by 40 Pixels.
-		 * Then it scales to make sure it fills the entire left side of the screen.
-		 */
-		/*Image mask = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/mask.png")))));
-		mask.setPosition(0+40, 40);
-		float scale = mask.getWidth()/mask.getHeight();
-		mask.setSize(Gdx.graphics.getHeight()*scale, Gdx.graphics.getHeight());*/
-		
 		
 		/*
 		 * Setting the image of the title of the game
@@ -173,7 +168,6 @@ public class MainMenu implements Screen {
 
 		
 		//Add all of the actors above to the stage.
-		//main.ui.addActor(mask);
 		main.ui.addActor(title);
 		main.ui.addActor(subtitle);
 		main.ui.addActor(play);

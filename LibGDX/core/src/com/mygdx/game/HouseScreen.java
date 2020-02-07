@@ -35,6 +35,11 @@ import box2dLight.Light;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 
+/**
+ * Contains the information of each of the houses.
+ * @author Inder, Vanessa, Max
+ * @version 1.5
+ */
 public class HouseScreen implements Screen {
 	
 	private Main main;

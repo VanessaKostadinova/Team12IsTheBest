@@ -73,9 +73,7 @@ public abstract class Renderable {
     public Boolean pointIsWithinSprite(float x, float y) {
     	if(isVisible) {
 	        if(x >= coordinates.x && x <= coordinates.x + sprite.getWidth()) {
-	            if(y >= coordinates.y && y <= coordinates.y + sprite.getHeight()) {
-	                return true;
-	            }
+				return y >= coordinates.y && y <= coordinates.y + sprite.getHeight();
 	        }	
     	}
         return false;
