@@ -9,7 +9,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.height = 1080;
-		config.width = 1920;
+		config.width = 2560;
 		config.title = "Plague Doctor";
 		config.fullscreen = true;
 		config.addIcon("icon.png", FileType.Internal);

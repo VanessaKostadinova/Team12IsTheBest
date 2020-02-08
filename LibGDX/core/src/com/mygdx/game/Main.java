@@ -15,27 +15,27 @@ import com.mygdx.camera.Camera;
  * @version 1.5
  */
 public class Main extends Game implements Serializable {
-	
-    /**
+
+	/**
 	 * Serialization Unique Identification value.
 	 */
 	private static final long serialVersionUID = 1L;
 
 	/** The sprite batch. */
-    public SpriteBatch batch;
+	public SpriteBatch batch;
 
-    /** The renderer for lines between houses */
-    public ShapeRenderer shape;
-    
-    /** The stage for the ui. */
-    public Stage ui;
+	/** The renderer for lines between houses */
+	public ShapeRenderer shape;
 
-    /** Initialises the assetHandler */
-    public AssetHandler assets;
+	/** The stage for the ui. */
+	public Stage ui;
 
-    /** The Main Camera for the UI */
-    private Camera camera;
-   
+	/** Initialises the assetHandler */
+	public AssetHandler assets;
+
+	/** The Main Camera for the UI */
+	private Camera camera;
+
 
 	@Override
 	public void create() {
@@ -43,19 +43,19 @@ public class Main extends Game implements Serializable {
 		shape = new ShapeRenderer();
 		camera = new Camera(2160f, 1080f, 1920f);
 		camera.getCamera().position.set(
-				camera.getCamera().viewportWidth / 2f , 
+				camera.getCamera().viewportWidth / 2f ,
 				camera.getCamera().viewportHeight / 2f, 0);
 		ui = new Stage(camera.getViewport());
 
-		//setScreen(new MapScreen(this));		
+		//setScreen(new MapScreen(this));
 
 		assets = new AssetHandler();
 		//assets.load();
 		//assets.manager.finishLoading();
-		setScreen(new LoadingScreen(this));		
+		setScreen(new LoadingScreen(this));
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see com.badlogic.gdx.Game#render()
 	 */
@@ -63,14 +63,14 @@ public class Main extends Game implements Serializable {
 	public void render() {
 		super.render();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.badlogic.gdx.Game#dispose()
 	 */
 	@Override
 	public void dispose() {
-        batch.dispose();
+		batch.dispose();
 	}
-	
+
 
 }

@@ -80,7 +80,7 @@ public class Camera implements Serializable {
 	}
 	
 	public void zoomIn(float dZoom) {
-		if(camera.zoom+dZoom > 0 && camera.zoom+dZoom < 8) {
+		if(camera.zoom+dZoom > 0) {
 			camera.zoom += dZoom;
 			camera.update();
 		}

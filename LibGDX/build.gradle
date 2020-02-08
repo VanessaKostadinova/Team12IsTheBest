@@ -49,6 +49,10 @@ project(":desktop") {
         api "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
+        api "es.e-ucm.com.badlogicgames.gdx:gdx-video-desktop:0.0.1-SNAPSHOT"
+
+        compile "es.e-ucm.com.badlogicgames.gdx:gdx-video-desktop:0.0.1-SNAPSHOT"
+
     }
 }
 
@@ -64,5 +68,9 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         api "com.badlogicgames.ashley:ashley:$ashleyVersion"
         api "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+        api "es.e-ucm.com.badlogicgames.gdx:gdx-video:0.0.1-SNAPSHOT"
+
+        compile "es.e-ucm.com.badlogicgames.gdx:gdx-video:0.0.1-SNAPSHOT"
+
     }
 }

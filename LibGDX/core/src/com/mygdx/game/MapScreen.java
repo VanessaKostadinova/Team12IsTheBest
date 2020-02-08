@@ -96,7 +96,7 @@ public class MapScreen implements Screen {
 		this.viewWidth = 256;
 		
 		isPaused = false;
-		cameraMap = new Camera(viewWidth, 1080, 1920);
+		cameraMap = new Camera(viewWidth, -1080, -1920);
 		cameraMap.getCamera().position.set(
 				cameraMap.getCamera().viewportWidth / 2f , 
 				cameraMap.getCamera().viewportHeight / 2f, 0);
