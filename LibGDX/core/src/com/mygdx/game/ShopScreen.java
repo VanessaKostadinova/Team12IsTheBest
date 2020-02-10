@@ -1,149 +1,392 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
+import com.mygdx.assets.AssetHandler;
+import com.mygdx.renderable.Player;
+import com.mygdx.shop.Shop;
+import com.mygdx.shop.Upgrade;
 
-/**
- * This class is part of an updated and not working version of the game so for this hack it is not implemented.
- * @author Ali
- *
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class ShopScreen implements Screen {
-	
-	MainScreen screen;
-	Table t = new Table();
-	private float scaleItem;
-	private Boolean isClicked;
-	private int XArray = -1;
-	private int YArray = -1;
-	
-	private Image[][] item;
 
 	
-	public ShopScreen(MainScreen screen1) {
+	private boolean isPaused = false;
+	private Main main;
+	private Shop shop;
+	
+	private Table t;
+	private float scaleItem;
+
+	/** The pause window. */
+	private Window pause;
+	
+	/** The ui skin. */
+	private Skin skin;
+	
+	private List<Label> items;
+	
+	private LabelStyle unClicked;
+	private LabelStyle clicked;
+	
+	private Label information;
+	private Label description;
+	private Label scaleFactor;
+	private Label sf;
+	private Label titleLevel;
+	private Label level;
+	private Label titleCost;
+	private Label cost;
+	
+	private Label playerGold;
+	
+	
+	private Image Leave;
+	private Image Buy;
+	
+	private Upgrade clickedShop;
+
+
+	public ShopScreen(final Main main, Shop shop, final MapScreen mapScreen) {
+		this.main = main;
+		this.shop = shop;
+		this.t = new Table();
+		clickedShop = null;
 		
-		this.screen = screen1;
+		unClicked = createLabelStyleWithBackground(Color.WHITE);
+		clicked = createLabelStyleWithBackground(Color.CYAN);
+		
+		this.skin = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
+		this.items = new ArrayList<>();
 		this.t = new Table();
 		this.t.setFillParent(true);
 		
-		float width = Gdx.graphics.getWidth();
-		scaleItem = width/1920;
+		scaleItem = 1080f/(float)Gdx.graphics.getWidth();
+		if(scaleItem < 1) {
+			scaleItem = 1;
+		}
 		
-		final Image Title = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("shop/SHOP.png")))));
+		setCatagories();
+		
+		final Image Title = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.manager.get("shop/screen/SHOP.png", Texture.class))));
 		Title.setScaling(Scaling.fit);
-		Title.setPosition(50f*scaleItem, Gdx.graphics.getHeight()- Title.getHeight()*scaleItem - 50f*scaleItem);
-		Title.setSize(Title.getWidth()*scaleItem, Title.getHeight()*scaleItem);
+		Title.setPosition(50f, main.ui.getHeight()- Title.getHeight() - 50f);
+		Title.setSize(Title.getWidth(), Title.getHeight());
 		t.addActor(Title);
 		
-		isClicked = false;
-		item = new Image[5][5];
+		playerGold = new Label("PLAYER FOOD: " + readPlayer().getFood(), unClicked);
+		playerGold .setPosition(50f, Title.getY() - 100f);
+		main.ui.addActor(playerGold);
 
-		createItemSlots();
-
-		final Image Leave = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("shop/LEAVE.png")))));
+		Leave = new Image(new TextureRegionDrawable(new TextureRegion(new TextureRegion(AssetHandler.manager.get("shop/screen/LEAVE.png", Texture.class)))));
 		Leave.setScaling(Scaling.fit);
-		Leave.setPosition(Gdx.graphics.getWidth()-40f*scaleItem-Leave.getWidth()*scaleItem,40f*scaleItem);
-		Leave.setSize(Leave.getWidth()*scaleItem, Leave.getHeight()*scaleItem);
+		Leave.setPosition((main.ui.getWidth())-40f-Leave.getWidth(),40f);
+		Leave.setSize(Leave.getWidth(), Leave.getHeight());
 		Leave.addListener(new ClickListener(){
 			@Override
 		    public void clicked(InputEvent event, float x, float y) {
-				dispose();
-				screen.setScreen(new HouseScreen(screen));
+				if(!isPaused) {
+					dispose();
+					main.ui.clear();
+					mapScreen.pauseGame();
+					main.setScreen(mapScreen);
+				}
 		    }
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-	    		TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("shop/LEAVEMOUSE.png"))));
-	    		Leave.setDrawable(t);
+				if(!isPaused) {
+					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(AssetHandler.manager.get("shop/screen/LEAVEMOUSE.png", Texture.class))));
+					Leave.setDrawable(t);
+				}
 		    }
 		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-	    		TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("shop/LEAVE.png"))));
-	    		Leave.setDrawable(t);
+				if(!isPaused) {
+					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(AssetHandler.manager.get("shop/screen/LEAVE.png", Texture.class))));
+					Leave.setDrawable(t);
+				}
 		    }
 		});
 		t.addActor(Leave);
 		
 
-		final Image Buy = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("shop/BUY.png")))));
+		Buy = new Image(new TextureRegionDrawable((new TextureRegion(AssetHandler.manager.get("shop/screen/BUY.png", Texture.class)))));
 		Buy.setScaling(Scaling.fit);
-		Buy.setPosition(Gdx.graphics.getWidth()-40f*scaleItem-Buy.getWidth()*scaleItem,40f*2f*scaleItem + Leave.getHeight());
-		Buy.setSize(Buy.getWidth()*scaleItem, Buy.getHeight()*scaleItem);
+		Buy.setPosition((main.ui.getWidth())-40f-Buy.getWidth(),40f*2f + Leave.getHeight());
+		Buy.setSize(Buy.getWidth(), Buy.getHeight());
+		Buy.setVisible(false);
 		Buy.addListener(new ClickListener(){
 			@Override
 		    public void clicked(InputEvent event, float x, float y) {
+				if(!isPaused) {
+					Player p = readPlayer();
+					if(clickedShop.getName().equals("MASK ABILITY") && p.getFood() >= clickedShop.getCost()) {
+						p.updateMaskDurationSeconds(clickedShop.getIncreasingValue());
+						p.setFood(p.getFood()-clickedShop.getCost());
+						p.writeToPlayerFile();
+						clickedShop.update();
+					}
+					if(clickedShop.getName().equals("MOVEMENT SPEED") && p.getFood() >= clickedShop.getCost()) {
+						p.updateSpeed(clickedShop.getIncreasingValue());
+						p.setFood(p.getFood()-clickedShop.getCost());
+						p.writeToPlayerFile();
+						clickedShop.update();
+					}
+					if(clickedShop.getName().equals("FLAME STRENGTH") && p.getFood() >= clickedShop.getCost()) {
+						p.updateSprays(1, -clickedShop.getIncreasingValue());
+						p.setFood(p.getFood()-clickedShop.getCost());
+						p.writeToPlayerFile();
+						clickedShop.update();
+					}
+					if(clickedShop.getName().equals("CURE STRENGTH") && p.getFood() >= clickedShop.getCost()) {
+						p.updateSprays(0, clickedShop.getIncreasingValue());
+						p.setFood(p.getFood()-clickedShop.getCost());
+						p.writeToPlayerFile();
+						clickedShop.update();
+					}
+					setLabels(clickedShop);
+					playerGold.setText("PLAYER FOOD: " + readPlayer().getFood());
+				}
 		    }
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-	    		TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("shop/BUYMOUSE.png"))));
-	    		Buy.setDrawable(t);
+				if(!isPaused) {
+					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(AssetHandler.manager.get("shop/screen/BUYMOUSE.png", Texture.class))));
+					Buy.setDrawable(t);
+				}
 		    }
 		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-	    		TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("shop/BUY.png"))));
-	    		Buy.setDrawable(t);
+				if(!isPaused) {
+					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(AssetHandler.manager.get("shop/screen/BUY.png", Texture.class))));
+					Buy.setDrawable(t);
+				}
 		    }
 		});
 		t.addActor(Buy);
-
-		Gdx.input.setInputProcessor(screen.ui);
+		
+		information = new Label("DESCRIPTION:", unClicked);
+		information.setPosition((main.ui.getWidth())-40f-Leave.getWidth(), Title.getY());
+		information.setVisible(false);
+		main.ui.addActor(information);
+		
+		description = new Label("VOID", unClicked);
+		description.setFontScale(0.5f);
+		description.setPosition((main.ui.getWidth())-40f-Leave.getWidth(), information.getY() - 60f);
+		description.setVisible(false);
+		main.ui.addActor(description);
+		
+		sf = new Label("SCALE FACTOR:", unClicked);
+		sf.setPosition((main.ui.getWidth())-40f-Leave.getWidth(), description.getY() - 100f);
+		sf.setVisible(false);
+		main.ui.addActor(sf);
+		
+		scaleFactor= new Label("VOID", unClicked);
+		scaleFactor.setFontScale(0.5f);
+		scaleFactor.setPosition((main.ui.getWidth())-40f-Leave.getWidth(), sf.getY() - 60f);
+		scaleFactor.setVisible(false);
+		main.ui.addActor(scaleFactor);
+		
+		titleCost = new Label("COST OF ITEM:", unClicked);
+		titleCost .setPosition((main.ui.getWidth())-40f-Leave.getWidth(), scaleFactor.getY() - 100f);
+		titleCost .setVisible(false);
+		main.ui.addActor(titleCost);
+		
+		cost= new Label("VOID", unClicked);
+		cost.setFontScale(0.5f);
+		cost.setPosition((main.ui.getWidth())-40f-Leave.getWidth(), titleCost.getY() - 60f);
+		cost.setVisible(false);
+		main.ui.addActor(cost);
+		
+		titleLevel = new Label("LEVEL OF ITEM:", unClicked);
+		titleLevel .setPosition((main.ui.getWidth())-40f-Leave.getWidth(), cost.getY() - 100f);
+		titleLevel .setVisible(false);
+		main.ui.addActor(titleLevel);
+		
+		level= new Label("VOID", unClicked);
+		level.setFontScale(0.5f);
+		level.setPosition((main.ui.getWidth())-40f-Leave.getWidth(), titleLevel.getY() - 60f);
+		level.setVisible(false);
+		main.ui.addActor(level);
+		
 
 		
-		screen.ui.addActor(t);
+
+		Gdx.input.setInputProcessor(main.ui);
+		main.ui.addActor(t);
+		pauseGame();
 	}
 	
-	public void createItemSlots() {
-		for(int y = 0; y < 5; y++) {
-			for(int x = 0; x < 5; x++) {
-				final int X = x;
-				final int Y = y;
-				
-				
-				final Image ItemSlot1 = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("shop/ITEM.png")))));
-				ItemSlot1.setScaling(Scaling.fit);
-				ItemSlot1.setPosition(50f*scaleItem + ItemSlot1.getWidth()*x*scaleItem, Gdx.graphics.getHeight() - ItemSlot1.getHeight()*scaleItem - 200f*scaleItem - ItemSlot1.getHeight()*y*scaleItem);
-				ItemSlot1.setSize(ItemSlot1.getWidth()*scaleItem, ItemSlot1.getHeight()*scaleItem);
-				
-				ItemSlot1.addListener(new ClickListener(){
-					@Override
-				    public void clicked(InputEvent event, float x, float y) {
-			    		TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("shop/ITEMHOVER.png"))));
-			    		if(isClicked) {
-				    		TextureRegionDrawable t2 = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("shop/ITEM.png"))));
-			    			item[YArray][XArray].setDrawable(t2);
-			    			YArray = Y;
-			    			XArray = X;
-			    		}
-			    		else {
-				    		isClicked = true;
-			    			YArray = Y;
-			    			XArray = X;
-			    		}
-			    		ItemSlot1.setDrawable(t);
-				    }
-				    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-			    		TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("shop/ITEMHOVER.png"))));
-			    		ItemSlot1.setDrawable(t);
-				    }
-				    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-				    	if(!(X == XArray) || !(Y == YArray)) {
-				    		TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("shop/ITEM.png"))));
-			    			ItemSlot1.setDrawable(t);
-				    	}
-				    }
-				});
-				item[Y][X] = ItemSlot1;
-				t.addActor(ItemSlot1);
-			}
+	private Player readPlayer() {
+		FileHandle handle = Gdx.files.local("data/player.txt");
+		String[] values= handle.readString().split(",");
+		return new Player(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6]), Float.parseFloat(values[7]));
+	}
+	
+	
+	public void setCatagories() {
+		float spacing = 80f;
+		
+		final Label movement = new Label("MOVEMENT SPEED", unClicked);
+		movement.setPosition(50, main.ui.getHeight() - 400);
+		movement.addListener(new ClickListener(){
+			@Override
+		    public void clicked(InputEvent event, float x, float y) {
+				if(!isPaused) {
+					if(movement.getStyle().equals(unClicked)) {
+						resetLabel();
+						movement.setStyle(clicked);
+						setLabels(shop.getUpgrade(0));
+					}
+					else {
+						movement.setStyle(unClicked);
+						updateUI(false);
+					}
+				}
+		    }
+		});
+		items.add(movement);
+		
+		final Label maskAbility = new Label("MASK ABILITY", unClicked);
+		maskAbility.setPosition(50, items.get(items.size()-1).getY() - spacing);
+		maskAbility.addListener(new ClickListener(){
+			@Override
+		    public void clicked(InputEvent event, float x, float y) {
+				if(!isPaused) {
+					if(maskAbility.getStyle().equals(unClicked)) {
+						resetLabel();
+						maskAbility.setStyle(clicked);
+						setLabels(shop.getUpgrade(1));
+					}
+					else {
+						maskAbility.setStyle(unClicked);
+						updateUI(false);
+					}
+				}
+		    }
+		});
+		items.add(maskAbility);
+
+		final Label flameStrength = new Label("FLAME STRENGTH", unClicked);
+		flameStrength.setPosition(50, items.get(items.size()-1).getY() - spacing);
+		flameStrength.addListener(new ClickListener(){
+			@Override
+		    public void clicked(InputEvent event, float x, float y) {
+				if(!isPaused) {
+					if(flameStrength.getStyle().equals(unClicked)) {
+						resetLabel();
+						flameStrength.setStyle(clicked);
+						setLabels(shop.getUpgrade(2));
+					}
+					else {
+						flameStrength.setStyle(unClicked);
+						updateUI(false);
+					}
+				}
+		    }
+		});
+		items.add(flameStrength);
+		
+		final Label cureStrength = new Label("CURE STRENGTH", unClicked);
+		cureStrength.setPosition(50, items.get(items.size()-1).getY() - spacing);
+		cureStrength.addListener(new ClickListener(){
+			@Override
+		    public void clicked(InputEvent event, float x, float y) {
+				if(!isPaused) {
+					if(cureStrength.getStyle().equals(unClicked)) {
+						resetLabel();
+						cureStrength.setStyle(clicked);
+						setLabels(shop.getUpgrade(3));
+					}
+					else {
+						cureStrength.setStyle(unClicked);
+						updateUI(false);
+					}
+				}
+		    }
+		});
+		items.add(cureStrength);
+		
+		/*final Label flameAmount = new Label("FLAME AMOUNT", unClicked);
+		flameAmount.setPosition(50, items.get(items.size()-1).getY() - spacing);
+		flameAmount.addListener(new ClickListener(){
+			@Override
+		    public void clicked(InputEvent event, float x, float y) {
+				if(!isPaused) {
+					if(flameAmount.getStyle().equals(unClicked)) {
+						resetLabel();
+						flameAmount.setStyle(clicked);
+						setLabels(shop.getUpgrade(4));
+					}
+					else {
+						flameAmount.setStyle(unClicked);
+						updateUI(false);
+					}
+				}
+		    }
+		});
+		items.add(flameAmount);
+		
+		final Label cureAmount = new Label("CURE AMOUNT", unClicked);
+		cureAmount.setPosition(50, items.get(items.size()-1).getY() - spacing);
+		cureAmount.addListener(new ClickListener(){
+			@Override
+		    public void clicked(InputEvent event, float x, float y) {
+				if(!isPaused) {
+					if(cureAmount.getStyle().equals(unClicked)) {
+						resetLabel();
+						cureAmount.setStyle(clicked);
+						setLabels(shop.getUpgrade(5));
+					}
+					else {
+						cureAmount.setStyle(unClicked);
+						updateUI(false);
+					}
+				}
+		    }
+		});
+		items.add(cureAmount);*/
+		
+		
+		for(Label label : items) {
+			t.addActor(label);
 		}
+
+	
 	}
 	
-		
+	public void setLabels(Upgrade upgrade) {
+		clickedShop = upgrade;
+		description.setText(upgrade.getDescription());
+		scaleFactor.setText("INCREASING BY " + upgrade.getIncreasingValue());
+		cost.setText(upgrade.getCost()+" FOOD");
+		level.setText("Lvl. " +upgrade.getLevel());
+		updateUI(true);
+	}
+	
+	
+	public void resetLabel() {
+		for(Label label : items) {
+			label.setStyle(unClicked);
+		}
+		updateUI(false);
+		clickedShop = null;
+	}
+	
+	
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
@@ -152,16 +395,24 @@ public class ShopScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
+		inputHandler();
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		Gdx.gl.glClearColor(0, 0, 0, 1);
-		screen.ui.act(delta);
-		screen.ui.draw();		
+		main.ui.act(delta);
+		main.ui.draw();
+	}
+	
+	public void inputHandler() {
+		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+			togglePaused();
+			pause.setVisible(isPaused);
+		}
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		screen.ui.getViewport().update(width, height);
-		
+		main.ui.getViewport().update(width, height);
+		main.ui.getViewport().apply();
 	}
 
 	@Override
@@ -187,5 +438,95 @@ public class ShopScreen implements Screen {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	public void pauseGame() {
+	    	
+		/*
+		 * This method is used to create the window elements for the pause menu
+		 *
+		 * Creates a window and then has two different text buttons within
+		 *
+		 *  - RESUME (hides window when clicked and allows movement)
+		 *  - EXIT (exits the game)
+		 *
+		 * This is done through add listeners to each of the the buttons
+		 *
+		 * The window containing all the values is called pause
+		 */
+
+		float windowWidth = 200*scaleItem, windowHeight = 200*scaleItem;
+		pause = new Window("", skin);
+		pause.setMovable(false); //So the user can't move the window
+		//final TextButton button1 = new TextButton("Resume", skin);
+		final Label button1 = new Label("RESUME", createLabelStyleWithBackground(Color.WHITE));
+		button1.setFontScale(24f/60f);
+		button1.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				togglePaused();
+				pause.setVisible(false);
+	        }
+		});
+		Label button2 = new Label("EXIT", createLabelStyleWithBackground(Color.WHITE));
+		button2.setFontScale(24f/60f);
+		button2.addListener(new ClickListener() {
+	        @Override
+		    public void clicked(InputEvent event, float x, float y) {
+	        	System.exit(0);
+		    }
+		});
+
+	    pause.add(button1).row();
+	    pause.row();
+	    pause.add(button2).row();
+	    pause.pack(); //Important! Correctly scales the window after adding new elements
+
+	    //Centre window on screen.
+	    pause.setBounds(((main.ui.getWidth() - windowWidth*scaleItem  ) / 2),
+	    (main.ui.getHeight() - windowHeight*scaleItem) / 2, windowWidth  , windowHeight );
+	    //Sets the menu as invisible
+	    isPaused = false;
+	    pause.setVisible(false);
+	        
+	    pause.setSize(pause.getWidth()*scaleItem, pause.getHeight()*scaleItem);
+	    //Adds it to the UI Screen.
+	    main.ui.addActor(pause);
+	  
+
+	}
+    
+    private LabelStyle createLabelStyleWithBackground(Color color) {
+    	///core/assets/font/Pixel.ttf
+    	FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
+    	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
+    	FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+    	parameter.size = 60;
+        LabelStyle labelStyle = new LabelStyle();
+        labelStyle.font = generator.generateFont(parameter);
+        labelStyle.fontColor = color;
+        return labelStyle;
+    }
+    
+	/**
+	 * Toggle isPaused variable.
+	 */
+	private void togglePaused() {
+		isPaused = !isPaused;
+	}
+	
+    public void updateUI(Boolean hit) {
+    	information.setVisible(hit);
+    	description.setVisible(hit);
+    	scaleFactor.setVisible(hit);
+    	sf.setVisible(hit);
+    	Buy.setVisible(hit);
+    	titleCost.setVisible(hit);
+    	cost.setVisible(hit);
+    	titleLevel.setVisible(hit);
+    	level.setVisible(hit);
+    }
+	
+	
 
 }
