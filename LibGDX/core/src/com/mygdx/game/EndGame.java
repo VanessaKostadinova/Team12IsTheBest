@@ -12,6 +12,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.renderable.Node;
 
+/**
+ * Used to show the end game sequence of the game.
+ * @version 1.0
+ * @author Inder Panesar
+ */
 public class EndGame implements Screen {
 	
 	float stateTime = 0f;

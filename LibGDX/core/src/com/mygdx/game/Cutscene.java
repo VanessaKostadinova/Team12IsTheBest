@@ -14,23 +14,33 @@ import com.badlogic.gdx.video.VideoPlayerCreator;
 import com.mygdx.camera.Camera;
 import com.mygdx.renderable.Node;
 
+/**
+ * Class used to generate a cut-scene and a lot of things to do.
+ * Makes use of the gdx.video library which has been imported independently.
+ * @author Inder Panesar
+ * @version 2.0
+ * @see com.badlogic.gdx.video;
+ */
 public class Cutscene implements Screen {
 
+	//package-view attributes below, are self-explanatory
 	float stateTime = 0f;
-
 	Main main;
 	Node initialNode;
 	MapScreen mapScreen;
 	Boolean shouldLeave;
 	VideoPlayer videoPlayer;
 	OrthographicCamera camera;
-	Stage temp;
 
-	VideoPlayerCreator v;
-	public Cutscene(Main main, String cutscene, Boolean shouldLeave) {
+	/**
+	 * Constructor for the cutscene class.
+	 * @param main The main class.
+	 * @param file The cutscene that we want to play.
+	 * @param shouldLeave Whether this a end game cutscene and should leave game.
+	 */
+	public Cutscene(Main main, String file, Boolean shouldLeave) {
 		this.main = main;
 		this.shouldLeave = shouldLeave;
-
 
 		camera = new OrthographicCamera(1920, 1080);
 		camera.position.set(1920 / 2, 1080 / 2, 0);
@@ -42,9 +52,6 @@ public class Cutscene implements Screen {
 		Gdx.gl.glEnable(GL20.GL_CULL_FACE);
 		Gdx.gl.glCullFace(GL20.GL_BACK);
 
-
-
-
 		try {
 			FileHandle videoFile = Gdx.files.internal("video/ferrari.ogg");
 			Gdx.app.log("LOADING", "Loading file : " + videoFile.file().getAbsolutePath());
@@ -52,16 +59,6 @@ public class Cutscene implements Screen {
 		} catch (Exception e) {
 			Gdx.app.log("ERROR", "Err: " + e);
 		}
-
-
-
-
-
-
-
-
-
-
 	}
 
 	@Override
@@ -72,27 +69,7 @@ public class Cutscene implements Screen {
 
 	@Override
 	public void render(float delta) {
-		/*f(	voiceOver.isPlaying()) {
-			Gdx.gl.glClearColor(0, 0, 0, 1);
-			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-			stateTime = stateTime + delta;
-
-			main.ui.draw();
-
-			if(stateTime > waitTime) {
-				stateTime = stateTime - waitTime;
-				changeScreen();
-			}
-
-
-			if(Gdx.input.isKeyJustPressed(Keys.ENTER) ) {
-				totalTime.clear();
-				this.changeScreen();
-			}
-		}
-		else {
-			voiceOver.play();
-		}*/
+		stateTime += delta;
 		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		if (videoPlayer.isBuffered()) {
@@ -114,10 +91,13 @@ public class Cutscene implements Screen {
 		}
 	}
 
-	public void changeScreen() {
+	/**
+	 * Change Screen is a method which is called to change the scene to the next scene
+	 * or return to a previous scene.
+	 */
+	private void changeScreen() {
 		Gdx.gl.glDisable(GL20.GL_CULL_FACE);
 		if(shouldLeave) {
-			//main.ui.clear();
 			Camera camera = new Camera(2160f, 1080f, 1920f);
 			camera.getCamera().position.set(
 					camera.getCamera().viewportWidth / 2f ,
@@ -159,7 +139,6 @@ public class Cutscene implements Screen {
 
 	@Override
 	public void dispose() {
-		//voiceOver.dispose();
 		videoPlayer.dispose();
 	}
 
