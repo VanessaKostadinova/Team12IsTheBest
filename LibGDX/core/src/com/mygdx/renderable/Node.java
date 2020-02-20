@@ -36,9 +36,15 @@ public class Node extends Renderable {
 	/** The illness level of this node */
 	private float illnessLevel;
 
-	private boolean level1Researched = false;
-	private boolean level2Researched = false;
-	private boolean level3Researched = false;
+	/** All neighbouring nodes */
+	private ArrayList<Node> neighbours;
+
+	/** Whether the player has researched the number of living residents */
+	private boolean numberAliveResearched = false;
+	/** Whether the player has researched the number of ill residents */
+	private boolean numberIllResearched = false;
+	/** Whether the player has researched the number of dead residents */
+	private boolean numberDeadResearched = false;
 	private boolean level4Researched = false;
 	
 	
@@ -47,12 +53,12 @@ public class Node extends Renderable {
 		isDiseased = false;
 		residents = new ArrayList<>();
 		noteSeen = new HashMap<>();
+		neighbours = new ArrayList<>();
 		setAllVillagers(attributes);
 		this.house = new House(attributes);
 		updateHouseDiseased();
 	}
-	
-	
+
 	public void setAllVillagers(String[] attributes) {
 		for(String s : attributes) {
 			if(s.contains(",") && !s.contains("(")) {
@@ -68,20 +74,12 @@ public class Node extends Renderable {
 				noteSeen.put(values[0].substring(1), false);
 			}
 		}
-		
+	}
 
-	}
-	
-	public int generateNumOfNPCs(int highBound, int lowBound) {
-		return lowBound;
-	}
-	
-	
 	public List<NPC> getNPCs() {
 		return residents;
 	}
-	
-	
+
 	public void setNodes(ArrayList<NPC> villagers) {
 		residents = villagers;
 	}
@@ -90,9 +88,12 @@ public class Node extends Renderable {
 		return house.getArray();
 	}
 	
-	
 	public Boolean isDiseased() {
 		return isDiseased;
+	}
+
+	public void addNeighbour(Node neighbour){
+		neighbours.add(neighbour);
 	}
 	
 	public void updateHouseDiseased() {
@@ -189,10 +190,6 @@ public class Node extends Renderable {
 		}
 		return true;
 	}
-	
-	public int getNumberOfResidents() {
-		return residents.size();
-	}
 
 	public House getHouse() {
 		return house;
@@ -247,50 +244,50 @@ public class Node extends Renderable {
 	}
 	
 	public void upgradeLevelKnown() {
-		if(!level4Researched && level3Researched && level2Researched && level1Researched) {
+		if(!level4Researched && numberDeadResearched && numberIllResearched && numberAliveResearched) {
 			level4Researched = true;
 		}
-		else if(!level3Researched && level2Researched && level1Researched) {
-			level3Researched = true;
+		else if(!numberDeadResearched && numberIllResearched && numberAliveResearched) {
+			numberDeadResearched = true;
 		}
-		else if(!level2Researched && level1Researched) {
-			level2Researched = true;
+		else if(!numberIllResearched && numberAliveResearched) {
+			numberIllResearched = true;
 		}
-		else if(!level1Researched) {
-			level1Researched = true;
+		else if(!numberAliveResearched) {
+			numberAliveResearched = true;
 		}
 	}
 	
 	public Boolean reachedMaxLevel() {
-		return level3Researched;
+		return numberDeadResearched;
 	}
 	
 	public Boolean getLevel1() {
-		return level1Researched;
+		return numberAliveResearched;
 	}
 	
 	public Boolean getLevel2() {
-		return level2Researched;
+		return numberIllResearched;
 	}
 	
 	public Boolean getLevel3() {
-		return level3Researched;
+		return numberDeadResearched;
 	}
 	
 	public Boolean getLevel4() {
-		return level3Researched;
+		return numberDeadResearched;
 	}
 	
 	public Boolean setLevel1(Boolean value) {
-		return level1Researched = value;
+		return numberAliveResearched = value;
 	}
 	
 	public Boolean setLevel2(Boolean value) {
-		return level2Researched = value;
+		return numberIllResearched = value;
 	}
 	
 	public Boolean setLevel3(Boolean value) {
-		return level3Researched = value;
+		return numberDeadResearched = value;
 	}
 	
 	public Boolean setLevel4(Boolean value) {

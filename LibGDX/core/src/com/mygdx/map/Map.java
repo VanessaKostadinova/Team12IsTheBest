@@ -20,6 +20,7 @@ public class Map {
 		shop = new Shop(AssetHandler.manager.get("house/Shop.gif", Texture.class), 900.0f, 470.0f);
 		checkIfPlayerExist();
 		resetPlayerFile();
+		setNeighbours();
 	}
 	
 	public void resetPlayerFile() {
@@ -60,6 +61,19 @@ public class Map {
 						"More than 20 house are shown in the mapFile");
 			}	
 		}		
+	}
+
+	private void setNeighbours(){
+		for(Node house : nodes){
+			for(Node compareHouse : nodes){
+				if(!(house.equals(compareHouse))){
+					float distance = house.getCentreCoords().dst(compareHouse.getCentreCoords());
+					if(distance <= 50f){
+						house.addNeighbour(compareHouse);
+					}
+				}
+			}
+		}
 	}
 	
 	public void createPlayerFile() {

@@ -79,8 +79,9 @@ public class NPC extends Renderable implements Living {
 	public void updateTexture() {
 		Texture tempSprite = new Texture(Gdx.files.internal("NPC/" + status + "_NPC.gif"));
 		super.setSprite(tempSprite,super.getSprite().getX(),super.getSprite().getY());
+		changeStatus();
 	}
-	
+
 	public void update() {
 		if(health > 100) {
 			health = 100;
@@ -116,11 +117,11 @@ public class NPC extends Renderable implements Living {
 		}
 	}
 
-	//TODO finish this
 	private void changeStatus(){
 		daysInStatus = 0;
 	}
 
+	//TODO put this in
 	private void incrementStatus(){
 		daysInStatus += 1;
 	}

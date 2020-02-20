@@ -22,7 +22,6 @@ public class House {
 	private int[][] background;
 	private int[][] backgroundProperties;
 
-	
 	private List<Torch> torches;
 
 	private HashMap<Integer, Texture> textures;
@@ -39,8 +38,6 @@ public class House {
 		createLevel();
 		createProperties();
 	}
-	
-	
 
 	public int[][] getArray() {
 		return background;
@@ -66,8 +63,6 @@ public class House {
 	public Texture getTexture(int value) {
 		return textures.get(value);
 	}
-
-
 	
 	public void createBodies(World world) {
 		for(BodyDef def : walls) {
@@ -81,12 +76,10 @@ public class House {
             fixtureDef.filter.categoryBits = Constants.WALL;
                 
             body.createFixture(fixtureDef);
-            
 		}
 		
     }
-	
-	
+
 	public void createBodyDef(int x, int y) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.StaticBody;
@@ -94,9 +87,7 @@ public class House {
         bodyDef.fixedRotation = true;
 		walls.add(bodyDef);
 	}
-	
-	
-	
+
     private void createLevel() {
         FileHandle handle;
         try {
@@ -170,11 +161,8 @@ public class House {
             e.printStackTrace();
         }
     }
-    
 
-    
 	private void generateTorches(int x, int y) {
-		
 		/*                        
 		 * Each tile is 32*32
 		 * Hence we divide the coordinates by 32 and round down.
@@ -185,8 +173,6 @@ public class House {
 	    if(value > 0 && value < 5) {
 		    int positionX = y*32;
 		    int positionY = x*32;
-		    
-		    
 		    
 		    if(value == 1) {
 		    	torches.add(new Torch(positionX, positionY, 0f));
@@ -203,15 +189,12 @@ public class House {
 		    if(value == 4) {
 		    	torches.add(new Torch(positionX, positionY, 270f));
 		    }
-
 	    }
-
 	}
 	
 	public List<Torch> getTorches() {
 		return torches;
 	}
-
 
 	public int[][] getLevel() {
 		return background;
