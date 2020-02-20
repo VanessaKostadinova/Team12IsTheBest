@@ -2,6 +2,7 @@ package com.mygdx.map;
 
 import java.util.List;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.mygdx.house.House;
 import com.mygdx.renderable.NPC;
 import com.mygdx.renderable.Node;
 
@@ -45,7 +46,26 @@ public class Disease {
 		}
 		shapeRenderer.end();
 	}
-	
+
+	public float calculateHouseIllness(Node house){
+		float totalIllness = 0f;
+		for(NPC resident : house.getNPCs()){
+			if(resident.isIll()){
+				totalIllness += 1 * 1/resident.getDaysInStatus();
+			}
+			else if (resident.isDead()){
+				totalIllness += 1* resident.getDaysInStatus();
+			}
+		}
+		return totalIllness;
+	}
+
+	//TODO finish implementation
+	public float calculateResidentIllness(Node house){
+		float illnessLikelihood = house.getIllnessLevel();
+		house.
+		return 0f;
+	}
 	public void diseaseSpread(List<Node> disease) {
 		for(Node spreader : disease) {
 			if(spreader.isDiseased()) {
@@ -86,13 +106,9 @@ public class Disease {
 			}
 		}
 	}
-	
-	
+
 	public boolean diseaseImpacted() {
 		float random = (float) (0 + Math.random() * (100));
 		return random < probabilty;
 	}
-
-
-	
 }

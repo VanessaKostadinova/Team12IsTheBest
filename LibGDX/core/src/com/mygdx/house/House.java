@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.mygdx.renderable.Constants;
+import com.mygdx.renderable.NPC;
 
 public class House {
 	
@@ -29,7 +30,6 @@ public class House {
 	private int indicator = 0;
 	private String houseProperties;
 	private List<BodyDef> walls;
-	
 	
 	public House(String[] attributes) {
 		textures = new HashMap<>();

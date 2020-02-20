@@ -25,7 +25,8 @@ public class Node extends Renderable {
 	private Map<String, Boolean> noteSeen;
 	private Boolean isDiseased;
 	
-	
+	private float illnessLevel;
+
 	private boolean level1Researched = false;
 	private boolean level2Researched = false;
 	private boolean level3Researched = false;
@@ -204,7 +205,6 @@ public class Node extends Renderable {
 		}
 	}
 
-
 	public void infectRandom(float probabilty)
 	{
 		Random rand = new Random();
@@ -214,7 +214,6 @@ public class Node extends Renderable {
 				resident.infect();
 			}
 		}
-		
 	}
 	
 	public void upgradeLevelKnown() {
@@ -284,6 +283,11 @@ public class Node extends Renderable {
 			}
 		}
 		return true;
+	}
+
+	//TODO Implementation of illness level
+	public float getIllnessLevel(){
+		return illnessLevel;
 	}
 
 }

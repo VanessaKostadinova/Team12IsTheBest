@@ -19,10 +19,11 @@ public class NPC extends Renderable implements Living {
 	private static final int FRAME_ROWS = 2;
 	
 	private float health;
-	//private float susceptibility;
 	private boolean foodGiven;
 	private boolean isHealed;
-	
+
+	private int daysInStatus;
+
 	private boolean sanityAdd;
 	
 	private Rectangle rectangle;
@@ -116,7 +117,11 @@ public class NPC extends Renderable implements Living {
 		
 
 	}
-	
+	//TODO finish this
+	private void changeStatus(){
+		daysInStatus = 0;
+	}
+
 	@Override
 	public void updateSprite(float dx, float dy) {
 		coordinates.add(coordinates.x + dx, coordinates.y + dy);
@@ -159,7 +164,20 @@ public class NPC extends Renderable implements Living {
 	public void setFoodGiven(boolean given) {
 		this.foodGiven = given;
 	}
-	
+
+	public boolean isIll(){
+		if(status == "Ill"){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public int getDaysInStatus(){
+		return daysInStatus;
+	}
+
 	public Sprite getBar() {
 		return healthBar;
 	}
@@ -197,6 +215,4 @@ public class NPC extends Renderable implements Living {
 	public void setHealth(float newHealth) {
 		this.health = newHealth;
 	}
-	
-
 }
