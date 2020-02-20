@@ -68,7 +68,7 @@ public class Map {
 			for(Node compareHouse : nodes){
 				if(!(house.equals(compareHouse))){
 					float distance = house.getCentreCoords().dst(compareHouse.getCentreCoords());
-					if(distance <= 50f){
+					if(distance <= 150f){
 						house.addNeighbour(compareHouse);
 					}
 				}

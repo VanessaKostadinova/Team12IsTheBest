@@ -9,7 +9,7 @@ import com.mygdx.renderable.NPC;
 import com.mygdx.renderable.Node;
 
 public class Disease {
-	
+
 	private final float spreadRadius = 250.0f;
 	private final float probabilty = 50.0f;
 
@@ -17,7 +17,7 @@ public class Disease {
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 		for(Node reciever : disease) {
 			if(!(spreader.equals(reciever))) {
-				
+
 				float distance = spreader.getCentreCoords().dst(reciever.getCentreCoords());
 				if(distance < spreadRadius) {
 					if(spreader.isDiseased() && reciever.isDiseased()) {
@@ -42,7 +42,7 @@ public class Disease {
 					if(!spreader.isDiseased() && !reciever.isDiseased()) {
 						shapeRenderer.setColor(1, 1, 1, 0.1f); // WHITE LINE
 					}
-					shapeRenderer.rectLine(spreader.getCentreCoords(),reciever.getCentreCoords(),8);				
+					shapeRenderer.rectLine(spreader.getCentreCoords(),reciever.getCentreCoords(),8);
 				}
 			}
 		}
@@ -53,36 +53,28 @@ public class Disease {
 		float totalIllness = 0f;
 		for(NPC resident : house.getNPCs()){
 			if(resident.isIll()){
-				totalIllness += 1 * 1/resident.getDaysInStatus();
+				totalIllness += 10 * 1/resident.getDaysInStatus();
 			}
 			else if (resident.isDead()){
-				totalIllness += 1 * resident.getDaysInStatus();
+				totalIllness += 10 * resident.getDaysInStatus();
 			}
 		}
 		return totalIllness;
 	}
 
 	//TODO finish implementation
-	public void infectResidents(List<Node> houses){
+	public void infectResidents(Node house){
 		Random random = new Random();
-		/*
-		Better way of doing this is to store a list of connected nodes in the node itself.
-		 */
-		for(Node house : houses){
-			float illnessLikelihood = house.getIllnessLevel();
-			for(Node compareHouse : houses){
-				if(!(house.equals(compareHouse))){
-					float distance = house.getCentreCoords().dst(compareHouse.getCentreCoords());
-					if(distance <= spreadRadius){
-						illnessLikelihood += compareHouse.getIllnessLevel() * Math.pow(distance, (-1/3));
-					}
-				}
-			}
+		float illnessLikelihood = house.getIllnessLevel();
+		for(Node compareHouse : house.getNeighbours()){
+			float distance = house.getCentreCoords().dst(compareHouse.getCentreCoords());
+			illnessLikelihood += compareHouse.getIllnessLevel() * Math.pow(distance, (-1/3));
+		}
 
-			for(NPC resident : house.getAllAlive()){
-				if(random.nextFloat() <= illnessLikelihood){
-					resident.infect();
-				}
+		for(NPC resident : house.getAllAlive()){
+			System.out.println("I am executing");
+			if(random.nextInt(10) <= illnessLikelihood){
+				resident.infect();
 			}
 		}
 	}
@@ -113,13 +105,13 @@ public class Disease {
 			}
 		}
 	}
-	
+
 	public void diseaseAffect(List<Node> disease) {
 		for(Node spreader : disease) {
 			if(spreader.isDiseased()) {
 				for(NPC villagers : spreader.getResidents()) {
 					if(!villagers.getStatus().equals("Dead") && !villagers.getStatus().equals("Burnt")) {
-						double x = (Math.random()*((40-20)+20))+20; 
+						double x = (Math.random()*((40-20)+20))+20;
 						x = x * -1;
 						villagers.changeHealth((float) x);
 					}

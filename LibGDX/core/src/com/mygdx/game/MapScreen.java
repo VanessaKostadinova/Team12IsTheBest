@@ -228,7 +228,7 @@ public class MapScreen implements Screen {
 			for(Node node: this.map.getNodes()) {
 				if(node != null) {
 					node.draw(main.batch);
-					node.updateHouseDiseased();
+					//node.updateHouseDiseased();
 				}
 			}
 			pointer.draw(main.batch);
@@ -373,8 +373,10 @@ public class MapScreen implements Screen {
 						Player p = readPlayer();
 						p.resetEnergy();
 						energy.setText(p.getEnergy()+"");
-						disease.diseaseSpread(map.getNodes());
-						disease.diseaseAffect(map.getNodes());
+						for(Node house : map.getNodes()){
+							disease.calculateHouseIllness(house);
+							disease.infectResidents(house);
+						}
 						p.writeToPlayerFile();
 						initialDone = false;
 						darken = false;

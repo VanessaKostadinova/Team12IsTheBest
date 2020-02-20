@@ -30,8 +30,6 @@ public class Node extends Renderable {
 	private Map<Vector2, String> notes = new HashMap<>();
 	/** Map of all notes found in the house */
 	private Map<String, Boolean> noteSeen;
-	/** Whether the node has disease */
-	private Boolean isDiseased;
 
 	/** The illness level of this node */
 	private float illnessLevel;
@@ -49,14 +47,14 @@ public class Node extends Renderable {
 	
 	
 	public Node(Texture textureOfHouse, float x, float y, String[] attributes) {
+		illnessLevel = 0f;
 		super.setSprite(textureOfHouse, x, y);
-		isDiseased = false;
 		residents = new ArrayList<>();
 		noteSeen = new HashMap<>();
 		neighbours = new ArrayList<>();
 		setAllVillagers(attributes);
 		this.house = new House(attributes);
-		updateHouseDiseased();
+		//updateHouseDiseased();
 	}
 
 	public void setAllVillagers(String[] attributes) {
@@ -89,22 +87,11 @@ public class Node extends Renderable {
 	}
 	
 	public Boolean isDiseased() {
-		return isDiseased;
+		return (illnessLevel >= 0);
 	}
 
 	public void addNeighbour(Node neighbour){
 		neighbours.add(neighbour);
-	}
-	
-	public void updateHouseDiseased() {
-		this.isDiseased = false;
-		for(NPC n : residents) {
-			if (!n.getStatus().equals("Sick") && !n.getStatus().equals("Dead")) {
-				continue;
-			}
-			this.isDiseased = true;
-			break;
-		}
 	}
 	
 	public Boolean isAllInHouseDiseased() {
@@ -318,6 +305,14 @@ public class Node extends Renderable {
 	 */
 	public float getIllnessLevel(){
 		return illnessLevel;
+	}
+
+	/**
+	 * Returns a list of all connected nodes
+	 * @return neighbours
+	 */
+	public List<Node> getNeighbours(){
+		return neighbours;
 	}
 
 	/**
