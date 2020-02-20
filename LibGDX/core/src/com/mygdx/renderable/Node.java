@@ -14,18 +14,28 @@ import com.mygdx.house.House;
 import static java.lang.Float.*;
 
 /**
- *
+ * Class node represents the back end information of each house.
+ * @Authors Inder, Vanessa
+ * @Version 20/02/2020
  */
+
 public class Node extends Renderable {
-	
+
+	/** The house it represents */
 	private House house;
+	/** List of NPC's residing in this node */
 	private ArrayList<NPC> residents;
 
+	/** Map of all notes in the house */
 	private Map<Vector2, String> notes = new HashMap<>();
+	/** Map of all notes found in the house */
 	private Map<String, Boolean> noteSeen;
+	/** Whether the node has disease */
 	private Boolean isDiseased;
-	
-	
+
+	/** The illness level of this node */
+	private float illnessLevel;
+
 	private boolean level1Researched = false;
 	private boolean level2Researched = false;
 	private boolean level3Researched = false;
@@ -104,9 +114,12 @@ public class Node extends Renderable {
 		}
 		return true;
 	}
-	
-	
-	public int getNumberOfInfected()
+
+	/**
+	 * Returns the number of dead NPC's
+	 * @return Dead NPC's
+	 */
+	public int getNumberOfDead()
 	{
 		int x = 0;
 		for(NPC resident : residents)
@@ -115,7 +128,11 @@ public class Node extends Renderable {
 		}
 		return x;
 	}
-	
+
+	/**
+	 * Returns the number of ill NPC's
+	 * @return Ill NPC's
+	 */
 	public int getNumberOfSick()
 	{
 		int x = 0;
@@ -135,7 +152,21 @@ public class Node extends Renderable {
 		}
 		return x;
 	}
-	
+
+	/**
+	 * Returns a list of all non-infected living NPC's
+	 * @return Alive
+	 */
+	public List<NPC> getAllAlive(){
+		List<NPC> alive = new ArrayList<>();
+		for(NPC resident : residents){
+			if(resident.getStatus().equals("Alive")){
+				alive.add(resident);
+			}
+		}
+		return alive;
+	}
+
 	public Boolean everyoneBurnt()
 	{
 		for(NPC resident : residents)
@@ -204,7 +235,6 @@ public class Node extends Renderable {
 		}
 	}
 
-
 	public void infectRandom(float probabilty)
 	{
 		Random rand = new Random();
@@ -214,7 +244,6 @@ public class Node extends Renderable {
 				resident.infect();
 			}
 		}
-		
 	}
 	
 	public void upgradeLevelKnown() {
@@ -286,4 +315,19 @@ public class Node extends Renderable {
 		return true;
 	}
 
+	/**
+	 * Returns the total illness level for this Node
+	 * @return illnessLevel
+	 */
+	public float getIllnessLevel(){
+		return illnessLevel;
+	}
+
+	/**
+	 * Sets the level of infection, used for infecting NPC's
+	 * @param illnessLevel
+	 */
+	public void setIllnessLevel(float illnessLevel){
+		this.illnessLevel = illnessLevel;
+	}
 }

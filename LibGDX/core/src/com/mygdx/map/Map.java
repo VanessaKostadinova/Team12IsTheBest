@@ -30,8 +30,7 @@ public class Map {
 	public List<Node> getNodes() {
 		return nodes;
 	}
-	
-	
+
 	public Shop getShop() {
 		return shop;
 	}
@@ -45,8 +44,7 @@ public class Map {
 			handle.writeString("0,5", false);
 		}
 	}
-	
-	
+
 	public void readMapFile() {
 		FileHandle handle = Gdx.files.internal("house/files/"+"mapFile.txt");
 		String[] nodeFilenames;
@@ -75,8 +73,4 @@ public class Map {
 	public Disease getDisease() {
 		return disease;
 	}
-	
-	
-	
-
 }
