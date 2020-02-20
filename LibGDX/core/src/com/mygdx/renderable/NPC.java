@@ -77,7 +77,7 @@ public class NPC extends Renderable implements Living {
 	 * Update texture of the villager as it's state changes.
 	 */
 	public void updateTexture() {
-		Texture tempSprite = new Texture(Gdx.files.internal("NPC/"+status + "_NPC.gif"));
+		Texture tempSprite = new Texture(Gdx.files.internal("NPC/" + status + "_NPC.gif"));
 		super.setSprite(tempSprite,super.getSprite().getX(),super.getSprite().getY());
 	}
 	
@@ -114,12 +114,15 @@ public class NPC extends Renderable implements Living {
 			updateTexture();
 			healthBar.setTexture(new Texture(Gdx.files.internal("house/UI/HEALTHFULL.png")));
 		}
-		
-
 	}
+
 	//TODO finish this
 	private void changeStatus(){
 		daysInStatus = 0;
+	}
+
+	private void incrementStatus(){
+		daysInStatus += 1;
 	}
 
 	@Override

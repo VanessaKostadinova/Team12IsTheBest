@@ -1,6 +1,8 @@
 package com.mygdx.map;
 
 import java.util.List;
+import java.util.Random;
+
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.house.House;
 import com.mygdx.renderable.NPC;
@@ -54,18 +56,37 @@ public class Disease {
 				totalIllness += 1 * 1/resident.getDaysInStatus();
 			}
 			else if (resident.isDead()){
-				totalIllness += 1* resident.getDaysInStatus();
+				totalIllness += 1 * resident.getDaysInStatus();
 			}
 		}
 		return totalIllness;
 	}
 
 	//TODO finish implementation
-	public float calculateResidentIllness(Node house){
-		float illnessLikelihood = house.getIllnessLevel();
-		house.
-		return 0f;
+	public void infectResidents(List<Node> houses){
+		Random random = new Random();
+		/*
+		Better way of doing this is to store a list of connected nodes in the node itself.
+		 */
+		for(Node house : houses){
+			float illnessLikelihood = house.getIllnessLevel();
+			for(Node compareHouse : houses){
+				if(!(house.equals(compareHouse))){
+					float distance = house.getCentreCoords().dst(compareHouse.getCentreCoords());
+					if(distance <= spreadRadius){
+						illnessLikelihood += compareHouse.getIllnessLevel() * Math.pow(distance, (-1/3));
+					}
+				}
+			}
+
+			for(NPC resident : house.getAllAlive()){
+				if(random.nextFloat() <= illnessLikelihood){
+					resident.infect();
+				}
+			}
+		}
 	}
+
 	public void diseaseSpread(List<Node> disease) {
 		for(Node spreader : disease) {
 			if(spreader.isDiseased()) {

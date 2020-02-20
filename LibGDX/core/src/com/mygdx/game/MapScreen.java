@@ -448,7 +448,7 @@ public class MapScreen implements Screen {
 		}
 		
 		if(n.getLevel3()) {
-			numberOfCharacterDiseased.setText(n.getNumberOfInfected());
+			numberOfCharacterDiseased.setText(n.getNumberOfDead());
 		} else {
 			numberOfCharacterDiseased.setText("NOT KNOWN");
 		}
