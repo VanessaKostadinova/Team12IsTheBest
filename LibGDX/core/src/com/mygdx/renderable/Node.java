@@ -87,7 +87,7 @@ public class Node extends Renderable {
 	}
 	
 	public Boolean isDiseased() {
-		return (illnessLevel >= 0);
+		return (illnessLevel > 0);
 	}
 
 	public void addNeighbour(Node neighbour){
@@ -113,6 +113,7 @@ public class Node extends Renderable {
 		for(NPC resident : residents)
 		{
 			if(resident.getStatus().equals("Dead")) x++;
+			if(resident.getStatus().equals("Burnt")) x++;
 		}
 		return x;
 	}

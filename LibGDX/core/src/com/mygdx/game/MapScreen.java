@@ -227,7 +227,7 @@ public class MapScreen implements Screen {
 			for(Node node: this.map.getNodes()) {
 				if(node != null) {
 					node.draw(main.batch);
-					//node.updateHouseDiseased();
+					disease.calculateHouseIllness(node);
 				}
 			}
 			pointer.draw(main.batch);
@@ -400,10 +400,11 @@ public class MapScreen implements Screen {
 	}
 	
 	public void diseaseHandler(Node house) {
-		disease.calculateHouseIllness(house);
+		disease.diseaseSpread(house);
 		disease.diseaseAffect(house);
 		disease.infectResidents(house);
 	}
+	
 	
 	
 	public void checkKC() {
@@ -464,6 +465,7 @@ public class MapScreen implements Screen {
 	
 	public void initalSceneTransitions(float delta) {
 		if(!initialDone) {
+			
 			dayLabel.setVisible(true);
 			
 			numberOfCharacter.setVisible(false);

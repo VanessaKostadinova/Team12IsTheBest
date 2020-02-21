@@ -169,8 +169,8 @@ public class NPC extends Renderable implements Living {
 		this.foodGiven = given;
 	}
 
-	public boolean isIll(){
-		if(status == "Ill"){
+	public boolean isSick(){
+		if(status == "Sick"){
 			return true;
 		}
 		else {

@@ -52,13 +52,14 @@ public class Disease {
 	public float calculateHouseIllness(Node house){
 		float totalIllness = 0f;
 		for(NPC resident : house.getNPCs()){
-			if(resident.isIll()){
-				totalIllness += 10 * 1/resident.getDaysInStatus();
+			if(resident.isSick()){
+				totalIllness += (10 * 1/(resident.getDaysInStatus()+1));
 			}
 			else if (resident.isDead()){
-				totalIllness += 10 * resident.getDaysInStatus();
+				totalIllness += (10 * (resident.getDaysInStatus()+1));
 			}
 		}
+		house.setIllnessLevel(totalIllness);
 		return totalIllness;
 	}
 
@@ -79,22 +80,20 @@ public class Disease {
 		}
 	}
 
-	public void diseaseSpread(List<Node> disease) {
-		for(Node spreader : disease) {
-			if(spreader.isDiseased()) {
-				for(Node reciever : spreader.getNeighbours()) {
-					if(!reciever.isDiseased()) {
-						float distance = spreader.getCentreCoords().dst(reciever.getCentreCoords());
+	public void diseaseSpread(Node house) {
+		if(house.isDiseased()) {
+			for(Node reciever : house.getNeighbours()) {
+				if(!reciever.isDiseased()) {
+					float distance = house.getCentreCoords().dst(reciever.getCentreCoords());
+					if(distance < spreadRadius && diseaseImpacted()) {
+						reciever.infectRandom(probabilty);
+					}
+				}
+				else {
+					if(!reciever.isAllInHouseDiseased()) {
+						float distance = house.getCentreCoords().dst(reciever.getCentreCoords());
 						if(distance < spreadRadius && diseaseImpacted()) {
 							reciever.infectRandom(probabilty);
-						}
-					}
-					else {
-						if(!reciever.isAllInHouseDiseased()) {
-							float distance = spreader.getCentreCoords().dst(reciever.getCentreCoords());
-							if(distance < spreadRadius && diseaseImpacted()) {
-								reciever.infectRandom(probabilty);
-							}
 						}
 					}
 				}
