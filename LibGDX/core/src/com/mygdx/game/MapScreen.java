@@ -203,7 +203,6 @@ public class MapScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		System.out.println("HIT!");
 		Gdx.gl.glClearColor(124/256f, 189/256f, 239/256f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
@@ -374,8 +373,7 @@ public class MapScreen implements Screen {
 						p.resetEnergy();
 						energy.setText(p.getEnergy()+"");
 						for(Node house : map.getNodes()){
-							disease.calculateHouseIllness(house);
-							disease.infectResidents(house);
+							diseaseHandler(house);
 						}
 						p.writeToPlayerFile();
 						initialDone = false;
@@ -399,6 +397,12 @@ public class MapScreen implements Screen {
 			}
 		}
 		this.rayHandler.setAmbientLight(darkness);
+	}
+	
+	public void diseaseHandler(Node house) {
+		disease.calculateHouseIllness(house);
+		disease.diseaseAffect(house);
+		disease.infectResidents(house);
 	}
 	
 	

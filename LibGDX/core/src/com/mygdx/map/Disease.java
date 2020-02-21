@@ -82,22 +82,18 @@ public class Disease {
 	public void diseaseSpread(List<Node> disease) {
 		for(Node spreader : disease) {
 			if(spreader.isDiseased()) {
-				for(Node reciever : disease) {
+				for(Node reciever : spreader.getNeighbours()) {
 					if(!reciever.isDiseased()) {
-						if(!(spreader.equals(reciever))) {
-							float distance = spreader.getCentreCoords().dst(reciever.getCentreCoords());
-							if(distance < spreadRadius && diseaseImpacted()) {
-								reciever.infectRandom(probabilty);
-							}
+						float distance = spreader.getCentreCoords().dst(reciever.getCentreCoords());
+						if(distance < spreadRadius && diseaseImpacted()) {
+							reciever.infectRandom(probabilty);
 						}
 					}
 					else {
-						if(!(spreader.equals(reciever))) {
-							if(!reciever.isAllInHouseDiseased()) {
-								float distance = spreader.getCentreCoords().dst(reciever.getCentreCoords());
-								if(distance < spreadRadius && diseaseImpacted()) {
-									reciever.infectRandom(probabilty);
-								}
+						if(!reciever.isAllInHouseDiseased()) {
+							float distance = spreader.getCentreCoords().dst(reciever.getCentreCoords());
+							if(distance < spreadRadius && diseaseImpacted()) {
+								reciever.infectRandom(probabilty);
 							}
 						}
 					}
@@ -106,15 +102,13 @@ public class Disease {
 		}
 	}
 
-	public void diseaseAffect(List<Node> disease) {
-		for(Node spreader : disease) {
-			if(spreader.isDiseased()) {
-				for(NPC villagers : spreader.getResidents()) {
-					if(!villagers.getStatus().equals("Dead") && !villagers.getStatus().equals("Burnt")) {
-						double x = (Math.random()*((40-20)+20))+20;
-						x = x * -1;
-						villagers.changeHealth((float) x);
-					}
+	public void diseaseAffect(Node spreader) {
+		if(spreader.isDiseased()) {
+			for(NPC villager : spreader.getResidents()) {
+				if(!villager.getStatus().equals("Dead") && !villager.getStatus().equals("Burnt")) {
+					double x = (Math.random()*((40-20)+20))+20;
+					x = x * -1;
+					villager.changeHealth((float) x);
 				}
 			}
 		}
