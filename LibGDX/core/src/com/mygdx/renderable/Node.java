@@ -37,6 +37,12 @@ public class Node extends Renderable {
 	/** All neighbouring nodes */
 	private ArrayList<Node> neighbours;
 
+	//TODO finis this implementation
+	private int numberAlive;
+	private int numberIll;
+	private int numberDead;
+	private int numberBurned;
+
 	/** Whether the player has researched the number of living residents */
 	private boolean numberAliveResearched = false;
 	/** Whether the player has researched the number of ill residents */
@@ -54,7 +60,6 @@ public class Node extends Renderable {
 		neighbours = new ArrayList<>();
 		setAllVillagers(attributes);
 		this.house = new House(attributes);
-		//updateHouseDiseased();
 	}
 
 	public void setAllVillagers(String[] attributes) {
@@ -76,10 +81,6 @@ public class Node extends Renderable {
 
 	public List<NPC> getNPCs() {
 		return residents;
-	}
-
-	public void setNodes(ArrayList<NPC> villagers) {
-		residents = villagers;
 	}
 	
 	public int[][] getArray() {
@@ -217,17 +218,6 @@ public class Node extends Renderable {
 			NPC n = new NPC(valueOf(values[0]));
 			n.updateSprite(valueOf(values[1]), valueOf(values[2]));
 			residents.add(n);
-		}
-	}
-
-	public void infectRandom(float probabilty)
-	{
-		Random rand = new Random();
-		for(NPC resident : residents) {
-			if(rand.nextFloat()<probabilty)
-			{
-				resident.infect();
-			}
 		}
 	}
 	

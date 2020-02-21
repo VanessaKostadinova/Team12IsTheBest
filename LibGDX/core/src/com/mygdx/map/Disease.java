@@ -10,8 +10,7 @@ import com.mygdx.renderable.Node;
 
 public class Disease {
 
-	private final float spreadRadius = 250.0f;
-	private final float probabilty = 50.0f;
+	public final float spreadRadius = 250.0f;
 
 	public void draw(List<Node> disease, Node spreader, ShapeRenderer shapeRenderer) {
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -73,48 +72,9 @@ public class Disease {
 		}
 
 		for(NPC resident : house.getAllAlive()){
-			System.out.println("I am executing");
-			if(random.nextInt(10) <= illnessLikelihood){
+			if((random.nextInt(40) + 1) < illnessLikelihood){
 				resident.infect();
 			}
 		}
-	}
-
-	public void diseaseSpread(Node house) {
-		if(house.isDiseased()) {
-			for(Node reciever : house.getNeighbours()) {
-				if(!reciever.isDiseased()) {
-					float distance = house.getCentreCoords().dst(reciever.getCentreCoords());
-					if(distance < spreadRadius && diseaseImpacted()) {
-						reciever.infectRandom(probabilty);
-					}
-				}
-				else {
-					if(!reciever.isAllInHouseDiseased()) {
-						float distance = house.getCentreCoords().dst(reciever.getCentreCoords());
-						if(distance < spreadRadius && diseaseImpacted()) {
-							reciever.infectRandom(probabilty);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	public void diseaseAffect(Node spreader) {
-		if(spreader.isDiseased()) {
-			for(NPC villager : spreader.getResidents()) {
-				if(!villager.getStatus().equals("Dead") && !villager.getStatus().equals("Burnt")) {
-					double x = (Math.random()*((40-20)+20))+20;
-					x = x * -1;
-					villager.changeHealth((float) x);
-				}
-			}
-		}
-	}
-
-	public boolean diseaseImpacted() {
-		float random = (float) (0 + Math.random() * (100));
-		return random < probabilty;
 	}
 }

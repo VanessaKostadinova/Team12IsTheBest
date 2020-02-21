@@ -9,6 +9,9 @@ import com.mygdx.assets.AssetHandler;
 import com.mygdx.renderable.Node;
 import com.mygdx.shop.Shop;
 
+/**
+ *
+ */
 public class Map {
 	private List<Node> nodes;
 	private Shop shop; 
@@ -68,7 +71,7 @@ public class Map {
 			for(Node compareHouse : nodes){
 				if(!(house.equals(compareHouse))){
 					float distance = house.getCentreCoords().dst(compareHouse.getCentreCoords());
-					if(distance <= 150f){
+					if(distance <= disease.spreadRadius){
 						house.addNeighbour(compareHouse);
 					}
 				}

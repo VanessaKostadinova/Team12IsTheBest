@@ -400,12 +400,9 @@ public class MapScreen implements Screen {
 	}
 	
 	public void diseaseHandler(Node house) {
-		disease.diseaseSpread(house);
-		disease.diseaseAffect(house);
+		disease.calculateHouseIllness(house);
 		disease.infectResidents(house);
 	}
-	
-	
 	
 	public void checkKC() {
 		StringBuilder value = new StringBuilder();

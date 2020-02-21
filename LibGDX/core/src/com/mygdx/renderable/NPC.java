@@ -208,11 +208,8 @@ public class NPC extends Renderable implements Living {
 	}
 
 	public void infect() {
-		if(status.equals("Alive")) {
-			Random r = new Random();
-			float random = 1 + r.nextFloat() * (5 - 1);
-			this.health = this.health - random;
-			this.update();
+		if(status.equals("Alive")){
+			status = "Sick";
 		}
 	}
 	
