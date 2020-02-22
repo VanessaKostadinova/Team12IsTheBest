@@ -101,9 +101,11 @@ public class AssetHandler {
     public static final LabelStyle fontSize24 = createLabelStyleWithBackground();
     public static final LabelStyle fontSize48 = createLabelStyleWithBackground2();
     public static final LabelStyle fontSize12Subtitles = createLabelStyleWithBackground(Color.WHITE);
+    public static final LabelStyle fontSize32 = createLabelStyleWithBackground(32);
 
 
-    
+
+
     public void load() {
         //manager.load(someTexture);
         //manager.load(uiAtlas);
@@ -185,6 +187,25 @@ public class AssetHandler {
     	manager.load("cutscene/1/Intro.mp3", Music.class);
 
 
+    }
+
+
+    /**
+     * Used to create a label with no background and a font size of 24
+     * @return LabelStyle which is the settings/looks of the label.
+     */
+    private static LabelStyle createLabelStyleWithBackground(int size) {
+
+        ///core/assets/font/Pixel.ttf
+        FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.size = size;
+        LabelStyle labelStyle = new LabelStyle();
+        labelStyle.font = generator.generateFont(parameter);
+        labelStyle.fontColor = Color.WHITE;
+
+        return labelStyle;
     }
 
     /**

@@ -22,7 +22,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * @author Inder, Hasan, Vanessa
  * @version 1.3
  */
-public class MainMenu implements Screen {
+public final class MainMenu implements Screen {
 
 	Main main;
 	Table t;
@@ -30,6 +30,7 @@ public class MainMenu implements Screen {
 	float scaleItem;
 	Image head;
 	Music sound;
+	MainMenu menu;
 	
 	public MainMenu(Main mainScreen) {
 		/*
@@ -89,11 +90,7 @@ public class MainMenu implements Screen {
 		 */
 		
 		final Image exit = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/_0000_EXIT.png")))));
-		exit.setScaling(Scaling.fit);
-		exit.setScaleX(1.25f);
-		exit.setScaleY(1.05f);
-		exit.setPosition(20, 0 + 20 + exit.getHeight()*(1f-scaleItem));
-		exit.setSize(exit.getWidth()*scaleItem, exit.getHeight()*scaleItem);
+		exit.setPosition(20,  exit.getHeight()*(1f));
 		exit.addListener(new ClickListener(){
 		    @Override
 		    public void clicked(InputEvent event, float x, float y) {
@@ -110,15 +107,17 @@ public class MainMenu implements Screen {
 		    }
 		});
 		
-		/*final Image settings = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0004_SETTINGS.png")))));
+		final Image settings = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0004_SETTINGS.png")))));
 		settings.setScaling(Scaling.fit);
-		settings.setPosition(Gdx.graphics.getWidth()-settings.getWidth()+225, 0 + 20 + settings.getHeight()*(1f-scaleItem)+exit.getHeight()+20);
-		settings.setSize(settings.getWidth()*scaleItem, settings.getHeight()*scaleItem);
+		settings.setPosition(20,   settings.getHeight()+exit.getHeight() + 25);
+		settings.setSize(settings.getWidth() * settings.getHeight()/exit.getHeight() , exit.getHeight());
 		settings.addListener(new ClickListener(){
 		    @Override
 		    public void clicked(InputEvent event, float x, float y) {
-		    	//dispose();
-		    	//main.setScreen(new MapScreen(main));
+		    	sound.pause();
+				dispose();
+				main.ui.clear();
+		    	main.setScreen(new SettingsScreen(main, menu));
 		    }
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 			    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0003_SETTINGS.png"))));
@@ -128,15 +127,14 @@ public class MainMenu implements Screen {
 			    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0004_SETTINGS.png"))));
 			    settings.setDrawable(t);
 		    }
-		});*/
+		});
 		
 		/*
 		 * Essentially the same as above. Just to do with Play.
 		 */
-		final Image play = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0006_PLAY.png")))));
-		play.setScaling(Scaling.fit);
-		play.setPosition(22, 0 + 20 + play.getHeight()*(1f-scaleItem)+exit.getHeight()+40);
-		play.setSize(play.getWidth()*scaleItem, play.getHeight()*scaleItem);
+		final Image play = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0005_PLAY.png")))));
+		play.setPosition(20,  settings.getHeight()+play.getHeight()+exit.getHeight()+ 40);
+		play.setSize(play.getWidth() * play.getHeight()/exit.getHeight() , exit.getHeight());
 		play.addListener(new ClickListener(){
 		    @Override
 		    public void clicked(InputEvent event, float x, float y) {
@@ -146,19 +144,19 @@ public class MainMenu implements Screen {
 		    	main.setScreen(new Cutscene(main, "cutscene/properties/cutscene1.txt", false));
 		    }
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-			    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0005_PLAY.png"))));
+			    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0006_PLAY.png"))));
 			    play.setDrawable(t);
 		    }
 		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-			    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0006_PLAY.png"))));
+			    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0005_PLAY.png"))));
 			    play.setDrawable(t);
 		    }
 		});
 		
 		final Image logo = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/Team12_Logo.png")))));
 		logo.setScaling(Scaling.fit);
-		logo.setPosition(Gdx.graphics.getWidth()-Gdx.graphics.getWidth()/18, 0 + 20);
-		logo.setSize(play.getWidth()*scaleItem*2, play.getHeight()*scaleItem*2);
+		logo.setSize(100, 100);
+		logo.setPosition((1080*2)-200, exit.getHeight()*(1f));
 		logo.addListener(new ClickListener(){
 		    @Override
 		    public void clicked(InputEvent event, float x, float y) {
@@ -171,7 +169,7 @@ public class MainMenu implements Screen {
 		main.ui.addActor(title);
 		main.ui.addActor(subtitle);
 		main.ui.addActor(play);
-		//main.ui.addActor(settings);
+		main.ui.addActor(settings);
 		main.ui.addActor(exit);
 		main.ui.addActor(logo);
 
@@ -181,6 +179,8 @@ public class MainMenu implements Screen {
 		
 		//Sets the input processor as Screen.ui as that is where the stage is contained.
 		Gdx.input.setInputProcessor(main.ui);
+		menu = this;
+
 	}
 
 	@Override
@@ -194,6 +194,7 @@ public class MainMenu implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		main.ui.act(Gdx.graphics.getDeltaTime());
 		main.ui.draw();
+		menu = this;
 	}
 	
 	

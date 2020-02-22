@@ -9,13 +9,13 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.map.Disease;
 import com.mygdx.map.Map;
@@ -61,6 +61,7 @@ public class MapScreen implements Screen {
 	
 	private float scaleItem;
 	private Window pause;
+	private Window beforeEntry;
 	private Boolean isPaused;
 	private Skin skin;
 	private RayHandler rayHandler;
@@ -85,6 +86,9 @@ public class MapScreen implements Screen {
 	private Label numberOfCharacterSick;
 	private Label numberOfcharacterDiseasedTitle;
 	private Label numberOfCharacterDiseased;
+
+
+	private Label Amount1;
 	
 	private Node hoverNode;
 	
@@ -688,8 +692,8 @@ public class MapScreen implements Screen {
     	 *
     	 * The window containing all the values is called pause
     	 */
-        
-		float windowWidth = 200 * scaleItem, windowHeight = 200 * scaleItem;
+		beforeEntry();
+		float windowWidth = 200*scaleItem, windowHeight = 200*scaleItem;
         pause = new Window("", skin);
         pause.setMovable(false); //So the user can't move the window
         //final TextButton button1 = new TextButton("Resume", skin);
@@ -783,9 +787,84 @@ public class MapScreen implements Screen {
 		numberOfCharacterDiseased.setPosition(90, main.ui.getHeight() - 150 -numberOfcharacterDiseasedTitle.getHeight() -numberOfCharacterSick.getHeight()-numberOfcharacterSickTitle.getHeight()-numberOfCharacter.getHeight()-numberOfcharacterTitle.getHeight());
 		numberOfCharacterDiseased.setVisible(false);
 		main.ui.addActor(numberOfCharacterDiseased);
-		
+
+
 		Gdx.input.setInputProcessor(main.ui);
     }
+
+	public void beforeEntry() {
+
+		float windowWidth = 400, windowHeight = 600;
+		beforeEntry = new Window("", skin);
+		beforeEntry.setMovable(false); //So the user can't move the window
+
+
+		Label Title1 = new Label("SELECT", AssetHandler.fontSize32);
+		Label Title2= new Label("GEAR", AssetHandler.fontSize32);
+
+		Table table = new Table();
+		table.add(Title1).center().row();
+		table.add(Title2).center().row();
+
+		beforeEntry.add(table).center().top().row();
+
+		Table table2 = new Table();
+
+		for(int i = 0; i < 3; i++) {
+			final Image settings = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("temp64x64.png")))));
+			Label Amount1= new Label("3", AssetHandler.fontSize24);
+
+			Label plus1= new Label("+", AssetHandler.fontSize48);
+
+			Label remove1= new Label("-", AssetHandler.fontSize48);
+
+			table2.add(settings).pad(64).pad(10);
+			table2.add(Amount1).width(20).pad(10);
+			table2.add(plus1).width(20).pad(10);
+			table2.add(remove1).width(20).row();
+		}
+
+		beforeEntry.add(table2).center().row();
+
+
+		Table table3 = new Table();
+
+
+
+
+		Label exit = new Label("EXIT", AssetHandler.fontSize32);
+		exit.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				beforeEntry.setVisible(false);
+			}
+		});
+
+		Label enter = new Label("ENTER", AssetHandler.fontSize32);
+		enter.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				System.exit(2);
+			}
+		});
+		table3.add(exit).width(exit.getWidth()).pad(20);
+		table3.add(enter).width(enter.getWidth()).row();
+
+		beforeEntry.add(table3).center().row();
+
+		beforeEntry.pack(); //Important! Correctly scales the window after adding new elements
+
+		//Centre window on screen.
+		beforeEntry.setBounds(((main.ui.getWidth() - windowWidth  ) / 2),
+				(main.ui.getHeight() - windowHeight) / 2, windowWidth  , windowHeight );
+		//Sets the menu as invisible
+		beforeEntry.setVisible(false);
+
+		beforeEntry.setSize(beforeEntry.getWidth()*scaleItem, beforeEntry.getHeight()*scaleItem);
+		main.ui.addActor(beforeEntry);
+
+
+	}
     
     
     
