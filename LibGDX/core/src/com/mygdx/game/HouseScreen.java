@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -80,7 +82,7 @@ public class HouseScreen implements Screen {
 	private InputMultiplexer input;
 	
 	private Light light;
-    //private Box2DDebugRenderer b2dr;
+    private Box2DDebugRenderer b2dr;
     
     
     private SpriteDrawable fire;
@@ -125,6 +127,7 @@ public class HouseScreen implements Screen {
 			this.world = new World(new Vector2(0,0), false);
 			
 			pauseGame();
+			System.out.println(Arrays.deepToString(node.getArray()));
 			handler = new HouseInputHandler(p, camera, node.getArray(), pause, node.getNPCs(), paragraph, letter, icon, world);
 	        handler.setPaused(false);
 	
@@ -143,7 +146,7 @@ public class HouseScreen implements Screen {
 			player.setSoftnessLength(1f);
 			player.attachToBody(p.getBody());
 	        setTorchLights();
-	        //b2dr = new Box2DDebugRenderer();
+	        b2dr = new Box2DDebugRenderer();
 
 	        
 			input = new InputMultiplexer();
@@ -176,7 +179,6 @@ public class HouseScreen implements Screen {
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 			
 			
-			//b2dr.render(world, camera.getCamera().combined);
 			main.batch.begin();
 			
 			if(secondCounter > 1) {
@@ -212,7 +214,7 @@ public class HouseScreen implements Screen {
 	
 	
 	
-			//b2dr.render(world, camera.getCamera().combined);
+			b2dr.render(world, camera.getCamera().combined);
 			rayHandler.updateAndRender();
 			
 			main.batch.end();

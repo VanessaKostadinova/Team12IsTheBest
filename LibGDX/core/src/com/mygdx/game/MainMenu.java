@@ -14,6 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.esotericsoftware.kryo.io.Input;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 /**
  * The Main Menu of the game. Is the second scene the player will see and the first interactive scene
@@ -141,7 +145,21 @@ public final class MainMenu implements Screen {
 		    	sound.pause();
 		    	dispose();
 		    	main.ui.clear();
-		    	main.setScreen(new Cutscene(main, "cutscene/properties/cutscene1.txt", false));
+		    	//main.setScreen(new Cutscene(main, "cutscene/properties/cutscene1.txt", false));
+				MapScreen object2 = null;
+				try {
+					Input input = new Input(new FileInputStream("save.bin"));
+					object2 = main.kryo.readObject(input, MapScreen.class);
+					input.close();
+
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+
+
+				MapScreen screen = new MapScreen(main, object2.getDX(), object2.getDY(), object2.getDay(), object2.getMap());
+				main.setScreen(screen);
+
 		    }
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 			    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0006_PLAY.png"))));

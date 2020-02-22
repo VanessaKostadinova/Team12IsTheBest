@@ -28,6 +28,9 @@ public class NPC extends Renderable implements Living {
 	private Rectangle rectangle;
 	
 	private Sprite healthBar;
+
+	private float x = 0;
+	private float y = 0;
 	
 	public NPC(float health) {
 		super();
@@ -37,6 +40,7 @@ public class NPC extends Renderable implements Living {
 		healthBar = new Sprite(new Texture(Gdx.files.internal("house/UI/HEALTH.png")));
 		this.sanityAdd = false;
 		this.update();
+		updateSprite(0, 0);
 	}
 	
 	public NPC(float health, float x, float y) {
@@ -46,8 +50,10 @@ public class NPC extends Renderable implements Living {
 		this.foodGiven = false;
 		healthBar = new Sprite(new Texture(Gdx.files.internal("house/UI/HEALTH.png")));
 		this.sanityAdd = false;
-		super.updateSprite(x, y);
 		this.update();
+		updateSprite(x, y);
+		this.x = x;
+		this.y = y;
 	}
 	
 	public void loadWalkingAnimation() {
@@ -197,6 +203,11 @@ public class NPC extends Renderable implements Living {
 	public void setHealth(float newHealth) {
 		this.health = newHealth;
 	}
-	
+
+
+	public float getX() {return coordinates.x;}
+	public float getY() {return coordinates.y;}
+
+
 
 }

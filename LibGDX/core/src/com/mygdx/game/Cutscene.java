@@ -114,7 +114,7 @@ public class Cutscene implements Screen {
 			main.setScreen(new MainMenu(main));
 		}
 		else {
-			//main.ui.clear();
+			main.ui.clear();
 			main.setScreen(new MapScreen(main));
 		}
 

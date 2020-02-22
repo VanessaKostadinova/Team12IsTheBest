@@ -21,6 +21,12 @@ public class Map {
 		checkIfPlayerExist();
 		resetPlayerFile();
 	}
+
+	public Map(List<Node> nodes) {
+		this.nodes = nodes;
+		shop = new Shop(AssetHandler.manager.get("house/Shop.gif", Texture.class), 900.0f, 470.0f);
+		checkIfPlayerExist();
+	}
 	
 	public void resetPlayerFile() {
 		FileHandle handle = Gdx.files.local("data/player.txt");
@@ -55,7 +61,7 @@ public class Map {
 			handle = Gdx.files.local(String.format("data/%s", fileName));
 			String[] nodeProperties = handle.readString().split("\\r?\\n");
 			if(!(nodes.size() == 20)) {
-				nodes.add(new Node(new Texture(Gdx.files.internal("house/"+nodeProperties[0])), Float.parseFloat(nodeProperties[1]), Float.parseFloat(nodeProperties[2]), nodeProperties));
+				nodes.add(new Node("house/"+nodeProperties[0], Float.parseFloat(nodeProperties[1]), Float.parseFloat(nodeProperties[2]), nodeProperties));
 			}
 			else {
 				Gdx.app.log("House Error",

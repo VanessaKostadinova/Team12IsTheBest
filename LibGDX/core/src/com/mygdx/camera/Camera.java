@@ -59,8 +59,9 @@ public class Camera implements Serializable {
 		viewport.apply();
 		camera.update();
 	}
-	
-	public void setMaxValues (float maxDx, float maxDy) {
+
+
+    public void setMaxValues (float maxDx, float maxDy) {
 		this.maxDx = maxDx;
 		this.maxDy = maxDy;
 	}
@@ -116,6 +117,15 @@ public class Camera implements Serializable {
 	public float getdy() {
 		return dy;
 	}
+
+	public float getMaxDX() {
+		return maxDx;
+	}
+
+	public float getMaxDY() {
+		return maxDy;
+	}
+
 	
 
 }

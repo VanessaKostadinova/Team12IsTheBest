@@ -1,9 +1,12 @@
 package com.mygdx.game;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
@@ -17,6 +20,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.esotericsoftware.kryo.Serializer;
+import com.esotericsoftware.kryo.io.Output;
 import com.mygdx.map.Disease;
 import com.mygdx.map.Map;
 import com.mygdx.renderable.NPC;
@@ -27,7 +32,7 @@ import box2dLight.RayHandler;
 import com.mygdx.assets.AssetHandler;
 import com.mygdx.camera.Camera;
 
-public class MapScreen implements Screen {
+public class MapScreen extends InputAdapter implements Screen {
 
 	private float stateTime;
 	
@@ -36,19 +41,15 @@ public class MapScreen implements Screen {
 	private float viewWidth;
 	private Camera cameraMap;
 	private Camera cameraUI;
-	
+
 	protected Sprite background;
-	//protected Sprite behindBackground;
 	private Sprite pointer;
-	
 	private Sprite shopText;
 	private Sprite enterShop;
-	
 	private Sprite houseText;
 	private Sprite enterHouse;
 	private Sprite inspectHouse;
 	private Sprite inspectDialog;
-	
 	private Sprite baseUI;
 	private Sprite foodLabel;
 
@@ -84,7 +85,7 @@ public class MapScreen implements Screen {
 	private Label numberOfcharacterDiseasedTitle;
 	private Label numberOfCharacterDiseased;
 
-
+	private Boolean saveGame = false;
 	private Label Amount1;
 	
 	private Node hoverNode;
@@ -140,7 +141,56 @@ public class MapScreen implements Screen {
 		
 				
 	}
-	
+
+	public MapScreen(Main main, float dx, float dy, int day, Map map) {
+		this.viewWidth = 256;
+
+		isPaused = false;
+		cameraMap = new Camera(viewWidth, -1080, -1920);
+		cameraMap.getCamera().position.set(
+				cameraMap.getCamera().viewportWidth / 2f ,
+				cameraMap.getCamera().viewportHeight / 2f, 0);
+		int WORLD_WIDTH = 1920 * 2;
+		int WORLD_HEIGHT = 1080 * 2;
+		cameraMap.setMaxValues(WORLD_WIDTH, WORLD_HEIGHT);
+
+		cameraUI = new Camera(viewWidth, 1080, 1920);
+		cameraUI.getCamera().position.set(
+				cameraUI.getCamera().viewportWidth / 2f ,
+				cameraUI.getCamera().viewportHeight / 2f, 0);
+		cameraUI.setMaxValues(WORLD_WIDTH, WORLD_HEIGHT);
+
+		background = new Sprite(AssetHandler.manager.get("house/background.png", Texture.class));
+		//background.setScale(1920/1080);
+		background.setPosition(0, 0);
+
+		this.darkness = 1f;
+		World world = new World(new Vector2(0, 0), false);
+		this.rayHandler = new RayHandler(world);
+		this.rayHandler.setAmbientLight(darkness);
+		this.darken = false;
+		this.main = main;
+		this.map = map;
+		this.disease = map.getDisease();
+		this.initialDone = true;
+
+		this.checkForKC = new ArrayList<>();
+		createUIElements();
+		stateTime = 0;
+		dayAnimationTime = 0;
+
+		cameraMap.updateCameraPosition(500, 500);
+		cameraMap.getCamera().zoom = 7f;
+
+		pointer.setPosition(pointer.getX()+500, pointer.getY()+500);
+
+		this.day = day;
+		Gdx.input.setInputProcessor(main.ui);
+
+
+	}
+
+
 
 	public void createUIElements() {
 		scaleItem = 1080f/(float)Gdx.graphics.getWidth();
@@ -207,7 +257,6 @@ public class MapScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		System.out.println("HIT!");
 		Gdx.gl.glClearColor(124/256f, 189/256f, 239/256f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
@@ -260,8 +309,22 @@ public class MapScreen implements Screen {
 		
 		main.ui.draw();
 		
-		checkEndGame();
-		
+		//checkEndGame();
+		checkSaveGame();
+	}
+
+	public void checkSaveGame() {
+		if(saveGame) {
+			try {
+				Output output = new Output(new FileOutputStream("save.bin"));
+				MapScreen m = this;
+				main.kryo.writeObject(output, m);
+				output.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			saveGame = false;
+		}
 	}
 	
 	public void checkEndGame() {
@@ -628,6 +691,7 @@ public class MapScreen implements Screen {
 			node.serializeVillagers();
 			p.deltaEnergy(30);
 			p.writeToPlayerFile();
+			System.out.println("HIT");
 			main.setScreen(new HouseScreen(main, node, this));
 		}	
 	}
@@ -692,28 +756,39 @@ public class MapScreen implements Screen {
         pause.setMovable(false); //So the user can't move the window
         //final TextButton button1 = new TextButton("Resume", skin);
 
-        final Label button1 = new Label("RESUME", AssetHandler.fontSize24);
-        button1.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
-        button1.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                togglePaused();
-                pause.setVisible(false);
-            }
-        });
-		        
-        Label button2 = new Label("EXIT", AssetHandler.fontSize24);
-        button2.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
-        button2.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                System.exit(0);
-            }
-        });
+		final Label button1 = new Label("RESUME", AssetHandler.fontSize24);
+		button1.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
+		button1.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				togglePaused();
+				pause.setVisible(false);
+			}
+		});
+
+		Label button2 = new Label("SAVE", AssetHandler.fontSize24);
+		button2.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
+		button2.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				saveGame = true;
+			}
+		});
+
+		Label button3 = new Label("EXIT", AssetHandler.fontSize24);
+		button3.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
+		button3.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				System.exit(0);
+			}
+		});
 
         pause.add(button1).row();
         pause.row();
         pause.add(button2).row();
+		pause.row();
+		pause.add(button3).row();
         pause.pack(); //Important! Correctly scales the window after adding new elements
 
         //Centre window on screen.
@@ -866,6 +941,8 @@ public class MapScreen implements Screen {
 	/**
 	 * Toggle isPaused variable.
 	 */
+
+
 	public void togglePaused() {
 		isPaused = !isPaused;
 	}
@@ -874,6 +951,26 @@ public class MapScreen implements Screen {
 		FileHandle handle = Gdx.files.local("data/player.txt");
 		String[] values= handle.readString().split(",");
 		return new Player(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6]), Float.parseFloat(values[7]));
+	}
+
+	public Camera getMapCamera() {
+		return cameraMap;
+	}
+
+	public int getDay() {
+		return day;
+	}
+
+	public Map getMap() {
+		return map;
+	}
+
+	public float getDX() {
+		return cameraMap.getdx();
+	}
+
+	public float getDY() {
+		return cameraMap.getdx();
 	}
 	
 	

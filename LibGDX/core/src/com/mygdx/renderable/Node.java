@@ -24,16 +24,36 @@ public class Node extends Renderable {
 	private Map<Vector2, String> notes = new HashMap<>();
 	private Map<String, Boolean> noteSeen;
 	private Boolean isDiseased;
-	
+	private String imageURL;
+
+	private float x;
+	private float y;
 	
 	private boolean level1Researched = false;
 	private boolean level2Researched = false;
 	private boolean level3Researched = false;
 	private boolean level4Researched = false;
-	
-	
-	public Node(Texture textureOfHouse, float x, float y, String[] attributes) {
-		super.setSprite(textureOfHouse, x, y);
+
+	public Node(House house, ArrayList<NPC> residents, Map<Vector2, String> notes, Map<String, Boolean> noteSeen, String imageURL, float x, float y) {
+		super.setSprite(new Texture(Gdx.files.internal(imageURL)), x, y);
+		this.x = x;
+		this.y = y;
+		this.house = house;
+		this.imageURL = imageURL;
+		isDiseased = false;
+		this.residents = residents;
+		System.out.println(residents.size());
+		this.notes = notes;
+		this.noteSeen = noteSeen;
+		updateHouseDiseased();
+	}
+
+	public Node(String imageURL, float x, float y, String[] attributes) {
+		super.setSprite(new Texture(Gdx.files.internal(imageURL)), x, y);
+		this.x = x;
+		this.y = y;
+
+		this.imageURL = imageURL;
 		isDiseased = false;
 		residents = new ArrayList<>();
 		noteSeen = new HashMap<>();
@@ -41,6 +61,7 @@ public class Node extends Renderable {
 		this.house = new House(attributes);
 		updateHouseDiseased();
 	}
+
 	
 	
 	public void setAllVillagers(String[] attributes) {
@@ -67,7 +88,7 @@ public class Node extends Renderable {
 	}
 	
 	
-	public List<NPC> getNPCs() {
+	public ArrayList<NPC> getNPCs() {
 		return residents;
 	}
 	
@@ -286,4 +307,15 @@ public class Node extends Renderable {
 		return true;
 	}
 
+	public String getImageURL() {
+		return imageURL;
+	}
+
+	public float getY() {
+		return y;
+	}
+
+	public float getX() {
+		return x;
+	}
 }

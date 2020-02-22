@@ -68,6 +68,7 @@ public class Spray extends Renderable {
 	 */
 	public Boolean collision(List<NPC> list, float f, Player p) {
 		for(NPC npc : list) {
+
 			if(npc.getRectangle().overlaps(sprite.getBoundingRectangle())) {
 				if(isActive) {
 					if(npc.getStatus().equals("Dead") && f == 1) {
