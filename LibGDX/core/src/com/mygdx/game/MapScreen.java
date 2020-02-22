@@ -75,7 +75,10 @@ public class MapScreen implements Screen {
 
 	private Label energy;
 	private Disease disease;
-	
+
+	//TODO finish this
+	private Window inventoryScreen;
+
 	private Label numberOfCharacter;
 	private Label numberOfcharacterTitle;
 	private Label numberOfcharacterSickTitle;
@@ -549,10 +552,7 @@ public class MapScreen implements Screen {
 				numberOfCharacterDiseased.setVisible(true);
 			}
 		}
-		else { 
-			
-
-			
+		else {
 			if(houseAlpha > 0.1) { 
 				houseAlpha -= (1f/10f);
 				enterHouse.setAlpha(houseAlpha);
@@ -624,6 +624,8 @@ public class MapScreen implements Screen {
 		hoverNode = node;
 		
 		if(enterBuilding && p.getEnergy() >= 30) {
+			//TODO implement inventory screen
+			//inventoryScreen.setVisible(true);
 			main.ui.clear();
 			enterBuilding = false;
 			node.serializeVillagers();
@@ -687,13 +689,13 @@ public class MapScreen implements Screen {
     	 * The window containing all the values is called pause
     	 */
         
-		float windowWidth = 200*scaleItem, windowHeight = 200*scaleItem;
+		float windowWidth = 200 * scaleItem, windowHeight = 200 * scaleItem;
         pause = new Window("", skin);
         pause.setMovable(false); //So the user can't move the window
         //final TextButton button1 = new TextButton("Resume", skin);
 
         final Label button1 = new Label("RESUME", AssetHandler.fontSize24);
-        button1.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
+        button1.setFontScale((windowHeight/200) * scaleItem, (windowHeight/200) * scaleItem);
         button1.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -723,17 +725,17 @@ public class MapScreen implements Screen {
         isPaused = false;
         pause.setVisible(false);
         
-        pause.setSize(pause.getWidth()*scaleItem, pause.getHeight()*scaleItem);
+        pause.setSize(pause.getWidth() * scaleItem, pause.getHeight()*scaleItem);
         //Adds it to the UI Screen.
         main.ui.addActor(pause);
         
 		dayLabel = new Label("DAY " + day , AssetHandler.fontSize48);
-		dayLabel.setPosition(main.ui.getWidth()/2-dayLabel.getWidth()/2, main.ui.getHeight()/2-dayLabel.getHeight()/2);
+		dayLabel.setPosition(main.ui.getWidth()/2 - dayLabel.getWidth()/2, main.ui.getHeight()/2 - dayLabel.getHeight()/2);
 		dayLabel.setVisible(false);
 		main.ui.addActor(dayLabel);
 
 		
-		energy = new Label(readPlayer().getEnergy()+"", AssetHandler.fontSize24);
+		energy = new Label(readPlayer().getEnergy() + "", AssetHandler.fontSize24);
 		energy.setWidth(450f);
 		energy.setFontScale(2.5f);
 		energy.setAlignment(Align.center);
