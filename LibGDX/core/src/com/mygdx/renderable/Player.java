@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.extras.Inventory;
 
 public class Player extends Renderable implements Living {
 	
@@ -24,6 +25,8 @@ public class Player extends Renderable implements Living {
 	private static final float sanityFactor = 0.2f;
 	
 	private float maskDurationSeconds;
+
+	private Inventory inventory;
 	
 	private float sanity;
 	
