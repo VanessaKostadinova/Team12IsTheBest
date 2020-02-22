@@ -9,6 +9,9 @@ import com.mygdx.assets.AssetHandler;
 import com.mygdx.renderable.Node;
 import com.mygdx.shop.Shop;
 
+/**
+ *
+ */
 public class Map {
 	private List<Node> nodes;
 	private Shop shop; 
@@ -20,6 +23,7 @@ public class Map {
 		shop = new Shop(AssetHandler.manager.get("house/Shop.gif", Texture.class), 900.0f, 470.0f);
 		checkIfPlayerExist();
 		resetPlayerFile();
+		setNeighbours();
 	}
 	
 	public void resetPlayerFile() {
@@ -30,8 +34,7 @@ public class Map {
 	public List<Node> getNodes() {
 		return nodes;
 	}
-	
-	
+
 	public Shop getShop() {
 		return shop;
 	}
@@ -45,8 +48,7 @@ public class Map {
 			handle.writeString("0,5", false);
 		}
 	}
-	
-	
+
 	public void readMapFile() {
 		FileHandle handle = Gdx.files.internal("house/files/"+"mapFile.txt");
 		String[] nodeFilenames;
@@ -63,6 +65,19 @@ public class Map {
 			}	
 		}		
 	}
+
+	private void setNeighbours(){
+		for(Node house : nodes){
+			for(Node compareHouse : nodes){
+				if(!(house.equals(compareHouse))){
+					float distance = house.getCentreCoords().dst(compareHouse.getCentreCoords());
+					if(distance <= disease.spreadRadius){
+						house.addNeighbour(compareHouse);
+					}
+				}
+			}
+		}
+	}
 	
 	public void createPlayerFile() {
 		
@@ -75,8 +90,4 @@ public class Map {
 	public Disease getDisease() {
 		return disease;
 	}
-	
-	
-	
-
 }
