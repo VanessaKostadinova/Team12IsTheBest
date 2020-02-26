@@ -100,35 +100,8 @@ public final class Main extends Game implements Serializable {
 		batch.dispose();
 	}
 
-	static class Bob {
-		 public String name = "/hello";
-
-		 public Bob(String something) {
-		 	if(something.equals("/hello")) {
-		 		System.out.println("WORKS");
-			}
-		 }
-
-	}
-
-
 	public void setUpSerializers() {
-		kryo.register(Bob.class, new Serializer<Bob>() {
-			@Override
-			public void write(Kryo kryo, Output output, Bob object) {
-				output.writeString(object.name);
-			}
-
-			@Override
-			public Bob read(Kryo kryo, Input input, Class type) {
-				Bob b = new Bob(input.readString());
-				return b;
-			}
-		});
-
-
-
-
+		
 		kryo.register(com.mygdx.game.MapScreen.class, new Serializer<MapScreen>() {
 			@Override
 			public void write(Kryo kryo, Output output, MapScreen object) {

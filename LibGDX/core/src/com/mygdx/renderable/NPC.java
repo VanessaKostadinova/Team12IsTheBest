@@ -232,5 +232,4 @@ public class NPC extends Renderable implements Living {
 
 }
 
-}
 

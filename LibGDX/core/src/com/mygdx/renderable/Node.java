@@ -41,34 +41,12 @@ public class Node extends Renderable {
 	private boolean level3Researched = false;
 	private boolean level4Researched = false;
 
-	public Node(House house, ArrayList<NPC> residents, Map<Vector2, String> notes, Map<String, Boolean> noteSeen, String imageURL, float x, float y) {
-		super.setSprite(new Texture(Gdx.files.internal(imageURL)), x, y);
-		this.x = x;
-		this.y = y;
-		this.house = house;
-		this.imageURL = imageURL;
-		isDiseased = false;
-		this.residents = residents;
-		System.out.println(residents.size());
-		this.notes = notes;
-		this.noteSeen = noteSeen;
-	}
-
-	public Node(String imageURL, float x, float y, String[] attributes) {
-		super.setSprite(new Texture(Gdx.files.internal(imageURL)), x, y);
-		this.x = x;
-		this.y = y;
-
-		this.imageURL = imageURL;
-		isDiseased = false;
-
 	/** The illness level of this node */
 	private float illnessLevel;
 
 	/** All neighbouring nodes */
 	private ArrayList<Node> neighbours;
 
-	//TODO finis this implementation
 	private int numberAlive;
 	private int numberIll;
 	private int numberDead;
@@ -80,17 +58,29 @@ public class Node extends Renderable {
 	private boolean numberIllResearched = false;
 	/** Whether the player has researched the number of dead residents */
 	private boolean numberDeadResearched = false;
-	private boolean level4Researched = false;
+
 	
-	
-	public Node(Texture textureOfHouse, float x, float y, String[] attributes) {
+	public Node(String TextureURL, float x, float y, String[] attributes) {
 		illnessLevel = 0f;
-		super.setSprite(textureOfHouse, x, y);
+		super.setSprite(new Texture(Gdx.files.internal(TextureURL)), x, y);
 		residents = new ArrayList<>();
 		noteSeen = new HashMap<>();
 		neighbours = new ArrayList<>();
 		setAllVillagers(attributes);
 		this.house = new House(attributes);
+	}
+
+	public Node(House house, ArrayList<NPC> residents, Map<Vector2, String> notes, Map<String, Boolean> noteSeen, String imageURL, float x, float y) {
+		super.setSprite(new Texture(Gdx.files.internal(imageURL)), x, y);
+		this.x = x;
+		this.y = y;
+		this.house = house;
+		this.imageURL = imageURL;
+		isDiseased = false;
+		this.residents = residents;
+		System.out.println(residents.size());
+		this.notes = notes;
+		this.noteSeen = noteSeen;
 	}
 
 	
@@ -116,8 +106,6 @@ public class Node extends Renderable {
 		return lowBound;
 	}
 	
-	
-	public ArrayList<NPC> getNPCs() {
 
 	public List<NPC> getNPCs() {
 		return residents;
@@ -362,8 +350,7 @@ public class Node extends Renderable {
 	 * Sets the level of infection, used for infecting NPC's
 	 * @param illnessLevel
 	 */
-	public void setIllnessLevel(float illnessLevel){
+	public void setIllnessLevel(float illnessLevel) {
 		this.illnessLevel = illnessLevel;
->>>>>>> 105d93e1c02e748f9327da86c199fee1f2beeb46
 	}
 }
