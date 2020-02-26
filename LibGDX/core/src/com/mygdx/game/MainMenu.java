@@ -1,8 +1,10 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -12,12 +14,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.esotericsoftware.kryo.io.Input;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Map;
+import java.util.logging.FileHandler;
 
 /**
  * The Main Menu of the game. Is the second scene the player will see and the first interactive scene
@@ -70,7 +75,7 @@ public final class MainMenu implements Screen {
 		 */	
 		Image title = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0002_PLAGUE-DOCTOR.png")))));
 		title.setScaling(Scaling.fit);
-		title.setPosition(20, Gdx.graphics.getHeight()+50 );
+		title.setPosition(20, main.ui.getHeight()-title.getHeight()-30);
 		title.setSize(title.getWidth(), title.getHeight());
 		
 		/*
@@ -78,7 +83,7 @@ public final class MainMenu implements Screen {
 		 */
 		Image subtitle = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0001_The-Price-of-our-Sins.png")))));
 		subtitle.setScaling(Scaling.fit);
-		subtitle.setPosition(20, Gdx.graphics.getHeight()-subtitle.getHeight()+ 20);
+		subtitle.setPosition(20, title.getY()-subtitle.getHeight()-10);
 		subtitle.setSize(subtitle.getWidth(), subtitle.getHeight());
 		
 		/*
@@ -112,16 +117,15 @@ public final class MainMenu implements Screen {
 		});
 		
 		final Image settings = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0004_SETTINGS.png")))));
-		settings.setScaling(Scaling.fit);
 		settings.setPosition(20,   settings.getHeight()+exit.getHeight() + 25);
 		settings.setSize(settings.getWidth() * settings.getHeight()/exit.getHeight() , exit.getHeight());
 		settings.addListener(new ClickListener(){
 		    @Override
 		    public void clicked(InputEvent event, float x, float y) {
-		    	sound.pause();
+				sound.pause();
 				dispose();
 				main.ui.clear();
-		    	main.setScreen(new SettingsScreen(main, menu));
+				main.setScreen(new SettingsScreen(main, menu));
 		    }
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 			    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0003_SETTINGS.png"))));
@@ -132,20 +136,16 @@ public final class MainMenu implements Screen {
 			    settings.setDrawable(t);
 		    }
 		});
-		
-		/*
-		 * Essentially the same as above. Just to do with Play.
-		 */
-		final Image play = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0005_PLAY.png")))));
-		play.setPosition(20,  settings.getHeight()+play.getHeight()+exit.getHeight()+ 40);
-		play.setSize(play.getWidth() * play.getHeight()/exit.getHeight() , exit.getHeight());
-		play.addListener(new ClickListener(){
-		    @Override
-		    public void clicked(InputEvent event, float x, float y) {
-		    	sound.pause();
-		    	dispose();
-		    	main.ui.clear();
-		    	//main.setScreen(new Cutscene(main, "cutscene/properties/cutscene1.txt", false));
+
+		final Image continueButton = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0008_CONTINUE.png")))));
+		continueButton.setPosition(20,   continueButton.getHeight()+exit.getHeight()+continueButton.getHeight() + 35);
+		continueButton.setSize(continueButton.getWidth() * continueButton.getHeight()/exit.getHeight() , exit.getHeight());
+		continueButton.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				sound.pause();
+				dispose();
+				main.ui.clear();
 				MapScreen object2 = null;
 				try {
 					Input input = new Input(new FileInputStream("save.bin"));
@@ -155,11 +155,44 @@ public final class MainMenu implements Screen {
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
-
-
 				MapScreen screen = new MapScreen(main, object2.getDX(), object2.getDY(), object2.getDay(), object2.getMap());
 				main.setScreen(screen);
+			}
+			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0007_CONTINUE.png"))));
+				continueButton.setDrawable(t);
+			}
+			public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0008_CONTINUE.png"))));
+				continueButton.setDrawable(t);
+			}
+		});
 
+
+		float playBorder = 65;
+
+		try {
+			Input input = new Input(new FileInputStream("save.bin"));
+		}
+		catch (FileNotFoundException e) {
+			continueButton.setVisible(false);
+			continueButton.setSize(0, 0);
+			playBorder -= 20;
+		}
+		
+		/*
+		 * Essentially the same as above. Just to do with Play.
+		 */
+		final Image play = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0005_PLAY.png")))));
+		play.setPosition(20,  settings.getHeight()+play.getHeight()+exit.getHeight()+continueButton.getHeight() + playBorder);
+		play.setSize(play.getWidth() * play.getHeight()/exit.getHeight() , exit.getHeight());
+		play.addListener(new ClickListener(){
+		    @Override
+		    public void clicked(InputEvent event, float x, float y) {
+		    	sound.pause();
+		    	dispose();
+		    	main.ui.clear();
+		    	main.setScreen(new Cutscene(main, "cutscene/properties/cutscene1.txt", false));
 		    }
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 			    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0006_PLAY.png"))));
@@ -190,7 +223,7 @@ public final class MainMenu implements Screen {
 		main.ui.addActor(settings);
 		main.ui.addActor(exit);
 		main.ui.addActor(logo);
-
+		main.ui.addActor(continueButton);
 		
 		//Start playing the UI Soundtrack.
 		sound.play();
@@ -246,6 +279,18 @@ public final class MainMenu implements Screen {
 	public void dispose() {
 		main.ui.clear();
 		sound.dispose();
+	}
+
+	public boolean if_exists ( String prefname )
+	{
+		Preferences tmprefs = Gdx.app.getPreferences ( prefname );
+
+		Map tmpmap = tmprefs.get();
+
+		if ( tmpmap.isEmpty() == true )
+			return false;
+		else
+			return true;
 	}
 
 

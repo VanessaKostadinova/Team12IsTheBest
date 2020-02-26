@@ -60,6 +60,12 @@ public final class Main extends Game implements Serializable {
 
 	public int interval = 0;
 
+	private Boolean vsyncOn;
+
+	public Main(Boolean vsyncOn) {
+		this.vsyncOn = vsyncOn;
+	}
+
 
 	@Override
 	public void create() {
@@ -101,7 +107,7 @@ public final class Main extends Game implements Serializable {
 	}
 
 	public void setUpSerializers() {
-		
+
 		kryo.register(com.mygdx.game.MapScreen.class, new Serializer<MapScreen>() {
 			@Override
 			public void write(Kryo kryo, Output output, MapScreen object) {
@@ -252,7 +258,7 @@ public final class Main extends Game implements Serializable {
 					nodes.add(n);
 				}
 				Map m = new Map(nodes);
-				Main mn = new Main();
+				Main mn = new Main(false);
 				mn.create();
 				MapScreen screen = new MapScreen(mn, input.readFloat(), input.readFloat(), input.readInt(), m);
 				return screen;
@@ -264,5 +270,11 @@ public final class Main extends Game implements Serializable {
 	}
 
 
+	public Boolean getVsync() {
+		return vsyncOn;
+	}
 
+	public void setVsync(Boolean vsyncOn) {
+		this.vsyncOn =  vsyncOn;
+	}
 }

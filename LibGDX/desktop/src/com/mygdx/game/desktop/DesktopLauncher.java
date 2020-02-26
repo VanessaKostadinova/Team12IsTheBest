@@ -13,6 +13,8 @@ public class DesktopLauncher {
 		config.title = "Plague Doctor";
 		config.fullscreen = true;
 		config.addIcon("icon.png", FileType.Internal);
-		new LwjglApplication(new Main(), config);
+		config.resizable = false;
+		config.vSyncEnabled = true;
+		new LwjglApplication(new Main(true), config);
 	}
 }

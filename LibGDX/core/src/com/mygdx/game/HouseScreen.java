@@ -214,7 +214,7 @@ public class HouseScreen implements Screen {
 	
 	
 	
-			b2dr.render(world, camera.getCamera().combined);
+			//b2dr.render(world, camera.getCamera().combined);
 			rayHandler.updateAndRender();
 			
 			main.batch.end();
