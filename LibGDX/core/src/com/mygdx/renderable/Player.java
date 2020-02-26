@@ -285,6 +285,4 @@ public class Player extends Renderable implements Living {
 	public void resetEnergy() {
 		this.energy = 100;
 	}
-
-
 }

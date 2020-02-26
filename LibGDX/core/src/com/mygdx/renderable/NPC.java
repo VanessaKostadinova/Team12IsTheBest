@@ -19,10 +19,11 @@ public class NPC extends Renderable implements Living {
 	private static final int FRAME_ROWS = 2;
 	
 	private float health;
-	//private float susceptibility;
 	private boolean foodGiven;
 	private boolean isHealed;
-	
+
+	private int daysInStatus;
+
 	private boolean sanityAdd;
 	
 	private Rectangle rectangle;
@@ -82,10 +83,11 @@ public class NPC extends Renderable implements Living {
 	 * Update texture of the villager as it's state changes.
 	 */
 	public void updateTexture() {
-		Texture tempSprite = new Texture(Gdx.files.internal("NPC/"+status + "_NPC.gif"));
+		Texture tempSprite = new Texture(Gdx.files.internal("NPC/" + status + "_NPC.gif"));
 		super.setSprite(tempSprite,super.getSprite().getX(),super.getSprite().getY());
+		changeStatus();
 	}
-	
+
 	public void update() {
 		if(health > 100) {
 			health = 100;
@@ -119,10 +121,17 @@ public class NPC extends Renderable implements Living {
 			updateTexture();
 			healthBar.setTexture(new Texture(Gdx.files.internal("house/UI/HEALTHFULL.png")));
 		}
-		
-
 	}
-	
+
+	private void changeStatus(){
+		daysInStatus = 0;
+	}
+
+	//TODO put this in
+	private void incrementStatus(){
+		daysInStatus += 1;
+	}
+
 	@Override
 	public void updateSprite(float dx, float dy) {
 		coordinates.add(coordinates.x + dx, coordinates.y + dy);
@@ -165,7 +174,20 @@ public class NPC extends Renderable implements Living {
 	public void setFoodGiven(boolean given) {
 		this.foodGiven = given;
 	}
-	
+
+	public boolean isSick(){
+		if(status == "Sick"){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public int getDaysInStatus(){
+		return daysInStatus;
+	}
+
 	public Sprite getBar() {
 		return healthBar;
 	}
@@ -192,11 +214,8 @@ public class NPC extends Renderable implements Living {
 	}
 
 	public void infect() {
-		if(status.equals("Alive")) {
-			Random r = new Random();
-			float random = 1 + r.nextFloat() * (5 - 1);
-			this.health = this.health - random;
-			this.update();
+		if(status.equals("Alive")){
+			status = "Sick";
 		}
 	}
 	
@@ -205,9 +224,13 @@ public class NPC extends Renderable implements Living {
 	}
 
 
+
 	public float getX() {return coordinates.x;}
 	public float getY() {return coordinates.y;}
 
 
 
 }
+
+}
+

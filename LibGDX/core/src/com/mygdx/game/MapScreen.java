@@ -77,7 +77,10 @@ public class MapScreen extends InputAdapter implements Screen {
 
 	private Label energy;
 	private Disease disease;
-	
+
+	//TODO finish this
+	private Window inventoryScreen;
+
 	private Label numberOfCharacter;
 	private Label numberOfcharacterTitle;
 	private Label numberOfcharacterSickTitle;
@@ -281,7 +284,7 @@ public class MapScreen extends InputAdapter implements Screen {
 			for(Node node: this.map.getNodes()) {
 				if(node != null) {
 					node.draw(main.batch);
-					node.updateHouseDiseased();
+					disease.calculateHouseIllness(node);
 				}
 			}
 			pointer.draw(main.batch);
@@ -440,8 +443,9 @@ public class MapScreen extends InputAdapter implements Screen {
 						Player p = readPlayer();
 						p.resetEnergy();
 						energy.setText(p.getEnergy()+"");
-						disease.diseaseSpread(map.getNodes());
-						disease.diseaseAffect(map.getNodes());
+						for(Node house : map.getNodes()){
+							diseaseHandler(house);
+						}
 						p.writeToPlayerFile();
 						initialDone = false;
 						darken = false;
@@ -466,6 +470,10 @@ public class MapScreen extends InputAdapter implements Screen {
 		this.rayHandler.setAmbientLight(darkness);
 	}
 	
+	public void diseaseHandler(Node house) {
+		disease.calculateHouseIllness(house);
+		disease.infectResidents(house);
+	}
 	
 	public void checkKC() {
 		StringBuilder value = new StringBuilder();
@@ -515,7 +523,7 @@ public class MapScreen extends InputAdapter implements Screen {
 		}
 		
 		if(n.getLevel3()) {
-			numberOfCharacterDiseased.setText(n.getNumberOfInfected());
+			numberOfCharacterDiseased.setText(n.getNumberOfDead());
 		} else {
 			numberOfCharacterDiseased.setText("NOT KNOWN");
 		}
@@ -525,6 +533,7 @@ public class MapScreen extends InputAdapter implements Screen {
 	
 	public void initalSceneTransitions(float delta) {
 		if(!initialDone) {
+			
 			dayLabel.setVisible(true);
 			
 			numberOfCharacter.setVisible(false);
@@ -611,10 +620,7 @@ public class MapScreen extends InputAdapter implements Screen {
 				numberOfCharacterDiseased.setVisible(true);
 			}
 		}
-		else { 
-			
-
-			
+		else {
 			if(houseAlpha > 0.1) { 
 				houseAlpha -= (1f/10f);
 				enterHouse.setAlpha(houseAlpha);
@@ -686,6 +692,8 @@ public class MapScreen extends InputAdapter implements Screen {
 		hoverNode = node;
 		
 		if(enterBuilding && p.getEnergy() >= 30) {
+			//TODO implement inventory screen
+			//inventoryScreen.setVisible(true);
 			main.ui.clear();
 			enterBuilding = false;
 			node.serializeVillagers();
@@ -750,7 +758,6 @@ public class MapScreen extends InputAdapter implements Screen {
     	 * The window containing all the values is called pause
     	 */
 		beforeEntry();
-
 		float windowWidth = 200*scaleItem, windowHeight = 200*scaleItem;
         pause = new Window("", skin);
         pause.setMovable(false); //So the user can't move the window
@@ -783,7 +790,7 @@ public class MapScreen extends InputAdapter implements Screen {
 				System.exit(0);
 			}
 		});
-
+		
         pause.add(button1).row();
         pause.row();
         pause.add(button2).row();
@@ -798,17 +805,17 @@ public class MapScreen extends InputAdapter implements Screen {
         isPaused = false;
         pause.setVisible(false);
         
-        pause.setSize(pause.getWidth()*scaleItem, pause.getHeight()*scaleItem);
+        pause.setSize(pause.getWidth() * scaleItem, pause.getHeight()*scaleItem);
         //Adds it to the UI Screen.
         main.ui.addActor(pause);
         
 		dayLabel = new Label("DAY " + day , AssetHandler.fontSize48);
-		dayLabel.setPosition(main.ui.getWidth()/2-dayLabel.getWidth()/2, main.ui.getHeight()/2-dayLabel.getHeight()/2);
+		dayLabel.setPosition(main.ui.getWidth()/2 - dayLabel.getWidth()/2, main.ui.getHeight()/2 - dayLabel.getHeight()/2);
 		dayLabel.setVisible(false);
 		main.ui.addActor(dayLabel);
 
 		
-		energy = new Label(readPlayer().getEnergy()+"", AssetHandler.fontSize24);
+		energy = new Label(readPlayer().getEnergy() + "", AssetHandler.fontSize24);
 		energy.setWidth(450f);
 		energy.setFontScale(2.5f);
 		energy.setAlignment(Align.center);

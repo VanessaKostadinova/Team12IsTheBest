@@ -13,13 +13,13 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.mygdx.renderable.Constants;
+import com.mygdx.renderable.NPC;
 
 public class House {
 	
 	private int[][] background;
 	private int[][] backgroundProperties;
 
-	
 	private List<Torch> torches;
 
 	private HashMap<Integer, Texture> textures;
@@ -28,7 +28,6 @@ public class House {
 	private int indicator = 0;
 	private String houseProperties;
 	private List<BodyDef> walls;
-	
 	
 	public House(String[] attributes) {
 		textureURL = new LinkedList<>();
@@ -49,7 +48,6 @@ public class House {
 		walls = new ArrayList<>();
 		createBodiesFromArray();
 	}
-
 
 	public int[][] getArray() {
 		System.out.println(Arrays.deepToString(background));
@@ -89,7 +87,6 @@ public class House {
 		}
 	}
 
-
 	public void createBodies(World world) {
 		for(BodyDef def : walls) {
             Body body = world.createBody(def);
@@ -102,12 +99,10 @@ public class House {
             fixtureDef.filter.categoryBits = Constants.WALL;
                 
             body.createFixture(fixtureDef);
-            
 		}
 		
     }
-	
-	
+
 	public void createBodyDef(int x, int y) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.StaticBody;
@@ -115,9 +110,7 @@ public class House {
         bodyDef.fixedRotation = true;
 		walls.add(bodyDef);
 	}
-	
-	
-	
+
     private void createLevel() {
         FileHandle handle;
         try {
@@ -191,11 +184,8 @@ public class House {
             e.printStackTrace();
         }
     }
-    
 
-    
 	private void generateTorches(int x, int y) {
-		
 		/*                        
 		 * Each tile is 32*32
 		 * Hence we divide the coordinates by 32 and round down.
@@ -206,8 +196,6 @@ public class House {
 	    if(value > 0 && value < 5) {
 		    int positionX = y*32;
 		    int positionY = x*32;
-		    
-		    
 		    
 		    if(value == 1) {
 		    	torches.add(new Torch(positionX, positionY, 0f));
@@ -224,15 +212,12 @@ public class House {
 		    if(value == 4) {
 		    	torches.add(new Torch(positionX, positionY, 270f));
 		    }
-
 	    }
-
 	}
 	
 	public List<Torch> getTorches() {
 		return torches;
 	}
-
 
 	public int[][] getLevel() {
 		return background;
