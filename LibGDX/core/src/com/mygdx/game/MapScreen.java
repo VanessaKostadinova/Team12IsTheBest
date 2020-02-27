@@ -140,8 +140,6 @@ public class MapScreen implements Screen {
 		cameraMap.getCamera().zoom = 7f;
 
 		pointer.setPosition(pointer.getX()+500, pointer.getY()+500);
-		
-				
 	}
 	
 
@@ -413,6 +411,7 @@ public class MapScreen implements Screen {
 	
 	public void checkKC() {
 		StringBuilder value = new StringBuilder();
+
 		if(checkForKC.size() == 9) {
 			for(String key : checkForKC) {
 				value.append(key);
@@ -427,6 +426,7 @@ public class MapScreen implements Screen {
 				}
 				checkForKC.clear();
 			}
+
 			else if(value.toString().equals("UPUPDOWNDOWNLEFTRIGHTLEFTRIGHTLEFT")) {
 				for(Node n : map.getNodes()) {
 					for(NPC v : n.getResidents()) {
@@ -436,14 +436,13 @@ public class MapScreen implements Screen {
 				}
 				checkForKC.clear();
 			}
+
 			else {
 				checkForKC.clear();
 			}
 		}
 	}
-	
-	
-	
+
 	public void updateText(Node n, Player p) {
 		energy.setText(p.getEnergy()+"");
 		if(n.getLevel1()) {
@@ -463,9 +462,7 @@ public class MapScreen implements Screen {
 		} else {
 			numberOfCharacterDiseased.setText("NOT KNOWN");
 		}
-
 	}
-
 	
 	public void initalSceneTransitions(float delta) {
 		if(!initialDone) {
@@ -504,7 +501,6 @@ public class MapScreen implements Screen {
 					numberOfCharacterDiseased.setVisible(false);
 				}
 			}
-			
 		}
 	}
 
@@ -529,7 +525,6 @@ public class MapScreen implements Screen {
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-
 	}
 	
 	public void fadeAnimationHouseUI() {
@@ -557,7 +552,7 @@ public class MapScreen implements Screen {
 			}
 		}
 		else {
-			if(houseAlpha > 0.1) { 
+			if (houseAlpha > 0.1) {
 				houseAlpha -= (1f/10f);
 				enterHouse.setAlpha(houseAlpha);
 				inspectHouse.setAlpha(houseAlpha);
@@ -608,7 +603,6 @@ public class MapScreen implements Screen {
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -693,7 +687,7 @@ public class MapScreen implements Screen {
     	 * The window containing all the values is called pause
     	 */
 		beforeEntry();
-		float windowWidth = 200*scaleItem, windowHeight = 200*scaleItem;
+		float windowWidth = 200 * scaleItem, windowHeight = 200 * scaleItem;
         pause = new Window("", skin);
         pause.setMovable(false); //So the user can't move the window
         //final TextButton button1 = new TextButton("Resume", skin);
@@ -738,7 +732,6 @@ public class MapScreen implements Screen {
 		dayLabel.setVisible(false);
 		main.ui.addActor(dayLabel);
 
-		
 		energy = new Label(readPlayer().getEnergy() + "", AssetHandler.fontSize24);
 		energy.setWidth(450f);
 		energy.setFontScale(2.5f);
@@ -760,7 +753,6 @@ public class MapScreen implements Screen {
 		numberOfCharacter.setPosition(90, main.ui.getHeight() - 150 -numberOfcharacterTitle.getHeight());
 		numberOfCharacter.setVisible(false);
 		main.ui.addActor(numberOfCharacter);
-		
 		
 		numberOfcharacterSickTitle = new Label("NUMBER OF SICK: ", AssetHandler.fontSize24);
 		numberOfcharacterSickTitle.setWidth(500f);
@@ -788,7 +780,6 @@ public class MapScreen implements Screen {
 		numberOfCharacterDiseased.setVisible(false);
 		main.ui.addActor(numberOfCharacterDiseased);
 
-
 		Gdx.input.setInputProcessor(main.ui);
     }
 
@@ -797,7 +788,6 @@ public class MapScreen implements Screen {
 		float windowWidth = 400, windowHeight = 600;
 		beforeEntry = new Window("", skin);
 		beforeEntry.setMovable(false); //So the user can't move the window
-
 
 		Label Title1 = new Label("SELECT", AssetHandler.fontSize32);
 		Label Title2= new Label("GEAR", AssetHandler.fontSize32);
@@ -826,11 +816,7 @@ public class MapScreen implements Screen {
 
 		beforeEntry.add(table2).center().row();
 
-
 		Table table3 = new Table();
-
-
-
 
 		Label exit = new Label("EXIT", AssetHandler.fontSize32);
 		exit.addListener(new ClickListener() {
@@ -862,13 +848,8 @@ public class MapScreen implements Screen {
 
 		beforeEntry.setSize(beforeEntry.getWidth()*scaleItem, beforeEntry.getHeight()*scaleItem);
 		main.ui.addActor(beforeEntry);
-
-
 	}
-    
-    
-    
-    
+
 	/**
 	 * Toggle isPaused variable.
 	 */
@@ -881,6 +862,4 @@ public class MapScreen implements Screen {
 		String[] values= handle.readString().split(",");
 		return new Player(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6]), Float.parseFloat(values[7]));
 	}
-	
-	
 }

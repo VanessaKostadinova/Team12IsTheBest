@@ -18,8 +18,6 @@ public class Shop extends Renderable {
 		upgrades[3] = new Upgrade("CURE STRENGTH", "INCREASE THE CURE STRENGTH", 0.05f, 100f);
 		//upgrades[4] = new Upgrade("FLAME AMOUNT", "INCREASE THE FLAME AMOUNT", 0.3f, 100f);
 		//upgrades[5] = new Upgrade("CURE AMOUNT", "INCREASE THE CURE AMOUNT", 0.3f, 100f);
-
-
 	}
 	
 	public Upgrade[] getUpgrades() {
@@ -29,6 +27,4 @@ public class Shop extends Renderable {
 	public Upgrade getUpgrade(int index) {
 		return upgrades[index];
 	}
-	
-
 }

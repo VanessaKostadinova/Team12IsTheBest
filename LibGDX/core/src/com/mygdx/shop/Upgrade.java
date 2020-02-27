@@ -1,6 +1,5 @@
 package com.mygdx.shop;
 
-
 public class Upgrade {
 	
 	protected String name;
@@ -16,7 +15,6 @@ public class Upgrade {
 		this.cost = cost;
 		this.level = 1;
 	}
-	
 	
 	public String getDescription() {
 		return description;
@@ -39,9 +37,7 @@ public class Upgrade {
 	}
 	
 	public void update() {
-		cost = cost + 10;
+		cost += 10;
 		level += 1;
 	}
-	
-
 }

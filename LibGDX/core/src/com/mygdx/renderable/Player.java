@@ -25,8 +25,6 @@ public class Player extends Renderable implements Living {
 	private static final float sanityFactor = 0.2f;
 	
 	private float maskDurationSeconds;
-
-	private Inventory inventory;
 	
 	private float sanity;
 	
