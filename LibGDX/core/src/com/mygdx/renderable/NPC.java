@@ -178,10 +178,6 @@ public class NPC extends Renderable implements Living {
 		}
 	}
 
-	public int getDaysInStatus(){
-		return daysInStatus;
-	}
-
 	public Sprite getBar() {
 		return healthBar;
 	}

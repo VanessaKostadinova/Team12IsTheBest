@@ -22,7 +22,7 @@ import com.mygdx.map.Map;
 import com.mygdx.renderable.NPC;
 import com.mygdx.renderable.Node;
 import com.mygdx.renderable.Player;
-import com.mygdx.shop.Shop;
+import com.mygdx.shop.Church;
 import box2dLight.RayHandler;
 import com.mygdx.assets.AssetHandler;
 import com.mygdx.camera.Camera;
@@ -77,16 +77,12 @@ public class MapScreen implements Screen {
 	private Label energy;
 	private Disease disease;
 
-	//TODO finish this
-	private Window inventoryScreen;
-
 	private Label numberOfCharacter;
 	private Label numberOfcharacterTitle;
 	private Label numberOfcharacterSickTitle;
 	private Label numberOfCharacterSick;
 	private Label numberOfcharacterDiseasedTitle;
 	private Label numberOfCharacterDiseased;
-
 
 	private Label Amount1;
 	
@@ -224,7 +220,7 @@ public class MapScreen implements Screen {
 		main.batch.begin();
 			//behindBackground.draw(main.batch);
 			background.draw(main.batch);
-			map.getShop().draw(main.batch);
+			map.getChurch().draw(main.batch);
 	   main.batch.end();
 	   checkIfClicked(pointer.getX(), pointer.getY());
 
@@ -372,11 +368,11 @@ public class MapScreen implements Screen {
 				numberOfcharacterDiseasedTitle.setVisible(false);
 				numberOfCharacterDiseased.setVisible(false);
 				if(darkness >= 0) {
-					darkness-= (1f/60f);
+					darkness -= (1f/60f);
 					if(darkness <= 0) {
 						Player p = readPlayer();
 						p.resetEnergy();
-						energy.setText(p.getEnergy()+"");
+						energy.setText(p.getEnergy() + "");
 						for(Node house : map.getNodes()){
 							diseaseHandler(house);
 						}
@@ -505,8 +501,7 @@ public class MapScreen implements Screen {
 	}
 
 	@Override
-	public void resize(int width, int height) {	
-		
+	public void resize(int width, int height) {
 		cameraMap.getViewport().update(width, height);
 		cameraMap.getCamera().viewportHeight = viewWidth*((float)height/(float) width);
 		cameraMap.getViewport().apply();
@@ -622,8 +617,6 @@ public class MapScreen implements Screen {
 		hoverNode = node;
 		
 		if(enterBuilding && p.getEnergy() >= 30) {
-			//TODO implement inventory screen
-			//inventoryScreen.setVisible(true);
 			main.ui.clear();
 			enterBuilding = false;
 			node.serializeVillagers();
@@ -633,12 +626,12 @@ public class MapScreen implements Screen {
 		}	
 	}
 	
-	public void enterShop(Shop shop) {
+	public void enterShop(Church church) {
 		shopHit = true;
 		if(enterBuilding) {
 			main.ui.clear();
 			enterBuilding = false;
-			main.setScreen(new ShopScreen(main, shop, this));
+			main.setScreen(new ShopScreen(main, church, this));
 		}
 	}
 	
@@ -660,8 +653,8 @@ public class MapScreen implements Screen {
 			}
 		}
 		
-		if(map.getShop().pointIsWithinSprite(x, y)) {
-			enterShop(map.getShop());
+		if(map.getChurch().pointIsWithinSprite(x, y)) {
+			enterShop(map.getChurch());
 		}
 		else {
 			shopHit = false;
@@ -800,9 +793,11 @@ public class MapScreen implements Screen {
 
 		Table table2 = new Table();
 
+		int[] inventoryInfo = new int[3];
+
 		for(int i = 0; i < 3; i++) {
 			final Image settings = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("temp64x64.png")))));
-			Label Amount1= new Label("3", AssetHandler.fontSize24);
+			Label Amount1= new Label("1", AssetHandler.fontSize24);
 
 			Label plus1= new Label("+", AssetHandler.fontSize48);
 
@@ -827,6 +822,13 @@ public class MapScreen implements Screen {
 		});
 
 		Label enter = new Label("ENTER", AssetHandler.fontSize32);
+		/*
+		TODO ALL THIS WORK!
+
+		 */
+
+
+
 		enter.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {

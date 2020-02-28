@@ -7,20 +7,20 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.assets.AssetHandler;
 import com.mygdx.renderable.Node;
-import com.mygdx.shop.Shop;
+import com.mygdx.shop.Church;
 
 /**
  *
  */
 public class Map {
 	private List<Node> nodes;
-	private Shop shop; 
+	private Church church;
 	private Disease disease = new Disease();
 	
 	public Map() {
 		nodes = new ArrayList<>();
 		readMapFile();
-		shop = new Shop(AssetHandler.manager.get("house/Shop.gif", Texture.class), 900.0f, 470.0f);
+		church = new Church(AssetHandler.manager.get("house/Shop.gif", Texture.class), 900.0f, 470.0f);
 		checkIfPlayerExist();
 		resetPlayerFile();
 		setNeighbours();
@@ -35,8 +35,8 @@ public class Map {
 		return nodes;
 	}
 
-	public Shop getShop() {
-		return shop;
+	public Church getChurch() {
+		return church;
 	}
 	
 	public void checkIfPlayerExist() {

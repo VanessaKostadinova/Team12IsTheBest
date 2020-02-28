@@ -1,6 +1,6 @@
 package com.mygdx.shop;
 
-public class Upgrade {
+public class Item {
 	
 	protected String name;
 	protected String description;
@@ -8,7 +8,7 @@ public class Upgrade {
 	protected float cost;
 	protected int level;
 	
-	public Upgrade(String name, String description, float increasingValue, float cost) {
+	public Item(String name, String description, float increasingValue, float cost) {
 		this.name = name;
 		this.description = description;
 		this.increasingValue = increasingValue;

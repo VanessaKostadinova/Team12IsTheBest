@@ -1,30 +1,37 @@
 package com.mygdx.shop;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.mygdx.renderable.Renderable;
+import com.mygdx.extras.Inventory;
 
-public class Shop extends Renderable {
-	
-	Upgrade[] upgrades;
-	
-	public Shop(Texture textureOfHouse, float x, float y) {
-		super.setSprite(textureOfHouse, x, y);
-		
-		upgrades = new Upgrade[6];
-		 
-		upgrades[0] = new Upgrade("MOVEMENT SPEED","INCREASE THE PLAYERS SPEED", 0.1f, 50f);
-		upgrades[1] = new Upgrade("MASK ABILITY", "INCREASE THE MASK DURABILITY", 60f, 10f);
-		upgrades[2] = new Upgrade("FLAME STRENGTH", "INCREASE THE FLAME STRENGTH", 0.05f, 100f);
-		upgrades[3] = new Upgrade("CURE STRENGTH", "INCREASE THE CURE STRENGTH", 0.05f, 100f);
-		//upgrades[4] = new Upgrade("FLAME AMOUNT", "INCREASE THE FLAME AMOUNT", 0.3f, 100f);
-		//upgrades[5] = new Upgrade("CURE AMOUNT", "INCREASE THE CURE AMOUNT", 0.3f, 100f);
-	}
-	
-	public Upgrade[] getUpgrades() {
-		return upgrades;
-	}
-	
-	public Upgrade getUpgrade(int index) {
-		return upgrades[index];
-	}
+public class Shop {
+    /*
+    TODO Be able to update inventory
+        -update mask count/ fluid (heal/burn)
+        -update food count
+     */
+
+    public final float FLUID_PER_PURCHASE = 10f;
+    public final int MASK_PER_PURCHASE = 1;
+    public final int COST_PER_MASK = 10;
+    public final int COST_PER_FLUID = 20;
+
+    private Inventory inventory;
+
+    public Shop(){
+        inventory.getInventoryInstance();
+    }
+
+    public void buyHealingFluid(){
+        inventory.changeHealingFluid(FLUID_PER_PURCHASE);
+        inventory.changeFoodAmount(COST_PER_FLUID);
+    }
+
+    public void buyBurningFluid(){
+        inventory.changeBurningFluid(FLUID_PER_PURCHASE);
+        inventory.changeFoodAmount(COST_PER_FLUID);
+    }
+
+    public void buyMasks(){
+        inventory.changeNumberOfMasks(MASK_PER_PURCHASE);
+        inventory.changeFoodAmount(COST_PER_MASK);
+    }
 }

@@ -1,6 +1,9 @@
 package com.mygdx.extras;
 
-import com.badlogic.gdx.physics.bullet.collision._btMprSimplex_t;
+import com.mygdx.shop.Item;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class stores the items a player holds.
@@ -10,18 +13,20 @@ public class Inventory {
     private int numberOfMasks;
     private float healingFluid;
     private float burningFluid;
+    private int food;
 
-    private Note[] Notes;
-
+    private Note[] notes;
+    private List<Item> items;
     private static Inventory instance;
 
     private Inventory(int masks, float healingFluid, float burningFluid){
         this.numberOfMasks = masks;
         this.healingFluid = healingFluid;
         this.burningFluid = burningFluid;
+        items = new LinkedList<Item>();
     }
 
-    public static void createInventoryInstance(int masks, float healingFluid, float burningFluid) throws RuntimeException{
+    public static void createInventoryInstance(int masks, float healingFluid, float burningFluid) throws RuntimeException {
         if(instance == null){
             instance = new Inventory(masks, healingFluid, burningFluid);
         }
@@ -49,6 +54,10 @@ public class Inventory {
 
     public void changeBurningFluid(float burningFluidDelta){
         burningFluid += burningFluidDelta;
+    }
+
+    public void changeFoodAmount(int foodDelta){
+        food += foodDelta;
     }
 
     public float getBurningFluid() {

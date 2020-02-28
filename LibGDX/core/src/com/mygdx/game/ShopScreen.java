@@ -19,8 +19,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.mygdx.assets.AssetHandler;
 import com.mygdx.renderable.Player;
-import com.mygdx.shop.Shop;
-import com.mygdx.shop.Upgrade;
+import com.mygdx.shop.Church;
+import com.mygdx.shop.Item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class ShopScreen implements Screen {
 	
 	private boolean isPaused = false;
 	private Main main;
-	private Shop shop;
+	private Church church;
 	
 	private Table t;
 	private float scaleItem;
@@ -61,12 +61,12 @@ public class ShopScreen implements Screen {
 	private Image Leave;
 	private Image Buy;
 	
-	private Upgrade clickedShop;
+	private Item clickedShop;
 
 
-	public ShopScreen(final Main main, Shop shop, final MapScreen mapScreen) {
+	public ShopScreen(final Main main, Church church, final MapScreen mapScreen) {
 		this.main = main;
-		this.shop = shop;
+		this.church = church;
 		this.t = new Table();
 		clickedShop = null;
 		
@@ -249,7 +249,7 @@ public class ShopScreen implements Screen {
 					if(movement.getStyle().equals(unClicked)) {
 						resetLabel();
 						movement.setStyle(clicked);
-						setLabels(shop.getUpgrade(0));
+						setLabels(church.getUpgrade(0));
 					}
 					else {
 						movement.setStyle(unClicked);
@@ -269,7 +269,7 @@ public class ShopScreen implements Screen {
 					if(maskAbility.getStyle().equals(unClicked)) {
 						resetLabel();
 						maskAbility.setStyle(clicked);
-						setLabels(shop.getUpgrade(1));
+						setLabels(church.getUpgrade(1));
 					}
 					else {
 						maskAbility.setStyle(unClicked);
@@ -289,7 +289,7 @@ public class ShopScreen implements Screen {
 					if(flameStrength.getStyle().equals(unClicked)) {
 						resetLabel();
 						flameStrength.setStyle(clicked);
-						setLabels(shop.getUpgrade(2));
+						setLabels(church.getUpgrade(2));
 					}
 					else {
 						flameStrength.setStyle(unClicked);
@@ -309,7 +309,7 @@ public class ShopScreen implements Screen {
 					if(cureStrength.getStyle().equals(unClicked)) {
 						resetLabel();
 						cureStrength.setStyle(clicked);
-						setLabels(shop.getUpgrade(3));
+						setLabels(church.getUpgrade(3));
 					}
 					else {
 						cureStrength.setStyle(unClicked);
@@ -368,12 +368,12 @@ public class ShopScreen implements Screen {
 	
 	}
 	
-	public void setLabels(Upgrade upgrade) {
-		clickedShop = upgrade;
-		description.setText(upgrade.getDescription());
-		scaleFactor.setText("INCREASING BY " + upgrade.getIncreasingValue());
-		cost.setText(upgrade.getCost()+" FOOD");
-		level.setText("Lvl. " +upgrade.getLevel());
+	public void setLabels(Item item) {
+		clickedShop = item;
+		description.setText(item.getDescription());
+		scaleFactor.setText("INCREASING BY " + item.getIncreasingValue());
+		cost.setText(item.getCost()+" FOOD");
+		level.setText("Lvl. " + item.getLevel());
 		updateUI(true);
 	}
 	

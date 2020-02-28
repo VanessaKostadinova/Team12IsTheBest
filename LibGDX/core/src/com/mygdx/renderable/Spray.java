@@ -162,8 +162,6 @@ public class Spray extends Renderable {
 		}
 	}
 	
-
-	
 	/**
 	 * Updates the sprite position and checks for collisions.
 	 * @param rotation Used in calculations to find out correct X and Y Coordinates
@@ -201,5 +199,4 @@ public class Spray extends Renderable {
 	public Color getColor() {
 		return this.colorLight;
 	}
-
 }

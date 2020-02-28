@@ -41,9 +41,6 @@ public class Player extends Renderable implements Living {
 	private Body body;
 	//private Body sprayBody;
 
-	
-	
-	
 	public Player(float gold, float mask, float sanity, float maskDurationSeconds, float cureSprayStrength, float fireSprayStrength, float speed, float energy) {
 		super();
 		loadWalkingAnimation();
