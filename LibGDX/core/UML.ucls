@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.2.3" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="com.mygdx.game.ShopScreen" project="core" 
+  <class id="1" language="java" name="com.mygdx.game.ChurchScreen" project="core"
     file="/core/src/com/mygdx/game/ShopScreen.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="926" y="1125"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

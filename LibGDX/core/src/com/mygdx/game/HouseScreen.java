@@ -294,7 +294,7 @@ public class HouseScreen implements Screen {
 			maskBar = AssetHandler.manager.get("house/UI/BAR.png", Texture.class);
 			bar = new Image(new SpriteDrawable(new Sprite(maskBar)));
 			bar.setPosition(200+uiCurrentSpray.getWidth(), main.ui.getHeight()-125);
-			bar.setWidth(250 * (p.getHealth()/p.getInitialMask()));
+			bar.setWidth(250 * (p.getHealth()/p.getNumberOfMasks()));
 			main.ui.addActor(bar);
 			
 		}
@@ -405,7 +405,7 @@ public class HouseScreen implements Screen {
 		
 		private void updateBar() {
 			if((bar.getWidth() >= 1f)) {
-				bar.setWidth(250 * (p.getHealth()/p.getInitialMask()));
+				bar.setWidth(250 * (p.getHealth()/p.getNumberOfMasks()));
 			}
 			else {
 				bar.setWidth(0f);

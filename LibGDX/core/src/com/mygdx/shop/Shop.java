@@ -1,6 +1,6 @@
 package com.mygdx.shop;
 
-import com.mygdx.extras.Inventory;
+import com.mygdx.extras.PermanetPlayer;
 
 public class Shop {
     /*
@@ -14,24 +14,24 @@ public class Shop {
     public final int COST_PER_MASK = 10;
     public final int COST_PER_FLUID = 20;
 
-    private Inventory inventory;
+    private PermanetPlayer permanetPlayer;
 
     public Shop(){
-        inventory.getInventoryInstance();
+        permanetPlayer.getPermanentPlayerInstance();
     }
 
     public void buyHealingFluid(){
-        inventory.changeHealingFluid(FLUID_PER_PURCHASE);
-        inventory.changeFoodAmount(COST_PER_FLUID);
+        permanetPlayer.changeHealingFluid(FLUID_PER_PURCHASE);
+        permanetPlayer.changeFoodAmount(COST_PER_FLUID);
     }
 
     public void buyBurningFluid(){
-        inventory.changeBurningFluid(FLUID_PER_PURCHASE);
-        inventory.changeFoodAmount(COST_PER_FLUID);
+        permanetPlayer.changeBurningFluid(FLUID_PER_PURCHASE);
+        permanetPlayer.changeFoodAmount(COST_PER_FLUID);
     }
 
     public void buyMasks(){
-        inventory.changeNumberOfMasks(MASK_PER_PURCHASE);
-        inventory.changeFoodAmount(COST_PER_MASK);
+        permanetPlayer.changeNumberOfMasks(MASK_PER_PURCHASE);
+        permanetPlayer.changeFoodAmount(COST_PER_MASK);
     }
 }

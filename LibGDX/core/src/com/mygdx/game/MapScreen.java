@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.mygdx.extras.PermanetPlayer;
 import com.mygdx.map.Disease;
 import com.mygdx.map.Map;
 import com.mygdx.renderable.NPC;
@@ -28,6 +29,9 @@ import com.mygdx.assets.AssetHandler;
 import com.mygdx.camera.Camera;
 
 public class MapScreen implements Screen {
+
+	public final int ENERGY_FOR_RESEARCH = 5;
+	public final int ENERGY_FOR_ENTER_HOUSE = 25;
 
 	private float stateTime;
 	
@@ -67,6 +71,7 @@ public class MapScreen implements Screen {
 	private RayHandler rayHandler;
 	private float darkness;
 	private boolean darken;
+	private PermanetPlayer permanetPlayer;
 	
 	private int day;
 	private Label dayLabel;
@@ -95,7 +100,8 @@ public class MapScreen implements Screen {
 	 * @author Inder, Vanessa, Leon
 	 * @param main The main class and shouldn't be null.
 	 */
-	public MapScreen(Main main) {	
+	public MapScreen(Main main) {
+		permanetPlayer = PermanetPlayer.getPermanentPlayerInstance();
 		this.viewWidth = 256;
 		
 		isPaused = false;
@@ -329,12 +335,10 @@ public class MapScreen implements Screen {
 		}
 
 		if(Gdx.input.isKeyJustPressed(Keys.E) && !isPaused) {
-			Player p = readPlayer();
 			try {
-				if(p.getEnergy() >=  5 && !hoverNode.reachedMaxLevel()) {
+				if(permanetPlayer.getEnergy() >=  ENERGY_FOR_RESEARCH && !hoverNode.reachedMaxLevel()) {
 					hoverNode.upgradeLevelKnown();
-					p.deltaEnergy(5);
-					p.writeToPlayerFile();
+					permanetPlayer.changeEnergy(ENERGY_FOR_RESEARCH);
 				}
 			} catch(NullPointerException e) {
 				Gdx.app.log("E pressed outside of house", "Caught exception outside of the house.");
@@ -370,13 +374,11 @@ public class MapScreen implements Screen {
 				if(darkness >= 0) {
 					darkness -= (1f/60f);
 					if(darkness <= 0) {
-						Player p = readPlayer();
-						p.resetEnergy();
-						energy.setText(p.getEnergy() + "");
+						permanetPlayer.resetEnergy();
+						energy.setText(permanetPlayer.getEnergy() + "");
 						for(Node house : map.getNodes()){
 							diseaseHandler(house);
 						}
-						p.writeToPlayerFile();
 						initialDone = false;
 						darken = false;
 						day++;
@@ -609,19 +611,23 @@ public class MapScreen implements Screen {
 	public void dispose() {
 		main.dispose();
 	}
-	
+
+	/*
+	TODO Fix this
+		-player is used in update text
+		-need to either replace with permenant player or pass it the required parameters
+	 */
 	public void enterHouse(Node node) {
 		houseHit = true;
-		Player p = readPlayer();
+		Player p = newPlayer();
 		updateText(node, p);
 		hoverNode = node;
 		
-		if(enterBuilding && p.getEnergy() >= 30) {
+		if(enterBuilding && permanetPlayer.getEnergy() >= ENERGY_FOR_ENTER_HOUSE) {
 			main.ui.clear();
 			enterBuilding = false;
 			node.serializeVillagers();
-			p.deltaEnergy(30);
-			p.writeToPlayerFile();
+			permanetPlayer.changeEnergy(ENERGY_FOR_ENTER_HOUSE);
 			main.setScreen(new HouseScreen(main, node, this));
 		}	
 	}
@@ -631,7 +637,7 @@ public class MapScreen implements Screen {
 		if(enterBuilding) {
 			main.ui.clear();
 			enterBuilding = false;
-			main.setScreen(new ShopScreen(main, church, this));
+			main.setScreen(new ChurchScreen(main, church, this));
 		}
 	}
 	
@@ -725,7 +731,7 @@ public class MapScreen implements Screen {
 		dayLabel.setVisible(false);
 		main.ui.addActor(dayLabel);
 
-		energy = new Label(readPlayer().getEnergy() + "", AssetHandler.fontSize24);
+		energy = new Label(permanetPlayer.getEnergy() + "", AssetHandler.fontSize24);
 		energy.setWidth(450f);
 		energy.setFontScale(2.5f);
 		energy.setAlignment(Align.center);
@@ -859,9 +865,7 @@ public class MapScreen implements Screen {
 		isPaused = !isPaused;
 	}
 	
-	public Player readPlayer() {
-		FileHandle handle = Gdx.files.local("data/player.txt");
-		String[] values= handle.readString().split(",");
-		return new Player(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6]), Float.parseFloat(values[7]));
+	public Player newPlayer(int masksSelected, float healingFluidSelected, float burningFluidSelected) {
+		return new Player(masksSelected, healingFluidSelected, burningFluidSelected);
 	}
 }

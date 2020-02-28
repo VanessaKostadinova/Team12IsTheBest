@@ -5,14 +5,14 @@ public class Item {
 	protected String name;
 	protected String description;
 	protected float increasingValue;
-	protected float cost;
+	protected int originalCost;
 	protected int level;
 	
-	public Item(String name, String description, float increasingValue, float cost) {
+	public Item(String name, String description, float increasingValue, int cost) {
 		this.name = name;
 		this.description = description;
 		this.increasingValue = increasingValue;
-		this.cost = cost;
+		this.originalCost = cost;
 		this.level = 1;
 	}
 	
@@ -28,16 +28,15 @@ public class Item {
 		return increasingValue;
 	}
 	
-	public float getCost() {
-		return cost;
+	public int getCost() {
+		return originalCost * level;
 	}
 	
 	public int getLevel() {
 		return level;
 	}
 	
-	public void update() {
-		cost += 10;
+	public void upgrade() {
 		level += 1;
 	}
 }

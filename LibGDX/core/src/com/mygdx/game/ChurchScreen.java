@@ -25,7 +25,7 @@ import com.mygdx.shop.Item;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShopScreen implements Screen {
+public class ChurchScreen implements Screen {
 
 	
 	private boolean isPaused = false;
@@ -64,7 +64,7 @@ public class ShopScreen implements Screen {
 	private Item clickedShop;
 
 
-	public ShopScreen(final Main main, Church church, final MapScreen mapScreen) {
+	public ChurchScreen(final Main main, Church church, final MapScreen mapScreen) {
 		this.main = main;
 		this.church = church;
 		this.t = new Table();
@@ -133,35 +133,7 @@ public class ShopScreen implements Screen {
 		Buy.addListener(new ClickListener(){
 			@Override
 		    public void clicked(InputEvent event, float x, float y) {
-				if(!isPaused) {
-					Player p = readPlayer();
-					if(clickedShop.getName().equals("MASK ABILITY") && p.getFood() >= clickedShop.getCost()) {
-						p.updateMaskDurationSeconds(clickedShop.getIncreasingValue());
-						p.setFood(p.getFood()-clickedShop.getCost());
-						p.writeToPlayerFile();
-						clickedShop.update();
-					}
-					if(clickedShop.getName().equals("MOVEMENT SPEED") && p.getFood() >= clickedShop.getCost()) {
-						p.updateSpeed(clickedShop.getIncreasingValue());
-						p.setFood(p.getFood()-clickedShop.getCost());
-						p.writeToPlayerFile();
-						clickedShop.update();
-					}
-					if(clickedShop.getName().equals("FLAME STRENGTH") && p.getFood() >= clickedShop.getCost()) {
-						p.updateSprays(1, -clickedShop.getIncreasingValue());
-						p.setFood(p.getFood()-clickedShop.getCost());
-						p.writeToPlayerFile();
-						clickedShop.update();
-					}
-					if(clickedShop.getName().equals("CURE STRENGTH") && p.getFood() >= clickedShop.getCost()) {
-						p.updateSprays(0, clickedShop.getIncreasingValue());
-						p.setFood(p.getFood()-clickedShop.getCost());
-						p.writeToPlayerFile();
-						clickedShop.update();
-					}
-					setLabels(clickedShop);
-					playerGold.setText("PLAYER FOOD: " + readPlayer().getFood());
-				}
+				//TODO Do buying
 		    }
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 				if(!isPaused) {
@@ -280,6 +252,8 @@ public class ShopScreen implements Screen {
 		});
 		items.add(maskAbility);
 
+		//TODO add mask eyes option
+
 		final Label flameStrength = new Label("FLAME STRENGTH", unClicked);
 		flameStrength.setPosition(50, items.get(items.size()-1).getY() - spacing);
 		flameStrength.addListener(new ClickListener(){
@@ -289,7 +263,7 @@ public class ShopScreen implements Screen {
 					if(flameStrength.getStyle().equals(unClicked)) {
 						resetLabel();
 						flameStrength.setStyle(clicked);
-						setLabels(church.getUpgrade(2));
+						setLabels(church.getUpgrade(4));
 					}
 					else {
 						flameStrength.setStyle(unClicked);

@@ -1,7 +1,6 @@
 package com.mygdx.renderable;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -12,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.mygdx.extras.Inventory;
+import com.mygdx.extras.PermanetPlayer;
 
 public class Player extends Renderable implements Living {
 	
@@ -21,43 +20,47 @@ public class Player extends Renderable implements Living {
 	
 	private static final int FRAME_COLS = 2;
 	private static final int FRAME_ROWS = 2;
-	private float speed = 2f*60f;
+	private float speed;
+	private PermanetPlayer permanetPlayer;
 	private static final float sanityFactor = 0.2f;
 	
 	private float maskDurationSeconds;
 	
-	private float sanity;
-	
 	private Spray[] sprays;
 	private int sprayIndex;
-	
-	private float mask;
-	private float initialMask;
+
+	private float amountOfHealingFluid;
+	private float amountOfBurningFluid;
+
+	private float currentMaskDuration;
+	private int numberOfMasks;
 	
 	private float amountOfFood;
-	
-	private int energy;
 	
 	private Body body;
 	//private Body sprayBody;
 
-	public Player(float gold, float mask, float sanity, float maskDurationSeconds, float cureSprayStrength, float fireSprayStrength, float speed, float energy) {
+	public Player(int masks, float amountOfHealingFluid, float amountOfBurningFluid) {
 		super();
 		loadWalkingAnimation();
 		setSprite(walkFrames[0], 0, 0);
-		this.amountOfFood = gold;
-		this.initialMask = mask;
-		this.sanity = sanity;
-		this.speed = speed*60f;
+		this.amountOfFood = 0;
+		this.numberOfMasks = masks;
+		this.permanetPlayer = PermanetPlayer.getPermanentPlayerInstance();
+		this.speed = 25f * 60f * permanetPlayer.getItem(1).getLevel();
+		this.amountOfHealingFluid = amountOfHealingFluid;
+		this.amountOfBurningFluid = amountOfBurningFluid;
+		//TODO figure out the mask decrement
 		this.maskDurationSeconds = maskDurationSeconds;
+
+		float cureSprayStrength = permanetPlayer.getItem(3).getLevel();
+		float fireSprayStrength = permanetPlayer.getItem(4).getLevel();
 
 		sprays = new Spray[2];
 		sprays[0] = new Spray(cureSprayStrength, Color.CYAN);
 		sprays[1] = new Spray(fireSprayStrength, Color.ORANGE);
-		
-		
-		this.mask = mask;
-		this.energy = (int) energy;
+
+		this.currentMaskDuration = 1f;
 	}
 	
 	public void switchSpray() {
@@ -107,22 +110,22 @@ public class Player extends Renderable implements Living {
 	}
 	
 	public float getEnergy() {
-		return energy;
+		return permanetPlayer.getEnergy();
 	}
 
 	@Override
 	public void changeHealth(float deltaHealth) {
-		mask -= deltaHealth;
+		currentMaskDuration -= deltaHealth;
 	}
 
 	@Override
 	public float getHealth() {
-		return mask;
+		return currentMaskDuration;
 	}
 
 	@Override
 	public boolean isDead() {
-		if(mask == 0) {
+		if(currentMaskDuration == 0 && numberOfMasks == 0) {
 			return true;
 		}
 		return false;
@@ -145,24 +148,19 @@ public class Player extends Renderable implements Living {
 	}
 
 	public void increaseSanity() {
-		sanity = sanity + sanityFactor;
+		permanetPlayer.changeSanity(sanityFactor);
 	}
 	
 	public float getSanity() {
-		return sanity;
+		return permanetPlayer.getSanity();
 	}
-	
-	public void writeToPlayerFile() {
-		FileHandle handle = Gdx.files.local("data/player.txt");
-		handle.writeString(amountOfFood+","+initialMask+","+sanity+","+maskDurationSeconds+","+sprays[0].getValue()+","+sprays[1].getValue()+","+speed/60f+","+energy, false);
-	}
-	
-	public float getInitialMask() {
-		return initialMask;
+
+	public float getNumberOfMasks() {
+		return numberOfMasks;
 	}
 	
 	public void reduceMask() {
-		this.mask = this.mask - (this.initialMask/maskDurationSeconds);
+		this.currentMaskDuration = this.currentMaskDuration - (this.numberOfMasks /maskDurationSeconds);
 	}
 	
 	public float getMaskDurationSeconds() {
@@ -186,6 +184,7 @@ public class Player extends Renderable implements Living {
 	}
 	
 	public String getSanityLabel() {
+		float sanity = permanetPlayer.getSanity();
 		if(sanity < 100) {
 			return "SANE";
 		}
@@ -270,17 +269,5 @@ public class Player extends Renderable implements Living {
 	public Body getBody() {
 		// TODO Auto-generated method stub
 		return body;
-	}
-	
-	/*public Body getSprayBody() {
-		return sprayBody;
-	}*/
-	
-	public void deltaEnergy(int removeEnergy) {
-		this.energy = this.energy - removeEnergy;
-	}
-	
-	public void resetEnergy() {
-		this.energy = 100;
 	}
 }
