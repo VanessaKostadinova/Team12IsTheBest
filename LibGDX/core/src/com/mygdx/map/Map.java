@@ -41,7 +41,7 @@ public class Map {
 	
 	public void checkIfPlayerExist() {
 		if(!Gdx.files.isLocalStorageAvailable()) {
-			Gdx.app.log("File Error", "Local Storage not avaliable!");
+			Gdx.app.log("File Error", "Local Storage not available!");
 		}
 		if(!(Gdx.files.local("data/player.txt").exists())) {
 			FileHandle handle = Gdx.files.local("data/player.txt");

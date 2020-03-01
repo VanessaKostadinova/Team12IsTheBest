@@ -24,9 +24,7 @@ import com.mygdx.renderable.Player;
  * @version 1.3
  */
 public class HouseInputHandler implements InputProcessor {
-	
-	/** The player. */
-	private Player player;
+
 	
 	/** The player's width. */
 	private float playerWidth;
@@ -68,14 +66,13 @@ public class HouseInputHandler implements InputProcessor {
 
 	private String lastInput;
 	
-	public HouseInputHandler(Player player, Camera camera, int[][] level, Window pause, List<NPC> npcs, Label paragraph, Image letter, Image icon, World world) {
-		this.player = player;
+	public HouseInputHandler(Camera camera, int[][] level, Window pause, List<NPC> npcs, Label paragraph, Image letter, Image icon, World world) {
 		this.camera = camera;
 		this.level = level;
-		this.playerWidth = player.getSprite().getWidth();
-		this.playerHeight = player.getSprite().getHeight();
+		this.playerWidth = Player.getInstance().getSprite().getWidth();
+		this.playerHeight = Player.getInstance().getSprite().getHeight();
 		this.mousePressed = false;
-		this.speed = player.getSpeed();
+		this.speed = Player.getInstance().getSpeed();
 		this.isPaused = false;
 		this.pause = pause;
 		this.npcs = npcs;
@@ -89,8 +86,8 @@ public class HouseInputHandler implements InputProcessor {
 	
 	
 	public void movement(TextureRegion region, float delta) {
-		float playerX = player.getSprite().getX();
-		float playerY = player.getSprite().getY();
+		float playerX = Player.getInstance().getSprite().getX();
+		float playerY = Player.getInstance().getSprite().getY();
 		
 		
 		
@@ -110,12 +107,12 @@ public class HouseInputHandler implements InputProcessor {
 			if(Gdx.input.isKeyPressed(Input.Keys.W)) {
 				if(!collision(playerX, playerY + playerHeight) && !collision(playerX + playerWidth - speed*delta, playerY + playerHeight)) {
 					camera.getCamera().translate(0f, speed* delta);
-					player.updateSprite(0, speed* delta);
+					Player.getInstance().updateSprite(0, speed* delta);
 					//player.updateSprayPosition();
-					player.updateBody(0, speed* delta);
+					Player.getInstance().updateBody(0, speed* delta);
 					camera.updateCamera();
-					player.getSprite().setRegion(region);
-					player.getSpray().updateSprite(0f, speed*delta);
+					Player.getInstance().getSprite().setRegion(region);
+					Player.getInstance().getSpray().updateSprite(0f, speed*delta);
 					if(shouldExit(playerX, playerY + playerHeight) && shouldExit(playerX-2 + playerWidth - speed*delta, playerY + playerHeight)) {
 						icon.setVisible(true);
 					}
@@ -129,11 +126,11 @@ public class HouseInputHandler implements InputProcessor {
 				if(!collision(playerX - speed*delta, playerY+2) && !collision(playerX - speed*delta, playerY + playerHeight - 2)) {
 					camera.getCamera().translate(-speed*delta, 0f);
 					camera.updateCamera();
-					player.updateSprite(-speed*delta, 0);
+					Player.getInstance().updateSprite(-speed*delta, 0);
 					//player.updateSprayPosition();
-					player.updateBody(-speed*delta, 0f);
-					player.getSprite().setRegion(region);
-					player.getSpray().updateSprite(-speed*delta, 0);
+					Player.getInstance().updateBody(-speed*delta, 0f);
+					Player.getInstance().getSprite().setRegion(region);
+					Player.getInstance().getSpray().updateSprite(-speed*delta, 0);
 					if(shouldExit(playerX - speed*delta, playerY) && shouldExit(playerX - speed*delta, playerY + playerHeight - 4)) {
 						icon.setVisible(true);
 					}
@@ -147,12 +144,12 @@ public class HouseInputHandler implements InputProcessor {
 			if(Gdx.input.isKeyPressed(Input.Keys.S)) {
 				if(!collision(playerX+2, playerY - speed*delta) && !collision(playerX + playerWidth - speed*delta, playerY - speed*delta)) {
 					camera.getCamera().translate(0f, -speed*delta);
-					player.updateSprite(0,-speed*delta);
+					Player.getInstance().updateSprite(0,-speed*delta);
 					//player.updateSprayPosition();
-					player.updateBody(0f, -speed*delta);
+					Player.getInstance().updateBody(0f, -speed*delta);
 					camera.updateCamera();
-					player.getSprite().setRegion(region);
-					player.getSpray().updateSprite(0f, -speed*delta);
+					Player.getInstance().getSprite().setRegion(region);
+					Player.getInstance().getSpray().updateSprite(0f, -speed*delta);
 					if(shouldExit(playerX+2, playerY - speed*delta) && shouldExit(playerX-2 + playerWidth - speed*delta, playerY - speed*delta)) {
 						icon.setVisible(true);
 					}
@@ -165,13 +162,13 @@ public class HouseInputHandler implements InputProcessor {
 			
 			if(Gdx.input.isKeyPressed(Input.Keys.D)) {
 				if(!collision(playerX + playerWidth, playerY+2) && !collision(playerX + playerWidth, playerY + playerHeight - 2)) {
-					player.updateSprite(speed* delta, 0);
+					Player.getInstance().updateSprite(speed* delta, 0);
 					camera.getCamera().translate(speed*delta, 0);
 					camera.updateCamera();
 					//player.updateSprayPosition();
-					player.updateBody(speed*delta, 0);
-					player.getSprite().setRegion(region);
-					player.getSpray().updateSprite(speed*delta, 0f);
+					Player.getInstance().updateBody(speed*delta, 0);
+					Player.getInstance().getSprite().setRegion(region);
+					Player.getInstance().getSpray().updateSprite(speed*delta, 0f);
 					if(shouldExit(playerX + playerWidth, playerY) && shouldExit(playerX + playerWidth, playerY + playerHeight - 4)) {
 						icon.setVisible(true);
 					}
@@ -211,7 +208,7 @@ public class HouseInputHandler implements InputProcessor {
 	
 	public void spray() {
 		if(!isPaused) {
-			player.getSpray().setVisible(mousePressed);
+			Player.getInstance().getSpray().setVisible(mousePressed);
 		}
 	}
 	
@@ -284,7 +281,8 @@ public class HouseInputHandler implements InputProcessor {
 	@Override
 	public boolean keyDown(int keycode) {
 		if(keycode == Keys.Q) {
-			player.switchSpray();
+			Player.getInstance().switchSpray();
+			System.out.println(Player.getInstance().getSprayIndex());
 		}
 		return false;
 	}
@@ -339,7 +337,9 @@ public class HouseInputHandler implements InputProcessor {
 	}
 	
 	public boolean sprayWithVillagerCollision(List<NPC> list) {
-		Boolean value = player.getSpray().collision(list, player.getSprayIndex(), player);
+		System.out.println((Player.getInstance().getSprayIndex() == 1));
+		Boolean value = Player.getInstance().getSpray().collision(list, Player.getInstance().getSprayIndex(), Player.getInstance());
+		System.out.println(value);
 		return value;
 	}
 	
@@ -352,18 +352,18 @@ public class HouseInputHandler implements InputProcessor {
 		 * Then we set the sprites rotation.
 		 */
 		if(!isPaused ) {
-			float spriteX = player.getSprite().getX()+player.getSprite().getWidth()/2;
-			float spriteY = player.getSprite().getY()+player.getSprite().getHeight()/2;
+			float spriteX = Player.getInstance().getSprite().getX()+Player.getInstance().getSprite().getWidth()/2;
+			float spriteY = Player.getInstance().getSprite().getY()+Player.getInstance().getSprite().getHeight()/2;
 		
 			Vector3 mouse = camera.getCamera().unproject(new Vector3(screenX, screenY, 0));
 		
 		    float rotation = (float)MathUtils.radiansToDegrees * MathUtils.atan2(mouse.y - spriteY, mouse.x - spriteX);
 		    if (rotation < 0) rotation += 360;
-			player.getSprite().setRotation(rotation);
-			player.getSpray().update(rotation, spriteX-player.getSprite().getWidth()/2, spriteY-player.getSprite().getHeight()/2, npcs);
-		    player.getSpray().setRotation(rotation-90f);
-			    
-			player.updateRotation(rotation * (float)(Math.PI/180) );
+			Player.getInstance().getSprite().setRotation(rotation);
+			Player.getInstance().getSpray().update(rotation, spriteX-Player.getInstance().getSprite().getWidth()/2, spriteY-Player.getInstance().getSprite().getHeight()/2, npcs);
+			Player.getInstance().getSpray().setRotation(rotation-90f);
+
+			Player.getInstance().updateRotation(rotation * (float)(Math.PI/180) );
 		    
 			rotation = rotation - 90f;
 			//player.updateSpray(rotation * (float)(Math.PI/180));

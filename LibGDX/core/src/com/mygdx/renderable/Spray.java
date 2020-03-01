@@ -24,6 +24,7 @@ public class Spray extends Renderable {
 	public Spray(float deltaValue, Color color) {
 		this.isActive = false;
 		this.deltaValue = deltaValue;
+		System.out.println("DELTA VALUE: " + deltaValue);
 		this.colorLight = color;
 		start();
 	}
@@ -114,10 +115,10 @@ public class Spray extends Renderable {
 	}
 	
 	public Player readPlayer() {
-		FileHandle handle = Gdx.files.local("data/player.txt");
-		String[] values= handle.readString().split(",");
-		Player p = new Player(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6]), Float.parseFloat(values[7]));
-		return p;
+		//FileHandle handle = Gdx.files.local("data/player.txt");
+		//String[] values= handle.readString().split(",");
+		//Player p = new Player(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6]), Float.parseFloat(values[7]));
+		return null;
 	}
 	
 	public void start() {

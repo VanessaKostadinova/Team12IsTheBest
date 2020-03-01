@@ -91,7 +91,7 @@ public class ChurchScreen implements Screen {
 		Title.setSize(Title.getWidth(), Title.getHeight());
 		t.addActor(Title);
 		
-		playerGold = new Label("PLAYER FOOD: " + readPlayer().getFood(), unClicked);
+		playerGold = new Label("PLAYER FOOD: " + Player.getInstance().getFood(), unClicked);
 		playerGold .setPosition(50f, Title.getY() - 100f);
 		main.ui.addActor(playerGold);
 
@@ -202,11 +202,12 @@ public class ChurchScreen implements Screen {
 		pauseGame();
 	}
 	
-	private Player readPlayer() {
-		FileHandle handle = Gdx.files.local("data/player.txt");
-		String[] values= handle.readString().split(",");
-		return new Player(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6]), Float.parseFloat(values[7]));
-	}
+	//private Player readPlayer() {
+		//FileHandle handle = Gdx.files.local("data/player.txt");
+		//String[] values= handle.readString().split(",");
+		//return new Player(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6]), Float.parseFloat(values[7]));
+		//return null;
+	//}
 	
 	
 	public void setCatagories() {

@@ -26,6 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.mygdx.assets.AssetHandler;
 import com.mygdx.camera.Camera;
+import com.mygdx.extras.PermanetPlayer;
 import com.mygdx.house.Torch;
 import com.mygdx.renderable.Constants;
 import com.mygdx.renderable.NPC;
@@ -44,8 +45,7 @@ public class HouseScreen implements Screen {
 	
 	private Main main;
 	private Node node;
-	private Player p;
-	
+
 	private float stateTime;
 	private float secondCounter;
 	
@@ -107,11 +107,12 @@ public class HouseScreen implements Screen {
 			
 			cameraUI = new Camera(1920, 1080f, 1920f);
 			cameraUI.getCamera().position.set(cameraUI.getCamera().viewportWidth / 2f , cameraUI.getCamera().viewportHeight / 2f, 0);
-			
-			p = readPlayer();
-			p.updateSprite(camera.getViewport().getWorldWidth()/2-p.getSprite().getWidth()/2, camera.getViewport().getWorldHeight()/2-p.getSprite().getHeight()/2);
-		    p.getSpray().getSprite().setPosition(p.getSprite().getX()-p.getSprite().getWidth()/2+10f, p.getSprite().getY()+p.getSprite().getHeight());
-		    p.setRotation(90);
+
+			if(Player.getInstance().getSprite().getX() == 0 && Player.getInstance().getSprite().getY() == 0) {
+				Player.getInstance().updateSprite(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2, camera.getViewport().getWorldHeight() / 2 - Player.getInstance().getSprite().getHeight() / 2);
+				Player.getInstance().getSpray().getSprite().setPosition(Player.getInstance().getSprite().getX() - Player.getInstance().getSprite().getWidth() / 2 + 10f, Player.getInstance().getSprite().getY() + Player.getInstance().getSprite().getHeight());
+				Player.getInstance().setRotation(90);
+			}
 			setAllItemPickups();
 			
 			letter = new Image(new SpriteDrawable(new Sprite(AssetHandler.manager.get("pickups/letter/LETTER.png", Texture.class))));
@@ -125,23 +126,23 @@ public class HouseScreen implements Screen {
 			this.world = new World(new Vector2(0,0), false);
 			
 			pauseGame();
-			handler = new HouseInputHandler(p, camera, node.getArray(), pause, node.getNPCs(), paragraph, letter, icon, world);
+			handler = new HouseInputHandler(camera, node.getArray(), pause, node.getNPCs(), paragraph, letter, icon, world);
 	        handler.setPaused(false);
 	
 			node.getHouse().createBodies(world);
-			p.setBody(world);
+			Player.getInstance().setBody(world);
 			//p.setSprayBody(world);
 			this.rayHandler = new RayHandler(world);
 			this.rayHandler.setAmbientLight(darkness);
 			this.rayHandler.setShadows(true);
-			light = new PointLight(rayHandler, 200, p.getSpray().getColor(),50f, p.getSpray().getSprite().getX() + p.getSpray().getSprite().getWidth()/2,p.getSpray().getSprite().getY()+p.getSpray().getSprite().getHeight()/2);
+			light = new PointLight(rayHandler, 200, Player.getInstance().getSpray().getColor(),50f, Player.getInstance().getSpray().getSprite().getX() + Player.getInstance().getSpray().getSprite().getWidth()/2,Player.getInstance().getSpray().getSprite().getY()+Player.getInstance().getSpray().getSprite().getHeight()/2);
 			light.setSoftnessLength(2f);
 			light.setContactFilter(Constants.PLAYER, Constants.PLAYER, Constants.PLAYER);
 			
-			Light player = new PointLight(rayHandler, 10, Color.BLACK,25f, p.getSpray().getSprite().getX() + p.getSpray().getSprite().getWidth()/2,p.getSpray().getSprite().getY()+p.getSpray().getSprite().getHeight()/2);
+			Light player = new PointLight(rayHandler, 10, Color.BLACK,25f, Player.getInstance().getSpray().getSprite().getX() + Player.getInstance().getSpray().getSprite().getWidth()/2,Player.getInstance().getSpray().getSprite().getY()+Player.getInstance().getSpray().getSprite().getHeight()/2);
 			player.setXray(true);
 			player.setSoftnessLength(1f);
-			player.attachToBody(p.getBody());
+			player.attachToBody(Player.getInstance().getBody());
 	        setTorchLights();
 	        //b2dr = new Box2DDebugRenderer();
 
@@ -152,15 +153,7 @@ public class HouseScreen implements Screen {
 	        Gdx.input.setInputProcessor(input);
 	        
 		}
-	
-		
-		public Player readPlayer() {
-			FileHandle handle = Gdx.files.local("data/player.txt");
-			String[] values= handle.readString().split(",");
-			Player p = new Player(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6]), Float.parseFloat(values[7]));
-			return p;
-		}
-	
+
 		@Override
 		public void show() {
 			// TODO Auto-generated method stub
@@ -178,9 +171,9 @@ public class HouseScreen implements Screen {
 			
 			//b2dr.render(world, camera.getCamera().combined);
 			main.batch.begin();
-			
-			if(secondCounter > 1) {
-				secondCounter -= 1;
+
+			if(secondCounter > Player.getInstance().getMaskDurationSeconds()) {
+				secondCounter -= Player.getInstance().getMaskDurationSeconds();
 				reduceMask();
 			}
 			
@@ -188,16 +181,16 @@ public class HouseScreen implements Screen {
 			main.batch.setProjectionMatrix(camera.getCamera().combined);
 			renderMap();
 			drawNPC(main.batch);
-			p.draw(main.batch);
+			Player.getInstance().draw(main.batch);
 			drawTorchs();
 			drawAllItemPickups(main.batch);
-			p.getSpray().getSprite().setRegion(p.getSpray().getAnimation().getKeyFrame(stateTime, true));
-			p.getSpray().draw(main.batch);
+			Player.getInstance().getSpray().getSprite().setRegion(Player.getInstance().getSpray().getAnimation().getKeyFrame(stateTime, true));
+			Player.getInstance().getSpray().draw(main.batch);
 			
-			if(p.getSprayIndex() == 0) {
+			if(Player.getInstance().getSprayIndex() == 0) {
 				uiCurrentSpray.setDrawable(cure);
 			}
-			if(p.getSprayIndex() == 1) {
+			if(Player.getInstance().getSprayIndex() == 1) {
 				uiCurrentSpray.setDrawable(fire);
 			}
 			
@@ -205,7 +198,7 @@ public class HouseScreen implements Screen {
 			handler.sprayWithVillagerCollision(node.getNPCs());
 			handler.spray();
 			updateSprayLight();
-			handler.movement(p.getAnimation().getKeyFrame(stateTime, true), delta);
+			handler.movement(Player.getInstance().getAnimation().getKeyFrame(stateTime, true), delta);
 			
 			main.batch.setProjectionMatrix(cameraUI.getCamera().combined);
 			drawUI(main.batch);
@@ -220,8 +213,11 @@ public class HouseScreen implements Screen {
 			
 			if(Gdx.input.isKeyJustPressed(Input.Keys.E)) {
 				if(icon.isVisible()) {
-					p.writeToPlayerFile();
+					//p.writeToPlayerFile();
 					dispose();
+					Player.getInstance().setCoordinates(new Vector2(0, 0));
+					Player.getInstance().getSprite().setX(0);
+					Player.getInstance().getSprite().setY(0);
 					main.ui.clear();
 					mapScreen.pauseGame();
 					main.setScreen(mapScreen);
@@ -233,14 +229,14 @@ public class HouseScreen implements Screen {
 		
 		public void reduceMask() {
 			if(!handler.getPaused()) {
-				p.reduceMask();
+				Player.getInstance().reduceMask();
 			}
 		}
 		
 		public void updateSprayLight() {
-			light.setColor(p.getSpray().getColor());
+			light.setColor(Player.getInstance().getSpray().getColor());
 
-			float angle =p.getSprite().getRotation() -90f;
+			float angle =Player.getInstance().getSprite().getRotation() -90f;
 			if(angle > 180) {
 				angle =  360 - angle;
 			}
@@ -249,7 +245,7 @@ public class HouseScreen implements Screen {
 			}
 			
 			
-			light.setPosition(p.getSpray().getSprite().getX()+p.getSprite().getWidth()/2,p.getSpray().getSprite().getY()+p.getSpray().getSprite().getHeight()/2);
+			light.setPosition(Player.getInstance().getSpray().getSprite().getX()+Player.getInstance().getSprite().getWidth()/2,Player.getInstance().getSpray().getSprite().getY()+Player.getInstance().getSpray().getSprite().getHeight()/2);
 			//light.setDirection(p.getSprite().getRotation());
 			light.setActive(handler.getPressed() && !handler.getPaused());
 		}
@@ -266,7 +262,7 @@ public class HouseScreen implements Screen {
 			main.ui.addActor(paragraph);
 			
 			icon = new Image(new SpriteDrawable(new Sprite(AssetHandler.manager.get("player/icon/ICON.png", Texture.class))));
-			icon.setPosition(main.ui.getWidth()/2+p.getSprite().getWidth()+icon.getWidth(), main.ui.getHeight()/2+p.getSprite().getHeight()+icon.getHeight());
+			icon.setPosition(main.ui.getWidth()/2+Player.getInstance().getSprite().getWidth()+icon.getWidth(), main.ui.getHeight()/2+Player.getInstance().getSprite().getHeight()+icon.getHeight());
 			icon.setVisible(false);
 			main.ui.addActor(icon);
 			
@@ -281,11 +277,11 @@ public class HouseScreen implements Screen {
 			main.ui.addActor(ui);
 			
 
-			goldLabel = new Label(p.getFood()+"", createLabelStyleWithBackground(Color.WHITE));
+			goldLabel = new Label(Player.getInstance().getFood()+"", createLabelStyleWithBackground(Color.WHITE));
 			goldLabel.setPosition(200+uiCurrentSpray.getWidth(), main.ui.getHeight()-100);
 			goldLabel.setFontScale(0.6f);
 			main.ui.addActor(goldLabel);
-			
+
 			//sanityLabel = new Label(p.getSanityLabel(), createLabelStyleWithBackground(Color.WHITE));
 			//sanityLabel.setPosition(240+uiCurrentSpray.getWidth(), main.ui.getHeight()-165);
 			//sanityLabel.setFontScale(0.6f);
@@ -294,7 +290,7 @@ public class HouseScreen implements Screen {
 			maskBar = AssetHandler.manager.get("house/UI/BAR.png", Texture.class);
 			bar = new Image(new SpriteDrawable(new Sprite(maskBar)));
 			bar.setPosition(200+uiCurrentSpray.getWidth(), main.ui.getHeight()-125);
-			bar.setWidth(250 * (p.getHealth()/p.getNumberOfMasks()));
+			bar.setWidth(250 * (Player.getInstance().getCurrentMaskDuration()/Player.getInstance().getInitialMaskDuration()));
 			main.ui.addActor(bar);
 			
 		}
@@ -305,7 +301,7 @@ public class HouseScreen implements Screen {
 		
 		public void drawUI(SpriteBatch batch) {
 			updateBar();
-			goldLabel.setText(p.getFood()+"");
+			goldLabel.setText(Player.getInstance().getFood()+"");
 		}
 	
 		@Override
@@ -387,7 +383,7 @@ public class HouseScreen implements Screen {
 			for(Sprite s : pickups) {
 				s.draw(batch);
 				
-				if(p.getSprite().getBoundingRectangle().overlaps(s.getBoundingRectangle()) && s.getColor().a == 1) {
+				if(Player.getInstance().getSprite().getBoundingRectangle().overlaps(s.getBoundingRectangle()) && s.getColor().a == 1) {
 					String message = node.getNotes().get(new Vector2(s.getX(), s.getY()));
 					if(!node.getNoteValidation().get(message)) {
 						handler.setPaused(true);
@@ -405,7 +401,7 @@ public class HouseScreen implements Screen {
 		
 		private void updateBar() {
 			if((bar.getWidth() >= 1f)) {
-				bar.setWidth(250 * (p.getHealth()/p.getNumberOfMasks()));
+				bar.setWidth(250 * (Player.getInstance().getCurrentMaskDuration()/Player.getInstance().getInitialMaskDuration()));
 			}
 			else {
 				bar.setWidth(0f);
@@ -413,6 +409,8 @@ public class HouseScreen implements Screen {
 				main.ui.clear();
 				
 				node.resetVillagers();
+
+				Player.getInstance().resetMask();
 				
 				main.setScreen(new CheckPoint(main, node, mapScreen));
 			}
@@ -431,7 +429,7 @@ public class HouseScreen implements Screen {
 				}
 				
 				if(villager.isBurned()) {
-					p.increaseSanity();		
+					Player.getInstance().increaseSanity();
 					//sanityLabel.setText(p.getSanityLabel()+"");
 				}
 			}

@@ -1,5 +1,6 @@
 package com.mygdx.extras;
 
+import com.badlogic.gdx.Gdx;
 import com.mygdx.shop.Item;
 
 /**
@@ -20,6 +21,13 @@ public class PermanetPlayer {
     private Item[] items;
     private static PermanetPlayer instance;
 
+    //Just used for testing until perishables are implemented
+    private final int[] maxPerishables = {10, 5, 2};
+
+    public int[] getMaxPerishables() {
+        return maxPerishables;
+    }
+
     private PermanetPlayer(int masks, float healingFluid, float burningFluid){
         this.numberOfMasks = masks;
         this.healingFluid = healingFluid;
@@ -32,12 +40,12 @@ public class PermanetPlayer {
 
     //TODO Fix values
     private Item[] createItems(){
-        Item[] tempItems = new Item[4];
-        tempItems[0] = new Item("Boots", "Faster footwear", 25f, 400);
+        Item[] tempItems = new Item[5];
+        tempItems[0] = new Item("Boots", "Faster footwear", 100f, 400);
         tempItems[1] = new Item("Masks", "Better plague protection TM", 25f, 400);
         tempItems[2] = new Item("Mask Eyes", "Improves field of vision", 25f, 400);
-        tempItems[3] = new Item("Healing Strength", "Better healing", 25f, 400);
-        tempItems[4] = new Item("Burning Strength", "Burn baby burn but better", 25f, 400);
+        tempItems[3] = new Item("Healing Strength", "Better healing", 0.1f, 400);
+        tempItems[4] = new Item("Burning Strength", "Burn baby burn but better", 0.5f, 400);
         return tempItems;
     }
 
@@ -55,7 +63,8 @@ public class PermanetPlayer {
             return instance;
         }
         else{
-            throw new IllegalStateException("Inventory already exists");
+            Gdx.app.log("Programming Error", "Inventory has not been created before getPermanentPlayerInstance() was called");
+            throw new IllegalStateException("Inventory has not been created!");
         }
     }
 

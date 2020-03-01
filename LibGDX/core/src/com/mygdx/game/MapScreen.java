@@ -12,8 +12,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -71,7 +73,13 @@ public class MapScreen implements Screen {
 	private RayHandler rayHandler;
 	private float darkness;
 	private boolean darken;
-	private PermanetPlayer permanetPlayer;
+	/**
+	 * Don't store the instance of Permanent Player breaks the point of having a
+	 * singleton as this instance and the actual instance of PermanetPlayer.getInstance()
+	 * can be out of sync. Furthermore, there is no way to sync these without breaking Singleton
+	 * so PermanentPlayer.getInstance() should be used to retrieve the instance of the player.
+	 */
+	//private PermanetPlayer permanetPlayer;
 	
 	private int day;
 	private Label dayLabel;
@@ -94,6 +102,7 @@ public class MapScreen implements Screen {
 	private Node hoverNode;
 	
 	private List<String> checkForKC;
+	private boolean itemsSelected;
 
 	/**
 	 * Create the map screen, and handle the input and movements around the map.
@@ -101,9 +110,14 @@ public class MapScreen implements Screen {
 	 * @param main The main class and shouldn't be null.
 	 */
 	public MapScreen(Main main) {
-		permanetPlayer = PermanetPlayer.getPermanentPlayerInstance();
+		/**
+		 * See @line 74.
+		 */
+		//permanetPlayer =
+		//permanetPlayer = PermanetPlayer.getPermanentPlayerInstance();
+		itemsSelected = false;
 		this.viewWidth = 256;
-		
+		Player.init(5, 100, 100);
 		isPaused = false;
 		cameraMap = new Camera(viewWidth, -1080, -1920);
 		cameraMap.getCamera().position.set(
@@ -336,9 +350,9 @@ public class MapScreen implements Screen {
 
 		if(Gdx.input.isKeyJustPressed(Keys.E) && !isPaused) {
 			try {
-				if(permanetPlayer.getEnergy() >=  ENERGY_FOR_RESEARCH && !hoverNode.reachedMaxLevel()) {
+				if(PermanetPlayer.getPermanentPlayerInstance().getEnergy() >=  ENERGY_FOR_RESEARCH && !hoverNode.reachedMaxLevel()) {
 					hoverNode.upgradeLevelKnown();
-					permanetPlayer.changeEnergy(ENERGY_FOR_RESEARCH);
+					PermanetPlayer.getPermanentPlayerInstance().changeEnergy(ENERGY_FOR_RESEARCH);
 				}
 			} catch(NullPointerException e) {
 				Gdx.app.log("E pressed outside of house", "Caught exception outside of the house.");
@@ -374,8 +388,8 @@ public class MapScreen implements Screen {
 				if(darkness >= 0) {
 					darkness -= (1f/60f);
 					if(darkness <= 0) {
-						permanetPlayer.resetEnergy();
-						energy.setText(permanetPlayer.getEnergy() + "");
+						PermanetPlayer.getPermanentPlayerInstance().resetEnergy();
+						energy.setText(PermanetPlayer.getPermanentPlayerInstance().getEnergy() + "");
 						for(Node house : map.getNodes()){
 							diseaseHandler(house);
 						}
@@ -441,8 +455,8 @@ public class MapScreen implements Screen {
 		}
 	}
 
-	public void updateText(Node n, Player p) {
-		energy.setText(p.getEnergy()+"");
+	public void updateText(Node n) {
+		energy.setText(PermanetPlayer.getPermanentPlayerInstance().getEnergy()+"");
 		if(n.getLevel1()) {
 			numberOfCharacter.setText(n.getNumberOfAlive());
 		} else {
@@ -619,16 +633,11 @@ public class MapScreen implements Screen {
 	 */
 	public void enterHouse(Node node) {
 		houseHit = true;
-		Player p = newPlayer();
-		updateText(node, p);
+		updateText(node);
 		hoverNode = node;
 		
-		if(enterBuilding && permanetPlayer.getEnergy() >= ENERGY_FOR_ENTER_HOUSE) {
-			main.ui.clear();
-			enterBuilding = false;
-			node.serializeVillagers();
-			permanetPlayer.changeEnergy(ENERGY_FOR_ENTER_HOUSE);
-			main.setScreen(new HouseScreen(main, node, this));
+		if(enterBuilding && (PermanetPlayer.getPermanentPlayerInstance().getEnergy() >= ENERGY_FOR_ENTER_HOUSE)) {
+			beforeEntry.setVisible(true);
 		}	
 	}
 	
@@ -731,7 +740,7 @@ public class MapScreen implements Screen {
 		dayLabel.setVisible(false);
 		main.ui.addActor(dayLabel);
 
-		energy = new Label(permanetPlayer.getEnergy() + "", AssetHandler.fontSize24);
+		energy = new Label(PermanetPlayer.getPermanentPlayerInstance().getEnergy() + "", AssetHandler.fontSize24);
 		energy.setWidth(450f);
 		energy.setFontScale(2.5f);
 		energy.setAlignment(Align.center);
@@ -799,21 +808,168 @@ public class MapScreen implements Screen {
 
 		Table table2 = new Table();
 
-		int[] inventoryInfo = new int[3];
 
-		for(int i = 0; i < 3; i++) {
-			final Image settings = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("temp64x64.png")))));
-			Label Amount1= new Label("1", AssetHandler.fontSize24);
+		final Image image1 = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("temp64x64.png")))));
+		final Label amount1= new Label("0", AssetHandler.fontSize24);
+		amount1.setWidth(40);
+		amount1.setHeight(40);
+		final Label plus1= new Label("+", AssetHandler.fontSize48);
+		plus1.setWidth(40);
+		plus1.setHeight(40);
+		final Label remove1= new Label("-", AssetHandler.fontSize48);
+		remove1.setWidth(40);
+		remove1.setHeight(40);
 
-			Label plus1= new Label("+", AssetHandler.fontSize48);
+		plus1.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				System.out.println("HIT!");
+				int amount = Integer.parseInt(amount1.getText().toString());
+				amount++;
+				amount1.setText(amount);
+				if(amount == PermanetPlayer.getPermanentPlayerInstance().getMaxPerishables()[0]) {
+					plus1.setVisible(false);
+				}
 
-			Label remove1= new Label("-", AssetHandler.fontSize48);
+				if(amount > 0) {
+					remove1.setVisible(true);
+				}
+			}
+		});
 
-			table2.add(settings).pad(64).pad(10);
-			table2.add(Amount1).width(20).pad(10);
-			table2.add(plus1).width(20).pad(10);
-			table2.add(remove1).width(20).row();
+		remove1.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				int amount = Integer.parseInt(amount1.getText().toString());
+				amount--;
+				amount1.setText(amount);
+				if(amount == 0) {
+					remove1.setVisible(false);
+				}
+				if(amount < PermanetPlayer.getPermanentPlayerInstance().getMaxPerishables()[0]) {
+					plus1.setVisible(true);
+				}
+
+			}
+		});
+
+		if(Integer.parseInt(amount1.getText().toString()) == 0) {
+			remove1.setVisible(false);
 		}
+
+		final Image image2 = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("temp64x64.png")))));
+		final Label amount2= new Label("0", AssetHandler.fontSize24);
+		amount2.setWidth(40);
+		amount2.setHeight(40);
+		final Label plus2= new Label("+", AssetHandler.fontSize48);
+		plus2.setWidth(40);
+		plus2.setHeight(40);
+		final Label remove2= new Label("-", AssetHandler.fontSize48);
+		remove2.setWidth(40);
+		remove2.setHeight(40);
+
+		plus2.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				System.out.println("HIT!");
+				int amount = Integer.parseInt(amount2.getText().toString());
+				amount++;
+				amount2.setText(amount);
+				if(amount == PermanetPlayer.getPermanentPlayerInstance().getMaxPerishables()[1]) {
+					plus2.setVisible(false);
+				}
+
+				if(amount > 0) {
+					remove2.setVisible(true);
+				}
+			}
+		});
+
+		remove2.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				int amount = Integer.parseInt(amount2.getText().toString());
+				amount--;
+				amount2.setText(amount);
+				if(amount == 0) {
+					remove2.setVisible(false);
+				}
+				if(amount < PermanetPlayer.getPermanentPlayerInstance().getMaxPerishables()[1]) {
+					plus2.setVisible(true);
+				}
+
+			}
+		});
+
+		if(Integer.parseInt(amount2.getText().toString()) == 0) {
+			remove2.setVisible(false);
+		}
+
+		final Image image3 = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("temp64x64.png")))));
+		final Label amount3= new Label("0", AssetHandler.fontSize24);
+		amount3.setWidth(40);
+		amount3.setHeight(40);
+		final Label plus3= new Label("+", AssetHandler.fontSize48);
+		plus3.setWidth(40);
+		plus3.setHeight(40);
+		final Label remove3= new Label("-", AssetHandler.fontSize48);
+		remove3.setWidth(40);
+		remove3.setHeight(40);
+
+		plus3.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				System.out.println("HIT!");
+				int amount = Integer.parseInt(amount3.getText().toString());
+				amount++;
+				amount3.setText(amount);
+				if(amount == PermanetPlayer.getPermanentPlayerInstance().getMaxPerishables()[2]) {
+					plus3.setVisible(false);
+				}
+
+				if(amount > 0) {
+					remove3.setVisible(true);
+				}
+			}
+		});
+
+		remove3.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				int amount = Integer.parseInt(amount3.getText().toString());
+				amount--;
+				amount3.setText(amount);
+				if(amount == 0) {
+					remove3.setVisible(false);
+				}
+				if(amount < PermanetPlayer.getPermanentPlayerInstance().getMaxPerishables()[2]) {
+					plus3.setVisible(true);
+				}
+
+			}
+		});
+
+		if(Integer.parseInt(amount3.getText().toString()) == 0) {
+			remove3.setVisible(false);
+		}
+
+
+
+		table2.add(image1).pad(64).pad(10);
+		table2.add(amount1).width(20).pad(10);
+		table2.add(plus1).width(40).height(40);
+		table2.add(remove1).width(40).height(40).row();
+
+		table2.add(image2).pad(64).pad(10);
+		table2.add(amount2).width(20).pad(10);
+		table2.add(plus2).width(40).height(40);
+		table2.add(remove2).width(40).height(40).row();
+
+		table2.add(image3).pad(64).pad(10);
+		table2.add(amount3).width(20).pad(10);
+		table2.add(plus3).width(40).height(40);
+		table2.add(remove3).width(40).height(40).row();
+
 
 		beforeEntry.add(table2).center().row();
 
@@ -828,17 +984,10 @@ public class MapScreen implements Screen {
 		});
 
 		Label enter = new Label("ENTER", AssetHandler.fontSize32);
-		/*
-		TODO ALL THIS WORK!
-
-		 */
-
-
-
 		enter.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				System.exit(2);
+				enterHouse();
 			}
 		});
 		table3.add(exit).width(exit.getWidth()).pad(20);
@@ -858,6 +1007,16 @@ public class MapScreen implements Screen {
 		main.ui.addActor(beforeEntry);
 	}
 
+	public final void enterHouse() {
+		main.ui.clear();
+		enterBuilding = false;
+		hoverNode.serializeVillagers();
+		PermanetPlayer.getPermanentPlayerInstance().changeEnergy(-ENERGY_FOR_ENTER_HOUSE);
+		main.setScreen(new HouseScreen(main, hoverNode, this));
+
+	}
+
+
 	/**
 	 * Toggle isPaused variable.
 	 */
@@ -865,7 +1024,7 @@ public class MapScreen implements Screen {
 		isPaused = !isPaused;
 	}
 	
-	public Player newPlayer(int masksSelected, float healingFluidSelected, float burningFluidSelected) {
+	/*public Player newPlayer(int masksSelected, float healingFluidSelected, float burningFluidSelected) {
 		return new Player(masksSelected, healingFluidSelected, burningFluidSelected);
-	}
+	}*/
 }

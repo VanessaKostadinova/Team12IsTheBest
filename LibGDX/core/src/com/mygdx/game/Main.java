@@ -36,8 +36,14 @@ public class Main extends Game implements Serializable {
 	/** The Main Camera for the UI */
 	private Camera camera;
 
+	private Boolean vsyncOn;
 
-	@Override
+	public Main(Boolean vsyncOn) {
+		this.vsyncOn = vsyncOn;
+	}
+
+
+    @Override
 	public void create() {
 		batch = new SpriteBatch();
 		shape = new ShapeRenderer();
@@ -70,6 +76,14 @@ public class Main extends Game implements Serializable {
 	@Override
 	public void dispose() {
 		batch.dispose();
+	}
+
+	public Boolean getVsync() {
+		return vsyncOn;
+	}
+
+	public void setVsync(Boolean vsyncOn) {
+		this.vsyncOn =  vsyncOn;
 	}
 
 
