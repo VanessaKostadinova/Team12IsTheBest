@@ -54,7 +54,7 @@ public class Cutscene implements Screen {
 		Gdx.gl.glCullFace(GL20.GL_BACK);
 
 		try {
-			videoFile = Gdx.files.internal("video/template.ogv");
+			videoFile = Gdx.files.internal(file);
 			Gdx.app.log("LOADING", "Loading file : " + videoFile.file().getAbsolutePath());
 			videoPlayer.play(videoFile);
 		} catch (Exception e) {

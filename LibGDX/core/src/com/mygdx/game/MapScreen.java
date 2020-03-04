@@ -186,8 +186,8 @@ public class MapScreen implements Screen {
 		this.inspectDialog = new Sprite(AssetHandler.manager.get("player/MAPUI/dialog.png", Texture.class));
 		inspectDialog.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
 		inspectDialog.setScale(0.125f);
-		inspectDialog.setScale(0.128f, 0.132f);
-		inspectDialog.setPosition(-252, -290);
+		inspectDialog.setScale(0.128f, 0.053f);
+		inspectDialog.setPosition(-252, -260);
 		inspectDialog.setAlpha(houseAlpha);
 		
 		this.houseText = new Sprite(AssetHandler.manager.get("house/MAP_HOUSE.png", Texture.class));
@@ -352,7 +352,7 @@ public class MapScreen implements Screen {
 			try {
 				if(PermanetPlayer.getPermanentPlayerInstance().getEnergy() >=  ENERGY_FOR_RESEARCH && !hoverNode.reachedMaxLevel()) {
 					hoverNode.upgradeLevelKnown();
-					PermanetPlayer.getPermanentPlayerInstance().changeEnergy(ENERGY_FOR_RESEARCH);
+					PermanetPlayer.getPermanentPlayerInstance().changeEnergy(-ENERGY_FOR_RESEARCH);
 				}
 			} catch(NullPointerException e) {
 				Gdx.app.log("E pressed outside of house", "Caught exception outside of the house.");
