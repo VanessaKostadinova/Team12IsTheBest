@@ -49,7 +49,7 @@ public class Player extends Renderable implements Living {
 		setSprite(walkFrames[0], 0, 0);
 		this.amountOfFood = gold;
 		this.initialMask = mask;
-		this.sanity = 300;
+		this.sanity = sanity;
 		this.speed = speed*60f;
 		this.maskDurationSeconds = maskDurationSeconds;
 

@@ -461,16 +461,15 @@ public class HouseScreen implements Screen {
 				int width = node.getArray().length;
 				int height = node.getArray()[0].length;
 				
-				NPC fake = new NPC(100,0,0);
+				NPC fake = new NPC(60+rand.nextInt(40),0,0);
 				fakeNPCs.add(fake);
 				
 				//Check if npc is inside wall
 				while(handler.collision(fake.getSprite().getX(), fake.getSprite().getY()))
 				{
-					
 					//Player must be respawned
 					fake.updateSprite(rand.nextInt(width)*32 - fake.getSprite().getX(), rand.nextInt(height)*32 - fake.getSprite().getY());
-					System.out.println(i+","+"respawned fakeNPC at:"+fake.getSprite().getX()+","+fake.getSprite().getY());
+					
 				}
 			}
 			
