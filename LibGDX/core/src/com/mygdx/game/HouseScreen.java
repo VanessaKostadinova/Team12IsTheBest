@@ -298,13 +298,13 @@ public class HouseScreen implements Screen {
 			
 		}
 
-		public void createInGameCutscene() {
+		/*public void createInGameCutscene() {
 			Sprite s = new Sprite(new Texture(Gdx.files.internal("cutscene/ingame/cutsceneOverlay.png")));
 			s.setAlpha(0.5f);
 			background = new Image(new SpriteDrawable(s));
 			background.setPosition(0, 0);
 			main.ui.addActor(background);
-		}
+		}*/
 		
 		public void updateParagraphPosition() {
 			paragraph.setPosition(main.ui.getWidth()/2-letter.getWidth()/2 + 50, main.ui.getHeight()/2);
