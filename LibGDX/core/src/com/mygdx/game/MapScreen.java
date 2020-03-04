@@ -827,7 +827,7 @@ public class MapScreen implements Screen {
 				int amount = Integer.parseInt(amount1.getText().toString());
 				amount++;
 				amount1.setText(amount);
-				if(amount == PermanetPlayer.getPermanentPlayerInstance().getMaxPerishables()[0]) {
+				if(amount == PermanetPlayer.getPermanentPlayerInstance().getNumberOfMasks()) {
 					plus1.setVisible(false);
 				}
 
@@ -846,7 +846,7 @@ public class MapScreen implements Screen {
 				if(amount == 0) {
 					remove1.setVisible(false);
 				}
-				if(amount < PermanetPlayer.getPermanentPlayerInstance().getMaxPerishables()[0]) {
+				if(amount < PermanetPlayer.getPermanentPlayerInstance().getNumberOfMasks()) {
 					plus1.setVisible(true);
 				}
 
@@ -875,7 +875,7 @@ public class MapScreen implements Screen {
 				int amount = Integer.parseInt(amount2.getText().toString());
 				amount++;
 				amount2.setText(amount);
-				if(amount == PermanetPlayer.getPermanentPlayerInstance().getMaxPerishables()[1]) {
+				if(amount == PermanetPlayer.getPermanentPlayerInstance().getHealingFluid()) {
 					plus2.setVisible(false);
 				}
 
@@ -894,7 +894,7 @@ public class MapScreen implements Screen {
 				if(amount == 0) {
 					remove2.setVisible(false);
 				}
-				if(amount < PermanetPlayer.getPermanentPlayerInstance().getMaxPerishables()[1]) {
+				if(amount < PermanetPlayer.getPermanentPlayerInstance().getHealingFluid()) {
 					plus2.setVisible(true);
 				}
 
@@ -923,7 +923,7 @@ public class MapScreen implements Screen {
 				int amount = Integer.parseInt(amount3.getText().toString());
 				amount++;
 				amount3.setText(amount);
-				if(amount == PermanetPlayer.getPermanentPlayerInstance().getMaxPerishables()[2]) {
+				if(amount == PermanetPlayer.getPermanentPlayerInstance().getBurningFluid()) {
 					plus3.setVisible(false);
 				}
 
@@ -942,7 +942,7 @@ public class MapScreen implements Screen {
 				if(amount == 0) {
 					remove3.setVisible(false);
 				}
-				if(amount < PermanetPlayer.getPermanentPlayerInstance().getMaxPerishables()[2]) {
+				if(amount < PermanetPlayer.getPermanentPlayerInstance().getBurningFluid()) {
 					plus3.setVisible(true);
 				}
 
@@ -952,7 +952,6 @@ public class MapScreen implements Screen {
 		if(Integer.parseInt(amount3.getText().toString()) == 0) {
 			remove3.setVisible(false);
 		}
-
 
 
 		table2.add(image1).pad(64).pad(10);

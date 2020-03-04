@@ -13,7 +13,7 @@ public class Church extends Renderable {
 		permanetPlayer = PermanetPlayer.getPermanentPlayerInstance();
 	}
 
-	public Item getUpgrade(int index) {
+	/*public Item getUpgrade(int index) {
 		return permanetPlayer.getItems()[index];
 	}
 
@@ -26,5 +26,5 @@ public class Church extends Renderable {
 	public int getPrice(int index){
 		Item tempItem = permanetPlayer.getItems()[index];
 		return tempItem.getCost();
-	}
+	}*/
 }

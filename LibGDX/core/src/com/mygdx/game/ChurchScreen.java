@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.mygdx.assets.AssetHandler;
+import com.mygdx.extras.PermanetPlayer;
 import com.mygdx.renderable.Player;
 import com.mygdx.shop.Church;
 import com.mygdx.shop.Item;
@@ -133,8 +134,30 @@ public class ChurchScreen implements Screen {
 		Buy.addListener(new ClickListener(){
 			@Override
 		    public void clicked(InputEvent event, float x, float y) {
-				//TODO Do buying
-		    }
+				System.out.println(clickedShop.getName());
+				if(clickedShop.getName().equals("MASKS") && Player.getInstance().getFood() >= clickedShop.getCost()) {
+					Player.getInstance().setFood(Player.getInstance().getFood()-clickedShop.getCost());
+					PermanetPlayer.getPermanentPlayerInstance().getItem(1).upgrade();
+					setLabels(PermanetPlayer.getPermanentPlayerInstance().getItem(1));
+				}
+				else if(clickedShop.getName().equals("BOOTS") && Player.getInstance().getFood() >= clickedShop.getCost()) {
+					Player.getInstance().setFood(Player.getInstance().getFood()-clickedShop.getCost());
+					PermanetPlayer.getPermanentPlayerInstance().getItem(0).upgrade();
+					setLabels(PermanetPlayer.getPermanentPlayerInstance().getItem(0));
+				}
+				else if(clickedShop.getName().equals("BURNING STRENGTH") && Player.getInstance().getFood() >= clickedShop.getCost()) {
+					Player.getInstance().setFood(Player.getInstance().getFood()-clickedShop.getCost());
+					PermanetPlayer.getPermanentPlayerInstance().getItem(3).upgrade();
+					setLabels(PermanetPlayer.getPermanentPlayerInstance().getItem(3));
+				}
+				else if(clickedShop.getName().equals("HEALING STRENGTH") && Player.getInstance().getFood() >= clickedShop.getCost()) {
+					Player.getInstance().setFood(Player.getInstance().getFood()-clickedShop.getCost());
+					PermanetPlayer.getPermanentPlayerInstance().getItem(2).upgrade();
+					setLabels(PermanetPlayer.getPermanentPlayerInstance().getItem(2));
+				}
+				playerGold.setText("PLAYER FOOD: " + Player.getInstance().getFood());
+
+			}
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 				if(!isPaused) {
 					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(AssetHandler.manager.get("shop/screen/BUYMOUSE.png", Texture.class))));
@@ -222,7 +245,7 @@ public class ChurchScreen implements Screen {
 					if(movement.getStyle().equals(unClicked)) {
 						resetLabel();
 						movement.setStyle(clicked);
-						setLabels(church.getUpgrade(0));
+						setLabels(PermanetPlayer.getPermanentPlayerInstance().getItem(0));
 					}
 					else {
 						movement.setStyle(unClicked);
@@ -242,7 +265,7 @@ public class ChurchScreen implements Screen {
 					if(maskAbility.getStyle().equals(unClicked)) {
 						resetLabel();
 						maskAbility.setStyle(clicked);
-						setLabels(church.getUpgrade(1));
+						setLabels(PermanetPlayer.getPermanentPlayerInstance().getItem(1));
 					}
 					else {
 						maskAbility.setStyle(unClicked);
@@ -253,7 +276,7 @@ public class ChurchScreen implements Screen {
 		});
 		items.add(maskAbility);
 
-		//TODO add mask eyes option
+		//TODO add mask eyes option N?A
 
 		final Label flameStrength = new Label("FLAME STRENGTH", unClicked);
 		flameStrength.setPosition(50, items.get(items.size()-1).getY() - spacing);
@@ -264,7 +287,7 @@ public class ChurchScreen implements Screen {
 					if(flameStrength.getStyle().equals(unClicked)) {
 						resetLabel();
 						flameStrength.setStyle(clicked);
-						setLabels(church.getUpgrade(4));
+						setLabels(PermanetPlayer.getPermanentPlayerInstance().getItem(3));
 					}
 					else {
 						flameStrength.setStyle(unClicked);
@@ -284,7 +307,7 @@ public class ChurchScreen implements Screen {
 					if(cureStrength.getStyle().equals(unClicked)) {
 						resetLabel();
 						cureStrength.setStyle(clicked);
-						setLabels(church.getUpgrade(3));
+						setLabels(PermanetPlayer.getPermanentPlayerInstance().getItem(2));
 					}
 					else {
 						cureStrength.setStyle(unClicked);

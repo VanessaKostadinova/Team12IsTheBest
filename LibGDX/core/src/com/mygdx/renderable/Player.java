@@ -62,14 +62,14 @@ public class Player extends Renderable implements Living {
 		 */
 		this.maskDurationSeconds = 1f;
 
-		float cureSprayStrength = PermanetPlayer.getPermanentPlayerInstance().getItem(3).getLevel();
-		float fireSprayStrength = PermanetPlayer.getPermanentPlayerInstance().getItem(4).getLevel()*(-PermanetPlayer.getPermanentPlayerInstance().getItem(4).getIncreasingValue());
+		float cureSprayStrength = PermanetPlayer.getPermanentPlayerInstance().getItem(2).getLevel();
+		float fireSprayStrength = PermanetPlayer.getPermanentPlayerInstance().getItem(3).getLevel()*(-PermanetPlayer.getPermanentPlayerInstance().getItem(3).getIncreasingValue());
 
 		sprays = new Spray[2];
 		sprays[0] = new Spray(cureSprayStrength, Color.CYAN);
 		sprays[1] = new Spray(fireSprayStrength, Color.ORANGE);
 
-		this.currentMaskDuration = 20f;
+		this.currentMaskDuration = PermanetPlayer.getPermanentPlayerInstance().getItem(1).getLevel() * PermanetPlayer.getPermanentPlayerInstance().getItem(1).getIncreasingValue();
 	}
 
 	public static Boolean init(int masks, float amountOfHealingFluid, float amountOfBurningFluid) {
@@ -135,9 +135,7 @@ public class Player extends Renderable implements Living {
 	}
 
 
-	public float getInitialMaskDuration() {
-		return 20;
-	}
+	public float getInitialMaskDuration() { return PermanetPlayer.getPermanentPlayerInstance().getItem(1).getLevel() * PermanetPlayer.getPermanentPlayerInstance().getItem(1).getIncreasingValue(); }
 
 	public float getCurrentMaskDuration() {
 		return currentMaskDuration;

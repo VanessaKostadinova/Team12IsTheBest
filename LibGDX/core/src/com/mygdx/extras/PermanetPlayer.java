@@ -17,22 +17,13 @@ public class PermanetPlayer {
     private int food;
     private int energy;
 
-    private Note[] notes;
     private Item[] items;
     private static PermanetPlayer instance;
-
-    //Just used for testing until perishables are implemented
-    private final int[] maxPerishables = {10, 5, 2};
-
-    public int[] getMaxPerishables() {
-        return maxPerishables;
-    }
 
     private PermanetPlayer(int masks, float healingFluid, float burningFluid){
         this.numberOfMasks = masks;
         this.healingFluid = healingFluid;
         this.burningFluid = burningFluid;
-        this.notes = new Note[TOTAL_NUMBER_OF_NOTES];
         this.items = createItems();
         this.sanity = 100f;
         this.energy = 100;
@@ -41,11 +32,10 @@ public class PermanetPlayer {
     //TODO Fix values
     private Item[] createItems(){
         Item[] tempItems = new Item[5];
-        tempItems[0] = new Item("Boots", "Faster footwear", 100f, 400);
-        tempItems[1] = new Item("Masks", "Better plague protection TM", 25f, 400);
-        tempItems[2] = new Item("Mask Eyes", "Improves field of vision", 25f, 400);
-        tempItems[3] = new Item("Healing Strength", "Better healing", 0.1f, 400);
-        tempItems[4] = new Item("Burning Strength", "Burn baby burn but better", 0.5f, 400);
+        tempItems[0] = new Item("BOOTS", "Faster footwear", 75f, 400);
+        tempItems[1] = new Item("MASKS", "Better plague protection TM", 25f, 400);
+        tempItems[2] = new Item("HEALING STRENGTH", "Better healing", 0.1f, 400);
+        tempItems[3] = new Item("BURNING STRENGTH", "Burn baby burn but better", 0.5f, 400);
         return tempItems;
     }
 
