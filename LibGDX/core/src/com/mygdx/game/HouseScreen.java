@@ -1,7 +1,7 @@
 package com.mygdx.game;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -28,13 +29,12 @@ import com.mygdx.assets.AssetHandler;
 import com.mygdx.camera.Camera;
 import com.mygdx.extras.PermanetPlayer;
 import com.mygdx.house.Torch;
-import com.mygdx.renderable.Constants;
-import com.mygdx.renderable.NPC;
-import com.mygdx.renderable.Node;
-import com.mygdx.renderable.Player;
+import com.mygdx.renderable.*;
 import box2dLight.Light;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
+
+import javax.xml.bind.ValidationException;
 
 /**
  * Contains the information of each of the houses.
@@ -86,12 +86,13 @@ public class HouseScreen implements Screen {
 
     private SpriteDrawable fire;
     private SpriteDrawable cure;
-    
+    private Bullet bullet;
     
 	
 		public HouseScreen(Main main, Node node, MapScreen mapScreen) {		
 			this.main = main;
 			this.node = node;
+			this.bullet = null;
 			this.mapScreen = mapScreen;
 			this.darkness = 0.2f;
 			this.skin = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
@@ -109,11 +110,12 @@ public class HouseScreen implements Screen {
 			cameraUI = new Camera(1920, 1080f, 1920f);
 			cameraUI.getCamera().position.set(cameraUI.getCamera().viewportWidth / 2f , cameraUI.getCamera().viewportHeight / 2f, 0);
 
-			if(Player.getInstance().getSprite().getX() == 0 && Player.getInstance().getSprite().getY() == 0) {
-				Player.getInstance().updateSprite(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2, camera.getViewport().getWorldHeight() / 2 - Player.getInstance().getSprite().getHeight() / 2);
-				Player.getInstance().getSpray().getSprite().setPosition(Player.getInstance().getSprite().getX() - Player.getInstance().getSprite().getWidth() / 2 + 10f, Player.getInstance().getSprite().getY() + Player.getInstance().getSprite().getHeight());
-				Player.getInstance().setRotation(90);
-			}
+			Player.getInstance().getSprite().setX(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2);
+			Player.getInstance().getSprite().setY(camera.getViewport().getWorldHeight() / 2 - Player.getInstance().getSprite().getHeight() / 2);
+			//Player.getInstance().updateSprite(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2, camera.getViewport().getWorldHeight() / 2 - Player.getInstance().getSprite().getHeight() / 2);
+			Player.getInstance().getSpray().getSprite().setPosition(Player.getInstance().getSprite().getX() - Player.getInstance().getSprite().getWidth() / 2 + 10f, Player.getInstance().getSprite().getY() + Player.getInstance().getSprite().getHeight());
+			Player.getInstance().setRotation(90);
+
 			setAllItemPickups();
 			
 			letter = new Image(new SpriteDrawable(new Sprite(AssetHandler.manager.get("pickups/letter/LETTER.png", Texture.class))));
@@ -184,6 +186,7 @@ public class HouseScreen implements Screen {
 			main.batch.setProjectionMatrix(camera.getCamera().combined);
 			renderMap();
 			drawNPC(main.batch);
+			updateAllBullets();
 			Player.getInstance().draw(main.batch);
 			drawTorchs();
 			drawAllItemPickups(main.batch);
@@ -210,7 +213,6 @@ public class HouseScreen implements Screen {
 	
 			//b2dr.render(world, camera.getCamera().combined);
 			rayHandler.updateAndRender();
-			
 			main.batch.end();
 			main.ui.draw();
 			
@@ -226,7 +228,7 @@ public class HouseScreen implements Screen {
 					main.setScreen(mapScreen);
 				}
 			}
-			
+			AI();
 	
 		}
 		
@@ -305,7 +307,58 @@ public class HouseScreen implements Screen {
 			background.setPosition(0, 0);
 			main.ui.addActor(background);
 		}*/
-		
+
+		public void AI() {
+			for(NPC n : node.getNPCs()) {
+				if(n.getStatus().equals("Alive")) {
+
+					float rotation = (float) MathUtils.radiansToDegrees * MathUtils.atan2(n.getSprite().getY() - Player.getInstance().getSprite().getY(), n.getSprite().getX()-Player.getInstance().getSprite().getX());
+					rotation -= 90;
+					if (rotation < 0) rotation += 360;
+					n.getSprite().setRotation(rotation);
+
+					Vector2 villager = new Vector2(n.getSprite().getX(), n.getSprite().getY());
+					Vector2 player = new Vector2(Player.getInstance().getSprite().getX(), Player.getInstance().getSprite().getY());
+					System.out.println("VILLAGER: " + player.dst(villager));
+					if(n.getAggressive() && player.dst(villager) < 100) {
+						float dx = Player.getInstance().getSprite().getX() - n.getSprite().getX();
+						float dy = Player.getInstance().getSprite().getY() - n.getSprite().getY();
+
+						dx = dx/20f;
+						dy = dy/20f;
+
+						System.out.println(dx);
+						System.out.println(dy);
+
+						Bullet b = new Bullet(dx, dy, n.getSprite().getX()+16, n.getSprite().getY()+16, node.getArray() , rotation);
+						if(bullet == null) {
+							bullet = b;
+						}
+					}
+				}
+			}
+		}
+
+		public void updateAllBullets() {
+			if(bullet != null && !handler.getPaused()) {
+				System.out.println("HIT!");
+				bullet.draw(main.batch);
+				bullet.updateBullet();
+				if(bullet.getSprite().getY() < 0 || bullet.getSprite().getX() < 0) {
+					bullet = null;
+				}
+				else if(bullet.getSprite().getY() > node.getArray().length*32 || bullet.getSprite().getX() > node.getArray()[0].length*32 ) {
+					bullet = null;
+				}
+				else if(bullet.hasCollided()) {
+					bullet = null;
+				}
+
+			}
+
+		}
+
+
 		public void updateParagraphPosition() {
 			paragraph.setPosition(main.ui.getWidth()/2-letter.getWidth()/2 + 50, main.ui.getHeight()/2);
 		}

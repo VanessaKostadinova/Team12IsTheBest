@@ -59,6 +59,16 @@ public class House {
 			}
 		}
 	}
+
+	public void createBodiesFromArray() {
+		for(int r=0; r<background.length; r++) {
+			for (int c = background[r].length-1; c > -1; c--) {
+				if (background[r][c] == 1) {
+					createBodyDef(r, c);
+				}
+			}
+		}
+	}
 	
 	public Texture getTexture(int value) {
 		return textures.get(value);

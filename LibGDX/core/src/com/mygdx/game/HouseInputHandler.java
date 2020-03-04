@@ -357,7 +357,7 @@ public class HouseInputHandler implements InputProcessor {
 		
 			Vector3 mouse = camera.getCamera().unproject(new Vector3(screenX, screenY, 0));
 		
-		    float rotation = (float)MathUtils.radiansToDegrees * MathUtils.atan2(mouse.y - spriteY, mouse.x - spriteX);
+		    float rotation = (float) MathUtils.radiansToDegrees * MathUtils.atan2(mouse.y - spriteY, mouse.x - spriteX);
 		    if (rotation < 0) rotation += 360;
 			Player.getInstance().getSprite().setRotation(rotation);
 			Player.getInstance().getSpray().update(rotation, spriteX-Player.getInstance().getSprite().getWidth()/2, spriteY-Player.getInstance().getSprite().getHeight()/2, npcs);

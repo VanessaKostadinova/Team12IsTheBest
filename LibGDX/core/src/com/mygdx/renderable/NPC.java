@@ -29,6 +29,8 @@ public class NPC extends Renderable implements Living {
 	private Rectangle rectangle;
 	
 	private Sprite healthBar;
+
+	private Boolean isAggressive = false;
 	
 	public NPC(float health) {
 		super();
@@ -176,6 +178,10 @@ public class NPC extends Renderable implements Living {
 		else {
 			return false;
 		}
+	}
+
+	public boolean getAggressive() {
+		return false;
 	}
 
 	public Sprite getBar() {
