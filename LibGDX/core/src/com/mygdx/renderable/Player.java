@@ -21,11 +21,11 @@ public class Player extends Renderable implements Living {
 	private static final int FRAME_COLS = 2;
 	private static final int FRAME_ROWS = 2;
 	private float speed = 2f*60f;
-	private static final float sanityFactor = 0.2f;
+	
 	
 	private float maskDurationSeconds;
 	
-	private float sanity;
+	private float sanity = 0;
 	
 	private Spray[] sprays;
 	private int sprayIndex;
@@ -49,7 +49,7 @@ public class Player extends Renderable implements Living {
 		setSprite(walkFrames[0], 0, 0);
 		this.amountOfFood = gold;
 		this.initialMask = mask;
-		this.sanity = sanity;
+		this.sanity = 300;
 		this.speed = speed*60f;
 		this.maskDurationSeconds = maskDurationSeconds;
 
@@ -146,8 +146,14 @@ public class Player extends Renderable implements Living {
 		return sprayIndex;
 	}
 
-	public void increaseSanity() {
-		sanity = sanity + sanityFactor;
+	public void increaseSanity(float amount) {
+		sanity = sanity + amount;		
+	}
+	
+	public void decreaseSanity(float amount) {
+		if(amount <= sanity) {
+			sanity = sanity - amount;	
+		}
 	}
 	
 	public float getSanity() {

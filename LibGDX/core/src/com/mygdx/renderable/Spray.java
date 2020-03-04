@@ -65,35 +65,48 @@ public class Spray extends Renderable {
 	/**
 	 * Checks for collisions between the spray sprite and NPC Sprite.
 	 * @param list An array of NPC characters
+	 * 
 	 */
 	public Boolean collision(List<NPC> list, float f, Player p) {
+		//f = 1 is fire
+		//f = 0 is cure
 		for(NPC npc : list) {
 			if(npc.getRectangle().overlaps(sprite.getBoundingRectangle())) {
-				if(isActive) {
+				if(isActive)
+				{
+					//Burning a dead body
 					if(npc.getStatus().equals("Dead") && f == 1) {
 						npc.setFoodGiven(true);
 						npc.changeHealth(deltaValue); 
 						npc.setSanity(true);
+						p.increaseSanity(0.5f);
 					}
 					else if(npc.getStatus().equals("Sick")) {
+						
+						//Healing a sick person
 						if(f == 0) {
 							npc.changeHealth(deltaValue); 
+							p.decreaseSanity(0.25f);
 							if(npc.getHealed() && !npc.foodGiven()) {
 								p.updateFood(50);
 								npc.setFoodGiven(true);
 								return true;
 							}
 						}
-						else {
-							if(f == 1) {
-								npc.setFoodGiven(true);
-								npc.changeHealth(deltaValue);
-								npc.setSanity(true);
-							}
+						//Killing a sick person
+						else if(f == 1)
+						{
+							p.increaseSanity(0.5f);
+							npc.setFoodGiven(true);
+							npc.changeHealth(deltaValue);
+							npc.setSanity(true);
+							
 						}
 					}
 					else {
+						//Burning a 100% health person
 						if(f == 1) {
+							p.increaseSanity(1f);
 							npc.setFoodGiven(true);
 							npc.changeHealth(deltaValue);
 							if(npc.getStatus().equals("Burnt")) {

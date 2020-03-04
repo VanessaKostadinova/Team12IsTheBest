@@ -2,6 +2,8 @@ package com.mygdx.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
@@ -63,7 +65,7 @@ public class HouseScreen implements Screen {
 	private Image ui;
 	private Image uiCurrentSpray;
 	private Label goldLabel;
-	//private Label sanityLabel;
+	private Label sanityLabel;
 	
 	private Texture maskBar;
 	private Image bar;
@@ -82,7 +84,9 @@ public class HouseScreen implements Screen {
 	private Light light;
     //private Box2DDebugRenderer b2dr;
     
-    
+	/** List of fake NPCs to be displayed */
+	private ArrayList<NPC> fakeNPCs;
+	
     private SpriteDrawable fire;
     private SpriteDrawable cure;
     
@@ -94,7 +98,7 @@ public class HouseScreen implements Screen {
 			this.mapScreen = mapScreen;
 			this.darkness = 0.2f;
 			this.skin = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
-	
+			fakeNPCs = new ArrayList<>();
 			cure = new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("house/UI/CureSpray.png"))));
 			fire = new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("house/UI/FireSpray.png"))));
 
@@ -114,6 +118,7 @@ public class HouseScreen implements Screen {
 		    p.setRotation(90);
 			setAllItemPickups();
 			
+			 
 			letter = new Image(new SpriteDrawable(new Sprite(AssetHandler.manager.get("pickups/letter/LETTER.png", Texture.class))));
 			letter.setPosition(main.ui.getWidth()/2-letter.getWidth()/2, main.ui.getHeight()/2-letter.getHeight()/2);
 			letter.setVisible(false);
@@ -128,6 +133,7 @@ public class HouseScreen implements Screen {
 			handler = new HouseInputHandler(p, camera, node.getArray(), pause, node.getNPCs(), paragraph, letter, icon, world);
 	        handler.setPaused(false);
 	
+	        
 			node.getHouse().createBodies(world);
 			p.setBody(world);
 			//p.setSprayBody(world);
@@ -144,7 +150,7 @@ public class HouseScreen implements Screen {
 			player.attachToBody(p.getBody());
 	        setTorchLights();
 	        //b2dr = new Box2DDebugRenderer();
-
+	        spawnFakeNPC();
 	        
 			input = new InputMultiplexer();
 			input.addProcessor(handler);
@@ -188,6 +194,7 @@ public class HouseScreen implements Screen {
 			main.batch.setProjectionMatrix(camera.getCamera().combined);
 			renderMap();
 			drawNPC(main.batch);
+			drawFakeNPC(main.batch);
 			p.draw(main.batch);
 			drawTorchs();
 			drawAllItemPickups(main.batch);
@@ -286,10 +293,12 @@ public class HouseScreen implements Screen {
 			goldLabel.setFontScale(0.6f);
 			main.ui.addActor(goldLabel);
 			
-			//sanityLabel = new Label(p.getSanityLabel(), createLabelStyleWithBackground(Color.WHITE));
-			//sanityLabel.setPosition(240+uiCurrentSpray.getWidth(), main.ui.getHeight()-165);
-			//sanityLabel.setFontScale(0.6f);
-			//main.ui.addActor(sanityLabel);
+			
+			sanityLabel = new Label(p.getSanityLabel(), createLabelStyleWithBackground(Color.WHITE));
+			sanityLabel.setPosition(30, main.ui.getHeight()-210);
+			sanityLabel.setFontScale(0.6f);
+			
+			main.ui.addActor(sanityLabel);
 			
 			maskBar = AssetHandler.manager.get("house/UI/BAR.png", Texture.class);
 			bar = new Image(new SpriteDrawable(new Sprite(maskBar)));
@@ -306,6 +315,7 @@ public class HouseScreen implements Screen {
 		public void drawUI(SpriteBatch batch) {
 			updateBar();
 			goldLabel.setText(p.getFood()+"");
+			sanityLabel.setText(p.getSanityLabel()+":"+p.getSanity());
 		}
 	
 		@Override
@@ -430,10 +440,53 @@ public class HouseScreen implements Screen {
 					batch.draw(villager.getBar().getTexture(), villager.getBar().getX(), villager.getBar().getY(), 32*(villager.getHealth()/-100), villager.getBar().getHeight());
 				}
 				
-				if(villager.isBurned()) {
-					p.increaseSanity();		
-					//sanityLabel.setText(p.getSanityLabel()+"");
+				
+			}
+		}
+		
+		/*Spawns fake NPCs in random locations in the house depending on how insane the player is*/
+		private void spawnFakeNPC()
+		{
+			int x=0;
+			if(p.getSanityLabel()=="VEXED") x=1;
+			
+			if(p.getSanityLabel()=="RISKY") x=2;
+			
+			if(p.getSanityLabel()=="INSANE") x=3;
+			
+			for(int i =0; i< x;i++)
+			{
+				Random rand = new Random();
+				//Level height and width
+				int width = node.getArray().length;
+				int height = node.getArray()[0].length;
+				
+				NPC fake = new NPC(100,0,0);
+				fakeNPCs.add(fake);
+				
+				//Check if npc is inside wall
+				while(handler.collision(fake.getSprite().getX(), fake.getSprite().getY()))
+				{
+					
+					//Player must be respawned
+					fake.updateSprite(rand.nextInt(width)*32 - fake.getSprite().getX(), rand.nextInt(height)*32 - fake.getSprite().getY());
+					System.out.println(i+","+"respawned fakeNPC at:"+fake.getSprite().getX()+","+fake.getSprite().getY());
 				}
+			}
+			
+		}
+		private void drawFakeNPC(SpriteBatch batch)
+		{	
+			for(NPC fake : fakeNPCs) {
+				fake.getSprite().draw(batch);
+				if(fake.getHealth() >= 0) {
+					batch.draw(fake.getBar().getTexture(), fake.getBar().getX(), fake.getBar().getY(), 32*(fake.getHealth()/100), fake.getBar().getHeight());
+				}
+				else {
+					batch.draw(fake.getBar().getTexture(), fake.getBar().getX(), fake.getBar().getY(), 32*(fake.getHealth()/-100), fake.getBar().getHeight());
+				}
+				
+				
 			}
 		}
 		

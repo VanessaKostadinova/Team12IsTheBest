@@ -222,7 +222,7 @@ public class HouseInputHandler implements InputProcessor {
 	 * @param y the y coordinate of the character
 	 * @return true, if collision occurs
 	 */
-	private boolean collision(float x, float y) {
+	public boolean collision(float x, float y) {
 		/*                        
 		 * Each tile is 32*32
 		 * Hence we divide the coordinates by 32 and round down.
