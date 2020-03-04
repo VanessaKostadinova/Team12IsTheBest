@@ -81,8 +81,9 @@ public class HouseScreen implements Screen {
 	
 	private Light light;
     //private Box2DDebugRenderer b2dr;
-    
-    
+
+	private Image background;
+
     private SpriteDrawable fire;
     private SpriteDrawable cure;
     
@@ -122,7 +123,7 @@ public class HouseScreen implements Screen {
 
 			
 			UIElements();
-			
+
 			this.world = new World(new Vector2(0,0), false);
 			
 			pauseGame();
@@ -144,7 +145,9 @@ public class HouseScreen implements Screen {
 			player.setSoftnessLength(1f);
 			player.attachToBody(Player.getInstance().getBody());
 	        setTorchLights();
-	        //b2dr = new Box2DDebugRenderer();
+
+
+			//b2dr = new Box2DDebugRenderer();
 
 	        
 			input = new InputMultiplexer();
@@ -293,6 +296,14 @@ public class HouseScreen implements Screen {
 			bar.setWidth(250 * (Player.getInstance().getCurrentMaskDuration()/Player.getInstance().getInitialMaskDuration()));
 			main.ui.addActor(bar);
 			
+		}
+
+		public void createInGameCutscene() {
+			Sprite s = new Sprite(new Texture(Gdx.files.internal("cutscene/ingame/cutsceneOverlay.png")));
+			s.setAlpha(0.5f);
+			background = new Image(new SpriteDrawable(s));
+			background.setPosition(0, 0);
+			main.ui.addActor(background);
 		}
 		
 		public void updateParagraphPosition() {

@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.extras.PermanetPlayer;
@@ -69,6 +71,7 @@ public class MapScreen implements Screen {
 	private Window pause;
 	private Window beforeEntry;
 	private Boolean isPaused;
+	private Boolean cutsceneActive;
 	private Skin skin;
 	private RayHandler rayHandler;
 	private float darkness;
@@ -100,9 +103,21 @@ public class MapScreen implements Screen {
 	private Label Amount1;
 	
 	private Node hoverNode;
-	
+
+	private Image overlayCutscene;
+	private Image dialogCutscene;
+	private Image speakerImage;
+	private Label personToSpeak;
+	private Label setDescriptionOfText;
+
+	private List<String> currentCutsceneQuotes;
+	private List<String> currentCutscenePerson;
+	private List<String> currentCutsceneDuration;
+
+
 	private List<String> checkForKC;
 	private boolean itemsSelected;
+	private int cutsceneSequence;
 
 	/**
 	 * Create the map screen, and handle the input and movements around the map.
@@ -110,12 +125,8 @@ public class MapScreen implements Screen {
 	 * @param main The main class and shouldn't be null.
 	 */
 	public MapScreen(Main main) {
-		/**
-		 * See @line 74.
-		 */
-		//permanetPlayer =
-		//permanetPlayer = PermanetPlayer.getPermanentPlayerInstance();
 		itemsSelected = false;
+		cutsceneActive = false;
 		this.viewWidth = 256;
 		Player.init(5, 100, 100);
 		isPaused = false;
@@ -136,7 +147,12 @@ public class MapScreen implements Screen {
 		background = new Sprite(AssetHandler.manager.get("house/background.png", Texture.class));
 		//background.setScale(1920/1080);
 		background.setPosition(0, 0);
-		
+
+		currentCutsceneQuotes = new LinkedList<>();
+		currentCutscenePerson = new LinkedList<>();
+		currentCutsceneDuration = new LinkedList<>();
+
+
 		this.darkness = 0f;
 		World world = new World(new Vector2(0, 0), false);
 		this.rayHandler = new RayHandler(world);
@@ -156,6 +172,119 @@ public class MapScreen implements Screen {
 		cameraMap.getCamera().zoom = 7f;
 
 		pointer.setPosition(pointer.getX()+500, pointer.getY()+500);
+		//startCreatingCutscene("cutscene/ingame/scripts/EXAMPLE.csv");
+	}
+
+	/**
+	 * Used to draw and create the cutscene items on stream.
+	 */
+	public void createInGameCutscene() {
+		Sprite s = new Sprite(new Texture(Gdx.files.internal("cutscene/ingame/cutsceneOverlay.png")));
+		s.setAlpha(0.9f);
+		cutsceneSequence = 0;
+		overlayCutscene = new Image(new SpriteDrawable(s));
+		overlayCutscene.setPosition(main.ui.getWidth()/2 - overlayCutscene.getWidth()/2 - 130, main.ui.getHeight()/2 - overlayCutscene.getHeight()/2 - 100);
+		overlayCutscene.setScale(2f);
+		overlayCutscene.setVisible(false);
+
+		Sprite s3 = new Sprite(new Texture(Gdx.files.internal("cutscene/ingame/characterImages/templateCutsceneSpeaker.png")));
+		speakerImage = new Image(new SpriteDrawable(s3));
+		speakerImage.setPosition(1080-speakerImage.getWidth()/2-150, 430);
+		speakerImage.setScale(2f);
+		speakerImage.setVisible(false);
+
+		Sprite s2 = new Sprite(AssetHandler.manager.get("player/MAPUI/dialog.png", Texture.class));
+		dialogCutscene = new Image(new SpriteDrawable(s2));
+		dialogCutscene.setPosition(50, 50);
+		dialogCutscene.setScaleY(0.5f);
+		dialogCutscene.setScaleX(3.45f);
+		dialogCutscene.setVisible(false);
+
+		personToSpeak = new Label("YOU:", AssetHandler.fontSize32);
+		personToSpeak.setPosition(90, 350F);
+		personToSpeak.setVisible(false);
+
+		setDescriptionOfText = new Label("YNSERT TEXT HERE PLEASE! ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss", AssetHandler.fontSize32);
+		setDescriptionOfText.setAlignment(Align.topLeft);
+		setDescriptionOfText.setWidth(1950);
+		setDescriptionOfText.setWrap(true);
+		setDescriptionOfText.setPosition(90, 300f);
+		setDescriptionOfText.setVisible(false);
+
+		main.ui.addActor(overlayCutscene);
+		main.ui.addActor(dialogCutscene);
+		main.ui.addActor(speakerImage);
+		main.ui.addActor(personToSpeak);
+		main.ui.addActor(setDescriptionOfText);
+	}
+
+	/**
+	 * Updates visibility of cutscene
+	 * @param value True or False value depending if want to be visible.
+	 */
+	public void updateInGameCutscene(boolean value) {
+		this.overlayCutscene.setVisible(value);
+		this.speakerImage.setVisible(value);
+		this.dialogCutscene.setVisible(value);
+		this.personToSpeak.setVisible(value);
+		this.setDescriptionOfText.setVisible(value);
+		this.cutsceneActive = value;
+	}
+
+	/**
+	 * Updates the text of script
+	 * @param person Person's name.
+	 * @param text What the person is saying.
+	 */
+	public void updateInGameCutscene(String person, String text) {
+		this.personToSpeak.setText(person);
+		this.setDescriptionOfText.setText(text);
+	}
+
+	/**
+	 * Intialising the new cutscene based of a text file.
+	 * @param file The file of the .csv file for the cutscene.
+	 */
+	public void startCreatingCutscene(String file) {
+		System.out.println("HIT1");
+		FileHandle n = Gdx.files.internal(file);
+		System.out.println("HIT2");
+
+		String textFile = n.readString();
+		String lines[] = textFile.split("\\r?\\n");
+		for(int i = 1; i < lines.length; i++) {
+			String line = lines[i];
+			String[] data = line.split(",");
+			/**
+			 * Data - ARRAY:
+			 * index 0 = Duration of line (potentially for voice acting)
+			 * index 1 = Person name
+			 * index 2 = Quote of what the person is saying.
+			 */
+			currentCutsceneDuration.add(data[0]);
+			currentCutscenePerson.add(data[1]);
+			currentCutsceneQuotes.add(data[2]);
+		}
+		updateInGameCutscene(true);
+		updateInGameCutscene(currentCutscenePerson.get(cutsceneSequence), currentCutsceneQuotes.get(cutsceneSequence));
+	}
+
+	/**
+	 * Handles the switching of the cutscene.
+	 */
+	public void sequenceOfCutscene() {
+		if(cutsceneActive) {
+			if(Gdx.input.isKeyJustPressed(Keys.ENTER) && !isPaused) {
+				cutsceneSequence++;
+				if(cutsceneSequence == currentCutsceneDuration.size()) {
+					cutsceneSequence = 0;
+					updateInGameCutscene(false);
+				}
+				else {
+					updateInGameCutscene(currentCutscenePerson.get(cutsceneSequence), currentCutsceneQuotes.get(cutsceneSequence));
+				}
+			}
+		}
 	}
 	
 
@@ -275,7 +404,7 @@ public class MapScreen implements Screen {
 		rayHandler.render();
 		
 		main.ui.draw();
-		
+		sequenceOfCutscene();
 		checkEndGame();
 		
 	}
@@ -304,51 +433,53 @@ public class MapScreen implements Screen {
 	
 	public void localInputHandler(float delta) {
 		float movement = (12000f / 60f);
-		if(Gdx.input.isKeyPressed(Keys.W) && !isPaused) {
+		if(Gdx.input.isKeyPressed(Keys.W) && !isPaused && !cutsceneActive) {
 			if(pointer.getY()+pointer.getHeight()+ movement *delta < background.getHeight()) {
 				cameraMap.updateCameraPosition(0 , movement *delta);
 				pointer.setPosition(pointer.getX(), pointer.getY() + movement *delta);
 			}
 		}
-		if(Gdx.input.isKeyPressed(Keys.S) && !isPaused) {
+		if(Gdx.input.isKeyPressed(Keys.S) && !isPaused && !cutsceneActive) {
 			if(pointer.getY()- movement *delta > 0) {
 				cameraMap.updateCameraPosition(0 , -movement *delta);
 				pointer.setPosition(pointer.getX(), pointer.getY() - movement *delta);
 			}
 		}
-		if(Gdx.input.isKeyPressed(Keys.D) && !isPaused) {
+		if(Gdx.input.isKeyPressed(Keys.D) && !isPaused && !cutsceneActive) {
 			if(pointer.getX()+pointer.getWidth()+ movement *delta < background.getWidth()) {
 				cameraMap.updateCameraPosition(movement *delta, 0);
 				pointer.setPosition(pointer.getX()+ movement *delta, pointer.getY());
 			}
 		}
-		if(Gdx.input.isKeyPressed(Keys.A) && !isPaused) {
+		if(Gdx.input.isKeyPressed(Keys.A) && !isPaused && !cutsceneActive) {
 			if(pointer.getX()- movement *delta > 0) {
 				cameraMap.updateCameraPosition(-movement *delta , 0);
 				pointer.setPosition(pointer.getX()- movement *delta, pointer.getY());
 			}
 		}
 		
-		if(Gdx.input.isKeyJustPressed(Keys.Z) && !isPaused) {
+		if(Gdx.input.isKeyJustPressed(Keys.Z) && !isPaused && !cutsceneActive) {
 			cameraMap.zoomIn(1);
 		}
 		
-		if(Gdx.input.isKeyJustPressed(Keys.C) && !isPaused) {
+		if(Gdx.input.isKeyJustPressed(Keys.C) && !isPaused && !cutsceneActive) {
 			cameraMap.zoomIn(-1);
 		}
 
-		enterBuilding = Gdx.input.isKeyJustPressed(Keys.ENTER) && !isPaused;
+		enterBuilding = Gdx.input.isKeyJustPressed(Keys.ENTER) && !isPaused && !cutsceneActive;
+
+
 
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			togglePaused();
 			pause.setVisible(isPaused);
 		}
 		
-		if(Gdx.input.isKeyPressed(Keys.N) && !isPaused) {
+		if(Gdx.input.isKeyPressed(Keys.N) && !isPaused && !cutsceneActive) {
 			darken = true;
 		}
 
-		if(Gdx.input.isKeyJustPressed(Keys.E) && !isPaused) {
+		if(Gdx.input.isKeyJustPressed(Keys.E) && !isPaused && !cutsceneActive) {
 			try {
 				if(PermanetPlayer.getPermanentPlayerInstance().getEnergy() >=  ENERGY_FOR_RESEARCH && !hoverNode.reachedMaxLevel()) {
 					hoverNode.upgradeLevelKnown();
@@ -681,8 +812,10 @@ public class MapScreen implements Screen {
      * Holds the window for the pause menu.
      */
     public void pauseGame() {
-    	
-    	/*
+
+
+
+		/*
     	 * This method is used to create the window elements for the pause menu
     	 *
     	 * Creates a window and then has two different text buttons within
@@ -733,8 +866,7 @@ public class MapScreen implements Screen {
         
         pause.setSize(pause.getWidth() * scaleItem, pause.getHeight()*scaleItem);
         //Adds it to the UI Screen.
-        main.ui.addActor(pause);
-        
+
 		dayLabel = new Label("DAY " + day , AssetHandler.fontSize48);
 		dayLabel.setPosition(main.ui.getWidth()/2 - dayLabel.getWidth()/2, main.ui.getHeight()/2 - dayLabel.getHeight()/2);
 		dayLabel.setVisible(false);
@@ -786,7 +918,13 @@ public class MapScreen implements Screen {
 		numberOfCharacterDiseased.setWidth(500f);
 		numberOfCharacterDiseased.setPosition(90, main.ui.getHeight() - 150 -numberOfcharacterDiseasedTitle.getHeight() -numberOfCharacterSick.getHeight()-numberOfcharacterSickTitle.getHeight()-numberOfCharacter.getHeight()-numberOfcharacterTitle.getHeight());
 		numberOfCharacterDiseased.setVisible(false);
+
 		main.ui.addActor(numberOfCharacterDiseased);
+
+		createInGameCutscene();
+
+		main.ui.addActor(pause);
+
 
 		Gdx.input.setInputProcessor(main.ui);
     }
