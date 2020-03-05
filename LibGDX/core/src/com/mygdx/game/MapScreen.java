@@ -5,16 +5,20 @@ import java.util.LinkedList;
 import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -31,6 +35,7 @@ import com.mygdx.shop.Church;
 import box2dLight.RayHandler;
 import com.mygdx.assets.AssetHandler;
 import com.mygdx.camera.Camera;
+import com.mygdx.story.Note;
 
 public class MapScreen implements Screen {
 
@@ -109,15 +114,24 @@ public class MapScreen implements Screen {
 	private Image speakerImage;
 	private Label personToSpeak;
 	private Label setDescriptionOfText;
+	private Image noteBackground;
 
 	private List<String> currentCutsceneQuotes;
 	private List<String> currentCutscenePerson;
 	private List<String> currentCutsceneDuration;
 
+	/** Inventory menu. */
+	private Window inventory;
 
 	private List<String> checkForKC;
 	private boolean itemsSelected;
 	private int cutsceneSequence;
+	private Window notesInventory;
+
+
+	private Label noteTitle, note1, note2, note3, note4, note5, note6, note7, note8, note9, note10, note11, note12, note13, note14, note15, note16, note17, note18, note19, note20;
+	private Image letter;
+	private Label paragraph;
 
 	/**
 	 * Create the map screen, and handle the input and movements around the map.
@@ -137,7 +151,8 @@ public class MapScreen implements Screen {
 		int WORLD_WIDTH = 1920 * 2;
 		int WORLD_HEIGHT = 1080 * 2;
 		cameraMap.setMaxValues(WORLD_WIDTH, WORLD_HEIGHT);
-		
+
+
 		cameraUI = new Camera(viewWidth, 1080, 1920);
 		cameraUI.getCamera().position.set(
 				cameraUI.getCamera().viewportWidth / 2f , 
@@ -172,7 +187,11 @@ public class MapScreen implements Screen {
 		cameraMap.getCamera().zoom = 7f;
 
 		pointer.setPosition(pointer.getX()+500, pointer.getY()+500);
+		createUI();
+		inventory();
+		pauseGame();
 		//startCreatingCutscene("cutscene/ingame/scripts/EXAMPLE.csv");
+
 	}
 
 	/**
@@ -295,8 +314,7 @@ public class MapScreen implements Screen {
 		}
 		this.skin = AssetHandler.skinUI;
 		
-		pauseGame();
-		
+
 		this.pointer = new Sprite(AssetHandler.manager.get("house/aim.png", Texture.class));
 		pointer.setPosition(
 				cameraMap.getViewport().getWorldWidth()/2-pointer.getWidth()/2, 
@@ -341,8 +359,7 @@ public class MapScreen implements Screen {
 		this.foodLabel = new Sprite(AssetHandler.manager.get("player/MAPUI/NextLabel.png", Texture.class));
 		foodLabel.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
 		foodLabel.setPosition(47, 74.5f);
-	
-		
+
 	}
 	
 	@Override
@@ -406,6 +423,7 @@ public class MapScreen implements Screen {
 		main.ui.draw();
 		sequenceOfCutscene();
 		checkEndGame();
+		showNotes();
 		
 	}
 	
@@ -466,13 +484,38 @@ public class MapScreen implements Screen {
 			cameraMap.zoomIn(-1);
 		}
 
+		if(Gdx.input.isKeyJustPressed(Keys.I)) {
+			System.out.println("HIT");
+			if(!isPaused) {
+				System.out.println("ACTIVATED");
+
+				if(noteBackground.isVisible()) {
+					System.out.println("ACTIVATED");
+					inventoryVisible(false);
+				}
+				else {
+					System.out.println("ACTIVATED");
+					inventoryVisible(true);
+				}
+			}
+		}
+
+
+
 		enterBuilding = Gdx.input.isKeyJustPressed(Keys.ENTER) && !isPaused && !cutsceneActive;
 
 
 
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-			togglePaused();
-			pause.setVisible(isPaused);
+			if(letter.isVisible()) {
+				this.isPaused = false;
+				letter.setVisible(false);;
+				paragraph.setVisible(false);
+			}
+			else {
+				togglePaused();
+				pause.setVisible(isPaused);
+			}
 		}
 		
 		if(Gdx.input.isKeyPressed(Keys.N) && !isPaused && !cutsceneActive) {
@@ -811,8 +854,7 @@ public class MapScreen implements Screen {
     /**
      * Holds the window for the pause menu.
      */
-    public void pauseGame() {
-
+    public void createUI() {
 
 
 		/*
@@ -828,43 +870,7 @@ public class MapScreen implements Screen {
     	 * The window containing all the values is called pause
     	 */
 		beforeEntry();
-		float windowWidth = 200 * scaleItem, windowHeight = 200 * scaleItem;
-        pause = new Window("", skin);
-        pause.setMovable(false); //So the user can't move the window
-        //final TextButton button1 = new TextButton("Resume", skin);
 
-        final Label button1 = new Label("RESUME", AssetHandler.fontSize24);
-        button1.setFontScale((windowHeight/200) * scaleItem, (windowHeight/200) * scaleItem);
-        button1.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                togglePaused();
-                pause.setVisible(false);
-            }
-        });
-		        
-        Label button2 = new Label("EXIT", AssetHandler.fontSize24);
-        button2.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
-        button2.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                System.exit(0);
-            }
-        });
-
-        pause.add(button1).row();
-        pause.row();
-        pause.add(button2).row();
-        pause.pack(); //Important! Correctly scales the window after adding new elements
-
-        //Centre window on screen.
-        pause.setBounds(((main.ui.getWidth() - windowWidth*scaleItem  ) / 2),
-        (main.ui.getHeight() - windowHeight*scaleItem) / 2, windowWidth  , windowHeight );
-        //Sets the menu as invisible
-        isPaused = false;
-        pause.setVisible(false);
-        
-        pause.setSize(pause.getWidth() * scaleItem, pause.getHeight()*scaleItem);
         //Adds it to the UI Screen.
 
 		dayLabel = new Label("DAY " + day , AssetHandler.fontSize48);
@@ -923,11 +929,51 @@ public class MapScreen implements Screen {
 
 		createInGameCutscene();
 
-		main.ui.addActor(pause);
-
-
-		Gdx.input.setInputProcessor(main.ui);
+		InputMultiplexer multiplexer = new InputMultiplexer();
+		multiplexer.addProcessor(main.ui);
+		Gdx.input.setInputProcessor(multiplexer);
     }
+
+    public void pauseGame() {
+		float windowWidth = 200 * scaleItem, windowHeight = 200 * scaleItem;
+		pause = new Window("", skin);
+		pause.setMovable(false); //So the user can't move the window
+		//final TextButton button1 = new TextButton("Resume", skin);
+
+		final Label button1 = new Label("RESUME", AssetHandler.fontSize24);
+		button1.setFontScale((windowHeight/200) * scaleItem, (windowHeight/200) * scaleItem);
+		button1.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				togglePaused();
+				pause.setVisible(false);
+			}
+		});
+
+		Label button2 = new Label("EXIT", AssetHandler.fontSize24);
+		button2.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
+		button2.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				System.exit(0);
+			}
+		});
+
+		pause.add(button1).row();
+		pause.row();
+		pause.add(button2).row();
+		pause.pack(); //Important! Correctly scales the window after adding new elements
+
+		//Centre window on screen.
+		pause.setBounds(((main.ui.getWidth() - windowWidth*scaleItem  ) / 2),
+				(main.ui.getHeight() - windowHeight*scaleItem) / 2, windowWidth  , windowHeight );
+		//Sets the menu as invisible
+		isPaused = false;
+		pause.setVisible(false);
+
+		pause.setSize(pause.getWidth() * scaleItem, pause.getHeight()*scaleItem);
+		main.ui.addActor(pause);
+	}
 
 	public void beforeEntry() {
 
@@ -1164,4 +1210,481 @@ public class MapScreen implements Screen {
 	/*public Player newPlayer(int masksSelected, float healingFluidSelected, float burningFluidSelected) {
 		return new Player(masksSelected, healingFluidSelected, burningFluidSelected);
 	}*/
+
+	/**
+	 * Holds the window for the inventory.
+	 */
+
+	public void showNotes() {
+		if(noteBackground.isVisible()) {
+			int notes = PermanetPlayer.getPermanentPlayerInstance().getNotes().size();
+			System.out.println("NUMBER OF NOTES: " + notes);
+			if (notes >= 1) {
+				note1.setVisible(true);
+			}
+			else {
+				note1.setVisible(false);
+			}
+			if (notes >= 2) {
+				note2.setVisible(true);
+			}
+			else {
+				note2.setVisible(false);
+			}
+			if (notes >= 3) {
+				note3.setVisible(true);
+			}
+			else {
+				note3.setVisible(false);
+			}
+			if (notes >= 4) {
+				note4.setVisible(true);
+			}
+			else {
+				note4.setVisible(false);
+			}
+			if (notes >= 5) {
+				note5.setVisible(true);
+			}
+			else {
+				note5.setVisible(false);
+			}
+			if (notes >= 6) {
+				note6.setVisible(true);
+			}
+			else {
+				note6.setVisible(false);
+			}
+			if (notes >= 7) {
+				note7.setVisible(true);
+			}
+			else {
+				note7.setVisible(false);
+			}
+			if (notes >= 8) {
+				note8.setVisible(true);
+			}
+			else {
+				note8.setVisible(false);
+			}
+			if (notes >= 9) {
+				note9.setVisible(true);
+			}
+			else {
+				note9.setVisible(false);
+			}
+			if (notes >= 10) {
+				note10.setVisible(true);
+			}
+			else {
+				note10.setVisible(false);
+			}
+			if (notes >= 11) {
+				note11.setVisible(true);
+			}
+			else {
+				note11.setVisible(false);
+			}
+			if (notes >= 12) {
+				note12.setVisible(true);
+			}
+			else {
+				note12.setVisible(false);
+			}
+			if (notes >= 13) {
+				note13.setVisible(true);
+			}
+			else {
+				note13.setVisible(false);
+			}
+			if (notes >= 14) {
+				note14.setVisible(true);
+			}
+			else {
+				note14.setVisible(false);
+			}
+			if (notes >= 15) {
+				note15.setVisible(true);
+			}
+			else {
+				note15.setVisible(false);
+			}
+			if (notes >= 16) {
+				note16.setVisible(true);
+			}
+			else {
+				note16.setVisible(false);
+			}
+			if (notes >= 17) {
+				note17.setVisible(true);
+			}
+			else {
+				note17.setVisible(false);
+			}
+			if (notes >= 18) {
+				note18.setVisible(true);
+			}
+			else {
+				note18.setVisible(false);
+			}
+			if (notes >= 19) {
+				note19.setVisible(true);
+			}
+			else {
+				note19.setVisible(false);
+			}
+			if (notes >= 20) {
+				note20.setVisible(true);
+			}
+			else {
+				note20.setVisible(false);
+			}
+		}
+	}
+
+	public void showNote(Note n) {
+		isPaused = true;
+		paragraph.setText(n.getInfo());
+		paragraph.setVisible(true);
+		updateParagraphPosition();
+		letter.setVisible(true);
+	}
+
+	public void updateParagraphPosition() {
+		paragraph.setPosition(main.ui.getWidth()/2-letter.getWidth()/2 + 50, main.ui.getHeight()/2);
+	}
+
+	public void inventory() {
+		Sprite s2 = new Sprite(AssetHandler.manager.get("player/MAPUI/dialog.png", Texture.class));
+		noteBackground = new Image(new SpriteDrawable(s2));
+		noteBackground.setScaleY(1.62f);
+		noteBackground.setScaleX(3.65f);
+		noteBackground.setVisible(false);
+
+		note1 = new Label("NOTE 1", AssetHandler.fontSize24);
+		note1.setPosition(50, 1050);
+		note1.setWidth(note1.getWidth() + note1.getWidth() + 400);
+		note1.setAlignment(Align.center);
+		note1.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				System.out.println("HIT1");
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(0));
+			}
+		});
+		note1.setVisible(false);
+
+		noteTitle = new Label("NOTES COLLECTED", AssetHandler.fontSize32);
+		noteTitle.setPosition(50, 1100);
+		noteTitle.setWidth(note1.getWidth());
+		noteTitle.setAlignment(Align.center);
+		noteTitle.setVisible(false);
+
+		note2 = new Label("NOTE 2", AssetHandler.fontSize24);
+		note2.setPosition(50, 1050-note1.getHeight());
+		note2.setWidth(note1.getWidth());
+		note2.setAlignment(Align.center);
+		note2.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				System.out.println("HIT2");
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(1));
+			}
+		});
+		note2.setVisible(false);
+
+
+		note3 = new Label("Note 3", AssetHandler.fontSize24);
+		note3.setPosition(50, 1050-(note1.getHeight()*2));
+		note3.setWidth(note1.getWidth());
+		note3.setAlignment(Align.center);
+		note3.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				System.out.println("HIT3");
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(2));
+			}
+		});
+		note3.setVisible(false);
+
+		note4 = new Label("Note 4", AssetHandler.fontSize24);
+		note4.setPosition(50, 1050-(note1.getHeight()*3));
+		note4.setWidth(note1.getWidth());
+		note4.setAlignment(Align.center);
+		note4.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				System.out.println("HIT4");
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(3));
+			}
+		});
+		note4.setVisible(false);
+
+		note5 = new Label("Note 5", AssetHandler.fontSize24);
+		note5.setPosition(50, 1050-(note1.getHeight()*4));
+		note5.setWidth(note1.getWidth());
+		note5.setAlignment(Align.center);
+		note5.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				System.out.println("HIT5");
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(4));
+			}
+		});
+		note5.setVisible(false);
+
+		note6 = new Label("Note 6", AssetHandler.fontSize24);
+		note6.setPosition(50, 1050-(note1.getHeight()*5));
+		note6.setWidth(note1.getWidth());
+		note6.setAlignment(Align.center);
+		note6.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(5));
+			}
+		});
+		note6.setVisible(false);
+
+		note7 = new Label("Note 7", AssetHandler.fontSize24);
+		note7.setPosition(50, 1050-(note1.getHeight()*6));
+		note7.setWidth(note1.getWidth());
+		note7.setAlignment(Align.center);
+		note7.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(6));
+			}
+		});
+		note7.setVisible(false);
+
+		note8 = new Label("Note 8", AssetHandler.fontSize24);
+		note8.setPosition(50, 1050-(note1.getHeight()*7));
+		note8.setWidth(note1.getWidth());
+		note8.setAlignment(Align.center);
+		note8.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(7));
+			}
+		});
+		note8.setVisible(false);
+
+		note9 = new Label("Note 9", AssetHandler.fontSize24);
+		note9.setPosition(50, 1050-(note1.getHeight()*8));
+		note9.setWidth(note1.getWidth());
+		note9.setAlignment(Align.center);
+		note9.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(8));
+			}
+		});
+		note9.setVisible(false);
+
+		note10 = new Label("Note 10", AssetHandler.fontSize24);
+		note10.setPosition(50, 1050-(note1.getHeight()*9));
+		note10.setWidth(note1.getWidth());
+		note10.setAlignment(Align.center);
+		note10.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(9));
+			}
+		});
+		note10.setVisible(false);
+
+		note11 = new Label("Note 11", AssetHandler.fontSize24);
+		note11.setPosition(50, 1050-(note1.getHeight()*10));
+		note11.setWidth(note1.getWidth());
+		note11.setAlignment(Align.center);
+		note11.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(10));
+			}
+		});
+		note11.setVisible(false);
+
+		note12 = new Label("Note 12", AssetHandler.fontSize24);
+		note12.setPosition(50, 1050-(note1.getHeight()*11));
+		note12.setWidth(note1.getWidth());
+		note12.setAlignment(Align.center);
+		note12.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(11));
+			}
+		});
+		note12.setVisible(false);
+
+		note13 = new Label("Note 13", AssetHandler.fontSize24);
+		note13.setPosition(50, 1050-(note1.getHeight()*12));
+		note13.setWidth(note1.getWidth());
+		note13.setAlignment(Align.center);
+		note13.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(12));
+			}
+		});
+		note13.setVisible(false);
+
+		note14 = new Label("Note 14", AssetHandler.fontSize24);
+		note14.setPosition(50, 1050-(note1.getHeight()*13));
+		note14.setWidth(note1.getWidth());
+		note14.setAlignment(Align.center);
+		note14.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(13));
+			}
+		});
+		note14.setVisible(false);
+
+		note15 = new Label("Note 15", AssetHandler.fontSize24);
+		note15.setPosition(50, 1050-(note1.getHeight()*14));
+		note15.setWidth(note1.getWidth());
+		note15.setAlignment(Align.center);
+		note15.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(14));
+			}
+		});
+		note15.setVisible(false);
+
+		note16 = new Label("Note 16", AssetHandler.fontSize24);
+		note16.setPosition(50, 1050-(note1.getHeight()*15));
+		note16.setWidth(note1.getWidth());
+		note16.setAlignment(Align.center);
+		note16.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(15));
+			}
+		});
+		note16.setVisible(false);
+
+		note17 = new Label("Note 17", AssetHandler.fontSize24);
+		note17.setPosition(50, 1050-(note1.getHeight()*16));
+		note17.setWidth(note1.getWidth());
+		note17.setAlignment(Align.center);
+		note17.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(16));
+			}
+		});
+		note17.setVisible(false);
+
+		note18 = new Label("Note 18", AssetHandler.fontSize24);
+		note18.setPosition(50, 1050-(note1.getHeight()*17));
+		note18.setWidth(note1.getWidth());
+		note18.setAlignment(Align.center);
+		note18.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(17));
+			}
+		});
+		note18.setVisible(false);
+
+		note19 = new Label("Note 19", AssetHandler.fontSize24);
+		note19.setPosition(50, 1050-(note1.getHeight()*18));
+		note19.setWidth(note1.getWidth());
+		note19.setAlignment(Align.center);
+		note19.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(18));
+			}
+		});
+		note19.setVisible(false);
+
+		note20 = new Label("Note 20", AssetHandler.fontSize24);
+		note20.setPosition(50, 1050-(note1.getHeight()*19));
+		note20.setWidth(note1.getWidth());
+		note20.setAlignment(Align.center);
+		note20.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(19));
+			}
+		});
+		note20.setVisible(false);
+
+		main.ui.addActor(noteBackground);
+		main.ui.addActor(noteTitle);
+		main.ui.addActor(note1);
+		main.ui.addActor(note2);
+		main.ui.addActor(note3);
+		main.ui.addActor(note4);
+		main.ui.addActor(note5);
+		main.ui.addActor(note6);
+		main.ui.addActor(note7);
+		main.ui.addActor(note8);
+		main.ui.addActor(note9);
+		main.ui.addActor(note10);
+		main.ui.addActor(note11);
+		main.ui.addActor(note12);
+		main.ui.addActor(note13);
+		main.ui.addActor(note14);
+		main.ui.addActor(note15);
+		main.ui.addActor(note16);
+		main.ui.addActor(note17);
+		main.ui.addActor(note18);
+		main.ui.addActor(note19);
+		main.ui.addActor(note20);
+
+		letter = new Image(new SpriteDrawable(new Sprite(AssetHandler.manager.get("pickups/letter/LETTER.png", Texture.class))));
+		letter.setPosition(main.ui.getWidth()/2-letter.getWidth()/2, main.ui.getHeight()/2-letter.getHeight()/2);
+		letter.setVisible(false);
+		main.ui.addActor(letter);
+
+		paragraph = new Label("", createLabelStyleWithBackground(Color.BLACK));
+		paragraph.setWidth(letter.getWidth()-90);
+		paragraph.setWrap(true);
+		paragraph.setPosition(main.ui.getWidth()/2, main.ui.getHeight()/2);
+		paragraph.setVisible(false);
+		main.ui.addActor(paragraph);
+
+	}
+
+	public void inventoryVisible(boolean visible)  {
+		noteBackground.setVisible(visible);
+		noteTitle.setVisible(visible);
+		note1.setVisible(visible);
+		note2.setVisible(visible);
+		note3.setVisible(visible);
+		note4.setVisible(visible);
+		note5.setVisible(visible);
+		note6.setVisible(visible);
+		note7.setVisible(visible);
+		note8.setVisible(visible);
+		note9.setVisible(visible);
+		note10.setVisible(visible);
+		note11.setVisible(visible);
+		note12.setVisible(visible);
+		note13.setVisible(visible);
+		note14.setVisible(visible);
+		note15.setVisible(visible);
+		note16.setVisible(visible);
+		note17.setVisible(visible);
+		note18.setVisible(visible);
+		note19.setVisible(visible);
+		note20.setVisible(visible);
+	}
+
+
+	private Label.LabelStyle createLabelStyleWithBackground(Color color) {
+		///core/assets/font/Pixel.ttf
+		FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter.size = 60;
+		Label.LabelStyle labelStyle = new Label.LabelStyle();
+		labelStyle.font = generator.generateFont(parameter);
+		labelStyle.fontColor = color;
+		return labelStyle;
+	}
 }

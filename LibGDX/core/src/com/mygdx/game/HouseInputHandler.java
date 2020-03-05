@@ -43,9 +43,13 @@ public class HouseInputHandler implements InputProcessor {
 	
 	/** If menu is opened. */
 	private Boolean isPaused;
+
+	/** If Inventory is opened */
+	private Boolean inventoryOpened;
 	
 	/** Pause menu. */
 	private Window pause;
+
 	
 	/** If mouse pressed. */
 	private boolean mousePressed;
@@ -74,6 +78,7 @@ public class HouseInputHandler implements InputProcessor {
 		this.mousePressed = false;
 		this.speed = Player.getInstance().getSpeed();
 		this.isPaused = false;
+		this.inventoryOpened = false;
 		this.pause = pause;
 		this.npcs = npcs;
 		this.icon = icon;
@@ -383,6 +388,15 @@ public class HouseInputHandler implements InputProcessor {
 		else {
 			isPaused = true;
 		}		
+	}
+
+	public void toggleInventory() {
+		if(inventoryOpened) {
+			inventoryOpened = false;
+		}
+		else {
+			inventoryOpened = true;
+		}
 	}
 	
 	public Boolean getPaused() {

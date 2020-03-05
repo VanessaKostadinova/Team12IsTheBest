@@ -2,6 +2,10 @@ package com.mygdx.extras;
 
 import com.badlogic.gdx.Gdx;
 import com.mygdx.shop.Item;
+import com.mygdx.story.Note;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class stores the items a player holds.
@@ -16,7 +20,7 @@ public class PermanetPlayer {
     private float sanity;
     private int food;
     private int energy;
-
+    private List<Note> notes;
     private Item[] items;
     private static PermanetPlayer instance;
 
@@ -24,6 +28,7 @@ public class PermanetPlayer {
         this.numberOfMasks = masks;
         this.healingFluid = healingFluid;
         this.burningFluid = burningFluid;
+        this.notes = new ArrayList<>(100);
         this.items = createItems();
         this.sanity = 100f;
         this.energy = 100;
@@ -33,7 +38,7 @@ public class PermanetPlayer {
     private Item[] createItems(){
         Item[] tempItems = new Item[5];
         tempItems[0] = new Item("BOOTS", "Faster footwear", 75f, 400);
-        tempItems[1] = new Item("MASKS", "Better plague protection TM", 50f, 400);
+        tempItems[1] = new Item("MASKS", "Better plague protection TM", 1000f, 400);
         tempItems[2] = new Item("HEALING STRENGTH", "Better healing", 0.1f, 400);
         tempItems[3] = new Item("BURNING STRENGTH", "Burn baby burn but better", 0.5f, 400);
         return tempItems;
@@ -120,5 +125,12 @@ public class PermanetPlayer {
 
     public Item[] getItems(){
         return items;
+    }
+
+    public void addNote(Note note) {
+        notes.add(note);
+    }
+    public List<Note> getNotes() {
+        return notes;
     }
 }

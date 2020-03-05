@@ -106,7 +106,9 @@ public class ChurchScreen implements Screen {
 				if(!isPaused) {
 					dispose();
 					main.ui.clear();
+					mapScreen.createUI();
 					mapScreen.pauseGame();
+					mapScreen.inventory();
 					main.setScreen(mapScreen);
 				}
 		    }

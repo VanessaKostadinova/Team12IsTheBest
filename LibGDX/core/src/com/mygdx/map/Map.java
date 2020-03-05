@@ -53,14 +53,20 @@ public class Map {
 			int x = 0;
 			int y = 0;
 			while(!isValidPosition) {
-				int maxX = map.length * 32 - 32;
-				int maxY = map[0].length * 32 - 32;
+				int maxX = (map[0].length * 32) - 64;
+				int maxY = (map.length * 32) - 64;
 
 				x = r.nextInt((maxX - 0) + 1) + 0;
 				y = r.nextInt((maxY - 0) + 1) + 0;
 
+				System.out.println(x);
+				System.out.println(y);
+
 				int xArray = x/32;
 				int yArray = y/32;
+
+				System.out.println(xArray);
+				System.out.println(yArray);
 
 				if(!(map[yArray][xArray] == 1)) {
 					isValidPosition = true;

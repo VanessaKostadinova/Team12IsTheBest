@@ -65,32 +65,23 @@ public class HouseScreen implements Screen {
 	private Image uiCurrentSpray;
 	private Label goldLabel;
 	//private Label sanityLabel;
-	
 	private Texture maskBar;
 	private Image bar;
-	
 	private World world;
 	private RayHandler rayHandler;
 	private float darkness;
-	
-
 	private float scaleItem;
 	private Window pause;
 	private Skin skin;
-	
 	private InputMultiplexer input;
-	
 	private Light light;
-    //private Box2DDebugRenderer b2dr;
-
 	private Image background;
-
     private SpriteDrawable fire;
     private SpriteDrawable cure;
     private Bullet bullet;
-    
-	
-		public HouseScreen(Main main, Node node, MapScreen mapScreen) {		
+
+
+	public HouseScreen(Main main, Node node, MapScreen mapScreen) {
 			this.main = main;
 			this.node = node;
 			this.bullet = null;
@@ -118,17 +109,24 @@ public class HouseScreen implements Screen {
 			Player.getInstance().setRotation(90);
 
 			setAllItemPickups();
-			
+
+			UIElements();
+
+			this.world = new World(new Vector2(0,0), false);
+
 			letter = new Image(new SpriteDrawable(new Sprite(AssetHandler.manager.get("pickups/letter/LETTER.png", Texture.class))));
 			letter.setPosition(main.ui.getWidth()/2-letter.getWidth()/2, main.ui.getHeight()/2-letter.getHeight()/2);
 			letter.setVisible(false);
 			main.ui.addActor(letter);
 
-			
-			UIElements();
+			paragraph = new Label("VOID", createLabelStyleWithBackground(Color.BLACK));
+			paragraph.setWidth(letter.getWidth()-90);
+			paragraph.setWrap(true);
+			paragraph.setPosition(main.ui.getWidth()/2+50, main.ui.getHeight()/2);
+			paragraph.setVisible(false);
 
-			this.world = new World(new Vector2(0,0), false);
-			
+			main.ui.addActor(paragraph);
+
 			pauseGame();
 			handler = new HouseInputHandler(camera, node.getArray(), pause, node.getNPCs(), paragraph, letter, icon, world);
 	        handler.setPaused(false);
@@ -225,13 +223,14 @@ public class HouseScreen implements Screen {
 					Player.getInstance().getSprite().setX(0);
 					Player.getInstance().getSprite().setY(0);
 					main.ui.clear();
+					mapScreen.createUI();
+					mapScreen.inventory();
 					mapScreen.pauseGame();
 					main.setScreen(mapScreen);
 				}
 			}
 			AI();
 			System.out.println("NOTES: " + node.getNotes().size());
-	
 		}
 		
 		public void reduceMask() {
@@ -259,14 +258,6 @@ public class HouseScreen implements Screen {
 		
 		
 		public void UIElements() {
-	
-			paragraph = new Label("VOID", createLabelStyleWithBackground(Color.BLACK));
-			paragraph.setWidth(letter.getWidth()-90);
-			paragraph.setWrap(true);
-			paragraph.setPosition(main.ui.getWidth()/2+50, main.ui.getHeight()/2);
-			paragraph.setVisible(false);
-			
-			main.ui.addActor(paragraph);
 			
 			icon = new Image(new SpriteDrawable(new Sprite(AssetHandler.manager.get("player/icon/ICON.png", Texture.class))));
 			icon.setPosition(main.ui.getWidth()/2+Player.getInstance().getSprite().getWidth()+icon.getWidth(), main.ui.getHeight()/2+Player.getInstance().getSprite().getHeight()+icon.getHeight());
@@ -302,13 +293,6 @@ public class HouseScreen implements Screen {
 			
 		}
 
-		/*public void createInGameCutscene() {
-			Sprite s = new Sprite(new Texture(Gdx.files.internal("cutscene/ingame/cutsceneOverlay.png")));
-			s.setAlpha(0.5f);
-			background = new Image(new SpriteDrawable(s));
-			background.setPosition(0, 0);
-			main.ui.addActor(background);
-		}*/
 
 		public void AI() {
 			for(NPC n : node.getNPCs()) {
@@ -459,9 +443,9 @@ public class HouseScreen implements Screen {
 							paragraph.setVisible(true);
 							updateParagraphPosition();
 							letter.setVisible(true);
-							;
 							s.setAlpha(0);
 							n.noteSeen();
+							PermanetPlayer.getPermanentPlayerInstance().addNote(n);
 						}
 					}
 				}
@@ -573,6 +557,8 @@ public class HouseScreen implements Screen {
 	        //Adds it to the UI Screen.
 	        main.ui.addActor(pause);
 	    }
+
+
 	    
 	    
 	
