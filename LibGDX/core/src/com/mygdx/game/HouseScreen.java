@@ -80,6 +80,8 @@ public class HouseScreen implements Screen {
     private SpriteDrawable cure;
     private Bullet bullet;
 
+	private ArrayList<NPC> fakeNPCs;
+
 
 	public HouseScreen(Main main, Node node, MapScreen mapScreen) {
 			this.main = main;
@@ -88,7 +90,8 @@ public class HouseScreen implements Screen {
 			this.mapScreen = mapScreen;
 			this.darkness = 0.2f;
 			this.skin = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
-	
+			this.fakeNPCs = new ArrayList<>();
+
 			cure = new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("house/UI/CureSpray.png"))));
 			fire = new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("house/UI/FireSpray.png"))));
 
@@ -146,7 +149,7 @@ public class HouseScreen implements Screen {
 			player.setSoftnessLength(1f);
 			player.attachToBody(Player.getInstance().getBody());
 	        setTorchLights();
-
+			spawnFakeNPC();
 
 			//b2dr = new Box2DDebugRenderer();
 
@@ -185,6 +188,7 @@ public class HouseScreen implements Screen {
 			main.batch.setProjectionMatrix(camera.getCamera().combined);
 			renderMap();
 			drawNPC(main.batch);
+			drawFakeNPC(main.batch);
 			updateAllBullets();
 			Player.getInstance().draw(main.batch);
 			drawTorchs();
@@ -557,6 +561,51 @@ public class HouseScreen implements Screen {
 	        //Adds it to the UI Screen.
 	        main.ui.addActor(pause);
 	    }
+
+	private void spawnFakeNPC()
+	{
+		int x=0;
+		if(Player.getInstance().getSanityLabel()=="VEXED") x=1;
+
+		if(Player.getInstance().getSanityLabel()=="RISKY") x=2;
+
+		if(Player.getInstance().getSanityLabel()=="INSANE") x=3;
+
+		for(int i =0; i< x;i++)
+		{
+			Random rand = new Random();
+			//Level height and width
+			int width = node.getArray().length;
+			int height = node.getArray()[0].length;
+
+			NPC fake = new NPC(60+rand.nextInt(40),0,0);
+			fakeNPCs.add(fake);
+
+			//Check if npc is inside wall
+			while(handler.collision(fake.getSprite().getX(), fake.getSprite().getY()))
+			{
+				//Player must be respawned
+				fake.updateSprite(rand.nextInt(width)*32 - fake.getSprite().getX(), rand.nextInt(height)*32 - fake.getSprite().getY());
+
+			}
+		}
+
+	}
+	private void drawFakeNPC(SpriteBatch batch)
+	{
+		System.out.println("NUMBER OF FAKE NPC'S: " + fakeNPCs.size());
+		for(NPC fake : fakeNPCs) {
+			fake.getSprite().draw(batch);
+			if(fake.getHealth() >= 0) {
+				batch.draw(fake.getBar().getTexture(), fake.getBar().getX(), fake.getBar().getY(), 32*(fake.getHealth()/100), fake.getBar().getHeight());
+			}
+			else {
+				batch.draw(fake.getBar().getTexture(), fake.getBar().getX(), fake.getBar().getY(), 32*(fake.getHealth()/-100), fake.getBar().getHeight());
+			}
+
+
+		}
+	}
 
 
 	    
