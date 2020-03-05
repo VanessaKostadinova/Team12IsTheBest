@@ -64,7 +64,7 @@ public class HouseScreen implements Screen {
 	private Image ui;
 	private Image uiCurrentSpray;
 	private Label goldLabel;
-	//private Label sanityLabel;
+	private Label sanityLabel;
 	private Texture maskBar;
 	private Image bar;
 	private World world;
@@ -280,10 +280,10 @@ public class HouseScreen implements Screen {
 			goldLabel.setFontScale(0.6f);
 			main.ui.addActor(goldLabel);
 
-			//sanityLabel = new Label(p.getSanityLabel(), createLabelStyleWithBackground(Color.WHITE));
-			//sanityLabel.setPosition(240+uiCurrentSpray.getWidth(), main.ui.getHeight()-165);
-			//sanityLabel.setFontScale(0.6f);
-			//main.ui.addActor(sanityLabel);
+			sanityLabel = new Label(Player.getInstance().getSanityLabel(), createLabelStyleWithBackground(Color.WHITE));
+			sanityLabel.setPosition(240+uiCurrentSpray.getWidth(), main.ui.getHeight()-230);
+			sanityLabel.setFontScale(0.6f);
+			main.ui.addActor(sanityLabel);
 			
 			maskBar = AssetHandler.manager.get("house/UI/BAR.png", Texture.class);
 			bar = new Image(new SpriteDrawable(new Sprite(maskBar)));
@@ -484,7 +484,7 @@ public class HouseScreen implements Screen {
 				
 				if(villager.isBurned()) {
 					Player.getInstance().increaseSanity();
-					//sanityLabel.setText(p.getSanityLabel()+"");
+					sanityLabel.setText(Player.getInstance().getSanityLabel() +"");
 				}
 			}
 		}

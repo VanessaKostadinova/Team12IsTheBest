@@ -197,11 +197,11 @@ public class Player extends Renderable implements Living {
 	}
 
 	public void increaseSanity() {
-		//permanetPlayer.changeSanity(sanityFactor);
+		PermanetPlayer.getPermanentPlayerInstance().changeSanity(sanityFactor);
 	}
 
 	public float getSanity() {
-		return permanetPlayer.getSanity();
+		return PermanetPlayer.getPermanentPlayerInstance().getSanity();
 	}
 
 	public float getNumberOfMasks() {
@@ -233,7 +233,7 @@ public class Player extends Renderable implements Living {
 	}
 	
 	public String getSanityLabel() {
-		float sanity = permanetPlayer.getSanity();
+		float sanity = PermanetPlayer.getPermanentPlayerInstance().getSanity();
 		if(sanity < 100) {
 			return "SANE";
 		}
