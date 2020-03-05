@@ -33,6 +33,7 @@ import com.mygdx.renderable.*;
 import box2dLight.Light;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
+import com.mygdx.story.Note;
 
 import javax.xml.bind.ValidationException;
 
@@ -229,6 +230,7 @@ public class HouseScreen implements Screen {
 				}
 			}
 			AI();
+			System.out.println("NOTES: " + node.getNotes().size());
 	
 		}
 		
@@ -434,10 +436,10 @@ public class HouseScreen implements Screen {
 		
 		private void setAllItemPickups() {
 			pickups = new ArrayList<>();
-			for(Vector2 vector : node.getNotes().keySet()) {
-				if(!node.getNoteValidation().get(node.getNotes().get(vector))) {
+			for(Note note : node.getNotes()) {
+				if(!note.getHasBeenSeen()) {
 					Sprite s = new Sprite(AssetHandler.manager.get("pickups/letter/PICKUP.png", Texture.class));
-					s.setPosition(vector.x, vector.y);
+					s.setPosition(note.getX(), note.getY());
 					pickups.add(s);
 				}
 			}
@@ -448,15 +450,19 @@ public class HouseScreen implements Screen {
 				s.draw(batch);
 				
 				if(Player.getInstance().getSprite().getBoundingRectangle().overlaps(s.getBoundingRectangle()) && s.getColor().a == 1) {
-					String message = node.getNotes().get(new Vector2(s.getX(), s.getY()));
-					if(!node.getNoteValidation().get(message)) {
-						handler.setPaused(true);
-						paragraph.setText(message);
-						paragraph.setVisible(true);
-						updateParagraphPosition();
-						letter.setVisible(true);;
-						s.setAlpha(0);
-						node.setNoteSeen(message);
+					//String message = node.getNotes().get(new Vector2(s.getX(), s.getY()));
+					Note n = node.getNote(s.getX(), s.getY());
+					if(n != null) {
+						if (!n.getHasBeenSeen()) {
+							handler.setPaused(true);
+							paragraph.setText(n.getInfo());
+							paragraph.setVisible(true);
+							updateParagraphPosition();
+							letter.setVisible(true);
+							;
+							s.setAlpha(0);
+							n.noteSeen();
+						}
 					}
 				}
 			}

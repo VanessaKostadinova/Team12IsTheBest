@@ -10,6 +10,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.house.House;
+import com.mygdx.story.Note;
 
 import static java.lang.Float.*;
 
@@ -27,9 +28,11 @@ public class Node extends Renderable {
 	private ArrayList<NPC> residents;
 
 	/** Map of all notes in the house */
-	private Map<Vector2, String> notes = new HashMap<>();
+	//private Map<Vector2, String> notes = new HashMap<>();
 	/** Map of all notes found in the house */
-	private Map<String, Boolean> noteSeen;
+	//private Map<String, Boolean> noteSeen;
+
+	List<Note> notes;
 
 	/** The illness level of this node */
 	private float illnessLevel;
@@ -56,7 +59,8 @@ public class Node extends Renderable {
 		illnessLevel = 0f;
 		super.setSprite(textureOfHouse, x, y);
 		residents = new ArrayList<>();
-		noteSeen = new HashMap<>();
+		//noteSeen = new HashMap<>();
+		notes = new ArrayList<>(10);
 		neighbours = new ArrayList<>();
 		setAllVillagers(attributes);
 		this.house = new House(attributes);
@@ -73,8 +77,6 @@ public class Node extends Renderable {
 			}
 			else if (s.contains(",")) {
 				String[] values = s.split(",");
-				notes.put(new Vector2(parseFloat(values[1]), valueOf(values[2])), values[0].substring(1));
-				noteSeen.put(values[0].substring(1), false);
 			}
 		}
 	}
@@ -188,17 +190,21 @@ public class Node extends Renderable {
 		return residents;
 	}
 	
-	public Map<Vector2, String> getNotes() {
+	public List<Note> getNotes() {
 		return notes;
 	}
+
+	public void addNotes(Note note) {
+		notes.add(note);
+	}
 	
-	public Map<String, Boolean> getNoteValidation() {
+	/*ublic Map<String, Boolean> getNoteValidation() {
 		return noteSeen;
-	}
+	}*/
 	
-	public void setNoteSeen(String Message) {
-		noteSeen.put(Message, true);
-	}
+	/*public void setNoteSeen(String Message) {
+		//noteSeen.put(Message, true);
+	}*/
 	
 	public void serializeVillagers() {    
 		FileHandle handle = Gdx.files.local("temp/villagers.temp");
@@ -312,5 +318,14 @@ public class Node extends Renderable {
 	 */
 	public void setIllnessLevel(float illnessLevel){
 		this.illnessLevel = illnessLevel;
+	}
+
+	public Note getNote(float x, float y) {
+		for(Note n : notes) {
+			if(n.getX() == x && n.getY() == y) {
+				return n;
+			}
+		}
+		return null;
 	}
 }
