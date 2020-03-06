@@ -3,6 +3,8 @@ package com.mygdx.game;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
@@ -449,7 +451,7 @@ public class MapScreen implements Screen {
 			}
 		}
 		
-		if(endGame) {
+		if(endGame && StoryHandler.haveBeenReCured) {
 			//boolean allDead = false;
 			/*for(Node n : map.getNodes()) {
 				if(n.areAllDead()) {
@@ -602,6 +604,47 @@ public class MapScreen implements Screen {
 			StoryHandler.interactedWithSylvia = true;
 		}
 
+		if(StoryHandler.interactedWithSylvia && !StoryHandler.falseCure1) {
+			Boolean haveBeenCured = true;
+			for (Node n : map.getNodes()) {
+				if (!n.shouldGameEnd()) {
+					haveBeenCured = false;
+				}
+			}
+
+			if (haveBeenCured) {
+				startCreatingCutscene("cutscene/ingame/scripts/Scene8.csv");
+				StoryHandler.falseCure1 = true;
+			}
+		}
+
+		if(StoryHandler.falseCure1 && !StoryHandler.falseCure2 && currentCutsceneQuotes.size() == 0) {
+			darken = true;
+			StoryHandler.falseCure2 = true;
+		}
+
+		if(StoryHandler.falseCure1 && StoryHandler.falseCure2 && !StoryHandler.haveBeenReCured && !darken) {
+
+			Random r = new Random();
+			for(Node n : map.getNodes()) {
+				for(int i = 0; i < n.getResidents().size(); i++) {
+					if(n.getResidents().get(i).getStatus().equals("Alive")) {
+						n.getResidents().get(i).changeHealth(-(r.nextInt((40 - 10) + 1)) + 10);
+					}
+				}
+			}
+			startCreatingCutscene("cutscene/ingame/scripts/Scene9.csv");
+			map.nextNoteLevel(new String[]{
+					"I saw traces of her again today, she thinks she is being sneaky but we are not stupid, cannot believe they won’t let me take care of it.",
+					"This new guy is clearing RVH-67 too quickly, we need to give it more time to incubate. I will be planting more samples again later today.",
+					"I saw the new guy hanging about the church in the middle of the night thought he had been sleeping but I can’t make contact.",
+					"I may ask for more backup cultivating, RVH is not as easy as the guys back at capital made it sound. They don’t know how good they have it.",
+					"Someone’s been coming in here, I cannot find some pages and I swear they were here earlier.",
+					"I may need to lock this place down, thought being out here would mean I was not disturbed, Sylvias becoming a real pest."
+			});
+			map.setNotes();
+			StoryHandler.haveBeenReCured = true;
+		}
 	}
 	
 	public void makeSceneDark() {

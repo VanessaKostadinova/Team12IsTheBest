@@ -16,6 +16,12 @@ public class StoryHandler {
 
     public static Boolean interactedWithSylvia = false;
 
+    public static Boolean falseCure1 = false;
+    public static Boolean falseCure2 = false;
+    public static Boolean falseCure3 = false;
+
+    public static Boolean haveBeenReCured = false;
+
     public static int decisionNumber = 1;
 
 }

@@ -26,10 +26,10 @@ public class Map {
 	private String[] notes = {
 			"MY MASK FILTER IS RUNNING LOW, I NEED TO SOURCE A REPLACEMENT SOON",
 			"ANTONIO HAS FIGURED OUT HOW TO MAKE EXTRA MASKS, I MAY NOT NEED ORGANIZE ANY SUPPLY RUNS SOON",
-			"WEIRD FOOTPRINTS, I’VE SEEN THIS TREAD BEFORE.",
-			"CAN’T BELIEVE THIS, THEY COULD NEVER DO SUCH A THING -",
+			"WEIRD FOOTPRINTS, I HAVE SEEN THIS TREAD BEFORE.",
+			"CANNOT BELIEVE THIS, THEY COULD NEVER DO SUCH A THING -",
 			"DO THEY EVEN CARE? WHY COULD THEY DOING THIS, CONTACTING ANYONE AT THIS STAGE MAY BE UNWISE",
-			"THEY MAY BE ON TO ME. I NEED TO LEAVE IT’S NOT SAFE. BUT WHERE WOULD THEY NOT SEARCH?"
+			"THEY MAY BE ON TO ME. I NEED TO LEAVE IT IS NOT SAFE. BUT WHERE WOULD THEY NOT SEARCH?"
 	};
 	
 	public Map() {
@@ -59,7 +59,7 @@ public class Map {
 		handle.writeString(100f+","+5.0f+","+0f+","+30f+","+0.10f+","+-0.40f+","+2f+","+100f+","+0.05f+","+0.01f, false);
 	}
 
-	private void setNotes() {
+	public void setNotes() {
 		int i = 0;
 		for(String note : notes) {
 
@@ -105,6 +105,10 @@ public class Map {
 			nodes.get(index).addNotes(new Note(note, x, y));
 		}
 		System.out.println("NOTES GENERATED: "  + i);
+	}
+
+	public void nextNoteLevel (String[] notes) {
+		this.notes = notes;
 	}
 
 
