@@ -129,6 +129,9 @@ public class MapScreen implements Screen {
 	private int cutsceneSequence;
 	private Window notesInventory;
 
+	private Window decisionWindow;
+	private Label decisionFirst;
+	private Label decisionSecond;
 
 	private Label noteTitle, note1, note2, note3, note4, note5, note6, note7, note8, note9, note10, note11, note12, note13, note14, note15, note16, note17, note18, note19, note20;
 	private Image letter;
@@ -191,6 +194,7 @@ public class MapScreen implements Screen {
 		createUI();
 		inventory();
 		pauseGame();
+		decisionMaking();
 		if(!StoryHandler.introductionPart1) {
 			startCreatingCutscene("cutscene/ingame/scripts/Scene1.csv");
 			StoryHandler.introductionPart1 = true;
@@ -307,6 +311,11 @@ public class MapScreen implements Screen {
 					updateInGameCutscene(currentCutscenePerson.get(cutsceneSequence), currentCutsceneQuotes.get(cutsceneSequence));
 				}
 			}
+		}
+		else {
+			currentCutsceneQuotes.clear();
+			currentCutscenePerson.clear();
+			currentCutsceneDuration.clear();
 		}
 	}
 	
@@ -428,6 +437,7 @@ public class MapScreen implements Screen {
 		sequenceOfCutscene();
 		checkEndGame();
 		showNotes();
+		storyChecker();
 		
 	}
 	
@@ -506,7 +516,7 @@ public class MapScreen implements Screen {
 
 
 
-		enterBuilding = Gdx.input.isKeyJustPressed(Keys.ENTER) && !isPaused && !cutsceneActive;
+		enterBuilding = Gdx.input.isKeyJustPressed(Keys.ENTER) && !isPaused && !cutsceneActive && StoryHandler.introductionPart2;
 
 
 
@@ -528,9 +538,15 @@ public class MapScreen implements Screen {
 
 		if(Gdx.input.isKeyJustPressed(Keys.E) && !isPaused && !cutsceneActive) {
 			try {
-				if(PermanetPlayer.getPermanentPlayerInstance().getEnergy() >=  ENERGY_FOR_RESEARCH && !hoverNode.reachedMaxLevel()) {
-					hoverNode.upgradeLevelKnown();
-					PermanetPlayer.getPermanentPlayerInstance().changeEnergy(-ENERGY_FOR_RESEARCH);
+				if(StoryHandler.introductionPart2) {
+					if (PermanetPlayer.getPermanentPlayerInstance().getEnergy() >= ENERGY_FOR_RESEARCH && !hoverNode.reachedMaxLevel()) {
+						hoverNode.upgradeLevelKnown();
+						PermanetPlayer.getPermanentPlayerInstance().changeEnergy(-ENERGY_FOR_RESEARCH);
+					}
+				}
+				else {
+					startCreatingCutscene("cutscene/ingame/scripts/Scene2.csv");
+					StoryHandler.startedIntroPart2 = true;
 				}
 			} catch(NullPointerException e) {
 				Gdx.app.log("E pressed outside of house", "Caught exception outside of the house.");
@@ -550,6 +566,42 @@ public class MapScreen implements Screen {
 			checkForKC.add("RIGHT");
 		}
 		
+	}
+
+	public void storyChecker() {
+		if(StoryHandler.startedIntroPart2 && !StoryHandler.introductionPart2 && currentCutsceneQuotes.size() == 0) {
+			StoryHandler.introductionPart2 = true;
+			decisionFirst.setText("Yes, I will get right on it, over and out");
+			decisionSecond.setText("Could you remind me?");
+			setDecisionWindowVisible(true);
+
+		}
+		if(StoryHandler.tutorialDecisionMade && !StoryHandler.TutorialPart1) {
+			startCreatingCutscene("cutscene/ingame/scripts/Scene3.csv");
+			StoryHandler.TutorialPart1 = true;
+
+		}
+		if(StoryHandler.TutorialPart1 && StoryHandler.TutorialPart2 && StoryHandler.TutorialPart3 && !StoryHandler.TutorialDone) {
+			if(StoryHandler.didCureFirstHouse) {
+				startCreatingCutscene("cutscene/ingame/scripts/Scene6.1.csv");
+				StoryHandler.TutorialDone = true;
+			}
+			else {
+				startCreatingCutscene("cutscene/ingame/scripts/Scene6.2.csv");
+				StoryHandler.TutorialDone = true;
+			}
+		}
+
+		if(StoryHandler.TutorialDone && !StoryHandler.transitionEndOfDayTutorial && currentCutsceneQuotes.size() == 0) {
+			darken = true;
+			StoryHandler.transitionEndOfDayTutorial = true;
+		}
+
+		if(PermanetPlayer.getPermanentPlayerInstance().getNotes().size() >=  6 && !StoryHandler.interactedWithSylvia) {
+			startCreatingCutscene("cutscene/ingame/scripts/Scene7.csv");
+			StoryHandler.interactedWithSylvia = true;
+		}
+
 	}
 	
 	public void makeSceneDark() {
@@ -804,12 +856,9 @@ public class MapScreen implements Screen {
 		main.dispose();
 	}
 
-	/*
-	TODO Fix this
-		-player is used in update text
-		-need to either replace with permenant player or pass it the required parameters
-	 */
+
 	public void enterHouse(Node node) {
+
 		houseHit = true;
 		updateText(node);
 		hoverNode = node;
@@ -977,6 +1026,75 @@ public class MapScreen implements Screen {
 
 		pause.setSize(pause.getWidth() * scaleItem, pause.getHeight()*scaleItem);
 		main.ui.addActor(pause);
+	}
+
+	public void decisionMaking() {
+		float windowWidth = 1000 , windowHeight = 500;
+		decisionWindow = new Window("", skin);
+		decisionWindow.setMovable(false); //So the user can't move the window
+
+		Label l  = new Label("DECISION!", AssetHandler.fontSize24);
+		Label space  = new Label("", AssetHandler.fontSize24);
+
+		decisionFirst = new Label("DECISION 1", AssetHandler.fontSize24);
+		decisionFirst.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				if(StoryHandler.decisionNumber == 1) {
+					//Don't start tutorial
+					StoryHandler.TutorialPart1 = true;
+					StoryHandler.TutorialPart2 = true;
+					StoryHandler.TutorialPart3 = true;
+					StoryHandler.TutorialDone = true;
+					StoryHandler.transitionEndOfDayTutorial = true;
+					StoryHandler.decisionNumber++;
+					StoryHandler.tutorialDecisionMade = true;
+				}
+				setDecisionWindowVisible(false);
+			}
+		});
+
+		decisionSecond = new Label("DECISION 2", AssetHandler.fontSize24);
+		decisionSecond.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				//Start tutorial
+				if(StoryHandler.decisionNumber == 1) {
+					//Don't start tutorial
+					StoryHandler.TutorialPart1 = false;
+					StoryHandler.TutorialPart2 = false;
+					StoryHandler.TutorialPart3 = false;
+					StoryHandler.TutorialDone = false;
+					StoryHandler.transitionEndOfDayTutorial = false;
+					StoryHandler.decisionNumber++;
+					StoryHandler.tutorialDecisionMade = true;
+				}
+				setDecisionWindowVisible(false);
+			}
+		});
+
+		decisionWindow.add(l).row();
+		decisionWindow.add(space).row();
+		decisionWindow.add(decisionFirst).row();
+		decisionWindow.row();
+		decisionWindow.add(decisionSecond).row();
+		decisionWindow.pack(); //Important! Correctly scales the window after adding new elements
+
+		//Centre window on screen.
+		decisionWindow.setBounds((580f),
+				(340f), windowWidth  , windowHeight );
+		//Sets the menu as invisible
+		isPaused = false;
+		decisionWindow.setVisible(false);
+
+
+		decisionWindow.setSize(decisionWindow.getWidth(), decisionWindow.getHeight());
+		main.ui.addActor(decisionWindow);
+	}
+
+	public void setDecisionWindowVisible(Boolean trueOrFalse) {
+		decisionWindow.setVisible(trueOrFalse);
+    	isPaused = trueOrFalse;
 	}
 
 	public void beforeEntry() {

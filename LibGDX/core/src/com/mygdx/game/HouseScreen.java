@@ -168,9 +168,9 @@ public class HouseScreen implements Screen {
 			spawnFakeNPC();
 
 			//b2dr = new Box2DDebugRenderer();
-			if(!StoryHandler.tutorialPart1) {
-				//startCreatingCutscene("cutscene/ingame/scripts/Scene1.csv");
-				//StoryHandler.tutorialPart1 = true;
+			if(!StoryHandler.TutorialPart2) {
+				startCreatingCutscene("cutscene/ingame/scripts/Scene4.csv");
+				StoryHandler.TutorialPart2 = true;
 			}
 	        
 			input = new InputMultiplexer();
@@ -220,6 +220,13 @@ public class HouseScreen implements Screen {
 			main.ui.addActor(speakerImage);
 			main.ui.addActor(personToSpeak);
 			main.ui.addActor(setDescriptionOfText);
+		}
+
+		public void storyHandler() {
+			if(Player.getInstance().getCurrentMaskDuration() < 10 && !StoryHandler.TutorialPart3) {
+				startCreatingCutscene("cutscene/ingame/scripts/Scene5.csv");
+				StoryHandler.TutorialPart3 = true;
+			}
 		}
 
 		/**
@@ -291,6 +298,11 @@ public class HouseScreen implements Screen {
 					}
 				}
 			}
+			else {
+				currentCutsceneQuotes.clear();
+				currentCutscenePerson.clear();
+				currentCutsceneDuration.clear();
+			}
 		}
 
 		@Override
@@ -361,12 +373,26 @@ public class HouseScreen implements Screen {
 					Player.getInstance().getSprite().setY(0);
 					main.ui.clear();
 					mapScreen.createUI();
+					mapScreen.createInGameCutscene();
 					mapScreen.inventory();
+					mapScreen.decisionMaking();
 					mapScreen.pauseGame();
+					if(StoryHandler.TutorialPart2 && !StoryHandler.TutorialPart3) {
+						StoryHandler.TutorialPart3 = true;
+					}
+					if(!StoryHandler.TutorialDone) {
+						StoryHandler.didCureFirstHouse = true;
+						for(NPC n : node.getNPCs()) {
+							if(!n.getStatus().equals("Alive")) {
+								StoryHandler.didCureFirstHouse = false;
+							}
+						}
+					}
 					main.setScreen(mapScreen);
 				}
 			}
 			AI();
+			storyHandler();
 			System.out.println("NOTES: " + node.getNotes().size());
 		}
 		

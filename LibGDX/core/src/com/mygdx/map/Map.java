@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.assets.AssetHandler;
+import com.mygdx.extras.PermanetPlayer;
 import com.mygdx.renderable.NPC;
 import com.mygdx.renderable.Node;
 import com.mygdx.shop.Church;
@@ -20,10 +21,15 @@ public class Map {
 	private List<Node> nodes;
 	private Church church;
 	private Disease disease = new Disease();
+	private Map map = null;
 
 	private String[] notes = {
-			"THEY ARE NOT WHO YOU THINK THEY ARE DON'T TRUST THEM.",
-			"THIS DISEASE WILL NEVER END."
+			"MY MASK FILTER IS RUNNING LOW, I NEED TO SOURCE A REPLACEMENT SOON",
+			"ANTONIO HAS FIGURED OUT HOW TO MAKE EXTRA MASKS, I MAY NOT NEED ORGANIZE ANY SUPPLY RUNS SOON",
+			"WEIRD FOOTPRINTS, I’VE SEEN THIS TREAD BEFORE.",
+			"CAN’T BELIEVE THIS, THEY COULD NEVER DO SUCH A THING -",
+			"DO THEY EVEN CARE? WHY COULD THEY DOING THIS, CONTACTING ANYONE AT THIS STAGE MAY BE UNWISE",
+			"THEY MAY BE ON TO ME. I NEED TO LEAVE IT’S NOT SAFE. BUT WHERE WOULD THEY NOT SEARCH?"
 	};
 	
 	public Map() {
@@ -34,7 +40,18 @@ public class Map {
 		checkIfPlayerExist();
 		resetPlayerFile();
 		setNeighbours();
-		setNotes();
+		if(!notesAlreadyExists()) {
+			setNotes();
+		}
+	}
+
+	private Boolean notesAlreadyExists() {
+		for(Node n : nodes) {
+			if(n.getNotes().size() > 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public void resetPlayerFile() {
@@ -42,7 +59,8 @@ public class Map {
 		handle.writeString(100f+","+5.0f+","+0f+","+30f+","+0.10f+","+-0.40f+","+2f+","+100f+","+0.05f+","+0.01f, false);
 	}
 
-	public void setNotes() {
+	private void setNotes() {
+		int i = 0;
 		for(String note : notes) {
 
 			Random r = new Random();
@@ -59,14 +77,10 @@ public class Map {
 				x = r.nextInt((maxX - 0) + 1) + 0;
 				y = r.nextInt((maxY - 0) + 1) + 0;
 
-				System.out.println(x);
-				System.out.println(y);
 
 				int xArray = x/32;
 				int yArray = y/32;
 
-				System.out.println(xArray);
-				System.out.println(yArray);
 
 				if(!(map[yArray][xArray] == 1)) {
 					isValidPosition = true;
@@ -87,9 +101,10 @@ public class Map {
 				}
 			}
 
-
+			i++;
 			nodes.get(index).addNotes(new Note(note, x, y));
 		}
+		System.out.println("NOTES GENERATED: "  + i);
 	}
 
 
