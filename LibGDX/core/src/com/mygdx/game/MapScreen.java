@@ -36,6 +36,7 @@ import box2dLight.RayHandler;
 import com.mygdx.assets.AssetHandler;
 import com.mygdx.camera.Camera;
 import com.mygdx.story.Note;
+import com.mygdx.story.StoryHandler;
 
 public class MapScreen implements Screen {
 
@@ -190,7 +191,10 @@ public class MapScreen implements Screen {
 		createUI();
 		inventory();
 		pauseGame();
-		//startCreatingCutscene("cutscene/ingame/scripts/EXAMPLE.csv");
+		if(!StoryHandler.introductionPart1) {
+			startCreatingCutscene("cutscene/ingame/scripts/Scene1.csv");
+			StoryHandler.introductionPart1 = true;
+		}
 
 	}
 
@@ -268,7 +272,7 @@ public class MapScreen implements Screen {
 		System.out.println("HIT1");
 		FileHandle n = Gdx.files.internal(file);
 		System.out.println("HIT2");
-
+		cutsceneSequence = 0;
 		String textFile = n.readString();
 		String lines[] = textFile.split("\\r?\\n");
 		for(int i = 1; i < lines.length; i++) {

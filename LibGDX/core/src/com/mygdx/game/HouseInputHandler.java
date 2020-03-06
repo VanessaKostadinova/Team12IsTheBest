@@ -69,7 +69,10 @@ public class HouseInputHandler implements InputProcessor {
 	private MyContactListener listener;
 
 	private String lastInput;
-	
+
+	private Boolean cutsceneActive;
+
+
 	public HouseInputHandler(Camera camera, int[][] level, Window pause, List<NPC> npcs, Label paragraph, Image letter, Image icon, World world) {
 		this.camera = camera;
 		this.level = level;
@@ -85,6 +88,7 @@ public class HouseInputHandler implements InputProcessor {
 		this.paragraph = paragraph;
 		this.letter = letter;
 		listener = new MyContactListener();
+		this.cutsceneActive = false;
 		world.setContactListener(listener);
 		lastInput = "";
 	}
@@ -108,7 +112,7 @@ public class HouseInputHandler implements InputProcessor {
 		 *
 		 * Otherwise the camera and player both move at the same pace.
 		 */
-		if(!isPaused) {
+		if(!isPaused && !cutsceneActive) {
 			if(Gdx.input.isKeyPressed(Input.Keys.W)) {
 				if(!collision(playerX, playerY + playerHeight) && !collision(playerX + playerWidth - speed*delta, playerY + playerHeight)) {
 					camera.getCamera().translate(0f, speed* delta);
@@ -398,7 +402,15 @@ public class HouseInputHandler implements InputProcessor {
 			inventoryOpened = true;
 		}
 	}
-	
+
+	public void setCutsceneActive(Boolean cutsceneActive) {
+		this.cutsceneActive = cutsceneActive;
+	}
+
+	public Boolean getCutsceneActive() {
+		return cutsceneActive;
+	}
+
 	public Boolean getPaused() {
 		return this.isPaused;
 	}

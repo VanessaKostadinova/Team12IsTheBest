@@ -25,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.mygdx.assets.AssetHandler;
 import com.mygdx.camera.Camera;
 import com.mygdx.extras.PermanetPlayer;
@@ -34,6 +35,7 @@ import box2dLight.Light;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.mygdx.story.Note;
+import com.mygdx.story.StoryHandler;
 
 import javax.xml.bind.ValidationException;
 
@@ -80,6 +82,18 @@ public class HouseScreen implements Screen {
     private SpriteDrawable cure;
     private Bullet bullet;
 
+	private Image overlayCutscene;
+	private Image dialogCutscene;
+	private Image speakerImage;
+	private Label personToSpeak;
+	private Label setDescriptionOfText;
+
+	private List<String> currentCutsceneQuotes;
+	private List<String> currentCutscenePerson;
+	private List<String> currentCutsceneDuration;
+	private int cutsceneSequence;
+
+
 	private ArrayList<NPC> fakeNPCs;
 
 
@@ -91,11 +105,13 @@ public class HouseScreen implements Screen {
 			this.darkness = 0.2f;
 			this.skin = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
 			this.fakeNPCs = new ArrayList<>();
-
 			cure = new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("house/UI/CureSpray.png"))));
 			fire = new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("house/UI/FireSpray.png"))));
 
-			
+			currentCutsceneQuotes = new LinkedList<>();
+			currentCutscenePerson = new LinkedList<>();
+			currentCutsceneDuration = new LinkedList<>();
+
 			float w = Gdx.graphics.getWidth();
 			scaleItem = w/1920;
 			
@@ -129,7 +145,7 @@ public class HouseScreen implements Screen {
 			paragraph.setVisible(false);
 
 			main.ui.addActor(paragraph);
-
+			createInGameCutscene();
 			pauseGame();
 			handler = new HouseInputHandler(camera, node.getArray(), pause, node.getNPCs(), paragraph, letter, icon, world);
 	        handler.setPaused(false);
@@ -152,13 +168,129 @@ public class HouseScreen implements Screen {
 			spawnFakeNPC();
 
 			//b2dr = new Box2DDebugRenderer();
-
+			if(!StoryHandler.tutorialPart1) {
+				//startCreatingCutscene("cutscene/ingame/scripts/Scene1.csv");
+				//StoryHandler.tutorialPart1 = true;
+			}
 	        
 			input = new InputMultiplexer();
 			input.addProcessor(handler);
 			input.addProcessor(main.ui);
 	        Gdx.input.setInputProcessor(input);
 	        
+		}
+
+		/**
+		 * Used to draw and create the cutscene items on stream.
+		 */
+		public void createInGameCutscene() {
+			Sprite s = new Sprite(new Texture(Gdx.files.internal("cutscene/ingame/cutsceneOverlay.png")));
+			s.setAlpha(0.9f);
+			overlayCutscene = new Image(new SpriteDrawable(s));
+			overlayCutscene.setPosition(main.ui.getWidth()/2 - overlayCutscene.getWidth()/2 - 130, main.ui.getHeight()/2 - overlayCutscene.getHeight()/2 - 100);
+			overlayCutscene.setScale(2f);
+			overlayCutscene.setVisible(false);
+
+			Sprite s3 = new Sprite(new Texture(Gdx.files.internal("cutscene/ingame/characterImages/templateCutsceneSpeaker.png")));
+			speakerImage = new Image(new SpriteDrawable(s3));
+			speakerImage.setPosition(1080-speakerImage.getWidth()/2-150, 430);
+			speakerImage.setScale(2f);
+			speakerImage.setVisible(false);
+
+			Sprite s2 = new Sprite(AssetHandler.manager.get("player/MAPUI/dialog.png", Texture.class));
+			dialogCutscene = new Image(new SpriteDrawable(s2));
+			dialogCutscene.setPosition(50, 50);
+			dialogCutscene.setScaleY(0.5f);
+			dialogCutscene.setScaleX(3.45f);
+			dialogCutscene.setVisible(false);
+
+			personToSpeak = new Label("YOU:", AssetHandler.fontSize32);
+			personToSpeak.setPosition(90, 350F);
+			personToSpeak.setVisible(false);
+
+			setDescriptionOfText = new Label("YNSERT TEXT HERE PLEASE! ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss", AssetHandler.fontSize32);
+			setDescriptionOfText.setAlignment(Align.topLeft);
+			setDescriptionOfText.setWidth(1950);
+			setDescriptionOfText.setWrap(true);
+			setDescriptionOfText.setPosition(90, 300f);
+			setDescriptionOfText.setVisible(false);
+
+			main.ui.addActor(overlayCutscene);
+			main.ui.addActor(dialogCutscene);
+			main.ui.addActor(speakerImage);
+			main.ui.addActor(personToSpeak);
+			main.ui.addActor(setDescriptionOfText);
+		}
+
+		/**
+		 * Updates visibility of cutscene
+		 * @param value True or False value depending if want to be visible.
+		 */
+		public void updateInGameCutscene(boolean value) {
+			this.overlayCutscene.setVisible(value);
+			this.speakerImage.setVisible(value);
+			this.dialogCutscene.setVisible(value);
+			this.personToSpeak.setVisible(value);
+			this.setDescriptionOfText.setVisible(value);
+			handler.setCutsceneActive(value);
+		}
+
+		/**
+		 * Updates the text of script
+		 * @param person Person's name.
+		 * @param text What the person is saying.
+		 */
+		public void updateInGameCutscene(String person, String text) {
+			this.personToSpeak.setText(person);
+			this.setDescriptionOfText.setText(text);
+		}
+
+		/**
+		 * Intialising the new cutscene based of a text file.
+		 * @param file The file of the .csv file for the cutscene.
+		 */
+		public void startCreatingCutscene(String file) {
+
+			System.out.println("HIT1");
+			FileHandle n = Gdx.files.internal(file);
+			System.out.println("HIT2");
+
+			cutsceneSequence = 0;
+			String textFile = n.readString();
+			String lines[] = textFile.split("\\r?\\n");
+			for(int i = 1; i < lines.length; i++) {
+				String line = lines[i];
+				String[] data = line.split(",");
+				/**
+				 * Data - ARRAY:
+				 * index 0 = Duration of line (potentially for voice acting)
+				 * index 1 = Person name
+				 * index 2 = Quote of what the person is saying.
+				 */
+				currentCutsceneDuration.add(data[0]);
+				currentCutscenePerson.add(data[1]);
+				currentCutsceneQuotes.add(data[2]);
+			}
+			updateInGameCutscene(true);
+			updateInGameCutscene(currentCutscenePerson.get(cutsceneSequence), currentCutsceneQuotes.get(cutsceneSequence));
+		}
+
+		/**
+		 * Handles the switching of the cutscene.
+		 */
+		public void sequenceOfCutscene() {
+			if(handler.getCutsceneActive()) {
+				if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && !handler.getPaused()) {
+					cutsceneSequence++;
+					if(cutsceneSequence == currentCutsceneDuration.size()) {
+						cutsceneSequence = 0;
+						updateInGameCutscene(false);
+					}
+					else {
+						updateInGameCutscene(currentCutscenePerson.get(cutsceneSequence), currentCutsceneQuotes.get(cutsceneSequence));
+					}
+				}
+			}
 		}
 
 		@Override
@@ -218,6 +350,7 @@ public class HouseScreen implements Screen {
 			rayHandler.updateAndRender();
 			main.batch.end();
 			main.ui.draw();
+			sequenceOfCutscene();
 			
 			if(Gdx.input.isKeyJustPressed(Input.Keys.E)) {
 				if(icon.isVisible()) {
@@ -238,7 +371,7 @@ public class HouseScreen implements Screen {
 		}
 		
 		public void reduceMask() {
-			if(!handler.getPaused()) {
+			if(!handler.getPaused() && !handler.getCutsceneActive()) {
 				Player.getInstance().reduceMask();
 			}
 		}
@@ -257,7 +390,7 @@ public class HouseScreen implements Screen {
 			
 			light.setPosition(Player.getInstance().getSpray().getSprite().getX()+Player.getInstance().getSprite().getWidth()/2,Player.getInstance().getSpray().getSprite().getY()+Player.getInstance().getSpray().getSprite().getHeight()/2);
 			//light.setDirection(p.getSprite().getRotation());
-			light.setActive(handler.getPressed() && !handler.getPaused());
+			light.setActive(handler.getPressed() && !handler.getPaused() && !handler.getCutsceneActive());
 		}
 		
 		
@@ -330,7 +463,7 @@ public class HouseScreen implements Screen {
 		}
 
 		public void updateAllBullets() {
-			if(bullet != null && !handler.getPaused()) {
+			if(bullet != null && !handler.getPaused() && !handler.getCutsceneActive()) {
 				System.out.println("HIT!");
 				bullet.draw(main.batch);
 				bullet.updateBullet();
