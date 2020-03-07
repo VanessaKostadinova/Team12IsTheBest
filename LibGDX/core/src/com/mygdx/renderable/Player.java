@@ -141,6 +141,11 @@ public class Player extends Renderable implements Living {
 		return currentMaskDuration;
 	}
 
+	public void setCurrentMaskDuration(float currentMaskDuration) {
+		this.currentMaskDuration = currentMaskDuration;
+		System.out.println("CURRENT DURATION PLAYER: " +currentMaskDuration);
+	}
+
 	public void resetMask() {
 		this.currentMaskDuration = getInitialMaskDuration();
 	}

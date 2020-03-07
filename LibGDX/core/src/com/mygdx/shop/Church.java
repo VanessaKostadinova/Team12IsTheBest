@@ -13,18 +13,4 @@ public class Church extends Renderable {
 		permanetPlayer = PermanetPlayer.getPermanentPlayerInstance();
 	}
 
-	/*public Item getUpgrade(int index) {
-		return permanetPlayer.getItems()[index];
-	}
-
-	public void buy(int index){
-		int price = permanetPlayer.getItems()[index].getCost();
-		permanetPlayer.changeFoodAmount(-price);
-		permanetPlayer.upgrade(index);
-	}
-
-	public int getPrice(int index){
-		Item tempItem = permanetPlayer.getItems()[index];
-		return tempItem.getCost();
-	}*/
 }

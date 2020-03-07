@@ -22,6 +22,7 @@ public class PermanetPlayer {
     private int energy;
     private List<Note> notes;
     private Item[] items;
+    private int[] chosenItems;
     private static PermanetPlayer instance;
 
     private PermanetPlayer(int masks, float healingFluid, float burningFluid){
@@ -38,7 +39,7 @@ public class PermanetPlayer {
     private Item[] createItems(){
         Item[] tempItems = new Item[5];
         tempItems[0] = new Item("BOOTS", "Faster footwear", 75f, 400);
-        tempItems[1] = new Item("MASKS", "Better plague protection TM", 2000f, 400);
+        tempItems[1] = new Item("MASKS", "Better plague protection TM", 20f, 400);
         tempItems[2] = new Item("HEALING STRENGTH", "Better healing", 0.1f, 400);
         tempItems[3] = new Item("BURNING STRENGTH", "Burn baby burn but better", 0.5f, 400);
         return tempItems;
@@ -67,6 +68,22 @@ public class PermanetPlayer {
         return items[index];
     }
 
+    public void reduceNumberOfMasks(int remove) {
+        numberOfMasks = numberOfMasks - remove;
+    }
+
+    public void reduceBurnSpray(int remove) {
+        burningFluid = burningFluid - remove;
+    }
+
+    public void reduceCureSpray(int remove) {
+        healingFluid = healingFluid - remove;
+    }
+
+    public void setChosenItems(int[] chosenItems) { this.chosenItems = chosenItems;};
+
+    public int[] getChosenItems() { return this.chosenItems;}
+
     public void changeNumberOfMasks(int numberOfMasksDelta){
         numberOfMasks += numberOfMasksDelta;
     }
@@ -88,7 +105,7 @@ public class PermanetPlayer {
     }
 
     public void changeEnergy(int energyDelta){
-        energy -= energyDelta;
+        energy += energyDelta;
     }
 
     public void resetEnergy(){

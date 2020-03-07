@@ -65,8 +65,13 @@ public class HouseScreen implements Screen {
 	private MapScreen mapScreen;
 	private Image ui;
 	private Image uiCurrentSpray;
+
 	private Label goldLabel;
 	private Label sanityLabel;
+	private Label numberOfMasksLabel;
+	private Label amountOfCureLabel;
+	private Label amountOfBurnLabel;
+
 	private Texture maskBar;
 	private Image bar;
 	private World world;
@@ -92,17 +97,28 @@ public class HouseScreen implements Screen {
 	private List<String> currentCutscenePerson;
 	private List<String> currentCutsceneDuration;
 	private int cutsceneSequence;
-
-
 	private ArrayList<NPC> fakeNPCs;
+	private Boolean shouldReduce;
+
+	private int initialNumberOfMasks;
+	private float amountOfCure;
+	private float amountOfFlame;
+
 
 	private Texture storyDoctor = null;
 
+	private final float maskDurabiltyAtStart = Player.getInstance().getCurrentMaskDuration();
+
 	public HouseScreen(Main main, Node node, MapScreen mapScreen) {
+			this.mapScreen = mapScreen;
 			this.main = main;
 			this.node = node;
 			this.bullet = null;
-			this.mapScreen = mapScreen;
+
+			this.initialNumberOfMasks = PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[0];
+			this.amountOfCure = PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[1];
+			this.amountOfFlame = PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[2];
+
 			this.darkness = 0.2f;
 			this.skin = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
 			this.fakeNPCs = new ArrayList<>();
@@ -366,7 +382,16 @@ public class HouseScreen implements Screen {
 			
 			
 			handler.sprayWithVillagerCollision(node.getNPCs());
-			handler.spray();
+
+			if(Player.getInstance().getSprayIndex() == 0) {
+				amountOfCure = handler.spray(amountOfCure);
+				amountOfCureLabel.setText( (int) amountOfCure + "");
+			}
+			if(Player.getInstance().getSprayIndex() == 1) {
+				amountOfFlame = handler.spray(amountOfFlame);
+				amountOfBurnLabel.setText( (int) amountOfFlame + "");
+			}
+
 			updateSprayLight();
 			handler.movement(Player.getInstance().getAnimation().getKeyFrame(stateTime, true), delta);
 			
@@ -389,6 +414,9 @@ public class HouseScreen implements Screen {
 					Player.getInstance().getSprite().setX(0);
 					Player.getInstance().getSprite().setY(0);
 					main.ui.clear();
+					PermanetPlayer.getPermanentPlayerInstance().reduceNumberOfMasks(PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[0]-initialNumberOfMasks);
+					PermanetPlayer.getPermanentPlayerInstance().reduceCureSpray(PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[1]-(int) amountOfCure);
+					PermanetPlayer.getPermanentPlayerInstance().reduceBurnSpray(PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[2]-(int) amountOfCure);
 					mapScreen.createUI();
 					mapScreen.createInGameCutscene();
 					mapScreen.inventory();
@@ -439,7 +467,7 @@ public class HouseScreen implements Screen {
 			
 			light.setPosition(Player.getInstance().getSpray().getSprite().getX()+Player.getInstance().getSprite().getWidth()/2,Player.getInstance().getSpray().getSprite().getY()+Player.getInstance().getSpray().getSprite().getHeight()/2);
 			//light.setDirection(p.getSprite().getRotation());
-			light.setActive(handler.getPressed() && !handler.getPaused() && !handler.getCutsceneActive());
+			light.setActive(handler.getPressed() && !handler.getPaused() && !handler.getCutsceneActive() && Player.getInstance().getSpray().getIsActive());
 		}
 		
 		
@@ -470,6 +498,21 @@ public class HouseScreen implements Screen {
 			sanityLabel.setPosition(240+uiCurrentSpray.getWidth(), main.ui.getHeight()-230);
 			sanityLabel.setFontScale(0.6f);
 			main.ui.addActor(sanityLabel);
+
+			numberOfMasksLabel = new Label(initialNumberOfMasks + "", createLabelStyleWithBackground(Color.WHITE));
+			numberOfMasksLabel.setPosition(375+uiCurrentSpray.getWidth(), main.ui.getHeight()-295);
+			numberOfMasksLabel.setFontScale(0.6f);
+			main.ui.addActor(numberOfMasksLabel);
+
+			amountOfBurnLabel = new Label((int) amountOfFlame + "", createLabelStyleWithBackground(Color.WHITE));
+			amountOfBurnLabel.setPosition(375+uiCurrentSpray.getWidth(), main.ui.getHeight()-360);
+			amountOfBurnLabel.setFontScale(0.6f);
+			main.ui.addActor(amountOfBurnLabel);
+
+			amountOfCureLabel = new Label((int) amountOfCure + "", createLabelStyleWithBackground(Color.WHITE));
+			amountOfCureLabel.setPosition(375+uiCurrentSpray.getWidth(), main.ui.getHeight()-425);
+			amountOfCureLabel.setFontScale(0.6f);
+			main.ui.addActor(amountOfCureLabel);
 			
 			maskBar = AssetHandler.manager.get("house/UI/BAR.png", Texture.class);
 			bar = new Image(new SpriteDrawable(new Sprite(maskBar)));
@@ -641,18 +684,26 @@ public class HouseScreen implements Screen {
 		
 		private void updateBar() {
 			if((bar.getWidth() >= 1f)) {
+				System.out.println(" CURRENT DURATION: "  + Player.getInstance().getCurrentMaskDuration());
 				bar.setWidth(250 * (Player.getInstance().getCurrentMaskDuration()/Player.getInstance().getInitialMaskDuration()));
 			}
 			else {
-				bar.setWidth(0f);
-				darkness = 0f;
-				main.ui.clear();
-				
-				node.resetVillagers();
+				initialNumberOfMasks--;
+				numberOfMasksLabel.setText(initialNumberOfMasks);
+				if(initialNumberOfMasks <= 0) {
+					bar.setWidth(0f);
+					darkness = 0f;
+					main.ui.clear();
 
+					node.resetVillagers();
+
+					//Player.getInstance().resetMask();
+					//Player.getInstance().setMaskDurationSeconds(maskDurabiltyAtStart);
+
+					main.setScreen(new CheckPoint(main, node, mapScreen, maskDurabiltyAtStart));
+				}
+				bar.setWidth(250);
 				Player.getInstance().resetMask();
-				
-				main.setScreen(new CheckPoint(main, node, mapScreen));
 			}
 			
 			

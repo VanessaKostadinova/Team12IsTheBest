@@ -37,6 +37,7 @@ import com.mygdx.shop.Church;
 import box2dLight.RayHandler;
 import com.mygdx.assets.AssetHandler;
 import com.mygdx.camera.Camera;
+import com.mygdx.shop.Shop;
 import com.mygdx.story.Note;
 import com.mygdx.story.StoryHandler;
 
@@ -59,6 +60,9 @@ public class MapScreen implements Screen {
 	
 	private Sprite shopText;
 	private Sprite enterShop;
+
+	private Sprite churchText;
+	private Sprite enterChurch;
 	
 	private Sprite houseText;
 	private Sprite enterHouse;
@@ -69,9 +73,11 @@ public class MapScreen implements Screen {
 	private Sprite foodLabel;
 
 	private float houseAlpha = 0;
+	private float churchAlpha = 0;
 	private float shopAlpha = 0;
 	
 	private Boolean houseHit = false;
+	private Boolean churchHit = false;
 	private Boolean shopHit = false;
 	private Boolean enterBuilding = false;
 	
@@ -123,13 +129,10 @@ public class MapScreen implements Screen {
 	private List<String> currentCutscenePerson;
 	private List<String> currentCutsceneDuration;
 
-	/** Inventory menu. */
-	private Window inventory;
 
 	private List<String> checkForKC;
 	private boolean itemsSelected;
 	private int cutsceneSequence;
-	private Window notesInventory;
 
 	private Window decisionWindow;
 	private Label decisionFirst;
@@ -366,6 +369,16 @@ public class MapScreen implements Screen {
 		shopText.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
 		shopText.setPosition(-64.5f, 72.5f);
 		shopText.setAlpha(shopAlpha);
+
+		this.enterChurch = new Sprite(new Texture(Gdx.files.internal("shop/church/ENTER_CHURCH.png")));
+		enterChurch.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
+		enterChurch.setPosition(-72.5f, -80);
+		enterChurch.setAlpha(churchAlpha);
+
+		this.churchText = new Sprite(new Texture(Gdx.files.internal("shop/church/CHURCH.png")));
+		churchText.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
+		churchText.setPosition(-75.5f, 72.5f);
+		churchText.setAlpha(churchAlpha);
 		
 		this.baseUI = new Sprite(AssetHandler.manager.get("player/MAPUI/BaseUI.png", Texture.class));
 		baseUI.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
@@ -390,6 +403,7 @@ public class MapScreen implements Screen {
 		
 		stateTime = stateTime + delta;
 		fadeAnimationHouseUI();
+		fadeAnimationChurchUI();
 		fadeAnimationShopUI();
 		initalSceneTransitions(delta);
 		
@@ -402,6 +416,7 @@ public class MapScreen implements Screen {
 			//behindBackground.draw(main.batch);
 			background.draw(main.batch);
 			map.getChurch().draw(main.batch);
+			map.getShop().draw(main.batch);
 	   main.batch.end();
 	   checkIfClicked(pointer.getX(), pointer.getY());
 
@@ -421,6 +436,9 @@ public class MapScreen implements Screen {
 			inspectDialog.draw(main.batch);
 			houseText.draw(main.batch);
 			
+			churchText.draw(main.batch);
+			enterChurch.draw(main.batch);
+
 			shopText.draw(main.batch);
 			enterShop.draw(main.batch);
 			
@@ -859,9 +877,32 @@ public class MapScreen implements Screen {
 		}
 	}
 	
+	public void fadeAnimationChurchUI() {
+		if (churchHit) {
+			if (churchAlpha < 1) {
+				churchAlpha += (1f / 10f);
+				churchText.setAlpha(churchAlpha);
+				enterChurch.setAlpha(churchAlpha);
+			} else {
+				churchText.setAlpha(1);
+				enterChurch.setAlpha(1);
+			}
+		} else {
+			if (churchAlpha > 0.1) {
+				churchAlpha -= (1f / 10f);
+				churchText.setAlpha(churchAlpha);
+				enterChurch.setAlpha(churchAlpha);
+			} else {
+				churchText.setAlpha(0);
+				enterChurch.setAlpha(0);
+			}
+		}
+	}
+
 	public void fadeAnimationShopUI() {
 		if(shopHit) {
-			if(shopAlpha < 1) { 
+			System.out.println("HIT2");
+			if(shopAlpha < 1) {
 				shopAlpha += (1f/10f);
 				shopText.setAlpha(shopAlpha);
 				enterShop.setAlpha(shopAlpha);
@@ -870,9 +911,8 @@ public class MapScreen implements Screen {
 				shopText.setAlpha(1);
 				enterShop.setAlpha(1);
 			}
-		}
-		else {
-			if(shopAlpha > 0.1) { 
+		} else {
+			if(shopAlpha > 0.1) {
 				shopAlpha -= (1f/10f);
 				shopText.setAlpha(shopAlpha);
 				enterShop.setAlpha(shopAlpha);
@@ -911,12 +951,21 @@ public class MapScreen implements Screen {
 		}	
 	}
 	
-	public void enterShop(Church church) {
-		shopHit = true;
+	public void enterChurch(Church church) {
+		churchHit = true;
 		if(enterBuilding) {
 			main.ui.clear();
 			enterBuilding = false;
 			main.setScreen(new ChurchScreen(main, church, this));
+		}
+	}
+
+	public void enterShop(Shop shop) {
+		shopHit = true;
+		if(enterBuilding) {
+			main.ui.clear();
+			enterBuilding = false;
+			main.setScreen(new ShopScreen(main, shop, this));
 		}
 	}
 	
@@ -939,11 +988,20 @@ public class MapScreen implements Screen {
 		}
 		
 		if(map.getChurch().pointIsWithinSprite(x, y)) {
-			enterShop(map.getChurch());
+			enterChurch(map.getChurch());
+		}
+		else {
+			churchHit = false;
+		}
+
+		if(map.getShop().pointIsWithinSprite(x, y)) {
+			System.out.println("HIT");
+			enterShop(map.getShop());
 		}
 		else {
 			shopHit = false;
 		}
+
 	}
 
 	
@@ -1159,7 +1217,7 @@ public class MapScreen implements Screen {
 
 
 		final Image image1 = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("temp64x64.png")))));
-		final Label amount1= new Label("0", AssetHandler.fontSize24);
+		final Label amount1= new Label("1", AssetHandler.fontSize24);
 		amount1.setWidth(40);
 		amount1.setHeight(40);
 		final Label plus1= new Label("+", AssetHandler.fontSize48);
@@ -1180,7 +1238,7 @@ public class MapScreen implements Screen {
 					plus1.setVisible(false);
 				}
 
-				if(amount > 0) {
+				if(amount > 1) {
 					remove1.setVisible(true);
 				}
 			}
@@ -1192,7 +1250,7 @@ public class MapScreen implements Screen {
 				int amount = Integer.parseInt(amount1.getText().toString());
 				amount--;
 				amount1.setText(amount);
-				if(amount == 0) {
+				if(amount == 1) {
 					remove1.setVisible(false);
 				}
 				if(amount < PermanetPlayer.getPermanentPlayerInstance().getNumberOfMasks()) {
@@ -1208,7 +1266,7 @@ public class MapScreen implements Screen {
 
 		final Image image2 = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("temp64x64.png")))));
 		final Label amount2= new Label("0", AssetHandler.fontSize24);
-		amount2.setWidth(40);
+		amount2.setWidth(80);
 		amount2.setHeight(40);
 		final Label plus2= new Label("+", AssetHandler.fontSize48);
 		plus2.setWidth(40);
@@ -1256,7 +1314,7 @@ public class MapScreen implements Screen {
 
 		final Image image3 = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("temp64x64.png")))));
 		final Label amount3= new Label("0", AssetHandler.fontSize24);
-		amount3.setWidth(40);
+		amount3.setWidth(80);
 		amount3.setHeight(40);
 		final Label plus3= new Label("+", AssetHandler.fontSize48);
 		plus3.setWidth(40);
@@ -1297,25 +1355,28 @@ public class MapScreen implements Screen {
 
 			}
 		});
+		remove1.setVisible(false);
+		remove2.setVisible(false);
+		remove3.setVisible(false);
 
 		if(Integer.parseInt(amount3.getText().toString()) == 0) {
 			remove3.setVisible(false);
 		}
 
 
-		table2.add(image1).pad(64).pad(10);
-		table2.add(amount1).width(20).pad(10);
-		table2.add(plus1).width(40).height(40);
+		table2.add(image1).pad(64).pad(5);
+		table2.add(amount1).width(20).pad(15);
+		table2.add(plus1).width(40).height(40).pad(0, 10, 0,0);
 		table2.add(remove1).width(40).height(40).row();
 
 		table2.add(image2).pad(64).pad(10);
 		table2.add(amount2).width(20).pad(10);
-		table2.add(plus2).width(40).height(40);
+		table2.add(plus2).width(40).height(40).pad(0, 10, 0,0);
 		table2.add(remove2).width(40).height(40).row();
 
 		table2.add(image3).pad(64).pad(10);
 		table2.add(amount3).width(20).pad(10);
-		table2.add(plus3).width(40).height(40);
+		table2.add(plus3).width(40).height(40).pad(0, 10, 0,0);
 		table2.add(remove3).width(40).height(40).row();
 
 
@@ -1335,6 +1396,12 @@ public class MapScreen implements Screen {
 		enter.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+				int[] variables = new int[]{
+						Integer.parseInt(amount1.getText().toString()),
+						Integer.parseInt(amount2.getText().toString()),
+						Integer.parseInt(amount3.getText().toString())
+				};
+				PermanetPlayer.getPermanentPlayerInstance().setChosenItems(variables);
 				enterHouse();
 			}
 		});

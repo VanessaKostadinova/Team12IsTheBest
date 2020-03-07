@@ -215,10 +215,21 @@ public class HouseInputHandler implements InputProcessor {
 	
 
 	
-	public void spray() {
+	public float spray(float value) {
 		if(!isPaused) {
 			Player.getInstance().getSpray().setVisible(mousePressed);
+			if(Player.getInstance().getSpray().getIsActive()) {
+				if((int)value < 1) {
+					value = 0;
+					Player.getInstance().getSpray().setIsActive(false);
+					Player.getInstance().getSpray().setVisible(false);
+				}
+				else {
+					value = value - 0.025f;
+				}
+			}
 		}
+		return value;
 	}
 	
 	/**

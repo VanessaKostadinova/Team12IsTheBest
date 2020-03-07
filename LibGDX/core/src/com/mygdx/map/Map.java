@@ -12,6 +12,7 @@ import com.mygdx.extras.PermanetPlayer;
 import com.mygdx.renderable.NPC;
 import com.mygdx.renderable.Node;
 import com.mygdx.shop.Church;
+import com.mygdx.shop.Shop;
 import com.mygdx.story.Note;
 
 /**
@@ -20,6 +21,7 @@ import com.mygdx.story.Note;
 public class Map {
 	private List<Node> nodes;
 	private Church church;
+	private Shop shop;
 	private Disease disease = new Disease();
 	private Map map = null;
 
@@ -37,6 +39,7 @@ public class Map {
 		readMapFile();
 		setNotes();
 		church = new Church(AssetHandler.manager.get("house/Shop.gif", Texture.class), 900.0f, 470.0f);
+		shop = new Shop(AssetHandler.manager.get("house/Shop.gif", Texture.class), 760.0f, 500.0f);
 		checkIfPlayerExist();
 		resetPlayerFile();
 		setNeighbours();
@@ -119,6 +122,10 @@ public class Map {
 
 	public Church getChurch() {
 		return church;
+	}
+
+	public Shop getShop() {
+		return shop;
 	}
 	
 	public void checkIfPlayerExist() {

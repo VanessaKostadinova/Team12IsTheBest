@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.renderable.Node;
+import com.mygdx.renderable.Player;
 
 /**
  * Used as a CheckPoint, so it is able to reset to the point to where
@@ -48,11 +49,13 @@ public class CheckPoint implements Screen {
 	private Label subtitleLabel;
 
 	private float waitTime;
-	
-	public CheckPoint(Main main, Node initialNode, MapScreen mapScreen) {
+	private float maskDurablity;
+
+	public CheckPoint(Main main, Node initialNode, MapScreen mapScreen, float maskDurabilty) {
 		this.main = main;
 		this.initialNode = initialNode;
 		this.mapScreen = mapScreen;
+		this.maskDurablity = maskDurabilty;
 		
 		totalTime = new LinkedList<>();
 		subtitles = new LinkedList<>();
@@ -158,6 +161,8 @@ public class CheckPoint implements Screen {
 	
 	public void changeScreen() {
 		main.ui.clear();
+		System.out.println("MASK DURABILITY: " + maskDurablity);
+		Player.getInstance().setCurrentMaskDuration(maskDurablity);
 		main.setScreen(new HouseScreen(main, initialNode, mapScreen));
 	}
 
