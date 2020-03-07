@@ -96,6 +96,7 @@ public class HouseScreen implements Screen {
 
 	private ArrayList<NPC> fakeNPCs;
 
+	private Texture storyDoctor = null;
 
 	public HouseScreen(Main main, Node node, MapScreen mapScreen) {
 			this.main = main;
@@ -177,6 +178,8 @@ public class HouseScreen implements Screen {
 			input.addProcessor(handler);
 			input.addProcessor(main.ui);
 	        Gdx.input.setInputProcessor(input);
+
+			initialStoryHandler();
 	        
 		}
 
@@ -226,6 +229,14 @@ public class HouseScreen implements Screen {
 			if(Player.getInstance().getCurrentMaskDuration() < 10 && !StoryHandler.TutorialPart3) {
 				startCreatingCutscene("cutscene/ingame/scripts/Scene5.csv");
 				StoryHandler.TutorialPart3 = true;
+			}
+		}
+
+		public void initialStoryHandler() {
+			if(PermanetPlayer.getPermanentPlayerInstance().getNotes().size() >= 12 && !StoryHandler.allNotesSequence) {
+				storyDoctor = new Texture(Gdx.files.internal("cutscene/ingame/storyTextures/OtherDoctor.png"));
+				startCreatingCutscene("cutscene/ingame/scripts/Scene10.csv");
+				StoryHandler.allNotesSequence =true;
 			}
 		}
 
@@ -332,6 +343,12 @@ public class HouseScreen implements Screen {
 			main.batch.setProjectionMatrix(camera.getCamera().combined);
 			renderMap();
 			drawNPC(main.batch);
+			if(storyDoctor != null) {
+				main.batch.draw(
+						storyDoctor,
+						(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2) - 40,
+						(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2) + 40);
+			}
 			drawFakeNPC(main.batch);
 			updateAllBullets();
 			Player.getInstance().draw(main.batch);
@@ -393,7 +410,13 @@ public class HouseScreen implements Screen {
 			}
 			AI();
 			storyHandler();
-			System.out.println("NOTES: " + node.getNotes().size());
+			int value = 0;
+			for(Note n : node.getNotes()) {
+				if(!n.getHasBeenSeen()) {
+					value++;
+				}
+			}
+			System.out.println("NOTES IN HOUSE : " + value);
 		}
 		
 		public void reduceMask() {

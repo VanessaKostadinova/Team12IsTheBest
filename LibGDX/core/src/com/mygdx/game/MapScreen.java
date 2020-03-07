@@ -635,12 +635,12 @@ public class MapScreen implements Screen {
 			}
 			startCreatingCutscene("cutscene/ingame/scripts/Scene9.csv");
 			map.nextNoteLevel(new String[]{
-					"I saw traces of her again today, she thinks she is being sneaky but we are not stupid, cannot believe they won’t let me take care of it.",
-					"This new guy is clearing RVH-67 too quickly, we need to give it more time to incubate. I will be planting more samples again later today.",
-					"I saw the new guy hanging about the church in the middle of the night thought he had been sleeping but I can’t make contact.",
-					"I may ask for more backup cultivating, RVH is not as easy as the guys back at capital made it sound. They don’t know how good they have it.",
-					"Someone’s been coming in here, I cannot find some pages and I swear they were here earlier.",
-					"I may need to lock this place down, thought being out here would mean I was not disturbed, Sylvias becoming a real pest."
+					"I SAW TRACES OF HER AGAIN TODAY, SHE THINKS SHE IS BEING SNEAKY BUT WE ARE NOT STUPID, CANNOT BELIEVE THEY WON’T LET ME TAKE CARE OF IT.",
+					"THIS NEW GUY IS CLEARING RVH-67 TOO QUICKLY, WE NEED TO GIVE IT MORE TIME TO INCUBATE. I WILL BE PLANTING MORE SAMPLES AGAIN LATER TODAY.",
+					"I SAW THE NEW GUY HANGING ABOUT THE CHURCH IN THE MIDDLE OF THE NIGHT THOUGHT HE HAD BEEN SLEEPING BUT I CAN’T MAKE CONTACT.",
+					"I MAY ASK FOR MORE BACKUP CULTIVATING, RVH IS NOT AS EASY AS THE GUYS BACK AT CAPITAL MADE IT SOUND. THEY DON’T KNOW HOW GOOD THEY HAVE IT.",
+					"SOMEONE’S BEEN COMING IN HERE, I CANNOT FIND SOME PAGES AND I SWEAR THEY WERE HERE EARLIER.",
+					"I MAY NEED TO LOCK THIS PLACE DOWN, THOUGHT BEING OUT HERE WOULD MEAN I WAS NOT DISTURBED, SYLVIAS BECOMING A REAL PEST."
 			});
 			map.setNotes();
 			StoryHandler.haveBeenReCured = true;
@@ -698,7 +698,7 @@ public class MapScreen implements Screen {
 		StringBuilder value = new StringBuilder();
 
 		if(checkForKC.size() == 9) {
-			for(String key : checkForKC) {
+			for(String key : 		checkForKC) {
 				value.append(key);
 			}
 
@@ -1383,7 +1383,6 @@ public class MapScreen implements Screen {
 	public void showNotes() {
 		if(noteBackground.isVisible()) {
 			int notes = PermanetPlayer.getPermanentPlayerInstance().getNotes().size();
-			System.out.println("NUMBER OF NOTES: " + notes);
 			if (notes >= 1) {
 				note1.setVisible(true);
 			}
