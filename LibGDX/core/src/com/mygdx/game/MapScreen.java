@@ -653,15 +653,38 @@ public class MapScreen implements Screen {
 			}
 			startCreatingCutscene("cutscene/ingame/scripts/Scene9.csv");
 			map.nextNoteLevel(new String[]{
-					"I SAW TRACES OF HER AGAIN TODAY, SHE THINKS SHE IS BEING SNEAKY BUT WE ARE NOT STUPID, CANNOT BELIEVE THEY WON’T LET ME TAKE CARE OF IT.",
+					"I SAW TRACES OF HER AGAIN TODAY, SHE THINKS SHE IS BEING SNEAKY BUT WE ARE NOT STUPID, CANNOT BELIEVE THEY WILL NOT LET ME TAKE CARE OF IT.",
 					"THIS NEW GUY IS CLEARING RVH-67 TOO QUICKLY, WE NEED TO GIVE IT MORE TIME TO INCUBATE. I WILL BE PLANTING MORE SAMPLES AGAIN LATER TODAY.",
-					"I SAW THE NEW GUY HANGING ABOUT THE CHURCH IN THE MIDDLE OF THE NIGHT THOUGHT HE HAD BEEN SLEEPING BUT I CAN’T MAKE CONTACT.",
+					"I SAW THE NEW GUY HANGING ABOUT THE CHURCH IN THE MIDDLE OF THE NIGHT THOUGHT HE HAD BEEN SLEEPING BUT I CANNOT MAKE CONTACT.",
 					"I MAY ASK FOR MORE BACKUP CULTIVATING, RVH IS NOT AS EASY AS THE GUYS BACK AT CAPITAL MADE IT SOUND. THEY DON’T KNOW HOW GOOD THEY HAVE IT.",
-					"SOMEONE’S BEEN COMING IN HERE, I CANNOT FIND SOME PAGES AND I SWEAR THEY WERE HERE EARLIER.",
+					"SOMEONES BEEN COMING IN HERE, I CANNOT FIND SOME PAGES AND I SWEAR THEY WERE HERE EARLIER.",
 					"I MAY NEED TO LOCK THIS PLACE DOWN, THOUGHT BEING OUT HERE WOULD MEAN I WAS NOT DISTURBED, SYLVIAS BECOMING A REAL PEST."
 			});
 			map.setNotes();
 			StoryHandler.haveBeenReCured = true;
+		}
+
+		if(StoryHandler.allNotesSequence && !StoryHandler.oDNotesPlaced) {
+			map.nextNoteLevel(new String[]{
+					"POPULATION CONFIRMED TO BE DECLINING HOWEVER THE RATE IS LOWER THAN INITIALLY PREDICTED.",
+					"I ESTIMATE IT WILL TAKE IS ANOTHER SEASON TO REACH THE 40 PERCENT DEATH COUNT." ,
+					"WISH I COULD GO HOME SOONER. I WILL BE ADMINISTERING THE VIRUS TO MORE HOUSES NEXT TIME." ,
+					"HE HAD EVERYONE CURED BUT I MANAGED TO INFECT SOME PEOPLE IN TIME."
+			});
+			map.setNotes();
+			StoryHandler.oDNotesPlaced=true;
+			System.out.println("DECISION NUMBER: " + StoryHandler.decisionNumber);
+		}
+
+		if(PermanetPlayer.getPermanentPlayerInstance().getNotes().size() >=  16  && !StoryHandler.decision2Created) {
+			decisionFirst.setText("Tell the people what you have found");
+			decisionSecond.setText("Keep it to yourself");
+			setDecisionWindowVisible(true);
+			StoryHandler.decision2Created = true;
+		}
+
+		if(StoryHandler.decision2Made) {
+
 		}
 	}
 	
@@ -1151,6 +1174,11 @@ public class MapScreen implements Screen {
 					StoryHandler.decisionNumber++;
 					StoryHandler.tutorialDecisionMade = true;
 				}
+				if(StoryHandler.decisionNumber == 2) {
+					StoryHandler.decision2Made = true;
+					StoryHandler.toldVillagers = true;
+					StoryHandler.decisionNumber++;
+				}
 				setDecisionWindowVisible(false);
 			}
 		});
@@ -1169,6 +1197,11 @@ public class MapScreen implements Screen {
 					StoryHandler.transitionEndOfDayTutorial = false;
 					StoryHandler.decisionNumber++;
 					StoryHandler.tutorialDecisionMade = true;
+				}
+				if(StoryHandler.decisionNumber == 2) {
+					StoryHandler.decision2Made = true;
+					StoryHandler.toldVillagers = false;
+					StoryHandler.decisionNumber++;
 				}
 				setDecisionWindowVisible(false);
 			}

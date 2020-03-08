@@ -22,6 +22,11 @@ public class StoryHandler {
     public static Boolean allNotesSequence = false;
 
     public static Boolean haveBeenReCured = false;
+    public static Boolean oDNotesPlaced = false;
+
+    public static Boolean decision2Created = false;
+    public static Boolean decision2Made = false;
+    public static Boolean toldVillagers = false;
 
     public static int decisionNumber = 1;
 

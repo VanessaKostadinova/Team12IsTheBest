@@ -39,7 +39,7 @@ public class PermanetPlayer {
     private Item[] createItems(){
         Item[] tempItems = new Item[5];
         tempItems[0] = new Item("BOOTS", "Faster footwear", 75f, 400);
-        tempItems[1] = new Item("MASKS", "Better plague protection TM", 20f, 400);
+        tempItems[1] = new Item("MASKS", "Better plague protection TM", 2000f, 400);
         tempItems[2] = new Item("HEALING STRENGTH", "Better healing", 0.1f, 400);
         tempItems[3] = new Item("BURNING STRENGTH", "Burn baby burn but better", 0.5f, 400);
         return tempItems;
@@ -105,7 +105,7 @@ public class PermanetPlayer {
     }
 
     public void changeEnergy(int energyDelta){
-        energy += energyDelta;
+        energy -= energyDelta;
     }
 
     public void resetEnergy(){
