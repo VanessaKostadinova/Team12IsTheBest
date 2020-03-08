@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -785,13 +787,26 @@ public class MapScreen implements Screen {
 				total++;
 			}
 		}
-		float alivePercentageF = alive/total * 100;
-		float deadPercentageF = dead/total * 100;
-		float sickPercentageF = sick/total * 100;
+		float alivePercentageF = 0;
+		float deadPercentageF = 0;
+		float sickPercentageF = 0;
 
-		alivePercentage.setText((int) alivePercentageF);
-		sickPercentage.setText((int) sickPercentageF);
-		deadPercentage.setText((int) deadPercentageF);
+		BigDecimal PercentageBD = new BigDecimal(Float.toString(alive/total * 100));
+		BigDecimal PercentageDD = new BigDecimal(Float.toString(dead/total * 100));
+		BigDecimal PercentageSD = new BigDecimal(Float.toString(sick/total * 100));
+
+		PercentageBD = PercentageBD.setScale(1, BigDecimal.ROUND_HALF_DOWN);
+		PercentageDD = PercentageDD.setScale(1, BigDecimal.ROUND_HALF_DOWN);
+		PercentageSD = PercentageSD.setScale(1, BigDecimal.ROUND_HALF_DOWN);
+
+		alivePercentageF = PercentageBD.floatValue();
+		deadPercentageF = PercentageDD.floatValue();
+		sickPercentageF = PercentageSD.floatValue();
+
+
+		alivePercentage.setText(alivePercentageF + "");
+		sickPercentage.setText(sickPercentageF +"");
+		deadPercentage.setText(deadPercentageF+"");
 	}
 	
 	public void diseaseHandler(Node house) {
