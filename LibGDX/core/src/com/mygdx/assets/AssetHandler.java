@@ -102,7 +102,7 @@ public class AssetHandler {
     public static final LabelStyle fontSize48 = createLabelStyleWithBackground2();
     public static final LabelStyle fontSize12Subtitles = createLabelStyleWithBackground(Color.WHITE);
     public static final LabelStyle fontSize32 = createLabelStyleWithBackground(32);
-
+    public static final LabelStyle fontSize15 = createLabelStyleWithBackground(15);
 
 
 

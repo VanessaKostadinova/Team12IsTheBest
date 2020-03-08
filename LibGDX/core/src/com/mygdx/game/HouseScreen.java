@@ -712,6 +712,7 @@ public class HouseScreen implements Screen {
 		private void drawNPC(SpriteBatch batch) {
 			for(NPC villager : node.getNPCs()) {
 				villager.getSprite().draw(batch);
+				villager.update();
 				if(villager.getHealth() >= 0) {
 					batch.draw(villager.getBar().getTexture(), villager.getBar().getX(), villager.getBar().getY(), 32*(villager.getHealth()/100), villager.getBar().getHeight());
 				}

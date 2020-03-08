@@ -62,7 +62,6 @@ public class Disease {
 		return totalIllness;
 	}
 
-	//TODO finish implementation
 	public void infectResidents(Node house){
 		Random random = new Random();
 		float illnessLikelihood = house.getIllnessLevel();
@@ -71,10 +70,17 @@ public class Disease {
 			illnessLikelihood += compareHouse.getIllnessLevel() * Math.pow(distance, (-1/3));
 		}
 
-		for(NPC resident : house.getAllAlive()){
-			if((random.nextInt(100) + 1) < illnessLikelihood){
-				resident.infect();
+		for(NPC resident : house.getNPCs()){
+			if (resident.getStatus().equals("Alive")) {
+				if((random.nextInt(100) + 1) < illnessLikelihood){
+					resident.infect();
+					resident.changeHealth(-10);
+				}
+			}
+			if(resident.getStatus().equals("Sick")) {
+				resident.changeHealth(-7.5f);
 			}
 		}
+
 	}
 }

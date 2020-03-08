@@ -72,6 +72,10 @@ public class MapScreen implements Screen {
 	private Sprite baseUI;
 	private Sprite foodLabel;
 
+	private Sprite alivePercentageLabel;
+	private Sprite deadPercentageLabel;
+	private Sprite sickPercentageLabel;
+
 	private float houseAlpha = 0;
 	private float churchAlpha = 0;
 	private float shopAlpha = 0;
@@ -105,6 +109,11 @@ public class MapScreen implements Screen {
 	private boolean initialDone;
 
 	private Label energy;
+
+	private Label alivePercentage;
+	private Label sickPercentage;
+	private Label deadPercentage;
+
 	private Disease disease;
 
 	private Label numberOfCharacter;
@@ -388,6 +397,18 @@ public class MapScreen implements Screen {
 		foodLabel.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
 		foodLabel.setPosition(47, 74.5f);
 
+		this.alivePercentageLabel = new Sprite(new Texture("player/MAPUI/ALIVEPERCENTAGE.png"));
+		alivePercentageLabel.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
+		alivePercentageLabel.setPosition(47, 66.5f);
+
+		this.sickPercentageLabel = new Sprite(new Texture("player/MAPUI/SICKPERCENTAGE.png"));
+		sickPercentageLabel.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
+		sickPercentageLabel.setPosition(47, 58.5f);
+
+		this.deadPercentageLabel = new Sprite(new Texture("player/MAPUI/DEADPERCENTAGE.png"));
+		deadPercentageLabel.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
+		deadPercentageLabel.setPosition(47, 50.5f);
+
 	}
 	
 	@Override
@@ -444,6 +465,9 @@ public class MapScreen implements Screen {
 			
 			baseUI.draw(main.batch);
 			foodLabel.draw(main.batch);
+			alivePercentageLabel.draw(main.batch);
+			sickPercentageLabel.draw(main.batch);
+			deadPercentageLabel.draw(main.batch);
 			
 		main.batch.end();
 		
@@ -458,7 +482,9 @@ public class MapScreen implements Screen {
 		checkEndGame();
 		showNotes();
 		storyChecker();
-		
+		setPercentages();
+
+
 	}
 	
 	public void checkEndGame() {
@@ -693,6 +719,11 @@ public class MapScreen implements Screen {
 		if(initialDone) {
 			if (darken) {
 				energy.setVisible(false);
+
+				sickPercentage.setVisible(false);
+				alivePercentage.setVisible(false);
+				deadPercentage.setVisible(false);
+
 				numberOfCharacter.setVisible(false);
 				numberOfcharacterTitle.setVisible(false);
 				numberOfcharacterSickTitle.setVisible(false);
@@ -704,6 +735,7 @@ public class MapScreen implements Screen {
 					if(darkness <= 0) {
 						PermanetPlayer.getPermanentPlayerInstance().resetEnergy();
 						energy.setText(PermanetPlayer.getPermanentPlayerInstance().getEnergy() + "");
+						setPercentages();
 						for(Node house : map.getNodes()){
 							diseaseHandler(house);
 						}
@@ -724,10 +756,42 @@ public class MapScreen implements Screen {
 				}
 			}
 			else {
-				energy.setVisible(true);				
+				energy.setVisible(true);
+				alivePercentage.setVisible(true);
+				deadPercentage.setVisible(true);
+				sickPercentage.setVisible(true);
 			}
 		}
 		this.rayHandler.setAmbientLight(darkness);
+	}
+
+	public void setPercentages() {
+		float dead = 0;
+		float alive = 0;
+		float sick = 0;
+		float total = 0;
+
+		for(Node n : map.getNodes()) {
+			for(NPC npc : n.getNPCs()) {
+				if(npc.getStatus().equals("Dead") || npc.getStatus().equals("Burnt")) {
+					dead++;
+				}
+				if(npc.getStatus().equals("Sick")) {
+					sick++;
+				}
+				if(npc.getStatus().equals("Alive")) {
+					alive++;
+				}
+				total++;
+			}
+		}
+		float alivePercentageF = alive/total * 100;
+		float deadPercentageF = dead/total * 100;
+		float sickPercentageF = sick/total * 100;
+
+		alivePercentage.setText((int) alivePercentageF);
+		sickPercentage.setText((int) sickPercentageF);
+		deadPercentage.setText((int) deadPercentageF);
 	}
 	
 	public void diseaseHandler(Node house) {
@@ -771,6 +835,7 @@ public class MapScreen implements Screen {
 
 	public void updateText(Node n) {
 		energy.setText(PermanetPlayer.getPermanentPlayerInstance().getEnergy()+"");
+		setPercentages();
 		if(n.getLevel1()) {
 			numberOfCharacter.setText(n.getNumberOfAlive());
 		} else {
@@ -1063,7 +1128,36 @@ public class MapScreen implements Screen {
 		energy.setVisible(false);
 		//energy.setVisible(false);
 		main.ui.addActor(energy);
-		
+
+		alivePercentage = new Label(PermanetPlayer.getPermanentPlayerInstance().getEnergy() + "", AssetHandler.fontSize15);
+		alivePercentage.setWidth(450f);
+		alivePercentage.setFontScale(2.5f);
+		alivePercentage.setAlignment(Align.center);
+		alivePercentage.setPosition(main.ui.getWidth()-energy.getWidth()+50f, main.ui.getHeight()-energy.getHeight()-350f);
+		alivePercentage.setVisible(false);
+		//energy.setVisible(false);
+		main.ui.addActor(alivePercentage);
+
+		sickPercentage = new Label(PermanetPlayer.getPermanentPlayerInstance().getEnergy() + "", AssetHandler.fontSize24);
+		sickPercentage = new Label(PermanetPlayer.getPermanentPlayerInstance().getEnergy() + "", AssetHandler.fontSize15);
+		sickPercentage.setWidth(450f);
+		sickPercentage.setFontScale(2.5f);
+		sickPercentage.setAlignment(Align.center);
+		sickPercentage.setPosition(main.ui.getWidth()-energy.getWidth()+50f, main.ui.getHeight()-energy.getHeight()-415f);
+		sickPercentage.setVisible(false);
+		main.ui.addActor(sickPercentage);
+
+		deadPercentage = new Label(PermanetPlayer.getPermanentPlayerInstance().getEnergy() + "", AssetHandler.fontSize15);
+		deadPercentage.setWidth(450f);
+		deadPercentage.setFontScale(2.5f);
+		deadPercentage.setAlignment(Align.center);
+		deadPercentage.setPosition(main.ui.getWidth()-energy.getWidth()+50f, main.ui.getHeight()-energy.getHeight()-485f);
+		deadPercentage.setVisible(false);
+		main.ui.addActor(deadPercentage);
+
+		setPercentages();
+
+
 		numberOfcharacterTitle = new Label("NUMBER OF ALIVE: ", AssetHandler.fontSize24);
 		numberOfcharacterTitle.setWidth(500f);
 		numberOfcharacterTitle.setFontScale(1.3f);

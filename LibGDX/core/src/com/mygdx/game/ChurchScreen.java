@@ -86,7 +86,7 @@ public class ChurchScreen implements Screen {
 		
 		setCatagories();
 		
-		final Image Title = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.manager.get("shop/screen/SHOP.png", Texture.class))));
+		final Image Title = new Image(new TextureRegionDrawable(new TextureRegion(new Texture("shop/church/CHURCHLOGO.png"))));
 		Title.setScaling(Scaling.fit);
 		Title.setPosition(50f, main.ui.getHeight()- Title.getHeight() - 50f);
 		Title.setSize(Title.getWidth(), Title.getHeight());
@@ -218,21 +218,11 @@ public class ChurchScreen implements Screen {
 		level.setPosition((main.ui.getWidth())-40f-Leave.getWidth(), titleLevel.getY() - 60f);
 		level.setVisible(false);
 		main.ui.addActor(level);
-		
-
-		
 
 		Gdx.input.setInputProcessor(main.ui);
 		main.ui.addActor(t);
 		pauseGame();
 	}
-	
-	//private Player readPlayer() {
-		//FileHandle handle = Gdx.files.local("data/player.txt");
-		//String[] values= handle.readString().split(",");
-		//return new Player(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6]), Float.parseFloat(values[7]));
-		//return null;
-	//}
 	
 	
 	public void setCatagories() {
@@ -319,47 +309,6 @@ public class ChurchScreen implements Screen {
 		    }
 		});
 		items.add(cureStrength);
-		
-		/*final Label flameAmount = new Label("FLAME AMOUNT", unClicked);
-		flameAmount.setPosition(50, items.get(items.size()-1).getY() - spacing);
-		flameAmount.addListener(new ClickListener(){
-			@Override
-		    public void clicked(InputEvent event, float x, float y) {
-				if(!isPaused) {
-					if(flameAmount.getStyle().equals(unClicked)) {
-						resetLabel();
-						flameAmount.setStyle(clicked);
-						setLabels(shop.getUpgrade(4));
-					}
-					else {
-						flameAmount.setStyle(unClicked);
-						updateUI(false);
-					}
-				}
-		    }
-		});
-		items.add(flameAmount);
-		
-		final Label cureAmount = new Label("CURE AMOUNT", unClicked);
-		cureAmount.setPosition(50, items.get(items.size()-1).getY() - spacing);
-		cureAmount.addListener(new ClickListener(){
-			@Override
-		    public void clicked(InputEvent event, float x, float y) {
-				if(!isPaused) {
-					if(cureAmount.getStyle().equals(unClicked)) {
-						resetLabel();
-						cureAmount.setStyle(clicked);
-						setLabels(shop.getUpgrade(5));
-					}
-					else {
-						cureAmount.setStyle(unClicked);
-						updateUI(false);
-					}
-				}
-		    }
-		});
-		items.add(cureAmount);*/
-		
 		
 		for(Label label : items) {
 			t.addActor(label);
