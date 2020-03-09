@@ -23,7 +23,6 @@ public class Map {
 	private Church church;
 	private Shop shop;
 	private Disease disease = new Disease();
-	private Map map = null;
 
 	private String[] notes = {
 			"MY MASK FILTER IS RUNNING LOW, I NEED TO SOURCE A REPLACEMENT SOON",

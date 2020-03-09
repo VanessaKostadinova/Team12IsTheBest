@@ -26,34 +26,21 @@ public class Node extends Renderable {
 	private House house;
 	/** List of NPC's residing in this node */
 	private ArrayList<NPC> residents;
-
-	/** Map of all notes in the house */
-	//private Map<Vector2, String> notes = new HashMap<>();
-	/** Map of all notes found in the house */
-	//private Map<String, Boolean> noteSeen;
-
+	/** The List of notes inside this house. */
 	List<Note> notes;
-
 	/** The illness level of this node */
 	private float illnessLevel;
-
 	/** All neighbouring nodes */
 	private ArrayList<Node> neighbours;
-
-	//TODO finis this implementation
-	private int numberAlive;
-	private int numberIll;
-	private int numberDead;
-	private int numberBurned;
-
 	/** Whether the player has researched the number of living residents */
 	private boolean numberAliveResearched = false;
 	/** Whether the player has researched the number of ill residents */
 	private boolean numberIllResearched = false;
 	/** Whether the player has researched the number of dead residents */
 	private boolean numberDeadResearched = false;
+
 	private boolean level4Researched = false;
-	
+
 	
 	public Node(Texture textureOfHouse, float x, float y, String[] attributes) {
 		illnessLevel = 0f;
@@ -197,14 +184,6 @@ public class Node extends Renderable {
 	public void addNotes(Note note) {
 		notes.add(note);
 	}
-	
-	/*ublic Map<String, Boolean> getNoteValidation() {
-		return noteSeen;
-	}*/
-	
-	/*public void setNoteSeen(String Message) {
-		//noteSeen.put(Message, true);
-	}*/
 	
 	public void serializeVillagers() {    
 		FileHandle handle = Gdx.files.local("temp/villagers.temp");
