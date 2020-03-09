@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.esotericsoftware.kryo.io.Input;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -142,7 +143,7 @@ public final class MainMenu implements Screen {
 		continueButton.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				/*sound.pause();
+				sound.pause();
 				dispose();
 				main.ui.clear();
 				MapScreen object2 = null;
@@ -154,8 +155,8 @@ public final class MainMenu implements Screen {
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
-				MapScreen screen = new MapScreen(main, object2.getDX(), object2.getDY(), object2.getDay(), object2.getMap());
-				main.setScreen(screen);*/
+				MapScreen screen = new MapScreen(main, object2.getDay(), object2.getMap());
+				main.setScreen(screen);
 			}
 			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0007_CONTINUE.png"))));
@@ -170,14 +171,14 @@ public final class MainMenu implements Screen {
 
 		float playBorder = 65;
 
-		/*try {
+		try {
 			Input input = new Input(new FileInputStream("save.bin"));
 		}
 		catch (FileNotFoundException e) {
 			continueButton.setVisible(false);
 			continueButton.setSize(0, 0);
 			playBorder -= 20;
-		}*/
+		}
 
 		/*
 		 * Essentially the same as above. Just to do with Play.

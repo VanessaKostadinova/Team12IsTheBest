@@ -38,19 +38,30 @@ public class Node extends Renderable {
 	private boolean numberIllResearched = false;
 	/** Whether the player has researched the number of dead residents */
 	private boolean numberDeadResearched = false;
-
+	private String imageURL;
 	private boolean level4Researched = false;
 
 	
-	public Node(Texture textureOfHouse, float x, float y, String[] attributes) {
+	public Node(String textureOfHouse, float x, float y, String[] attributes) {
 		illnessLevel = 0f;
-		super.setSprite(textureOfHouse, x, y);
+		super.setSprite(new Texture(Gdx.files.internal(textureOfHouse)), x, y);
+		this.imageURL = textureOfHouse;
 		residents = new ArrayList<>();
 		//noteSeen = new HashMap<>();
 		notes = new ArrayList<>(10);
 		neighbours = new ArrayList<>();
 		setAllVillagers(attributes);
 		this.house = new House(attributes);
+	}
+
+	public Node(House house, ArrayList<NPC> residents, List<Note> notes, String imageURL, float x, float y) {
+		super.setSprite(new Texture(Gdx.files.internal(imageURL)), x, y);
+		this.house = house;
+		this.imageURL = imageURL;
+		this.residents = residents;
+		neighbours = new ArrayList<>();
+		System.out.println(residents.size());
+		this.notes = notes;
 	}
 
 	public void setAllVillagers(String[] attributes) {
@@ -255,6 +266,10 @@ public class Node extends Renderable {
 	
 	public Boolean setLevel4(Boolean value) {
 		return level4Researched = value;
+	}
+
+	public String getImageURL() {
+		return imageURL;
 	}
 	
 	public boolean areAllDead() {

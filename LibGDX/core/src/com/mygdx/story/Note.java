@@ -14,6 +14,13 @@ public class Note {
         this.y = y;
     }
 
+    public Note(String info, int x, int y, boolean hasBeenSeen) {
+        this.info = info;
+        this.hasBeenSeen = hasBeenSeen;
+        this.x = x;
+        this.y = y;
+    }
+
     public int getX() {
         return this.x;
     }

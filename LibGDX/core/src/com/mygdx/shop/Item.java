@@ -15,6 +15,14 @@ public class Item {
 		this.originalCost = cost;
 		this.level = 1;
 	}
+
+	public Item(String name, String description, float increasingValue, int cost, int level) {
+		this.name = name;
+		this.description = description;
+		this.increasingValue = increasingValue;
+		this.originalCost = cost;
+		this.level = level;
+	}
 	
 	public String getDescription() {
 		return description;
@@ -26,6 +34,10 @@ public class Item {
 	
 	public float getIncreasingValue() {
 		return increasingValue;
+	}
+
+	public int getOriginalCost() {
+		return originalCost;
 	}
 	
 	public int getCost() {

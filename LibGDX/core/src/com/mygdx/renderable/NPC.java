@@ -49,8 +49,9 @@ public class NPC extends Renderable implements Living {
 		this.foodGiven = false;
 		healthBar = new Sprite(new Texture(Gdx.files.internal("house/UI/HEALTH.png")));
 		this.sanityAdd = false;
-		super.updateSprite(x, y);
 		this.update();
+		this.updateSprite(x, y);
+
 	}
 	
 	public void loadWalkingAnimation() {

@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.esotericsoftware.kryo.io.Output;
 import com.mygdx.extras.PermanetPlayer;
 import com.mygdx.map.Disease;
 import com.mygdx.map.Map;
@@ -153,6 +156,8 @@ public class MapScreen implements Screen {
 	private Image letter;
 	private Label paragraph;
 
+	private Boolean saveGame = false;
+
 	/**
 	 * Create the map screen, and handle the input and movements around the map.
 	 * @author Inder, Vanessa, Leon
@@ -208,6 +213,69 @@ public class MapScreen implements Screen {
 
 		pointer.setPosition(pointer.getX()+500, pointer.getY()+500);
 		createUI();
+		inventory();
+		pauseGame();
+		decisionMaking();
+		if(!StoryHandler.introductionPart1) {
+			startCreatingCutscene("cutscene/ingame/scripts/Scene1.csv");
+			StoryHandler.introductionPart1 = true;
+		}
+
+	}
+
+	public MapScreen(Main main, int day, Map map) {
+		darken = false;
+		itemsSelected = false;
+		cutsceneActive = false;
+		this.viewWidth = 256;
+		Player.init(5, 100, 100);
+		isPaused = false;
+		cameraMap = new Camera(viewWidth, -1080, -1920);
+		cameraMap.getCamera().position.set(
+				cameraMap.getCamera().viewportWidth / 2f ,
+				cameraMap.getCamera().viewportHeight / 2f, 0);
+		int WORLD_WIDTH = 1920 * 2;
+		int WORLD_HEIGHT = 1080 * 2;
+		cameraMap.setMaxValues(WORLD_WIDTH, WORLD_HEIGHT);
+
+
+		cameraUI = new Camera(viewWidth, 1080, 1920);
+		cameraUI.getCamera().position.set(
+				cameraUI.getCamera().viewportWidth / 2f ,
+				cameraUI.getCamera().viewportHeight / 2f, 0);
+		cameraUI.setMaxValues(WORLD_WIDTH, WORLD_HEIGHT);
+
+		background = new Sprite(AssetHandler.manager.get("house/background.png", Texture.class));
+		//background.setScale(1920/1080);
+		background.setPosition(0, 0);
+
+		currentCutsceneQuotes = new LinkedList<>();
+		currentCutscenePerson = new LinkedList<>();
+		currentCutsceneDuration = new LinkedList<>();
+
+
+		this.darkness = 0f;
+		World world = new World(new Vector2(0, 0), false);
+		this.rayHandler = new RayHandler(world);
+		this.rayHandler.setAmbientLight(darkness);
+		this.darken = false;
+		this.main = main;
+		this.map = map;
+		this.disease = map.getDisease();
+		this.initialDone = false;
+
+		this.checkForKC = new ArrayList<>();
+		createUIElements();
+		stateTime = 0;
+		dayAnimationTime = 0;
+
+		cameraMap.updateCameraPosition(500, 500);
+		cameraMap.getCamera().zoom = 7f;
+
+		pointer.setPosition(pointer.getX()+500, pointer.getY()+500);
+		this.day = day;
+		createUI();
+
 		inventory();
 		pauseGame();
 		decisionMaking();
@@ -485,6 +553,7 @@ public class MapScreen implements Screen {
 		showNotes();
 		storyChecker();
 		setPercentages();
+		checkSaveGame();
 
 
 	}
@@ -1236,9 +1305,19 @@ public class MapScreen implements Screen {
 			}
 		});
 
-		Label button2 = new Label("EXIT", AssetHandler.fontSize24);
+		Label button2 = new Label("SAVE", AssetHandler.fontSize24);
 		button2.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
 		button2.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				System.out.println("SAVE!");
+				saveGame = true;
+			}
+		});
+
+		Label button3 = new Label("EXIT", AssetHandler.fontSize24);
+		button3.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
+		button3.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				System.exit(0);
@@ -1248,6 +1327,9 @@ public class MapScreen implements Screen {
 		pause.add(button1).row();
 		pause.row();
 		pause.add(button2).row();
+		pause.row();
+		pause.add(button3).row();
+		pause.row();
 		pause.pack(); //Important! Correctly scales the window after adding new elements
 
 		//Centre window on screen.
@@ -2060,4 +2142,27 @@ public class MapScreen implements Screen {
 		labelStyle.fontColor = color;
 		return labelStyle;
 	}
+
+	public Map getMap() {
+		return map;
+	}
+
+	public int getDay() {
+		return day;
+	}
+
+	public void checkSaveGame() {
+		if(saveGame) {
+			try {
+				Output output = new Output(new FileOutputStream("save.bin"));
+				MapScreen m = this;
+				main.kryo.writeObject(output, m);
+				output.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			saveGame = false;
+		}
+	}
+
 }

@@ -22,7 +22,6 @@ public class Player extends Renderable implements Living {
 	private static final int FRAME_COLS = 2;
 	private static final int FRAME_ROWS = 2;
 	private float speed;
-	private PermanetPlayer permanetPlayer;
 	private static final float sanityFactor = 0.2f;
 	
 	private float maskDurationSeconds;
@@ -30,8 +29,6 @@ public class Player extends Renderable implements Living {
 	private Spray[] sprays;
 	private int sprayIndex;
 
-	private float amountOfHealingFluid;
-	private float amountOfBurningFluid;
 
 	private float currentMaskDuration;
 	private int numberOfMasks;
@@ -49,10 +46,12 @@ public class Player extends Renderable implements Living {
 		setSprite(walkFrames[0], 0, 0);
 		this.amountOfFood = 1000;
 		this.numberOfMasks = masks;
-		PermanetPlayer.createInventoryInstance(masks, amountOfHealingFluid, amountOfBurningFluid);
+		try {
+			PermanetPlayer.getPermanentPlayerInstance();
+		} catch (IllegalStateException e ) {
+			PermanetPlayer.createInventoryInstance(masks, amountOfHealingFluid, amountOfBurningFluid);
+		}
 		this.speed = 60f + (PermanetPlayer.getPermanentPlayerInstance().getItem(0).getLevel()*PermanetPlayer.getPermanentPlayerInstance().getItem(0).getIncreasingValue());
-		this.amountOfHealingFluid = amountOfHealingFluid;
-		this.amountOfBurningFluid = amountOfBurningFluid;
 
 		/**
 		 * Why are you trying to figure out the mask decrement?
@@ -164,7 +163,7 @@ public class Player extends Renderable implements Living {
 	}
 	
 	public float getEnergy() {
-		return permanetPlayer.getEnergy();
+		return PermanetPlayer.getPermanentPlayerInstance().getEnergy();
 	}
 
 	@Override
@@ -209,8 +208,12 @@ public class Player extends Renderable implements Living {
 		return PermanetPlayer.getPermanentPlayerInstance().getSanity();
 	}
 
-	public float getNumberOfMasks() {
+	public int getNumberOfMasks() {
 		return numberOfMasks;
+	}
+
+	public void setNumberOfMasks(int numberOfMasks) {
+		this.numberOfMasks = numberOfMasks;
 	}
 
 	public void reduceMask() {

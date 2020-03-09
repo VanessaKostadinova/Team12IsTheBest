@@ -18,7 +18,6 @@ public class PermanetPlayer {
     private float healingFluid;
     private float burningFluid;
     private float sanity;
-    private int food;
     private int energy;
     private List<Note> notes;
     private Item[] items;
@@ -37,7 +36,7 @@ public class PermanetPlayer {
 
     //TODO Fix values
     private Item[] createItems(){
-        Item[] tempItems = new Item[5];
+        Item[] tempItems = new Item[4];
         tempItems[0] = new Item("BOOTS", "Faster footwear", 75f, 400);
         tempItems[1] = new Item("MASKS", "Better plague protection TM", 2000f, 400);
         tempItems[2] = new Item("HEALING STRENGTH", "Better healing", 0.1f, 400);
@@ -96,16 +95,12 @@ public class PermanetPlayer {
         burningFluid += burningFluidDelta;
     }
 
-    public void changeFoodAmount(int foodDelta){
-        food += foodDelta;
-    }
-
     public void changeSanity(float sanityDelta){
         sanity -= sanityDelta;
     }
 
     public void changeEnergy(int energyDelta){
-        energy -= energyDelta;
+        energy += energyDelta;
     }
 
     public void resetEnergy(){
@@ -124,12 +119,16 @@ public class PermanetPlayer {
         return sanity;
     }
 
+    public void setSanity(float sanity) {
+        this.sanity = sanity;
+    }
+
     public int getEnergy() {
         return energy;
     }
 
-    public int getFood() {
-        return food;
+    public void setEnergy(int energy) {
+        this.energy = energy;
     }
 
     public float getHealingFluid() {
@@ -144,10 +143,17 @@ public class PermanetPlayer {
         return items;
     }
 
+    public void setItems(Item[] items){
+        this.items = items;
+    }
+
     public void addNote(Note note) {
         notes.add(note);
     }
     public List<Note> getNotes() {
         return notes;
+    }
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
     }
 }

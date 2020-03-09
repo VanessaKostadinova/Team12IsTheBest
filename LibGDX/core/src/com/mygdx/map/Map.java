@@ -47,6 +47,14 @@ public class Map {
 		}
 	}
 
+	public Map(List<Node> nodes) {
+		this.nodes = nodes;
+		church = new Church(AssetHandler.manager.get("house/Shop.gif", Texture.class), 900.0f, 470.0f);
+		shop = new Shop(AssetHandler.manager.get("house/Shop.gif", Texture.class), 760.0f, 500.0f);
+		checkIfPlayerExist();
+		setNeighbours();
+	}
+
 	private Boolean notesAlreadyExists() {
 		for(Node n : nodes) {
 			if(n.getNotes().size() > 0) {
@@ -145,7 +153,7 @@ public class Map {
 			handle = Gdx.files.local(String.format("data/%s", fileName));
 			String[] nodeProperties = handle.readString().split("\\r?\\n");
 			if(!(nodes.size() == 20)) {
-				nodes.add(new Node(new Texture(Gdx.files.internal("house/"+nodeProperties[0])), Float.parseFloat(nodeProperties[1]), Float.parseFloat(nodeProperties[2]), nodeProperties));
+				nodes.add(new Node("house/"+nodeProperties[0], Float.parseFloat(nodeProperties[1]), Float.parseFloat(nodeProperties[2]), nodeProperties));
 			}
 			else {
 				Gdx.app.log("House Error",
