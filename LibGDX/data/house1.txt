@@ -5,7 +5,7 @@ House1.gif
 500,250,70
 500,450,0
 level1.csv
-Wooden_Floor.gif
+marble-cracked.gif
 Floor_Stone.gif
 Door.gif
 (THEY ARE NOT WHO YOU THINK THEY ARE DON'T TRUST THEM.,150,200

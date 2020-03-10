@@ -1,11 +1,14 @@
 package com.mygdx.game;
 
 import java.util.List;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
@@ -72,6 +75,15 @@ public class HouseInputHandler implements InputProcessor {
 
 	private Boolean cutsceneActive;
 
+	private Music walkingSoundEffect;
+	private Music cureSoundEffect;
+	private Music fireSoundEffect;
+	private Music leatherAndJeansEffect;
+
+	private Music backgroundSound1;
+	private Music backgroundSound2;
+	private Music backgroundSound3;
+
 
 	public HouseInputHandler(Camera camera, int[][] level, Window pause, List<NPC> npcs, Label paragraph, Image letter, Image icon, World world) {
 		this.camera = camera;
@@ -87,11 +99,57 @@ public class HouseInputHandler implements InputProcessor {
 		this.icon = icon;
 		this.paragraph = paragraph;
 		this.letter = letter;
+		this.walkingSoundEffect = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/footstep-on-wooden-floor.wav"));
+		this.cureSoundEffect = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/healing-spray.wav"));
+		this.fireSoundEffect = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/flame-thrower-fire-with-air.wav"));
+		this.leatherAndJeansEffect = Gdx.audio.newMusic(Gdx.files.internal(	"soundeffects/leathers-and-jeans-moving.wav"));
+
+		this.backgroundSound1 = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/big-creepy-sound.wav"));
+		this.backgroundSound2 = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/creepy-sound-one.wav"));
+		this.backgroundSound3 = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/creepy-sound-two.wav"));
+
+		this.backgroundSound1.setVolume(0.01f);
+		this.backgroundSound2.setVolume(0.01f);
+		this.backgroundSound3.setVolume(0.01f);
+
 		listener = new MyContactListener();
 		this.cutsceneActive = false;
 		world.setContactListener(listener);
 		lastInput = "";
 	}
+
+	public void playBackgroundMusic() {
+		if(!backgroundSound1.isPlaying() && !backgroundSound1.isPlaying() && !backgroundSound1.isPlaying()) {
+			Random r = new Random();
+			int value = r.nextInt((2 - 0) + 1) + 0;
+			switch(value) {
+				case 0: backgroundSound1.play();
+				case 1: backgroundSound2.play();
+				case 2: backgroundSound3.play();
+			}
+
+		}
+	}
+
+	public void stopAllMusicAndDispose() {
+		backgroundSound1.stop();
+		backgroundSound2.stop();
+		backgroundSound3.stop();
+		walkingSoundEffect.stop();
+		cureSoundEffect.stop();
+		fireSoundEffect.stop();
+		leatherAndJeansEffect.stop();
+
+		backgroundSound1.dispose();
+		backgroundSound2.dispose();
+		backgroundSound3.dispose();
+		walkingSoundEffect.dispose();
+		cureSoundEffect.dispose();
+		fireSoundEffect.dispose();
+		leatherAndJeansEffect.dispose();
+	}
+
+
 	
 	
 	public void movement(TextureRegion region, float delta) {
@@ -113,6 +171,7 @@ public class HouseInputHandler implements InputProcessor {
 		 * Otherwise the camera and player both move at the same pace.
 		 */
 		if(!isPaused && !cutsceneActive) {
+			playBackgroundMusic();
 			if(Gdx.input.isKeyPressed(Input.Keys.W)) {
 				if(!collision(playerX, playerY + playerHeight) && !collision(playerX + playerWidth - speed*delta, playerY + playerHeight)) {
 					camera.getCamera().translate(0f, speed* delta);
@@ -187,7 +246,19 @@ public class HouseInputHandler implements InputProcessor {
 					lastInput = lastInput + "D";
 				}
 			}
-			
+
+			if(Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.D)) {
+				if(!walkingSoundEffect.isPlaying()) {
+					walkingSoundEffect.setVolume(0.3f);
+					walkingSoundEffect.play();
+				}
+			}
+			else {
+				walkingSoundEffect.stop();
+			}
+			leatherAndJeansEffect.stop();
+
+
 		}
 		
 
@@ -226,7 +297,20 @@ public class HouseInputHandler implements InputProcessor {
 				}
 				else {
 					value = value - 0.025f;
+					if(Player.getInstance().getSprayIndex() == 0) {
+						cureSoundEffect.play();
+						cureSoundEffect.setVolume(0.2f);
+					}
+					else {
+						fireSoundEffect.play();
+						fireSoundEffect.setVolume(0.1f);
+
+					}
 				}
+			}
+			else {
+				cureSoundEffect.stop();
+				fireSoundEffect.stop();
 			}
 		}
 		return value;
@@ -346,6 +430,8 @@ public class HouseInputHandler implements InputProcessor {
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
 		spriteRotations(screenX, screenY);
+
+
 		return false;
 	}
 
@@ -371,6 +457,7 @@ public class HouseInputHandler implements InputProcessor {
 		 * We then implement atan2 which gives us the angle. Then if the rotation is a negative value we add 360 to make it positive.
 		 * Then we set the sprites rotation.
 		 */
+		float initialRotation = Player.getInstance().getSprite().getRotation();
 		if(!isPaused ) {
 			float spriteX = Player.getInstance().getSprite().getX()+Player.getInstance().getSprite().getWidth()/2;
 			float spriteY = Player.getInstance().getSprite().getY()+Player.getInstance().getSprite().getHeight()/2;
@@ -384,12 +471,14 @@ public class HouseInputHandler implements InputProcessor {
 			Player.getInstance().getSpray().setRotation(rotation-90f);
 
 			Player.getInstance().updateRotation(rotation * (float)(Math.PI/180) );
-		    
 			rotation = rotation - 90f;
 			//player.updateSpray(rotation * (float)(Math.PI/180));
 
 		}
+
 	}
+
+
 	
 	public void setPaused(Boolean isPaused) {
 		this.isPaused = isPaused;

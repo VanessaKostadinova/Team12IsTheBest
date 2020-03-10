@@ -41,6 +41,7 @@ public class Node extends Renderable {
 	private String imageURL;
 	private boolean level4Researched = false;
 
+
 	
 	public Node(String textureOfHouse, float x, float y, String[] attributes) {
 		illnessLevel = 0f;

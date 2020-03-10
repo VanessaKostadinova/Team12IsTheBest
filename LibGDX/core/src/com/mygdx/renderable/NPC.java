@@ -31,6 +31,8 @@ public class NPC extends Renderable implements Living {
 	private Sprite healthBar;
 
 	private Boolean isAggressive = false;
+
+	private int villagerType;
 	
 	public NPC(float health) {
 		super();
@@ -39,16 +41,18 @@ public class NPC extends Renderable implements Living {
 		this.foodGiven = false;
 		healthBar = new Sprite(new Texture(Gdx.files.internal("house/UI/HEALTH.png")));
 		this.sanityAdd = false;
+		this.villagerType = new Random().nextInt((3 - 1) + 1) + 1;
 		this.update();
 	}
 	
-	public NPC(float health, float x, float y) {
+	public NPC(float health, float x, float y, int villagerType) {
 		super();
 		this.health = health;
 		this.isHealed = false;
 		this.foodGiven = false;
 		healthBar = new Sprite(new Texture(Gdx.files.internal("house/UI/HEALTH.png")));
 		this.sanityAdd = false;
+		this.villagerType = villagerType;
 		this.update();
 		this.updateSprite(x, y);
 
@@ -80,7 +84,7 @@ public class NPC extends Renderable implements Living {
 	 * Update texture of the villager as it's state changes.
 	 */
 	public void updateTexture() {
-		Texture tempSprite = new Texture(Gdx.files.internal("NPC/" + status + "_NPC.gif"));
+		Texture tempSprite = new Texture(Gdx.files.internal("NPC/" + status + villagerType + ".gif"));
 		super.setSprite(tempSprite,super.getSprite().getX(),super.getSprite().getY());
 		changeStatus();
 	}
@@ -219,4 +223,8 @@ public class NPC extends Renderable implements Living {
 	public void setHealth(float newHealth) {
 		this.health = newHealth;
 	}
+
+	public int getVillagerType() {return villagerType;}
+
+	public void setVillagerType(int type) {this.villagerType = type;}
 }

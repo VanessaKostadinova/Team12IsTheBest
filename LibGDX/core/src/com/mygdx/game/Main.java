@@ -169,6 +169,7 @@ public class Main extends Game implements Serializable {
 								output.writeFloat(resident.getHealth());
 								output.writeFloat(resident.getSprite().getX());
 								output.writeFloat(resident.getSprite().getY());
+								output.writeInt(resident.getVillagerType());
 								output.writeFloat(resident.getRotation());
 								output.writeBoolean(resident.foodGiven());
 								System.out.println(resident.foodGiven());
@@ -206,6 +207,8 @@ public class Main extends Game implements Serializable {
 						output.writeBoolean(StoryHandler.decision2Created);
 						output.writeBoolean(StoryHandler.decision2Made);
 						output.writeBoolean(StoryHandler.toldVillagers);
+						output.writeBoolean(StoryHandler.cutscene81Played);
+						output.writeBoolean(StoryHandler.cutscene82Played);
 						output.writeInt(StoryHandler.decisionNumber);
 
 
@@ -307,7 +310,7 @@ public class Main extends Game implements Serializable {
 							int value = input.readInt();
 
 							for (int b = 0; b < value; b++) {
-								NPC n = new NPC(input.readFloat(), input.readFloat(), input.readFloat());
+								NPC n = new NPC(input.readFloat(), input.readFloat(), input.readFloat(), input.readInt());
 								n.setRotation(input.readFloat());
 								n.setFoodGiven(input.readBoolean());
 								residents.add(n);
@@ -347,6 +350,8 @@ public class Main extends Game implements Serializable {
 						StoryHandler.decision2Created = input.readBoolean();
 						StoryHandler.decision2Made = input.readBoolean();
 						StoryHandler.toldVillagers = input.readBoolean();
+						StoryHandler.cutscene81Played = input.readBoolean();
+						StoryHandler.cutscene82Played = input.readBoolean();
 						StoryHandler.decisionNumber = input.readInt();
 
 						return screen;

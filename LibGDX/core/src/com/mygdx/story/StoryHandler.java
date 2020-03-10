@@ -27,6 +27,8 @@ public class StoryHandler {
     public static Boolean decision2Created = false;
     public static Boolean decision2Made = false;
     public static Boolean toldVillagers = false;
+    public static Boolean cutscene81Played = false;
+    public static Boolean cutscene82Played = false;
 
     public static int decisionNumber = 1;
 

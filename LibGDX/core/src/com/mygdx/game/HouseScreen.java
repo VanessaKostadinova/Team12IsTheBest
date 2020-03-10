@@ -433,6 +433,7 @@ public class HouseScreen implements Screen {
 							}
 						}
 					}
+					handler.stopAllMusicAndDispose();
 					main.setScreen(mapScreen);
 				}
 			}
@@ -743,57 +744,46 @@ public class HouseScreen implements Screen {
 	     * Holds the window for the pause menu.
 	     */
 	    public void pauseGame() {
-	    	
-	    	/*
-	    	 * This method is used to create the window elements for the pause menu
-	    	 *
-	    	 * Creates a window and then has two different text buttons within
-	    	 *
-	    	 *  - RESUME (hides window when clicked and allows movement)
-	    	 *  - EXIT (exits the game)
-	    	 *
-	    	 * This is done through add listeners to each of the the buttons
-	    	 *
-	    	 * The window containing all the values is called pause
-	    	 */
-	        float windowWidth = 200*scaleItem, windowHeight = 200*scaleItem;
-	        pause = new Window("", skin);
-	        pause.setMovable(false); //So the user can't move the window
-	        //final TextButton button1 = new TextButton("Resume", skin);
-	        final Label button1 = new Label("RESUME", createLabelStyleWithBackground(Color.WHITE));
-	        button1.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
-	        button1.setFontScale(0.4f);
-	        button1.addListener(new ClickListener() {
-	            @Override
-	            public void clicked(InputEvent event, float x, float y) {
-	                handler.togglePaused();
-	                pause.setVisible(false);
-	            }
-	        });
-	        Label button2 = new Label("EXIT", createLabelStyleWithBackground(Color.WHITE));
-	        button2.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
-	        button2.setFontScale(0.4f);
-	        button2.addListener(new ClickListener() {
-	            @Override
-	            public void clicked(InputEvent event, float x, float y) {
-	                System.exit(0);
-	            }
-	        });
-	
-	        pause.add(button1).row();
-	        pause.row();
-	        pause.add(button2).row();
-	        pause.pack(); //Important! Correctly scales the window after adding new elements
-	
-	        //Centre window on screen.
-	        pause.setBounds(((main.ui.getWidth() - windowWidth*scaleItem  ) / 2),
-	        (main.ui.getHeight() - windowHeight*scaleItem) / 2, windowWidth  , windowHeight );
-	        //Sets the menu as invisible
-	        pause.setVisible(false);
-	        
-	        pause.setSize(pause.getWidth()*scaleItem, pause.getHeight()*scaleItem);
-	        //Adds it to the UI Screen.
-	        main.ui.addActor(pause);
+
+			float windowWidth = 200 * scaleItem, windowHeight = 200 * scaleItem;
+			pause = new Window("", skin);
+			pause.setMovable(false); //So the user can't move the window
+			//final TextButton button1 = new TextButton("Resume", skin);
+
+			final Label button1 = new Label("RESUME", AssetHandler.fontSize24);
+			button1.setFontScale((windowHeight/200) * scaleItem, (windowHeight/200) * scaleItem);
+			button1.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					handler.togglePaused();
+					pause.setVisible(false);
+				}
+			});
+
+
+			Label button3 = new Label("EXIT", AssetHandler.fontSize24);
+			button3.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
+			button3.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					System.exit(0);
+				}
+			});
+
+			pause.add(button1).row();
+			pause.row();
+			pause.add(button3).row();
+			pause.row();
+			pause.pack(); //Important! Correctly scales the window after adding new elements
+
+			//Centre window on screen.
+			pause.setBounds(((main.ui.getWidth() - windowWidth*scaleItem  ) / 2),
+					(main.ui.getHeight() - windowHeight*scaleItem) / 2, windowWidth  , windowHeight );
+			//Sets the menu as invisible
+			pause.setVisible(false);
+
+			pause.setSize(pause.getWidth() * scaleItem, pause.getHeight()*scaleItem);
+			main.ui.addActor(pause);
 	    }
 
 	private void spawnFakeNPC()
@@ -812,7 +802,7 @@ public class HouseScreen implements Screen {
 			int width = node.getArray().length;
 			int height = node.getArray()[0].length;
 
-			NPC fake = new NPC(60+rand.nextInt(40),0,0);
+			NPC fake = new NPC(60+rand.nextInt(40),0,0, 1);
 			fakeNPCs.add(fake);
 
 			//Check if npc is inside wall

@@ -574,8 +574,8 @@ public class MapScreen implements Screen {
 				}
 			}*/
 			
-			main.ui.clear();
-			main.setScreen(new EndGame(main,false));
+			//main.ui.clear();
+			//main.setScreen(new EndGame(main,false));
 		}
 	}
 	
@@ -770,7 +770,7 @@ public class MapScreen implements Screen {
 			});
 			map.setNotes();
 			StoryHandler.oDNotesPlaced=true;
-			System.out.println("DECISION NUMBER: " + StoryHandler.decisionNumber);
+			StoryHandler.decisionNumber = 1;
 		}
 
 		if(PermanetPlayer.getPermanentPlayerInstance().getNotes().size() >=  16  && !StoryHandler.decision2Created) {
@@ -780,8 +780,14 @@ public class MapScreen implements Screen {
 			StoryHandler.decision2Created = true;
 		}
 
-		if(StoryHandler.decision2Made) {
+		if(StoryHandler.decision2Made &&  !StoryHandler.toldVillagers) {
 
+			StoryHandler.cutscene81Played = true;
+		}
+		System.out.println("DECISION NUMBER :" + StoryHandler.decisionNumber);
+		if(StoryHandler.decision2Made && StoryHandler.toldVillagers && !StoryHandler.cutscene82Played) {
+			startCreatingCutscene("cutscene/ingame/scripts/Scene11.csv");
+			StoryHandler.cutscene82Played = true;
 		}
 	}
 	
@@ -890,7 +896,7 @@ public class MapScreen implements Screen {
 			for(String key : 		checkForKC) {
 				value.append(key);
 			}
-
+			System.out.println(value.toString());
 			if(value.toString().equals("UPUPDOWNDOWNLEFTRIGHTLEFTRIGHTRIGHT")) {
 				for(Node n : map.getNodes()) {
 					for(NPC v : n.getResidents()) {
@@ -1355,7 +1361,7 @@ public class MapScreen implements Screen {
 		decisionFirst.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				if(StoryHandler.decisionNumber == 1) {
+				if(!StoryHandler.tutorialDecisionMade) {
 					//Don't start tutorial
 					StoryHandler.TutorialPart1 = true;
 					StoryHandler.TutorialPart2 = true;
@@ -1365,7 +1371,7 @@ public class MapScreen implements Screen {
 					StoryHandler.decisionNumber++;
 					StoryHandler.tutorialDecisionMade = true;
 				}
-				if(StoryHandler.decisionNumber == 2) {
+				else if(!StoryHandler.decision2Made) {
 					StoryHandler.decision2Made = true;
 					StoryHandler.toldVillagers = true;
 					StoryHandler.decisionNumber++;
@@ -1379,7 +1385,7 @@ public class MapScreen implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				//Start tutorial
-				if(StoryHandler.decisionNumber == 1) {
+				if(!StoryHandler.tutorialDecisionMade) {
 					//Don't start tutorial
 					StoryHandler.TutorialPart1 = false;
 					StoryHandler.TutorialPart2 = false;
@@ -1389,7 +1395,7 @@ public class MapScreen implements Screen {
 					StoryHandler.decisionNumber++;
 					StoryHandler.tutorialDecisionMade = true;
 				}
-				if(StoryHandler.decisionNumber == 2) {
+				else if(!StoryHandler.decision2Made) {
 					StoryHandler.decision2Made = true;
 					StoryHandler.toldVillagers = false;
 					StoryHandler.decisionNumber++;
