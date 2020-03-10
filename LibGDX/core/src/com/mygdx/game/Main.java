@@ -209,6 +209,7 @@ public class Main extends Game implements Serializable {
 						output.writeBoolean(StoryHandler.toldVillagers);
 						output.writeBoolean(StoryHandler.cutscene81Played);
 						output.writeBoolean(StoryHandler.cutscene82Played);
+						output.writeBoolean(StoryHandler.cutscene83Played);
 						output.writeInt(StoryHandler.decisionNumber);
 
 
@@ -352,6 +353,7 @@ public class Main extends Game implements Serializable {
 						StoryHandler.toldVillagers = input.readBoolean();
 						StoryHandler.cutscene81Played = input.readBoolean();
 						StoryHandler.cutscene82Played = input.readBoolean();
+						StoryHandler.cutscene83Played = input.readBoolean();
 						StoryHandler.decisionNumber = input.readInt();
 
 						return screen;

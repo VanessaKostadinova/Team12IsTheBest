@@ -780,10 +780,17 @@ public class MapScreen implements Screen {
 			StoryHandler.decision2Created = true;
 		}
 
-		if(StoryHandler.decision2Made &&  !StoryHandler.toldVillagers) {
-
+		if(StoryHandler.decision2Made &&  !StoryHandler.toldVillagers && !StoryHandler.cutscene81Played) {
+			startCreatingCutscene("cutscene/ingame/scripts/Scene12.csv");
 			StoryHandler.cutscene81Played = true;
 		}
+
+		if(StoryHandler.cutscene81Played && !StoryHandler.cutscene83Played && currentCutsceneQuotes.size() == 0) {
+			darken = true;
+			startCreatingCutscene("cutscene/ingame/scripts/Scene13.csv");
+			StoryHandler.cutscene83Played = true;
+		}
+
 		System.out.println("DECISION NUMBER :" + StoryHandler.decisionNumber);
 		if(StoryHandler.decision2Made && StoryHandler.toldVillagers && !StoryHandler.cutscene82Played) {
 			startCreatingCutscene("cutscene/ingame/scripts/Scene11.csv");
