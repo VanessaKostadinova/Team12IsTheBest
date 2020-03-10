@@ -1133,6 +1133,8 @@ public class MapScreen implements Screen {
 		
 		if(enterBuilding && (PermanetPlayer.getPermanentPlayerInstance().getEnergy() >= ENERGY_FOR_ENTER_HOUSE)) {
 			beforeEntry.setVisible(true);
+			isPaused = true;
+
 		}	
 	}
 	
@@ -1626,6 +1628,7 @@ public class MapScreen implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				beforeEntry.setVisible(false);
+				isPaused = false;
 			}
 		});
 
