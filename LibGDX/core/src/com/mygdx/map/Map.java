@@ -125,6 +125,11 @@ public class Map {
 					isValidPosition = false;
 				}
 
+				if(isValidPosition) {
+					x = xArray * 32;
+					y = yArray * 32;
+				}
+
 				for(Note n : nodes.get(index).getNotes()) {
 					if(n.getX() == x && n.getY() == y) {
 						isValidPosition = false;
