@@ -3,6 +3,7 @@ package com.mygdx.house;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -17,20 +18,22 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.mygdx.renderable.Constants;
 import com.mygdx.renderable.NPC;
 
+/**
+ * House class stores the information about the house.
+ */
 public class House {
 	
 	private int[][] background;
 	private int[][] backgroundProperties;
-
-	
 	private List<Torch> torches;
-
 	private HashMap<Integer, Texture> textures;
 	private String houseFile;
 	private int indicator = 0;
 	private String houseProperties;
 	private List<BodyDef> walls;
-	
+	public List<String> textureURL = new ArrayList<>();
+
+
 	public House(String[] attributes) {
 		textures = new HashMap<>();
 		torches = new ArrayList<>();
@@ -39,8 +42,15 @@ public class House {
 		createLevel();
 		createProperties();
 	}
-	
-	
+
+	public House(int[][] level, List<Torch> torches, HashMap<Integer, Texture> textures, List<String> textureURL) {
+		this.background = level;
+		this.torches = torches;
+		this.textures = textures;
+		this.textureURL = textureURL;
+		walls = new ArrayList<>();
+		createBodiesFromArray();
+	}
 
 	public int[][] getArray() {
 		return background;
@@ -54,11 +64,21 @@ public class House {
 			}
 		}
 		for(String attribute : attributes) {
-			if(attribute.contains(".gif") && !attribute.contains("house") && !attribute.contains("House")) {
+			if(attribute.contains(".gif")  && !attribute.contains("house") && !attribute.contains("House")) {
 				Texture t = new Texture(Gdx.files.internal("levels/" + attribute));
 				textures.put(indicator, t);
-
+				textureURL.add("levels/" + attribute);
 				indicator++;
+			}
+		}
+	}
+
+	public void createBodiesFromArray() {
+		for(int r=0; r<background.length; r++) {
+			for (int c = background[r].length-1; c > -1; c--) {
+				if (background[r][c] == 1) {
+					createBodyDef(r, c);
+				}
 			}
 		}
 	}
@@ -66,8 +86,6 @@ public class House {
 	public Texture getTexture(int value) {
 		return textures.get(value);
 	}
-
-
 	
 	public void createBodies(World world) {
 		for(BodyDef def : walls) {
@@ -81,12 +99,10 @@ public class House {
             fixtureDef.filter.categoryBits = Constants.WALL;
                 
             body.createFixture(fixtureDef);
-            
 		}
 		
     }
-	
-	
+
 	public void createBodyDef(int x, int y) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.StaticBody;
@@ -94,9 +110,7 @@ public class House {
         bodyDef.fixedRotation = true;
 		walls.add(bodyDef);
 	}
-	
-	
-	
+
     private void createLevel() {
         FileHandle handle;
         try {
@@ -170,11 +184,8 @@ public class House {
             e.printStackTrace();
         }
     }
-    
 
-    
 	private void generateTorches(int x, int y) {
-		
 		/*                        
 		 * Each tile is 32*32
 		 * Hence we divide the coordinates by 32 and round down.
@@ -185,8 +196,6 @@ public class House {
 	    if(value > 0 && value < 5) {
 		    int positionX = y*32;
 		    int positionY = x*32;
-		    
-		    
 		    
 		    if(value == 1) {
 		    	torches.add(new Torch(positionX, positionY, 0f));
@@ -203,17 +212,16 @@ public class House {
 		    if(value == 4) {
 		    	torches.add(new Torch(positionX, positionY, 270f));
 		    }
-
 	    }
-
 	}
 	
 	public List<Torch> getTorches() {
 		return torches;
 	}
 
-
 	public int[][] getLevel() {
 		return background;
 	}
+
+	public Map<Integer, Texture> getTextures() { return textures; }
 }

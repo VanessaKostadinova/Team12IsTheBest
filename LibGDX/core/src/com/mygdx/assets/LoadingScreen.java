@@ -21,10 +21,17 @@ import com.mygdx.game.MainMenu;
  * @version 1.0
  */
 public class LoadingScreen implements Screen {
-	
+
+	/** The main class */
 	private Main main;
+
+	/** the sprite for the loading texture */
 	private Sprite loading;
+
+	/** the outer bar of the loading bar */
 	private Label outerBar;
+
+	/** the inner bar (actually moving) of the loading bar*/
 	private Label innerBar;
 	
 	private int loadedAmount = 0;

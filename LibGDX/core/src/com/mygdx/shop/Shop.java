@@ -3,32 +3,32 @@ package com.mygdx.shop;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.renderable.Renderable;
 
+/**
+ * Contains information about the shop and also holds
+ * the sprite of the shop for map-screen.
+ */
 public class Shop extends Renderable {
-	
-	Upgrade[] upgrades;
-	
-	public Shop(Texture textureOfHouse, float x, float y) {
-		super.setSprite(textureOfHouse, x, y);
-		
-		upgrades = new Upgrade[6];
-		 
-		upgrades[0] = new Upgrade("MOVEMENT SPEED","INCREASE THE PLAYERS SPEED", 0.1f, 50f);
-		upgrades[1] = new Upgrade("MASK ABILITY", "INCREASE THE MASK DURABILITY", 60f, 10f);
-		upgrades[2] = new Upgrade("FLAME STRENGTH", "INCREASE THE FLAME STRENGTH", 0.05f, 100f);
-		upgrades[3] = new Upgrade("CURE STRENGTH", "INCREASE THE CURE STRENGTH", 0.05f, 100f);
-		//upgrades[4] = new Upgrade("FLAME AMOUNT", "INCREASE THE FLAME AMOUNT", 0.3f, 100f);
-		//upgrades[5] = new Upgrade("CURE AMOUNT", "INCREASE THE CURE AMOUNT", 0.3f, 100f);
 
+    /** Constant value of how much fluid you get per purchase */
+    public final float FLUID_PER_PURCHASE = 10f;
 
-	}
-	
-	public Upgrade[] getUpgrades() {
-		return upgrades;
-	}
-	
-	public Upgrade getUpgrade(int index) {
-		return upgrades[index];
-	}
-	
+    /** Constant value of how many mask you get per purchase */
+    public final int MASK_PER_PURCHASE = 1;
+
+    /** Constant value of the cost of mask */
+    public final int COST_PER_MASK = 10;
+
+    /** Constant value of the cost of fluid */
+    public final int COST_PER_FLUID = 20;
+
+    /**
+     * Constructor for the shop
+     * @param textureOfHouse The texture of the shop.
+     * @param x The x coordinate of the shop.
+     * @param y The y coordinate of the shop.
+     */
+    public Shop(Texture textureOfHouse, float x, float y) {
+        super.setSprite(textureOfHouse, x, y);
+    }
 
 }

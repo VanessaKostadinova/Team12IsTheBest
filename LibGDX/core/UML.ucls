@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.2.3" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="com.mygdx.game.ShopScreen" project="core" 
+  <class id="1" language="java" name="com.mygdx.game.ChurchScreen" project="core"
     file="/core/src/com/mygdx/game/ShopScreen.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="926" y="1125"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -100,7 +100,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="12" language="java" name="com.mygdx.shop.Shop" project="core" file="/core/src/com/mygdx/shop/Shop.java" 
+  <class id="12" language="java" name="com.mygdx.shop.Churchop" project="core" file="/core/src/com/mygdx/church/Shop.java"
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="866" y="656"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -150,7 +150,7 @@
   </association>  
   <association id="19">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="20" name="shop">        
+      <attribute id="20" name="church">
         <position height="0" width="0" x="-190" y="-97"/>      
       </attribute>      
       <multiplicity id="21" minimum="0" maximum="1">        
@@ -302,7 +302,7 @@
   </association>  
   <association id="57">    
     <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="58" name="shop">        
+      <attribute id="58" name="church">
         <position height="0" width="0" x="-190" y="-97"/>      
       </attribute>      
       <multiplicity id="59" minimum="0" maximum="1">        

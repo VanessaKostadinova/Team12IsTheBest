@@ -9,15 +9,14 @@ import com.mygdx.renderable.NPC;
 import com.mygdx.renderable.Node;
 
 public class Disease {
-	
-	private final float spreadRadius = 250.0f;
-	private final float probabilty = 50.0f;
+
+	public final float spreadRadius = 250.0f;
 
 	public void draw(List<Node> disease, Node spreader, ShapeRenderer shapeRenderer) {
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 		for(Node reciever : disease) {
 			if(!(spreader.equals(reciever))) {
-				
+
 				float distance = spreader.getCentreCoords().dst(reciever.getCentreCoords());
 				if(distance < spreadRadius) {
 					if(spreader.isDiseased() && reciever.isDiseased()) {
@@ -42,7 +41,7 @@ public class Disease {
 					if(!spreader.isDiseased() && !reciever.isDiseased()) {
 						shapeRenderer.setColor(1, 1, 1, 0.1f); // WHITE LINE
 					}
-					shapeRenderer.rectLine(spreader.getCentreCoords(),reciever.getCentreCoords(),8);				
+					shapeRenderer.rectLine(spreader.getCentreCoords(),reciever.getCentreCoords(),8);
 				}
 			}
 		}
@@ -52,84 +51,36 @@ public class Disease {
 	public float calculateHouseIllness(Node house){
 		float totalIllness = 0f;
 		for(NPC resident : house.getNPCs()){
-			if(resident.isIll()){
-				totalIllness += 1 * 1/resident.getDaysInStatus();
+			if(resident.isSick()){
+				totalIllness += (10);
 			}
 			else if (resident.isDead()){
-				totalIllness += 1 * resident.getDaysInStatus();
+				totalIllness += (20);
 			}
 		}
+		house.setIllnessLevel(totalIllness);
 		return totalIllness;
 	}
 
-	//TODO finish implementation
-	public void infectResidents(List<Node> houses){
+	public void infectResidents(Node house){
 		Random random = new Random();
-		/*
-		Better way of doing this is to store a list of connected nodes in the node itself.
-		 */
-		for(Node house : houses){
-			float illnessLikelihood = house.getIllnessLevel();
-			for(Node compareHouse : houses){
-				if(!(house.equals(compareHouse))){
-					float distance = house.getCentreCoords().dst(compareHouse.getCentreCoords());
-					if(distance <= spreadRadius){
-						illnessLikelihood += compareHouse.getIllnessLevel() * Math.pow(distance, (-1/3));
-					}
-				}
-			}
+		float illnessLikelihood = house.getIllnessLevel();
+		for(Node compareHouse : house.getNeighbours()){
+			float distance = house.getCentreCoords().dst(compareHouse.getCentreCoords());
+			illnessLikelihood += compareHouse.getIllnessLevel() * Math.pow(distance, (-1/3));
+		}
 
-			for(NPC resident : house.getAllAlive()){
-				if(random.nextFloat() <= illnessLikelihood){
+		for(NPC resident : house.getNPCs()){
+			if (resident.getStatus().equals("Alive")) {
+				if((random.nextInt(100) + 1) < illnessLikelihood){
 					resident.infect();
+					resident.changeHealth(-10);
 				}
 			}
+			if(resident.getStatus().equals("Sick")) {
+				resident.changeHealth(-7.5f);
+			}
 		}
-	}
 
-	public void diseaseSpread(List<Node> disease) {
-		for(Node spreader : disease) {
-			if(spreader.isDiseased()) {
-				for(Node reciever : disease) {
-					if(!reciever.isDiseased()) {
-						if(!(spreader.equals(reciever))) {
-							float distance = spreader.getCentreCoords().dst(reciever.getCentreCoords());
-							if(distance < spreadRadius && diseaseImpacted()) {
-								reciever.infectRandom(probabilty);
-							}
-						}
-					}
-					else {
-						if(!(spreader.equals(reciever))) {
-							if(!reciever.isAllInHouseDiseased()) {
-								float distance = spreader.getCentreCoords().dst(reciever.getCentreCoords());
-								if(distance < spreadRadius && diseaseImpacted()) {
-									reciever.infectRandom(probabilty);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	public void diseaseAffect(List<Node> disease) {
-		for(Node spreader : disease) {
-			if(spreader.isDiseased()) {
-				for(NPC villagers : spreader.getResidents()) {
-					if(!villagers.getStatus().equals("Dead") && !villagers.getStatus().equals("Burnt")) {
-						double x = (Math.random()*((40-20)+20))+20; 
-						x = x * -1;
-						villagers.changeHealth((float) x);
-					}
-				}
-			}
-		}
-	}
-
-	public boolean diseaseImpacted() {
-		float random = (float) (0 + Math.random() * (100));
-		return random < probabilty;
 	}
 }

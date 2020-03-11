@@ -18,63 +18,76 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.mygdx.assets.AssetHandler;
+import com.mygdx.extras.PermanetPlayer;
 import com.mygdx.renderable.Player;
 import com.mygdx.shop.Shop;
-import com.mygdx.shop.Upgrade;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Shop Screen to allow player to get more items.
+ * @author Inder, Vanessa
+ */
 public class ShopScreen implements Screen {
 
-	
+	/** If the Screen is Paused */
 	private boolean isPaused = false;
+	/** An instance of main */
 	private Main main;
+	/** An instance of shop */
 	private Shop shop;
-	
+	/** A table to store the UI element */
 	private Table t;
+	/** Used to scale items by window size */
 	private float scaleItem;
-
 	/** The pause window. */
 	private Window pause;
-	
 	/** The ui skin. */
 	private Skin skin;
-	
+	/** List of label items */
 	private List<Label> items;
-	
+	/** The labelstyle for any labels which are unclicked */
 	private LabelStyle unClicked;
+	/** The labelstyle for any labels which are clicked */
 	private LabelStyle clicked;
-	
+	/** The Label to hold the item information */
 	private Label information;
+	/** The Label to hold the item description */
 	private Label description;
-	private Label scaleFactor;
-	private Label sf;
-	private Label titleLevel;
-	private Label level;
+	/** The Label to hold the item amount */
+	private Label amount;
+	/** The Label to hold the item amount on player */
+	private Label amountOnPlayer;
+	/** The Label title cost */
 	private Label titleCost;
+	/** The label holds the total cost */
 	private Label cost;
-	
+	/** The label which holds the amount of burn fluids */
+	private Label burnFluid;
+	/** The label which holds the amount of cure fluids */
+	private Label cureFluid;
+	/** The label which holds the amount of player masks*/
+	private Label playerMasks;
+	/** The label which holds the amount of player food */
 	private Label playerGold;
-	
-	
+	/** The Image button to leave */
 	private Image Leave;
+	/** The Image button to buy */
 	private Image Buy;
-	
-	private Upgrade clickedShop;
+	/** The String to hold current equipment clicked*/
+	private String clickedEquipment;
 
 
-	public ShopScreen(final Main main, Shop shop, final MapScreen mapScreen) {
+	public ShopScreen(final Main main, final Shop shop, final MapScreen mapScreen) {
 		this.main = main;
 		this.shop = shop;
 		this.t = new Table();
-		clickedShop = null;
+		clickedEquipment = "";
 		
 		unClicked = createLabelStyleWithBackground(Color.WHITE);
 		clicked = createLabelStyleWithBackground(Color.CYAN);
 		
 		this.skin = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
-		this.items = new ArrayList<>();
 		this.t = new Table();
 		this.t.setFillParent(true);
 		
@@ -82,18 +95,18 @@ public class ShopScreen implements Screen {
 		if(scaleItem < 1) {
 			scaleItem = 1;
 		}
-		
-		setCatagories();
-		
+
 		final Image Title = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.manager.get("shop/screen/SHOP.png", Texture.class))));
 		Title.setScaling(Scaling.fit);
 		Title.setPosition(50f, main.ui.getHeight()- Title.getHeight() - 50f);
 		Title.setSize(Title.getWidth(), Title.getHeight());
 		t.addActor(Title);
 		
-		playerGold = new Label("PLAYER FOOD: " + readPlayer().getFood(), unClicked);
+		playerGold = new Label("PLAYER FOOD: " + Player.getInstance().getFood(), unClicked);
 		playerGold .setPosition(50f, Title.getY() - 100f);
 		main.ui.addActor(playerGold);
+
+		setCatagories();
 
 		Leave = new Image(new TextureRegionDrawable(new TextureRegion(new TextureRegion(AssetHandler.manager.get("shop/screen/LEAVE.png", Texture.class)))));
 		Leave.setScaling(Scaling.fit);
@@ -105,7 +118,9 @@ public class ShopScreen implements Screen {
 				if(!isPaused) {
 					dispose();
 					main.ui.clear();
+					mapScreen.createUI();
 					mapScreen.pauseGame();
+					mapScreen.inventory();
 					main.setScreen(mapScreen);
 				}
 		    }
@@ -133,36 +148,38 @@ public class ShopScreen implements Screen {
 		Buy.addListener(new ClickListener(){
 			@Override
 		    public void clicked(InputEvent event, float x, float y) {
-				if(!isPaused) {
-					Player p = readPlayer();
-					if(clickedShop.getName().equals("MASK ABILITY") && p.getFood() >= clickedShop.getCost()) {
-						p.updateMaskDurationSeconds(clickedShop.getIncreasingValue());
-						p.setFood(p.getFood()-clickedShop.getCost());
-						p.writeToPlayerFile();
-						clickedShop.update();
-					}
-					if(clickedShop.getName().equals("MOVEMENT SPEED") && p.getFood() >= clickedShop.getCost()) {
-						p.updateSpeed(clickedShop.getIncreasingValue());
-						p.setFood(p.getFood()-clickedShop.getCost());
-						p.writeToPlayerFile();
-						clickedShop.update();
-					}
-					if(clickedShop.getName().equals("FLAME STRENGTH") && p.getFood() >= clickedShop.getCost()) {
-						p.updateSprays(1, -clickedShop.getIncreasingValue());
-						p.setFood(p.getFood()-clickedShop.getCost());
-						p.writeToPlayerFile();
-						clickedShop.update();
-					}
-					if(clickedShop.getName().equals("CURE STRENGTH") && p.getFood() >= clickedShop.getCost()) {
-						p.updateSprays(0, clickedShop.getIncreasingValue());
-						p.setFood(p.getFood()-clickedShop.getCost());
-						p.writeToPlayerFile();
-						clickedShop.update();
-					}
-					setLabels(clickedShop);
-					playerGold.setText("PLAYER FOOD: " + readPlayer().getFood());
+				if(clickedEquipment.equals("PLAYER MASKS") && Player.getInstance().getFood() >= shop.COST_PER_MASK) {
+					Player.getInstance().setFood(Player.getInstance().getFood()-shop.COST_PER_MASK);
+					PermanetPlayer.getPermanentPlayerInstance().reduceNumberOfMasks(-shop.MASK_PER_PURCHASE);
+					setLabels(new String[] {
+							clickedEquipment,
+							"AMOUNT OF MASKS.",
+							PermanetPlayer.getPermanentPlayerInstance().getNumberOfMasks()+"",
+							shop.COST_PER_MASK+"",
+					});
 				}
-		    }
+				else if(clickedEquipment.equals("BURN FLUID") && Player.getInstance().getFood() >= shop.COST_PER_FLUID) {
+					Player.getInstance().setFood(Player.getInstance().getFood()-shop.COST_PER_FLUID);
+					PermanetPlayer.getPermanentPlayerInstance().reduceBurnSpray( (int) -shop.FLUID_PER_PURCHASE);
+					setLabels(new String[] {
+							clickedEquipment,
+							"AMOUNT OF BURN FLUID.",
+							PermanetPlayer.getPermanentPlayerInstance().getBurningFluid()+"",
+							shop.COST_PER_FLUID+"",
+					});
+				}
+				else if(clickedEquipment.equals("CURE FLUID") && Player.getInstance().getFood() >= shop.COST_PER_FLUID) {
+					Player.getInstance().setFood(Player.getInstance().getFood()-shop.COST_PER_FLUID);
+					PermanetPlayer.getPermanentPlayerInstance().reduceCureSpray( (int) -shop.FLUID_PER_PURCHASE);
+					setLabels(new String[] {
+							clickedEquipment,
+							"AMOUNT OF CURE FLUID.",
+							PermanetPlayer.getPermanentPlayerInstance().getHealingFluid()+"",
+							shop.COST_PER_FLUID+"",
+					});
+				}
+				playerGold.setText("PLAYER FOOD: " + Player.getInstance().getFood());
+			}
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 				if(!isPaused) {
 					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(AssetHandler.manager.get("shop/screen/BUYMOUSE.png", Texture.class))));
@@ -189,19 +206,20 @@ public class ShopScreen implements Screen {
 		description.setVisible(false);
 		main.ui.addActor(description);
 		
-		sf = new Label("SCALE FACTOR:", unClicked);
-		sf.setPosition((main.ui.getWidth())-40f-Leave.getWidth(), description.getY() - 100f);
-		sf.setVisible(false);
-		main.ui.addActor(sf);
+		amountOnPlayer = new Label("AMOUNT ON PLAYER:", unClicked);
+		amountOnPlayer.setPosition((main.ui.getWidth())-40f-Leave.getWidth(), description.getY() - 100f);
+		amountOnPlayer.setVisible(false);
+		main.ui.addActor(amountOnPlayer);
 		
-		scaleFactor= new Label("VOID", unClicked);
-		scaleFactor.setFontScale(0.5f);
-		scaleFactor.setPosition((main.ui.getWidth())-40f-Leave.getWidth(), sf.getY() - 60f);
-		scaleFactor.setVisible(false);
-		main.ui.addActor(scaleFactor);
+		amount = new Label("VOID", unClicked);
+		amount.setFontScale(0.5f);
+		amount.setPosition((main.ui.getWidth())-40f-Leave.getWidth(), amountOnPlayer.getY() - 60f);
+		amount.setVisible(false);
+
+		main.ui.addActor(amount);
 		
 		titleCost = new Label("COST OF ITEM:", unClicked);
-		titleCost .setPosition((main.ui.getWidth())-40f-Leave.getWidth(), scaleFactor.getY() - 100f);
+		titleCost .setPosition((main.ui.getWidth())-40f-Leave.getWidth(), amount.getY() - 100f);
 		titleCost .setVisible(false);
 		main.ui.addActor(titleCost);
 		
@@ -210,181 +228,132 @@ public class ShopScreen implements Screen {
 		cost.setPosition((main.ui.getWidth())-40f-Leave.getWidth(), titleCost.getY() - 60f);
 		cost.setVisible(false);
 		main.ui.addActor(cost);
-		
-		titleLevel = new Label("LEVEL OF ITEM:", unClicked);
-		titleLevel .setPosition((main.ui.getWidth())-40f-Leave.getWidth(), cost.getY() - 100f);
-		titleLevel .setVisible(false);
-		main.ui.addActor(titleLevel);
-		
-		level= new Label("VOID", unClicked);
-		level.setFontScale(0.5f);
-		level.setPosition((main.ui.getWidth())-40f-Leave.getWidth(), titleLevel.getY() - 60f);
-		level.setVisible(false);
-		main.ui.addActor(level);
-		
-
-		
 
 		Gdx.input.setInputProcessor(main.ui);
 		main.ui.addActor(t);
 		pauseGame();
 	}
-	
-	private Player readPlayer() {
-		FileHandle handle = Gdx.files.local("data/player.txt");
-		String[] values= handle.readString().split(",");
-		return new Player(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6]), Float.parseFloat(values[7]));
-	}
-	
-	
+
+
+	/**
+	 * Set the categories of each of the potential items in the shop.
+	 */
 	public void setCatagories() {
 		float spacing = 80f;
-		
-		final Label movement = new Label("MOVEMENT SPEED", unClicked);
-		movement.setPosition(50, main.ui.getHeight() - 400);
-		movement.addListener(new ClickListener(){
-			@Override
-		    public void clicked(InputEvent event, float x, float y) {
-				if(!isPaused) {
-					if(movement.getStyle().equals(unClicked)) {
-						resetLabel();
-						movement.setStyle(clicked);
-						setLabels(shop.getUpgrade(0));
-					}
-					else {
-						movement.setStyle(unClicked);
-						updateUI(false);
-					}
-				}
-		    }
-		});
-		items.add(movement);
-		
-		final Label maskAbility = new Label("MASK ABILITY", unClicked);
-		maskAbility.setPosition(50, items.get(items.size()-1).getY() - spacing);
-		maskAbility.addListener(new ClickListener(){
-			@Override
-		    public void clicked(InputEvent event, float x, float y) {
-				if(!isPaused) {
-					if(maskAbility.getStyle().equals(unClicked)) {
-						resetLabel();
-						maskAbility.setStyle(clicked);
-						setLabels(shop.getUpgrade(1));
-					}
-					else {
-						maskAbility.setStyle(unClicked);
-						updateUI(false);
-					}
-				}
-		    }
-		});
-		items.add(maskAbility);
 
-		final Label flameStrength = new Label("FLAME STRENGTH", unClicked);
-		flameStrength.setPosition(50, items.get(items.size()-1).getY() - spacing);
-		flameStrength.addListener(new ClickListener(){
+		burnFluid = new Label("BURN FLUID", unClicked);
+		burnFluid.setPosition(50,  playerGold.getY() - 200);
+		burnFluid.setWidth(burnFluid.getWidth() + burnFluid.getWidth());
+
+		cureFluid = new Label("CURE FLUID", unClicked);
+		cureFluid.setPosition(50, burnFluid.getY() - spacing);
+		cureFluid.setWidth(cureFluid.getWidth() + cureFluid.getWidth());
+
+		playerMasks = new Label("PLAYER MASKS", unClicked);
+		playerMasks.setWidth(playerMasks.getWidth() + playerMasks.getWidth());
+		playerMasks.setPosition(50, cureFluid.getY() - spacing);
+
+
+		burnFluid.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				if(!isPaused) {
+					if(burnFluid.getStyle().equals(unClicked)) {
+						resetLabel();
+						burnFluid.setStyle(clicked);
+						setLabels(new String[] {
+								burnFluid.getText().toString(),
+								"AMOUNT OF BURN FLUID.",
+								PermanetPlayer.getPermanentPlayerInstance().getBurningFluid()+"",
+								shop.COST_PER_FLUID+"",
+						});
+					}
+					else {
+						burnFluid.setStyle(unClicked);
+						updateUI(false);
+					}
+				}
+			}
+		});
+
+		cureFluid.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				if(!isPaused) {
+					if(cureFluid.getStyle().equals(unClicked)) {
+						resetLabel();
+						cureFluid.setStyle(clicked);
+						setLabels(new String[] {
+								cureFluid.getText().toString(),
+								"AMOUNT OF CURE FLUID.",
+								PermanetPlayer.getPermanentPlayerInstance().getHealingFluid()+"",
+								shop.COST_PER_FLUID+"",
+						});
+					}
+					else {
+						cureFluid.setStyle(unClicked);
+						updateUI(false);
+					}
+				}
+			}
+		});
+
+
+		playerMasks.addListener(new ClickListener(){
 			@Override
 		    public void clicked(InputEvent event, float x, float y) {
 				if(!isPaused) {
-					if(flameStrength.getStyle().equals(unClicked)) {
+					if(playerMasks.getStyle().equals(unClicked)) {
 						resetLabel();
-						flameStrength.setStyle(clicked);
-						setLabels(shop.getUpgrade(2));
+						playerMasks.setStyle(clicked);
+						setLabels(new String[] {
+								playerMasks.getText().toString(),
+								"AMOUNT OF MASKS.",
+								PermanetPlayer.getPermanentPlayerInstance().getNumberOfMasks()+"",
+								shop.COST_PER_MASK+"",
+						});
 					}
 					else {
-						flameStrength.setStyle(unClicked);
+						playerMasks.setStyle(unClicked);
 						updateUI(false);
 					}
 				}
 		    }
 		});
-		items.add(flameStrength);
-		
-		final Label cureStrength = new Label("CURE STRENGTH", unClicked);
-		cureStrength.setPosition(50, items.get(items.size()-1).getY() - spacing);
-		cureStrength.addListener(new ClickListener(){
-			@Override
-		    public void clicked(InputEvent event, float x, float y) {
-				if(!isPaused) {
-					if(cureStrength.getStyle().equals(unClicked)) {
-						resetLabel();
-						cureStrength.setStyle(clicked);
-						setLabels(shop.getUpgrade(3));
-					}
-					else {
-						cureStrength.setStyle(unClicked);
-						updateUI(false);
-					}
-				}
-		    }
-		});
-		items.add(cureStrength);
-		
-		/*final Label flameAmount = new Label("FLAME AMOUNT", unClicked);
-		flameAmount.setPosition(50, items.get(items.size()-1).getY() - spacing);
-		flameAmount.addListener(new ClickListener(){
-			@Override
-		    public void clicked(InputEvent event, float x, float y) {
-				if(!isPaused) {
-					if(flameAmount.getStyle().equals(unClicked)) {
-						resetLabel();
-						flameAmount.setStyle(clicked);
-						setLabels(shop.getUpgrade(4));
-					}
-					else {
-						flameAmount.setStyle(unClicked);
-						updateUI(false);
-					}
-				}
-		    }
-		});
-		items.add(flameAmount);
-		
-		final Label cureAmount = new Label("CURE AMOUNT", unClicked);
-		cureAmount.setPosition(50, items.get(items.size()-1).getY() - spacing);
-		cureAmount.addListener(new ClickListener(){
-			@Override
-		    public void clicked(InputEvent event, float x, float y) {
-				if(!isPaused) {
-					if(cureAmount.getStyle().equals(unClicked)) {
-						resetLabel();
-						cureAmount.setStyle(clicked);
-						setLabels(shop.getUpgrade(5));
-					}
-					else {
-						cureAmount.setStyle(unClicked);
-						updateUI(false);
-					}
-				}
-		    }
-		});
-		items.add(cureAmount);*/
-		
-		
-		for(Label label : items) {
-			t.addActor(label);
-		}
+
+		main.ui.addActor(burnFluid);
+		main.ui.addActor(cureFluid);
+		main.ui.addActor(playerMasks);
+
 
 	
 	}
-	
-	public void setLabels(Upgrade upgrade) {
-		clickedShop = upgrade;
-		description.setText(upgrade.getDescription());
-		scaleFactor.setText("INCREASING BY " + upgrade.getIncreasingValue());
-		cost.setText(upgrade.getCost()+" FOOD");
-		level.setText("Lvl. " +upgrade.getLevel());
+
+	/**
+	 * Reset the labels and make them invisible
+	 */
+	public void resetLabel() {
+		burnFluid.setStyle(unClicked);
+		cureFluid.setStyle(unClicked);
+		playerMasks.setStyle(unClicked);
+		updateUI(false);
+		clickedEquipment = "";
+	}
+
+
+	/**
+	 * Set the labels of the menu.
+	 * @param values an array of string values
+	 */
+	public void setLabels(String[] values) {
+		clickedEquipment = values[0];
+		description.setText(values[1]);
+		amount.setText("AMOUNT:  " + values[2]);
+		cost.setText(values[3]+" FOOD");
 		updateUI(true);
 	}
 	
-	
-	public void resetLabel() {
-		for(Label label : items) {
-			label.setStyle(unClicked);
-		}
-		updateUI(false);
-		clickedShop = null;
-	}
+
 	
 	
 	@Override
@@ -401,7 +370,10 @@ public class ShopScreen implements Screen {
 		main.ui.act(delta);
 		main.ui.draw();
 	}
-	
+
+	/**
+	 * InputHandler for the shop screen to allow exit.
+	 */
 	public void inputHandler() {
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			togglePaused();
@@ -438,8 +410,10 @@ public class ShopScreen implements Screen {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
+
+	/**
+	 * The window for the pause game.
+	 */
 	public void pauseGame() {
 	    	
 		/*
@@ -495,8 +469,13 @@ public class ShopScreen implements Screen {
 	  
 
 	}
-    
-    private LabelStyle createLabelStyleWithBackground(Color color) {
+
+	/**
+	 * Create a LabelStyle aka, font colour etc.
+	 * @param color Color of the font
+	 * @return The LabelStyle of the font.
+	 */
+	private LabelStyle createLabelStyleWithBackground(Color color) {
     	///core/assets/font/Pixel.ttf
     	FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
     	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
@@ -514,17 +493,19 @@ public class ShopScreen implements Screen {
 	private void togglePaused() {
 		isPaused = !isPaused;
 	}
-	
+
+	/**
+	 * Update all the UI elements
+	 * @param hit if a ui element has been hit.
+	 */
     public void updateUI(Boolean hit) {
     	information.setVisible(hit);
     	description.setVisible(hit);
-    	scaleFactor.setVisible(hit);
-    	sf.setVisible(hit);
+    	amount.setVisible(hit);
+    	amountOnPlayer.setVisible(hit);
     	Buy.setVisible(hit);
     	titleCost.setVisible(hit);
     	cost.setVisible(hit);
-    	titleLevel.setVisible(hit);
-    	level.setVisible(hit);
     }
 	
 	

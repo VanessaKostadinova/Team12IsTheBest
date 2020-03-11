@@ -23,14 +23,23 @@ import com.mygdx.renderable.Node;
  */
 public class Cutscene implements Screen {
 
-	//package-view attributes below, are self-explanatory
+	/** Amount of time in state */
 	float stateTime = 0f;
+	/** The main class */
 	Main main;
-	Node initialNode;
-	MapScreen mapScreen;
+	/** If the game should leave, if it is a ending cutscene*/
 	Boolean shouldLeave;
+	/** VideoPlayer instance
+	 * @see VideoPlayer
+	 */
 	VideoPlayer videoPlayer;
+
+	/** Camera instance
+	 * @see OrthographicCamera
+	 */
 	OrthographicCamera camera;
+	/** File handle of the video */
+	FileHandle videoFile;
 
 	/**
 	 * Constructor for the cutscene class.
@@ -49,15 +58,17 @@ public class Cutscene implements Screen {
 
 		videoPlayer = VideoPlayerCreator.createVideoPlayer(viewport);
 		System.out.println(videoPlayer);
+		//Open gl to make the video creation more efficient.
 		Gdx.gl.glEnable(GL20.GL_CULL_FACE);
 		Gdx.gl.glCullFace(GL20.GL_BACK);
 
 		try {
-			FileHandle videoFile = Gdx.files.internal("video/ferrari.ogg");
+			videoFile = Gdx.files.internal(file);
 			Gdx.app.log("LOADING", "Loading file : " + videoFile.file().getAbsolutePath());
 			videoPlayer.play(videoFile);
 		} catch (Exception e) {
 			Gdx.app.log("ERROR", "Err: " + e);
+			changeScreen();
 		}
 	}
 
@@ -72,9 +83,7 @@ public class Cutscene implements Screen {
 		stateTime += delta;
 		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		if (videoPlayer.isBuffered()) {
-			videoPlayer.render();
-		}
+
 		main.ui.act();
 		main.ui.draw();
 
@@ -85,10 +94,18 @@ public class Cutscene implements Screen {
 			this.camera.update();
 		}
 
+		/*if(delta > 23) {
+			changeScreen();
+		}*/
 
-		if(!videoPlayer.isPlaying()) {
-			this.changeScreen();
-		}
+		videoPlayer.setOnCompletionListener(new VideoPlayer.CompletionListener() {
+			@Override
+			public void onCompletionListener(FileHandle file) {
+				changeScreen();
+			}
+		});
+
+		videoPlayer.render();
 	}
 
 	/**
@@ -112,6 +129,7 @@ public class Cutscene implements Screen {
 
 
 	}
+
 
 	@Override
 	public void resize(int width, int height) {
