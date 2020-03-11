@@ -18,13 +18,14 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.mygdx.renderable.Constants;
 import com.mygdx.renderable.NPC;
 
+/**
+ * House class stores the information about the house.
+ */
 public class House {
 	
 	private int[][] background;
 	private int[][] backgroundProperties;
-
 	private List<Torch> torches;
-
 	private HashMap<Integer, Texture> textures;
 	private String houseFile;
 	private int indicator = 0;

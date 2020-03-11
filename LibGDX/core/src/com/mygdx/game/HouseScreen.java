@@ -37,76 +37,98 @@ import box2dLight.RayHandler;
 import com.mygdx.story.Note;
 import com.mygdx.story.StoryHandler;
 
-import javax.xml.bind.ValidationException;
-
 /**
  * Contains the information of each of the houses.
  * @author Inder, Vanessa, Max
  * @version 1.5
  */
 public class HouseScreen implements Screen {
-	
+
+	/** The main class instance */
 	private Main main;
+	/** The node class instance */
 	private Node node;
-
+	/** The stateTime of house screen */
 	private float stateTime;
+	/** Used to count when to decrement the mask */
 	private float secondCounter;
-	
-	
+	/** List of sprites which are pickups */
 	private List<Sprite> pickups;
+	/** The camera for the screen */
 	private Camera camera;
+	/** The Camera for cameraUI */
 	private Camera cameraUI;
-
+	/** The background for the image */
 	private Image letter;
+	/** Image icon to leave house */
 	private Image icon;
+	/** The label for the paragraph for note */
 	private Label paragraph;
-	
+	/** The houseinputhandler to handle the input and collision*/
 	private HouseInputHandler handler;
+	/** The instance of MapScreen to return to */
 	private MapScreen mapScreen;
+	/** The UI image */
 	private Image ui;
+	/** The current spray */
 	private Image uiCurrentSpray;
-
+	/** The label for amount of gold. */
 	private Label goldLabel;
+	/** The label for player sanity. */
 	private Label sanityLabel;
+	/** The label for number of masks  */
 	private Label numberOfMasksLabel;
+	/** The label for amount of cure  */
 	private Label amountOfCureLabel;
+	/** The label for amount of burn  */
 	private Label amountOfBurnLabel;
-
+	/** The texture to show the mask bar */
 	private Texture maskBar;
+	/** The image for mask ui */
 	private Image bar;
+	/** World entity for Box2D */
 	private World world;
+	/** RayHandler to handle the rays emitted by the torch */
 	private RayHandler rayHandler;
+	/** Darkness of the screen */
 	private float darkness;
+	/** The scale of the item */
 	private float scaleItem;
+	/** The pause window */
 	private Window pause;
+	/** The UI Skin */
 	private Skin skin;
+	/** The InputMultuplexer to combine different inputs */
 	private InputMultiplexer input;
+	/** One point light used for the player spray */
 	private Light light;
-	private Image background;
+	/** Set drawable for the fire  */
     private SpriteDrawable fire;
-    private SpriteDrawable cure;
-    private Bullet bullet;
-
-	private Image overlayCutscene;
-	private Image dialogCutscene;
-	private Image speakerImage;
+	/** Set drawable for the cure  */
+	private SpriteDrawable cure;
+	/** A instance of a bullet  */
+	private Bullet bullet;
+	/** Images for cutscenes */
+	private Image overlayCutscene, dialogCutscene, speakerImage;
+	/** Label to set person speaking */
 	private Label personToSpeak;
+	/** Label to set the description of text */
 	private Label setDescriptionOfText;
-
-	private List<String> currentCutsceneQuotes;
-	private List<String> currentCutscenePerson;
-	private List<String> currentCutsceneDuration;
+	/** A number of list for each cutscene  */
+	private List<String> currentCutsceneQuotes, currentCutscenePerson, currentCutsceneDuration;
+	/** The current cutscene sequence */
 	private int cutsceneSequence;
+	/** The amount of fake npc's */
 	private ArrayList<NPC> fakeNPCs;
-	private Boolean shouldReduce;
-
+	/** Stores the number of initial number of masks */
 	private int initialNumberOfMasks;
+	/** Initial Amount of cure */
 	private float amountOfCure;
+	/** Initial Amount of flame */
 	private float amountOfFlame;
-
-
+	/** Texture for storyDoctor */
 	private Texture storyDoctor = null;
-
+	/** The mask durablity at the start */
 	private final float maskDurabiltyAtStart = Player.getInstance().getCurrentMaskDuration();
 
 	public HouseScreen(Main main, Node node, MapScreen mapScreen) {
@@ -241,6 +263,9 @@ public class HouseScreen implements Screen {
 			main.ui.addActor(setDescriptionOfText);
 		}
 
+		/**
+		 * Used to handle story throughout screen
+		 */
 		public void storyHandler() {
 			if(Player.getInstance().getCurrentMaskDuration() < 10 && !StoryHandler.TutorialPart3) {
 				startCreatingCutscene("cutscene/ingame/scripts/Scene5.csv");
@@ -248,6 +273,9 @@ public class HouseScreen implements Screen {
 			}
 		}
 
+		/**
+		 * Used to check the initial story handler.
+		 */
 		public void initialStoryHandler() {
 			if(PermanetPlayer.getPermanentPlayerInstance().getNotes().size() >= 12 && !StoryHandler.allNotesSequence) {
 				storyDoctor = new Texture(Gdx.files.internal("cutscene/ingame/storyTextures/OtherDoctor.png"));
@@ -447,13 +475,19 @@ public class HouseScreen implements Screen {
 			}
 			System.out.println("NOTES IN HOUSE : " + value);
 		}
-		
+
+		/**
+		 * Used to reduce the mask if the scene allows the mask to be reduced.
+		 */
 		public void reduceMask() {
 			if(!handler.getPaused() && !handler.getCutsceneActive()) {
 				Player.getInstance().reduceMask();
 			}
 		}
-		
+
+		/**
+		 * Updates the spray light when the spray is changed
+		 */
 		public void updateSprayLight() {
 			light.setColor(Player.getInstance().getSpray().getColor());
 
@@ -470,8 +504,11 @@ public class HouseScreen implements Screen {
 			//light.setDirection(p.getSprite().getRotation());
 			light.setActive(handler.getPressed() && !handler.getPaused() && !handler.getCutsceneActive() && Player.getInstance().getSpray().getIsActive());
 		}
-		
-		
+
+
+		/**
+		 * Create all the UI Elements for the House Screen
+		 */
 		public void UIElements() {
 			
 			icon = new Image(new SpriteDrawable(new Sprite(AssetHandler.manager.get("player/icon/ICON.png", Texture.class))));
@@ -524,6 +561,9 @@ public class HouseScreen implements Screen {
 		}
 
 
+		/**
+		 * Handling of the AI for each of NPC to allow for NPC to shoot Doctor.
+		 */
 		public void AI() {
 			for(NPC n : node.getNPCs()) {
 				if(n.getStatus().equals("Alive")) {
@@ -555,6 +595,9 @@ public class HouseScreen implements Screen {
 			}
 		}
 
+		/**
+		 * Update the drawing of the bullet as it moves across the map.
+		 */
 		public void updateAllBullets() {
 			if(bullet != null && !handler.getPaused() && !handler.getCutsceneActive()) {
 				System.out.println("HIT!");
@@ -575,10 +618,17 @@ public class HouseScreen implements Screen {
 		}
 
 
+		/**
+		 * Update the paragraph position as the text is changed.
+		 */
 		public void updateParagraphPosition() {
 			paragraph.setPosition(main.ui.getWidth()/2-letter.getWidth()/2 + 50, main.ui.getHeight()/2);
 		}
-		
+
+		/**
+		 * Draw the UI for house screen which are handled by the sprite batch.
+		 * @param batch SpriteBatch of the current screen
+		 */
 		public void drawUI(SpriteBatch batch) {
 			updateBar();
 			goldLabel.setText(Player.getInstance().getFood()+"");
@@ -617,7 +667,9 @@ public class HouseScreen implements Screen {
 			// TODO Auto-generated method stub
 	
 		}
-		
+		/**
+		 * Render the map on to the house screen.
+		 */
 		private void renderMap() {
 			int[][] workingArray = node.getHouse().getLevel();
 			int yCoord = 0;
@@ -633,13 +685,17 @@ public class HouseScreen implements Screen {
 			}
 	
 		}
-		
+		/**
+		 * Draw all the torch lights.
+		 */
 		private void drawTorchs() {
 			for(Torch t :node.getHouse().getTorches()) {
 				t.draw(main.batch);
 			}
 		}
-		
+		/**
+		 * Set all the torch lights.
+		 */
 		private void setTorchLights() {
 			for(Torch t :node.getHouse().getTorches()) {
 				Light l = new PointLight(rayHandler, 100, Color.ORANGE, 200f, t.getSprite().getX() + t.getSprite().getWidth()/2, t.getSprite().getY() + t.getSprite().getHeight()/2);
@@ -647,7 +703,10 @@ public class HouseScreen implements Screen {
 				
 			}
 		}
-		
+
+		/**
+		 * Set all the visible item pickups.
+		 */
 		private void setAllItemPickups() {
 			pickups = new ArrayList<>();
 			for(Note note : node.getNotes()) {
@@ -658,7 +717,11 @@ public class HouseScreen implements Screen {
 				}
 			}
 		}
-		
+
+		/**
+		 * Draw all potential item picks ups. Rn just notes.
+		 * @param batch SpriteBatch for this screen.
+		 */
 		private void drawAllItemPickups(SpriteBatch batch) {
 			for(Sprite s : pickups) {
 				s.draw(batch);
@@ -681,8 +744,10 @@ public class HouseScreen implements Screen {
 				}
 			}
 		}
-		
-		
+
+		/**
+		 * Update the mask bar of the UI, to reduce and check if the player is dead.
+		 */
 		private void updateBar() {
 			if((bar.getWidth() >= 1f)) {
 				System.out.println(" CURRENT DURATION: "  + Player.getInstance().getCurrentMaskDuration());
@@ -709,7 +774,11 @@ public class HouseScreen implements Screen {
 			
 			
 		}
-		
+
+		/**
+		 * Draw all of the NPC's on the screen and update their bar's
+		 * @param batch SpriteBatch of the screen
+		 */
 		private void drawNPC(SpriteBatch batch) {
 			for(NPC villager : node.getNPCs()) {
 				villager.getSprite().draw(batch);
@@ -727,8 +796,13 @@ public class HouseScreen implements Screen {
 				}
 			}
 		}
-		
-	    private LabelStyle createLabelStyleWithBackground(Color color) {
+
+		/**
+		 * Sets the labelstyle (Font, Color etc)
+		 * @param color Color of the font
+		 * @return A labelstyle of font 60
+		 */
+		private LabelStyle createLabelStyleWithBackground(Color color) {
 	    	///core/assets/font/Pixel.ttf
 	    	FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
 	    	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
@@ -786,6 +860,10 @@ public class HouseScreen implements Screen {
 			main.ui.addActor(pause);
 	    }
 
+
+	/**
+	 * Used to spawn fake npc's if sanity allows.
+	 */
 	private void spawnFakeNPC()
 	{
 		int x=0;
@@ -815,6 +893,11 @@ public class HouseScreen implements Screen {
 		}
 
 	}
+
+	/**
+	 * Draw a fake npc if there are fake npc's
+	 * @param batch SpriteBatch to draw the npc's
+	 */
 	private void drawFakeNPC(SpriteBatch batch)
 	{
 		System.out.println("NUMBER OF FAKE NPC'S: " + fakeNPCs.size());

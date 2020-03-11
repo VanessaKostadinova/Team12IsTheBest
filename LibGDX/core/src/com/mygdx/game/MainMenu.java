@@ -33,13 +33,20 @@ import java.util.logging.FileHandler;
  */
 public final class MainMenu implements Screen {
 
-	Main main;
-	Table t;
-	Skin skin;
-	float scaleItem;
-	Image head;
-	Music sound;
-	MainMenu menu;
+	/** The main class */
+	private Main main;
+
+	/** The table to hold the Scene2D components in the menu */
+	private Table t;
+
+	/** Used to scale items. */
+	private float scaleItem;
+
+	/** The background music of the menu */
+	private Music sound;
+
+	/** the instance MainMenu */
+	private MainMenu menu;
 
 	public MainMenu(Main mainScreen) {
 		/*
@@ -281,6 +288,11 @@ public final class MainMenu implements Screen {
 		sound.dispose();
 	}
 
+	/**
+	 * Check if the file exists in the directory which the game is in.
+	 * @param prefname "the name of the file"
+	 * @return If file exists
+	 */
 	public boolean if_exists ( String prefname )
 	{
 		Preferences tmprefs = Gdx.app.getPreferences ( prefname );

@@ -28,7 +28,6 @@ import com.mygdx.renderable.Player;
  */
 public class HouseInputHandler implements InputProcessor {
 
-	
 	/** The player's width. */
 	private float playerWidth;
 	
@@ -53,38 +52,47 @@ public class HouseInputHandler implements InputProcessor {
 	/** Pause menu. */
 	private Window pause;
 
-	
 	/** If mouse pressed. */
 	private boolean mousePressed;
-	
+
+	/** The paragraph  for each of the notes */
 	private Label paragraph;
-	
+
+	/** The Image for the actual letter texture. */
 	private Image letter;
-	
-	
-	
+
 	/** The npcs. */
 	private List<NPC> npcs;
 
+	/** The image icon to leave the house */
 	private Image icon;
 	
-	
+	/** Contact listener for bodies */
 	private MyContactListener listener;
 
+	/** Used to store the string of the last input of the user */
 	private String lastInput;
 
+	/** The boolean variable to store whether or not cutscene is active */
 	private Boolean cutsceneActive;
 
-	private Music walkingSoundEffect;
-	private Music cureSoundEffect;
-	private Music fireSoundEffect;
-	private Music leatherAndJeansEffect;
+	/** A number of sound effects for the game */
+	private Music walkingSoundEffect, cureSoundEffect, fireSoundEffect, leatherAndJeansEffect;
 
-	private Music backgroundSound1;
-	private Music backgroundSound2;
-	private Music backgroundSound3;
+	/** A potential background music for the game*/
+	private Music backgroundSound1, backgroundSound2, backgroundSound3;
 
-
+	/**
+	 * The constructor for the HouseInputHandler.
+	 * @param camera Camera of the house from SpriteBatch
+	 * @param level The current Level layout for the game
+	 * @param pause The pause window in the HouseScreen
+	 * @param npcs The NPC's Within a house.
+	 * @param paragraph The paragraph of text for a note.
+	 * @param letter The letter texture for a note.
+	 * @param icon The Icon to leave the house
+	 * @param world The Body2D world information (Bodies, Lights etc).
+	 */
 	public HouseInputHandler(Camera camera, int[][] level, Window pause, List<NPC> npcs, Label paragraph, Image letter, Image icon, World world) {
 		this.camera = camera;
 		this.level = level;
@@ -118,6 +126,9 @@ public class HouseInputHandler implements InputProcessor {
 		lastInput = "";
 	}
 
+	/**
+	 * Play random background music while in a house.
+	 */
 	public void playBackgroundMusic() {
 		if(!backgroundSound1.isPlaying() && !backgroundSound1.isPlaying() && !backgroundSound1.isPlaying()) {
 			Random r = new Random();
@@ -131,6 +142,9 @@ public class HouseInputHandler implements InputProcessor {
 		}
 	}
 
+	/**
+	 * Stop and dispose of any music when you leave the screen.
+	 */
 	public void stopAllMusicAndDispose() {
 		backgroundSound1.stop();
 		backgroundSound2.stop();
@@ -150,8 +164,11 @@ public class HouseInputHandler implements InputProcessor {
 	}
 
 
-	
-	
+	/**
+	 * Used to handle the movement of the player itself
+	 * @param region The current texture of the player
+	 * @param delta The delta of the player to ensure lag catchup occurs if it does occur.
+	 */
 	public void movement(TextureRegion region, float delta) {
 		float playerX = Player.getInstance().getSprite().getX();
 		float playerY = Player.getInstance().getSprite().getY();
@@ -280,12 +297,12 @@ public class HouseInputHandler implements InputProcessor {
 			}
 		}
 	}
-	
-	
-	
-	
 
-	
+	/**
+	 * Handler for the spray which the player has
+	 * @param value The amount of spray the player has of that specific spray
+	 * @return the new amount of spray the player has.
+	 */
 	public float spray(float value) {
 		if(!isPaused) {
 			Player.getInstance().getSpray().setVisible(mousePressed);
@@ -352,7 +369,13 @@ public class HouseInputHandler implements InputProcessor {
 	    return false;
 
 	}
-	
+
+	/**
+	 * If there is a door present for the player to access and leave the house with.
+	 * @param x The X value of the player
+	 * @param y The Y value of the player
+	 * @return If the player is next to a door and can leave
+	 */
 	private boolean shouldExit(float x, float y) {
 		/*                        
 		 * Each tile is 32*32
@@ -381,7 +404,11 @@ public class HouseInputHandler implements InputProcessor {
 	}
 
 
-
+	/**
+	 * Event to check if the player has switched his spray
+	 * @param keycode What key has been pressed
+	 * @return false
+	 */
 	@Override
 	public boolean keyDown(int keycode) {
 		if(keycode == Keys.Q) {
@@ -441,14 +468,22 @@ public class HouseInputHandler implements InputProcessor {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
+	/**
+	 * Checking if spray has collided with a villager
+	 * @param list
+	 * @return
+	 */
 	public boolean sprayWithVillagerCollision(List<NPC> list) {
-		System.out.println((Player.getInstance().getSprayIndex() == 1));
 		Boolean value = Player.getInstance().getSpray().collision(list, Player.getInstance().getSprayIndex(), Player.getInstance());
-		System.out.println(value);
 		return value;
 	}
-	
+
+	/**
+	 * Used to handle the rotation of the player to follow the mouse
+	 * @param screenX The X position of the mouse on screen.
+	 * @param screenY The Y position of the mouse on screen.
+	 */
 	private void spriteRotations(int screenX, int screenY) {
 		/*
 		 * The intital calculations are to make sure the initial coordinates are from the centre.
@@ -479,12 +514,15 @@ public class HouseInputHandler implements InputProcessor {
 	}
 
 
-	
+	/**
+	 * Sets paused variable
+	 * @param isPaused if paused or unpaused
+	 */
 	public void setPaused(Boolean isPaused) {
 		this.isPaused = isPaused;
 	}
 
-
+	/** Switches between paused and unpaused without setting*/
 	public void togglePaused() {
 		if(isPaused) {
 			isPaused = false;
@@ -494,15 +532,7 @@ public class HouseInputHandler implements InputProcessor {
 		}		
 	}
 
-	public void toggleInventory() {
-		if(inventoryOpened) {
-			inventoryOpened = false;
-		}
-		else {
-			inventoryOpened = true;
-		}
-	}
-
+	/** Sets the cutscene variable to active */
 	public void setCutsceneActive(Boolean cutsceneActive) {
 		this.cutsceneActive = cutsceneActive;
 	}

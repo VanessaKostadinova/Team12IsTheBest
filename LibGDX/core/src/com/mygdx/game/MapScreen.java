@@ -46,116 +46,147 @@ import com.mygdx.shop.Shop;
 import com.mygdx.story.Note;
 import com.mygdx.story.StoryHandler;
 
+/**
+ * Used to create the house screen, used to Player uses this a hub for the game to make interactions
+ * with and around their player and other npcs.
+ * @author Inder, Max, Vanessa.
+ */
 public class MapScreen implements Screen {
-
+	/** Constant for entering researching a house */
 	public final int ENERGY_FOR_RESEARCH = 5;
+	/** Constant for entering a house */
 	public final int ENERGY_FOR_ENTER_HOUSE = 25;
-
+	/** The current state time */
 	private float stateTime;
-	
+	/** The main class instance */
 	private Main main;
+	/** The map class instance */
 	private Map map;
+	/** The viewWidth of the screen instance */
 	private float viewWidth;
+	/** The CameraMap for the Textures not the User Interface However, (Not Scene2D) */
 	private Camera cameraMap;
+	/** The Camera for UI (Scene2D) */
 	private Camera cameraUI;
-	
+	/** THe background for the map */
 	protected Sprite background;
-	//protected Sprite behindBackground;
+	/** The pointer for the screen */
 	private Sprite pointer;
-	
+	/** The shop text texture in a sprite*/
 	private Sprite shopText;
+	/** The enter text texture in a sprite*/
 	private Sprite enterShop;
-
+	/** The church text texture in a sprite*/
 	private Sprite churchText;
+	/** The enter text texture in a sprite*/
 	private Sprite enterChurch;
-	
+	/** The house text texture in a sprite*/
 	private Sprite houseText;
+	/** The enter text texture in a sprite*/
 	private Sprite enterHouse;
+	/** The inspect house texture in a sprite*/
 	private Sprite inspectHouse;
+	/** The inspect dialog texture in a sprite*/
 	private Sprite inspectDialog;
-	
+	/** The BaseUI for the game - Contains Energy Etc*/
 	private Sprite baseUI;
+	/** The foodLabel to how much food is set */
 	private Sprite foodLabel;
-
-	private Sprite alivePercentageLabel;
-	private Sprite deadPercentageLabel;
-	private Sprite sickPercentageLabel;
-
+	/** The Percentage Levels Labels */
+	private Sprite alivePercentageLabel, deadPercentageLabel, sickPercentageLabel;
+	/** The house alpha value for the User Interface for the House Components */
 	private float houseAlpha = 0;
+	/** The church alpha value for the User Interface for the Church Components */
 	private float churchAlpha = 0;
+	/** The shop alpha value for the User Interface for the Shop Components */
 	private float shopAlpha = 0;
-	
+	/** If the house is hit and is tried to be entered into */
 	private Boolean houseHit = false;
+	/** If the church is hit and is tried to be entered into */
 	private Boolean churchHit = false;
+	/** If the shop is hit and is tried to be entered into */
 	private Boolean shopHit = false;
+	/** If the enter key has been pressed */
 	private Boolean enterBuilding = false;
-	
+	/** Used to scale the components in screen */
 	private float scaleItem;
+	/** The Pause Menu window */
 	private Window pause;
+	/** The Component selection window.*/
 	private Window beforeEntry;
+	/** If the paused menu is active  */
 	private Boolean isPaused;
+	/** If the cutscene is active  */
 	private Boolean cutsceneActive;
+	/** UI SKIN for the UI Components */
 	private Skin skin;
+	/** RayHandler to handle the light diffusion and reflection */
 	private RayHandler rayHandler;
+	/** Shows the darkness of the scene */
 	private float darkness;
+	/** If the day should end */
 	private boolean darken;
-	/**
-	 * Don't store the instance of Permanent Player breaks the point of having a
-	 * singleton as this instance and the actual instance of PermanetPlayer.getInstance()
-	 * can be out of sync. Furthermore, there is no way to sync these without breaking Singleton
-	 * so PermanentPlayer.getInstance() should be used to retrieve the instance of the player.
-	 */
-	//private PermanetPlayer permanetPlayer;
-	
+	/** The current day */
 	private int day;
+	/** Label to represent the current day */
 	private Label dayLabel;
+	/** Set the animation time for day transtistions */
 	private float dayAnimationTime;
-	
+	/** If the initial transitions has been done */
 	private boolean initialDone;
-
+	/** The current amount of energy for the player */
 	private Label energy;
-
+	/** Label to represent alive percentage*/
 	private Label alivePercentage;
+	/** Label to represent sick percentage*/
 	private Label sickPercentage;
+	/** Label to represent dead percentage*/
 	private Label deadPercentage;
-
+	/** Check the disease instance */
 	private Disease disease;
-
+	/** Label to show if number of characters known*/
 	private Label numberOfCharacter;
+	/** Label to show if number of characters known title*/
 	private Label numberOfcharacterTitle;
+	/** Label to show if number of sick characters known title*/
 	private Label numberOfcharacterSickTitle;
+	/** Label to show if number of sick characters known*/
 	private Label numberOfCharacterSick;
+	/** Label to show if number of diseased characters known title*/
 	private Label numberOfcharacterDiseasedTitle;
+	/** Label to show if number of diseased characters known */
 	private Label numberOfCharacterDiseased;
-
-	private Label Amount1;
-	
+	/** The current node the pointer is hovering over */
 	private Node hoverNode;
-
+	/** The overlay to darken the scene behind cutscene */
 	private Image overlayCutscene;
+	/** The dialog to show cutscene. */
 	private Image dialogCutscene;
+	/** Image to show who is currently speaking. */
 	private Image speakerImage;
+	/** Label to show person who is currently speaking */
 	private Label personToSpeak;
+	/** Set the description of the notes */
 	private Label setDescriptionOfText;
+	/** Set the background of the note */
 	private Image noteBackground;
-
-	private List<String> currentCutsceneQuotes;
-	private List<String> currentCutscenePerson;
-	private List<String> currentCutsceneDuration;
-
-
+	/** Collection of strings used for the cutscene */
+	private List<String> currentCutsceneQuotes, currentCutscenePerson, currentCutsceneDuration;
+	/** Used to check for the cheat codes */
 	private List<String> checkForKC;
-	private boolean itemsSelected;
+	/** Used to check the sequence of the cutscenes */
 	private int cutsceneSequence;
-
+	/** Windows for the decisions to be made */
 	private Window decisionWindow;
-	private Label decisionFirst;
-	private Label decisionSecond;
-
+	/** Possible Label Decisions*/
+	private Label decisionFirst, decisionSecond;
+	/** Collection of note UI Labels */
 	private Label noteTitle, note1, note2, note3, note4, note5, note6, note7, note8, note9, note10, note11, note12, note13, note14, note15, note16, note17, note18, note19, note20;
+	/** The background image for the note */
 	private Image letter;
+	/** The paragraph for the note */
 	private Label paragraph;
-
+	/** If the save game flag has been flagged*/
 	private Boolean saveGame = false;
 
 	/**
@@ -164,7 +195,6 @@ public class MapScreen implements Screen {
 	 * @param main The main class and shouldn't be null.
 	 */
 	public MapScreen(Main main) {
-		itemsSelected = false;
 		cutsceneActive = false;
 		this.viewWidth = 256;
 		Player.init(5, 100, 100);
@@ -225,7 +255,6 @@ public class MapScreen implements Screen {
 
 	public MapScreen(Main main, int day, Map map) {
 		darken = false;
-		itemsSelected = false;
 		cutsceneActive = false;
 		this.viewWidth = 256;
 		Player.init(5, 100, 100);
@@ -300,7 +329,7 @@ public class MapScreen implements Screen {
 
 		Sprite s3 = new Sprite(new Texture(Gdx.files.internal("cutscene/ingame/characterImages/templateCutsceneSpeaker.png")));
 		speakerImage = new Image(new SpriteDrawable(s3));
-		speakerImage.setPosition(1080-speakerImage.getWidth()/2-150, 430);
+		speakerImage.setPosition(660, 430);
 		speakerImage.setScale(2f);
 		speakerImage.setVisible(false);
 
@@ -308,16 +337,16 @@ public class MapScreen implements Screen {
 		dialogCutscene = new Image(new SpriteDrawable(s2));
 		dialogCutscene.setPosition(50, 50);
 		dialogCutscene.setScaleY(0.5f);
-		dialogCutscene.setScaleX(3.45f);
+		dialogCutscene.setScaleX(3.0666f);
 		dialogCutscene.setVisible(false);
 
 		personToSpeak = new Label("YOU:", AssetHandler.fontSize32);
-		personToSpeak.setPosition(90, 350F);
+		personToSpeak.setPosition(90, 350);
 		personToSpeak.setVisible(false);
 
 		setDescriptionOfText = new Label("YNSERT TEXT HERE PLEASE! ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss", AssetHandler.fontSize32);
 		setDescriptionOfText.setAlignment(Align.topLeft);
-		setDescriptionOfText.setWidth(1950);
+		setDescriptionOfText.setWidth(1710);
 		setDescriptionOfText.setWrap(true);
 		setDescriptionOfText.setPosition(90, 300f);
 		setDescriptionOfText.setVisible(false);
@@ -402,8 +431,10 @@ public class MapScreen implements Screen {
 			currentCutsceneDuration.clear();
 		}
 	}
-	
 
+	/**
+	 * Create all the UI elements for the Map
+	 */
 	public void createUIElements() {
 		scaleItem = 1080f/(float)Gdx.graphics.getWidth();
 		if(scaleItem < 1) {
@@ -557,7 +588,10 @@ public class MapScreen implements Screen {
 
 
 	}
-	
+
+	/**
+	 * Check if the endgame has been reached everytime.
+	 */
 	public void checkEndGame() {
 		boolean endGame = true;
 		for(Node n : map.getNodes()) {
@@ -567,19 +601,14 @@ public class MapScreen implements Screen {
 		}
 		
 		if(endGame && StoryHandler.haveBeenReCured) {
-			//boolean allDead = false;
-			/*for(Node n : map.getNodes()) {
-				if(n.areAllDead()) {
-					//allDead = true;
-				}
-			}*/
-			
-			//main.ui.clear();
-			//main.setScreen(new EndGame(main,false));
+
 		}
 	}
-	
-	
+
+	/**
+	 * Used to handle the input in the map screen.
+	 * @param delta
+	 */
 	public void localInputHandler(float delta) {
 		float movement = (12000f / 60f);
 		if(Gdx.input.isKeyPressed(Keys.W) && !isPaused && !cutsceneActive) {
@@ -685,6 +714,9 @@ public class MapScreen implements Screen {
 		
 	}
 
+	/**
+	 * StoryChecker follows the sequence of story flags to allow the player to follow the story.
+	 */
 	public void storyChecker() {
 		if(StoryHandler.startedIntroPart2 && !StoryHandler.introductionPart2 && currentCutsceneQuotes.size() == 0) {
 			StoryHandler.introductionPart2 = true;
@@ -797,7 +829,10 @@ public class MapScreen implements Screen {
 			StoryHandler.cutscene82Played = true;
 		}
 	}
-	
+
+	/**
+	 * Hides all the UI elements and makes the scene dark to move on to the next day.
+	 */
 	public void makeSceneDark() {
 		
 		if(initialDone) {
@@ -849,6 +884,10 @@ public class MapScreen implements Screen {
 		this.rayHandler.setAmbientLight(darkness);
 	}
 
+	/**
+	 * Calculates the percentages of each type of villager
+	 * and show them on the user interface.
+	 */
 	public void setPercentages() {
 		float dead = 0;
 		float alive = 0;
@@ -890,12 +929,20 @@ public class MapScreen implements Screen {
 		sickPercentage.setText(sickPercentageF +"");
 		deadPercentage.setText(deadPercentageF+"");
 	}
-	
+
+	/**
+	 * This method handles the spread of disease.
+	 * @param house The house which is in focus.
+	 */
 	public void diseaseHandler(Node house) {
 		disease.calculateHouseIllness(house);
 		disease.infectResidents(house);
 	}
-	
+
+	/**
+	 * Check if the values have been inputted to move forward in the game. AKA
+	 * cheat codes and these use variations of the legendary Konami code.
+	 */
 	public void checkKC() {
 		StringBuilder value = new StringBuilder();
 
@@ -930,6 +977,10 @@ public class MapScreen implements Screen {
 		}
 	}
 
+	/**
+	 * Update the text of the node for knowledge of each house.
+	 * @param n The current house in focus.
+	 */
 	public void updateText(Node n) {
 		energy.setText(PermanetPlayer.getPermanentPlayerInstance().getEnergy()+"");
 		setPercentages();
@@ -951,7 +1002,11 @@ public class MapScreen implements Screen {
 			numberOfCharacterDiseased.setText("NOT KNOWN");
 		}
 	}
-	
+
+	/**
+	 * Handle the initial scene transitions into the scene.
+	 * @param delta The delta value.
+	 */
 	public void initalSceneTransitions(float delta) {
 		if(!initialDone) {
 			
@@ -1013,7 +1068,10 @@ public class MapScreen implements Screen {
 	public void pause() {
 		// TODO Auto-generated method stub
 	}
-	
+
+	/**
+	 * Fades in the houseUI, from alpha 0 to 1. As you hover over a house.
+	 */
 	public void fadeAnimationHouseUI() {
 		if(houseHit) { 
 			if(houseAlpha < 1) { 
@@ -1061,7 +1119,10 @@ public class MapScreen implements Screen {
 			}
 		}
 	}
-	
+
+	/**
+	 * Fades in the churchUI, from alpha 0 to 1. As you hover over a church.
+	 */
 	public void fadeAnimationChurchUI() {
 		if (churchHit) {
 			if (churchAlpha < 1) {
@@ -1084,6 +1145,9 @@ public class MapScreen implements Screen {
 		}
 	}
 
+	/**
+	 * Fades in the shopUI, from alpha 0 to 1. As you hover over a shop.
+	 */
 	public void fadeAnimationShopUI() {
 		if(shopHit) {
 			System.out.println("HIT2");
@@ -1125,19 +1189,26 @@ public class MapScreen implements Screen {
 	}
 
 
+	/**
+	 * Check if the player is able to enter house and set up the sequence.
+	 * @param node The house in focus.
+	 */
 	public void enterHouse(Node node) {
-
 		houseHit = true;
 		updateText(node);
 		hoverNode = node;
-		
 		if(enterBuilding && (PermanetPlayer.getPermanentPlayerInstance().getEnergy() >= ENERGY_FOR_ENTER_HOUSE)) {
 			beforeEntry.setVisible(true);
 			isPaused = true;
 
 		}	
 	}
-	
+
+
+	/**
+	 * Check if the player is able to enter church and set up the sequence.
+	 * @param church The Church in focus.
+	 */
 	public void enterChurch(Church church) {
 		churchHit = true;
 		if(enterBuilding) {
@@ -1147,6 +1218,10 @@ public class MapScreen implements Screen {
 		}
 	}
 
+	/**
+	 * Check if the player is able to enter shop and set up the sequence.
+	 * @param shop The Shop in focus.
+	 */
 	public void enterShop(Shop shop) {
 		shopHit = true;
 		if(enterBuilding) {
@@ -1223,7 +1298,7 @@ public class MapScreen implements Screen {
 		energy.setWidth(450f);
 		energy.setFontScale(2.5f);
 		energy.setAlignment(Align.center);
-		energy.setPosition(main.ui.getWidth()-energy.getWidth()-80f, main.ui.getHeight()-energy.getHeight()-200f);
+		energy.setPosition(main.ui.getWidth()-energy.getWidth()-50f, main.ui.getHeight()-energy.getHeight()-175f);
 		energy.setVisible(false);
 		//energy.setVisible(false);
 		main.ui.addActor(energy);
@@ -1232,7 +1307,7 @@ public class MapScreen implements Screen {
 		alivePercentage.setWidth(450f);
 		alivePercentage.setFontScale(2.5f);
 		alivePercentage.setAlignment(Align.center);
-		alivePercentage.setPosition(main.ui.getWidth()-energy.getWidth()+50f, main.ui.getHeight()-energy.getHeight()-350f);
+		alivePercentage.setPosition(main.ui.getWidth()-energy.getWidth()+80f, main.ui.getHeight()-energy.getHeight()-305f);
 		alivePercentage.setVisible(false);
 		//energy.setVisible(false);
 		main.ui.addActor(alivePercentage);
@@ -1242,7 +1317,7 @@ public class MapScreen implements Screen {
 		sickPercentage.setWidth(450f);
 		sickPercentage.setFontScale(2.5f);
 		sickPercentage.setAlignment(Align.center);
-		sickPercentage.setPosition(main.ui.getWidth()-energy.getWidth()+50f, main.ui.getHeight()-energy.getHeight()-415f);
+		sickPercentage.setPosition(main.ui.getWidth()-energy.getWidth()+80f, main.ui.getHeight()-energy.getHeight()-365f);
 		sickPercentage.setVisible(false);
 		main.ui.addActor(sickPercentage);
 
@@ -1250,7 +1325,7 @@ public class MapScreen implements Screen {
 		deadPercentage.setWidth(450f);
 		deadPercentage.setFontScale(2.5f);
 		deadPercentage.setAlignment(Align.center);
-		deadPercentage.setPosition(main.ui.getWidth()-energy.getWidth()+50f, main.ui.getHeight()-energy.getHeight()-485f);
+		deadPercentage.setPosition(main.ui.getWidth()-energy.getWidth()+80f, main.ui.getHeight()-energy.getHeight()-430f);
 		deadPercentage.setVisible(false);
 		main.ui.addActor(deadPercentage);
 
@@ -1305,13 +1380,13 @@ public class MapScreen implements Screen {
     }
 
     public void pauseGame() {
-		float windowWidth = 200 * scaleItem, windowHeight = 200 * scaleItem;
+		float windowWidth = 200, windowHeight = 200 ;
 		pause = new Window("", skin);
 		pause.setMovable(false); //So the user can't move the window
 		//final TextButton button1 = new TextButton("Resume", skin);
 
 		final Label button1 = new Label("RESUME", AssetHandler.fontSize24);
-		button1.setFontScale((windowHeight/200) * scaleItem, (windowHeight/200) * scaleItem);
+		button1.setFontScale((windowHeight/200), (windowHeight/200));
 		button1.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -1321,7 +1396,7 @@ public class MapScreen implements Screen {
 		});
 
 		Label button2 = new Label("SAVE", AssetHandler.fontSize24);
-		button2.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
+		button2.setFontScale((windowHeight/200), (windowHeight/200) );
 		button2.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -1331,7 +1406,7 @@ public class MapScreen implements Screen {
 		});
 
 		Label button3 = new Label("EXIT", AssetHandler.fontSize24);
-		button3.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
+		button3.setFontScale((windowHeight/200), (windowHeight/200) );
 		button3.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -1348,13 +1423,13 @@ public class MapScreen implements Screen {
 		pause.pack(); //Important! Correctly scales the window after adding new elements
 
 		//Centre window on screen.
-		pause.setBounds(((main.ui.getWidth() - windowWidth*scaleItem  ) / 2),
-				(main.ui.getHeight() - windowHeight*scaleItem) / 2, windowWidth  , windowHeight );
+		pause.setBounds(((main.ui.getWidth() - windowWidth  ) / 2),
+				(main.ui.getHeight() - windowHeight) / 2, windowWidth  , windowHeight );
 		//Sets the menu as invisible
 		isPaused = false;
 		pause.setVisible(false);
 
-		pause.setSize(pause.getWidth() * scaleItem, pause.getHeight()*scaleItem);
+		pause.setSize(pause.getWidth() , pause.getHeight());
 		main.ui.addActor(pause);
 	}
 
@@ -1421,8 +1496,8 @@ public class MapScreen implements Screen {
 		decisionWindow.pack(); //Important! Correctly scales the window after adding new elements
 
 		//Centre window on screen.
-		decisionWindow.setBounds((580f),
-				(340f), windowWidth  , windowHeight );
+		decisionWindow.setBounds((465f),
+				(275f), windowWidth  , windowHeight );
 		//Sets the menu as invisible
 		isPaused = false;
 		decisionWindow.setVisible(false);
@@ -1442,7 +1517,6 @@ public class MapScreen implements Screen {
 		float windowWidth = 400, windowHeight = 600;
 		beforeEntry = new Window("", skin);
 		beforeEntry.setMovable(false); //So the user can't move the window
-
 		Label Title1 = new Label("SELECT", AssetHandler.fontSize32);
 		Label Title2= new Label("GEAR", AssetHandler.fontSize32);
 
@@ -1618,9 +1692,6 @@ public class MapScreen implements Screen {
 		table2.add(plus3).width(40).height(40).pad(0, 10, 0,0);
 		table2.add(remove3).width(40).height(40).row();
 
-
-		beforeEntry.add(table2).center().row();
-
 		Table table3 = new Table();
 
 		Label exit = new Label("EXIT", AssetHandler.fontSize32);
@@ -1645,11 +1716,12 @@ public class MapScreen implements Screen {
 				enterHouse();
 			}
 		});
+
 		table3.add(exit).width(exit.getWidth()).pad(20);
 		table3.add(enter).width(enter.getWidth()).row();
 
+		beforeEntry.add(table2).center().row();
 		beforeEntry.add(table3).center().row();
-
 		beforeEntry.pack(); //Important! Correctly scales the window after adding new elements
 
 		//Centre window on screen.
@@ -1658,7 +1730,8 @@ public class MapScreen implements Screen {
 		//Sets the menu as invisible
 		beforeEntry.setVisible(false);
 
-		beforeEntry.setSize(beforeEntry.getWidth()*scaleItem, beforeEntry.getHeight()*scaleItem);
+		beforeEntry.setSize(beforeEntry.getWidth(), beforeEntry.getHeight());
+		beforeEntry.setPosition(760f, 300f);
 		main.ui.addActor(beforeEntry);
 	}
 
@@ -1684,9 +1757,8 @@ public class MapScreen implements Screen {
 	}*/
 
 	/**
-	 * Holds the window for the inventory.
+	 * Holds the authentication for the notes inventory.
 	 */
-
 	public void showNotes() {
 		if(noteBackground.isVisible()) {
 			int notes = PermanetPlayer.getPermanentPlayerInstance().getNotes().size();
@@ -1813,6 +1885,11 @@ public class MapScreen implements Screen {
 		}
 	}
 
+
+	/**
+	 * If a note should be shown, only if they haven't been already seen.
+	 * @param n The note in focus.
+	 */
 	public void showNote(Note n) {
 		isPaused = true;
 		paragraph.setText(n.getInfo());
@@ -1821,19 +1898,25 @@ public class MapScreen implements Screen {
 		letter.setVisible(true);
 	}
 
+	/**
+	 * Update the label of the note paragraph to align it properly.
+	 */
 	public void updateParagraphPosition() {
 		paragraph.setPosition(main.ui.getWidth()/2-letter.getWidth()/2 + 50, main.ui.getHeight()/2);
 	}
 
+	/**
+	 * Creation of the note inventory
+	 * There are 20 buttons ==> Note 1 to Note 20.
+	 */
 	public void inventory() {
 		Sprite s2 = new Sprite(AssetHandler.manager.get("player/MAPUI/dialog.png", Texture.class));
+		s2.setBounds(0, 0, 1920, 1080);
 		noteBackground = new Image(new SpriteDrawable(s2));
-		noteBackground.setScaleY(1.62f);
-		noteBackground.setScaleX(3.65f);
 		noteBackground.setVisible(false);
 
 		note1 = new Label("NOTE 1", AssetHandler.fontSize24);
-		note1.setPosition(50, 1050);
+		note1.setPosition(50, 900);
 		note1.setWidth(note1.getWidth() + note1.getWidth() + 400);
 		note1.setAlignment(Align.center);
 		note1.addListener(new ClickListener() {
@@ -1846,13 +1929,13 @@ public class MapScreen implements Screen {
 		note1.setVisible(false);
 
 		noteTitle = new Label("NOTES COLLECTED", AssetHandler.fontSize32);
-		noteTitle.setPosition(50, 1100);
+		noteTitle.setPosition(50, 1000);
 		noteTitle.setWidth(note1.getWidth());
 		noteTitle.setAlignment(Align.center);
 		noteTitle.setVisible(false);
 
 		note2 = new Label("NOTE 2", AssetHandler.fontSize24);
-		note2.setPosition(50, 1050-note1.getHeight());
+		note2.setPosition(50, 900-note1.getHeight());
 		note2.setWidth(note1.getWidth());
 		note2.setAlignment(Align.center);
 		note2.addListener(new ClickListener() {
@@ -1866,7 +1949,7 @@ public class MapScreen implements Screen {
 
 
 		note3 = new Label("Note 3", AssetHandler.fontSize24);
-		note3.setPosition(50, 1050-(note1.getHeight()*2));
+		note3.setPosition(50, 900-(note1.getHeight()*2));
 		note3.setWidth(note1.getWidth());
 		note3.setAlignment(Align.center);
 		note3.addListener(new ClickListener() {
@@ -1879,7 +1962,7 @@ public class MapScreen implements Screen {
 		note3.setVisible(false);
 
 		note4 = new Label("Note 4", AssetHandler.fontSize24);
-		note4.setPosition(50, 1050-(note1.getHeight()*3));
+		note4.setPosition(50, 900-(note1.getHeight()*3));
 		note4.setWidth(note1.getWidth());
 		note4.setAlignment(Align.center);
 		note4.addListener(new ClickListener() {
@@ -1892,7 +1975,7 @@ public class MapScreen implements Screen {
 		note4.setVisible(false);
 
 		note5 = new Label("Note 5", AssetHandler.fontSize24);
-		note5.setPosition(50, 1050-(note1.getHeight()*4));
+		note5.setPosition(50, 900-(note1.getHeight()*4));
 		note5.setWidth(note1.getWidth());
 		note5.setAlignment(Align.center);
 		note5.addListener(new ClickListener() {
@@ -1905,7 +1988,7 @@ public class MapScreen implements Screen {
 		note5.setVisible(false);
 
 		note6 = new Label("Note 6", AssetHandler.fontSize24);
-		note6.setPosition(50, 1050-(note1.getHeight()*5));
+		note6.setPosition(50, 900-(note1.getHeight()*5));
 		note6.setWidth(note1.getWidth());
 		note6.setAlignment(Align.center);
 		note6.addListener(new ClickListener() {
@@ -1917,7 +2000,7 @@ public class MapScreen implements Screen {
 		note6.setVisible(false);
 
 		note7 = new Label("Note 7", AssetHandler.fontSize24);
-		note7.setPosition(50, 1050-(note1.getHeight()*6));
+		note7.setPosition(50, 900-(note1.getHeight()*6));
 		note7.setWidth(note1.getWidth());
 		note7.setAlignment(Align.center);
 		note7.addListener(new ClickListener() {
@@ -1929,7 +2012,7 @@ public class MapScreen implements Screen {
 		note7.setVisible(false);
 
 		note8 = new Label("Note 8", AssetHandler.fontSize24);
-		note8.setPosition(50, 1050-(note1.getHeight()*7));
+		note8.setPosition(50, 900-(note1.getHeight()*7));
 		note8.setWidth(note1.getWidth());
 		note8.setAlignment(Align.center);
 		note8.addListener(new ClickListener() {
@@ -1941,7 +2024,7 @@ public class MapScreen implements Screen {
 		note8.setVisible(false);
 
 		note9 = new Label("Note 9", AssetHandler.fontSize24);
-		note9.setPosition(50, 1050-(note1.getHeight()*8));
+		note9.setPosition(50, 900-(note1.getHeight()*8));
 		note9.setWidth(note1.getWidth());
 		note9.setAlignment(Align.center);
 		note9.addListener(new ClickListener() {
@@ -1953,7 +2036,7 @@ public class MapScreen implements Screen {
 		note9.setVisible(false);
 
 		note10 = new Label("Note 10", AssetHandler.fontSize24);
-		note10.setPosition(50, 1050-(note1.getHeight()*9));
+		note10.setPosition(50, 900-(note1.getHeight()*9));
 		note10.setWidth(note1.getWidth());
 		note10.setAlignment(Align.center);
 		note10.addListener(new ClickListener() {
@@ -1965,7 +2048,7 @@ public class MapScreen implements Screen {
 		note10.setVisible(false);
 
 		note11 = new Label("Note 11", AssetHandler.fontSize24);
-		note11.setPosition(50, 1050-(note1.getHeight()*10));
+		note11.setPosition(50, 900-(note1.getHeight()*10));
 		note11.setWidth(note1.getWidth());
 		note11.setAlignment(Align.center);
 		note11.addListener(new ClickListener() {
@@ -1977,7 +2060,7 @@ public class MapScreen implements Screen {
 		note11.setVisible(false);
 
 		note12 = new Label("Note 12", AssetHandler.fontSize24);
-		note12.setPosition(50, 1050-(note1.getHeight()*11));
+		note12.setPosition(50, 900-(note1.getHeight()*11));
 		note12.setWidth(note1.getWidth());
 		note12.setAlignment(Align.center);
 		note12.addListener(new ClickListener() {
@@ -1989,7 +2072,7 @@ public class MapScreen implements Screen {
 		note12.setVisible(false);
 
 		note13 = new Label("Note 13", AssetHandler.fontSize24);
-		note13.setPosition(50, 1050-(note1.getHeight()*12));
+		note13.setPosition(50, 900-(note1.getHeight()*12));
 		note13.setWidth(note1.getWidth());
 		note13.setAlignment(Align.center);
 		note13.addListener(new ClickListener() {
@@ -2001,7 +2084,7 @@ public class MapScreen implements Screen {
 		note13.setVisible(false);
 
 		note14 = new Label("Note 14", AssetHandler.fontSize24);
-		note14.setPosition(50, 1050-(note1.getHeight()*13));
+		note14.setPosition(50, 900-(note1.getHeight()*13));
 		note14.setWidth(note1.getWidth());
 		note14.setAlignment(Align.center);
 		note14.addListener(new ClickListener() {
@@ -2013,7 +2096,7 @@ public class MapScreen implements Screen {
 		note14.setVisible(false);
 
 		note15 = new Label("Note 15", AssetHandler.fontSize24);
-		note15.setPosition(50, 1050-(note1.getHeight()*14));
+		note15.setPosition(50, 900-(note1.getHeight()*14));
 		note15.setWidth(note1.getWidth());
 		note15.setAlignment(Align.center);
 		note15.addListener(new ClickListener() {
@@ -2025,7 +2108,7 @@ public class MapScreen implements Screen {
 		note15.setVisible(false);
 
 		note16 = new Label("Note 16", AssetHandler.fontSize24);
-		note16.setPosition(50, 1050-(note1.getHeight()*15));
+		note16.setPosition(50, 900-(note1.getHeight()*15));
 		note16.setWidth(note1.getWidth());
 		note16.setAlignment(Align.center);
 		note16.addListener(new ClickListener() {
@@ -2037,7 +2120,7 @@ public class MapScreen implements Screen {
 		note16.setVisible(false);
 
 		note17 = new Label("Note 17", AssetHandler.fontSize24);
-		note17.setPosition(50, 1050-(note1.getHeight()*16));
+		note17.setPosition(50, 900-(note1.getHeight()*16));
 		note17.setWidth(note1.getWidth());
 		note17.setAlignment(Align.center);
 		note17.addListener(new ClickListener() {
@@ -2049,7 +2132,7 @@ public class MapScreen implements Screen {
 		note17.setVisible(false);
 
 		note18 = new Label("Note 18", AssetHandler.fontSize24);
-		note18.setPosition(50, 1050-(note1.getHeight()*17));
+		note18.setPosition(50, 900-(note1.getHeight()*17));
 		note18.setWidth(note1.getWidth());
 		note18.setAlignment(Align.center);
 		note18.addListener(new ClickListener() {
@@ -2061,7 +2144,7 @@ public class MapScreen implements Screen {
 		note18.setVisible(false);
 
 		note19 = new Label("Note 19", AssetHandler.fontSize24);
-		note19.setPosition(50, 1050-(note1.getHeight()*18));
+		note19.setPosition(50, 900-(note1.getHeight()*18));
 		note19.setWidth(note1.getWidth());
 		note19.setAlignment(Align.center);
 		note19.addListener(new ClickListener() {
@@ -2073,7 +2156,7 @@ public class MapScreen implements Screen {
 		note19.setVisible(false);
 
 		note20 = new Label("Note 20", AssetHandler.fontSize24);
-		note20.setPosition(50, 1050-(note1.getHeight()*19));
+		note20.setPosition(50, 900-(note1.getHeight()*19));
 		note20.setWidth(note1.getWidth());
 		note20.setAlignment(Align.center);
 		note20.addListener(new ClickListener() {
@@ -2121,6 +2204,10 @@ public class MapScreen implements Screen {
 
 	}
 
+	/**
+	 * Set the inventory as visible or invisible
+	 * @param visible Boolean value for visible or invisible
+	 */
 	public void inventoryVisible(boolean visible)  {
 		noteBackground.setVisible(visible);
 		noteTitle.setVisible(visible);
@@ -2147,6 +2234,11 @@ public class MapScreen implements Screen {
 	}
 
 
+	/**
+	 * Create a label style with a specific color.
+	 * @param color Color type
+	 * @return A label style with a specific color and font size and 60.
+	 */
 	private Label.LabelStyle createLabelStyleWithBackground(Color color) {
 		///core/assets/font/Pixel.ttf
 		FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
@@ -2159,14 +2251,26 @@ public class MapScreen implements Screen {
 		return labelStyle;
 	}
 
+	/**
+	 * Get the map.
+	 * @return The map instance
+	 */
 	public Map getMap() {
 		return map;
 	}
 
+	/**
+	 * Get the day.
+	 * @return The current day we are on.
+	 */
 	public int getDay() {
 		return day;
 	}
 
+	/**
+	 * Check if the player has flagged the game to be saved. If the player
+	 * has flagged save game and then write the save game.
+	 */
 	public void checkSaveGame() {
 		if(saveGame) {
 			try {

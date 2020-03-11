@@ -16,14 +16,20 @@ import com.mygdx.shop.Shop;
 import com.mygdx.story.Note;
 
 /**
- *
+ * Holds the information about every entity which can be represented by the map
+ * @author Inder, Vanessa, Max
  */
 public class Map {
+	/** Holds a list of nodes which are on the map */
 	private List<Node> nodes;
+	/** Holds an instance of the church */
 	private Church church;
+	/** Holds an instance of the shop */
 	private Shop shop;
+	/** Holds an instance of the disease */
 	private Disease disease = new Disease();
 
+	/** Holds the current set of notes */
 	private String[] notes = {
 			"MY MASK FILTER IS RUNNING LOW, I NEED TO SOURCE A REPLACEMENT SOON",
 			"ANTONIO HAS FIGURED OUT HOW TO MAKE EXTRA MASKS, I MAY NOT NEED ORGANIZE ANY SUPPLY RUNS SOON",
@@ -32,7 +38,10 @@ public class Map {
 			"DO THEY EVEN CARE? WHY COULD THEY DOING THIS, CONTACTING ANYONE AT THIS STAGE MAY BE UNWISE",
 			"THEY MAY BE ON TO ME. I NEED TO LEAVE IT IS NOT SAFE. BUT WHERE WOULD THEY NOT SEARCH?"
 	};
-	
+
+	/**
+	 * Constructs the map, this is used when a new game is started.
+	 */
 	public Map() {
 		nodes = new ArrayList<>();
 		readMapFile();
@@ -47,6 +56,9 @@ public class Map {
 		}
 	}
 
+	/**
+	 * Constructs the map, this is used when continuing a game.
+	 */
 	public Map(List<Node> nodes) {
 		this.nodes = nodes;
 		church = new Church(AssetHandler.manager.get("house/Shop.gif", Texture.class), 900.0f, 470.0f);
@@ -55,6 +67,10 @@ public class Map {
 		setNeighbours();
 	}
 
+	/**
+	 * Check if note already exists inside a node
+	 * @return if note exists
+	 */
 	private Boolean notesAlreadyExists() {
 		for(Node n : nodes) {
 			if(n.getNotes().size() > 0) {
@@ -63,12 +79,16 @@ public class Map {
 		}
 		return false;
 	}
-	
+
+	/** Reset the player text file */
 	public void resetPlayerFile() {
 		FileHandle handle = Gdx.files.local("data/player.txt");
 		handle.writeString(100f+","+5.0f+","+0f+","+30f+","+0.10f+","+-0.40f+","+2f+","+100f+","+0.05f+","+0.01f, false);
 	}
 
+	/**
+	 * Set the notes randomly into a bunch of nodes.
+	 */
 	public void setNotes() {
 		int i = 0;
 		for(String note : notes) {
@@ -92,8 +112,17 @@ public class Map {
 				int yArray = y/32;
 
 
-				if(!(map[yArray][xArray] == 1)) {
+				if((map[yArray][xArray] == 0)) {
 					isValidPosition = true;
+				}
+
+				if(xArray + 1 < maxX  || yArray + 1 < maxY) {
+					if((map[yArray+1][xArray+1] == 0)) {
+						isValidPosition = false;
+					}
+				}
+				else {
+					isValidPosition = false;
 				}
 
 				for(Note n : nodes.get(index).getNotes()) {
@@ -117,24 +146,41 @@ public class Map {
 		System.out.println("NOTES GENERATED: "  + i);
 	}
 
+	/**
+	 * Set the current set of notes
+	 * @param notes The array of note information
+	 */
 	public void nextNoteLevel (String[] notes) {
 		this.notes = notes;
 	}
 
-
-	
+	/**
+	 * The list of nodes on a map.
+	 * @return The nodes on the map.
+	 */
 	public List<Node> getNodes() {
 		return nodes;
 	}
 
+	/**
+	 * Returns the current instance of the church screen
+	 * @return church screen
+	 */
 	public Church getChurch() {
 		return church;
 	}
 
+	/**
+	 * Returns the current instance of the shop screen
+	 * @return shop screen
+	 */
 	public Shop getShop() {
 		return shop;
 	}
-	
+
+	/**
+	 * Check if the player file exists.
+	 */
 	public void checkIfPlayerExist() {
 		if(!Gdx.files.isLocalStorageAvailable()) {
 			Gdx.app.log("File Error", "Local Storage not available!");
@@ -145,6 +191,9 @@ public class Map {
 		}
 	}
 
+	/**
+	 * Read the map file to define the map.
+	 */
 	public void readMapFile() {
 		FileHandle handle = Gdx.files.internal("house/files/"+"mapFile.txt");
 		String[] nodeFilenames;
@@ -162,6 +211,9 @@ public class Map {
 		}		
 	}
 
+	/**
+	 * Set the neighbours for each of the nodes.
+	 */
 	private void setNeighbours(){
 		for(Node house : nodes){
 			for(Node compareHouse : nodes){
@@ -174,15 +226,12 @@ public class Map {
 			}
 		}
 	}
-	
-	public void createPlayerFile() {
-		
-	}
-	
-	public void updatePlayerEnergyValue() {
-		
-	}
 
+
+	/**
+	 * Gets the current instance of the disease.
+	 * @return disease instance
+	 */
 	public Disease getDisease() {
 		return disease;
 	}

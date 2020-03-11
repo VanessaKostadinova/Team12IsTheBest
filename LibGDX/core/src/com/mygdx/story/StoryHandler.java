@@ -1,7 +1,10 @@
 package com.mygdx.story;
 
-
+/**
+ * Contains all the flags for the story.
+ */
 public class StoryHandler {
+    //Variables should be self-explanatory.
     public static Boolean introductionPart1 = false;
     public static Boolean startedIntroPart2 = false;
     public static Boolean introductionPart2 = false;

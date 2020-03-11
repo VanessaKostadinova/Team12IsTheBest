@@ -24,47 +24,57 @@ import com.mygdx.shop.Shop;
 
 import java.util.List;
 
+/**
+ * Shop Screen to allow player to get more items.
+ * @author Inder, Vanessa
+ */
 public class ShopScreen implements Screen {
 
-
+	/** If the Screen is Paused */
 	private boolean isPaused = false;
+	/** An instance of main */
 	private Main main;
+	/** An instance of shop */
 	private Shop shop;
-
+	/** A table to store the UI element */
 	private Table t;
+	/** Used to scale items by window size */
 	private float scaleItem;
-
 	/** The pause window. */
 	private Window pause;
-
 	/** The ui skin. */
 	private Skin skin;
-
+	/** List of label items */
 	private List<Label> items;
-
+	/** The labelstyle for any labels which are unclicked */
 	private LabelStyle unClicked;
+	/** The labelstyle for any labels which are clicked */
 	private LabelStyle clicked;
-
+	/** The Label to hold the item information */
 	private Label information;
+	/** The Label to hold the item description */
 	private Label description;
+	/** The Label to hold the item amount */
 	private Label amount;
+	/** The Label to hold the item amount on player */
 	private Label amountOnPlayer;
-	private Label titleLevel;
-	private Label level;
+	/** The Label title cost */
 	private Label titleCost;
+	/** The label holds the total cost */
 	private Label cost;
-
-
+	/** The label which holds the amount of burn fluids */
 	private Label burnFluid;
+	/** The label which holds the amount of cure fluids */
 	private Label cureFluid;
+	/** The label which holds the amount of player masks*/
 	private Label playerMasks;
-
+	/** The label which holds the amount of player food */
 	private Label playerGold;
-
-
+	/** The Image button to leave */
 	private Image Leave;
+	/** The Image button to buy */
 	private Image Buy;
-
+	/** The String to hold current equipment clicked*/
 	private String clickedEquipment;
 
 
@@ -85,9 +95,7 @@ public class ShopScreen implements Screen {
 		if(scaleItem < 1) {
 			scaleItem = 1;
 		}
-		
 
-		
 		final Image Title = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.manager.get("shop/screen/SHOP.png", Texture.class))));
 		Title.setScaling(Scaling.fit);
 		Title.setPosition(50f, main.ui.getHeight()- Title.getHeight() - 50f);
@@ -225,15 +233,11 @@ public class ShopScreen implements Screen {
 		main.ui.addActor(t);
 		pauseGame();
 	}
-	
-	//private Player readPlayer() {
-		//FileHandle handle = Gdx.files.local("data/player.txt");
-		//String[] values= handle.readString().split(",");
-		//return new Player(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6]), Float.parseFloat(values[7]));
-		//return null;
-	//}
-	
-	
+
+
+	/**
+	 * Set the categories of each of the potential items in the shop.
+	 */
 	public void setCatagories() {
 		float spacing = 80f;
 
@@ -325,20 +329,21 @@ public class ShopScreen implements Screen {
 	
 	}
 
+	/**
+	 * Reset the labels and make them invisible
+	 */
 	public void resetLabel() {
 		burnFluid.setStyle(unClicked);
 		cureFluid.setStyle(unClicked);
 		playerMasks.setStyle(unClicked);
-
-
 		updateUI(false);
 		clickedEquipment = "";
 	}
 
 
 	/**
-	 *
-	 * @param values
+	 * Set the labels of the menu.
+	 * @param values an array of string values
 	 */
 	public void setLabels(String[] values) {
 		clickedEquipment = values[0];
@@ -365,7 +370,10 @@ public class ShopScreen implements Screen {
 		main.ui.act(delta);
 		main.ui.draw();
 	}
-	
+
+	/**
+	 * InputHandler for the shop screen to allow exit.
+	 */
 	public void inputHandler() {
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			togglePaused();
@@ -402,8 +410,10 @@ public class ShopScreen implements Screen {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
+
+	/**
+	 * The window for the pause game.
+	 */
 	public void pauseGame() {
 	    	
 		/*
@@ -459,8 +469,13 @@ public class ShopScreen implements Screen {
 	  
 
 	}
-    
-    private LabelStyle createLabelStyleWithBackground(Color color) {
+
+	/**
+	 * Create a LabelStyle aka, font colour etc.
+	 * @param color Color of the font
+	 * @return The LabelStyle of the font.
+	 */
+	private LabelStyle createLabelStyleWithBackground(Color color) {
     	///core/assets/font/Pixel.ttf
     	FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
     	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
@@ -478,7 +493,11 @@ public class ShopScreen implements Screen {
 	private void togglePaused() {
 		isPaused = !isPaused;
 	}
-	
+
+	/**
+	 * Update all the UI elements
+	 * @param hit if a ui element has been hit.
+	 */
     public void updateUI(Boolean hit) {
     	information.setVisible(hit);
     	description.setVisible(hit);

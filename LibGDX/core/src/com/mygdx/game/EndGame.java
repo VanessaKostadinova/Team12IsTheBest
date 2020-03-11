@@ -18,13 +18,12 @@ import com.mygdx.renderable.Node;
  * @author Inder Panesar
  */
 public class EndGame implements Screen {
-	
+
+	/** Current state time */
 	float stateTime = 0f;
-	
+	/** Main class instance */
 	Main main;
-	Node initialNode;
-	MapScreen mapScreen;
-	
+	/** are all npc's dead **/
 	Boolean allAreDead;
 	
 	public EndGame(Main main, Boolean allDead) {
@@ -68,7 +67,12 @@ public class EndGame implements Screen {
 			changeScreen();
 		}
 	}
-	
+
+	/**
+	 * Create a labelStyle (Color, Font etc)
+	 * @param color Color type
+	 * @return return the labelStyle with font 128
+	 */
     private LabelStyle createLabelStyleWithBackground(Color color) {
     	///core/assets/font/Pixel.ttf
     	FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
@@ -80,7 +84,10 @@ public class EndGame implements Screen {
         labelStyle.fontColor = color;
         return labelStyle;
     }
-	
+
+	/**
+	 * Return to the main menu.
+	 */
 	public void changeScreen() {
 		dispose();
 		main.ui.clear();

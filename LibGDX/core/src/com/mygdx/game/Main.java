@@ -56,20 +56,31 @@ public class Main extends Game implements Serializable {
 	/** The Main Camera for the UI */
 	private Camera camera;
 
+	/** A variable to store whether V-Sync is On Or Off*/
 	private Boolean vsyncOn;
 
+	/** A variable to store the kryo instance used to save the game!*/
 	public Kryo kryo;
 
+	/**
+	 * Constructor of main.
+	 * @param vsyncOn Used to set whether or not the window is being used.
+	 */
 	public Main(Boolean vsyncOn) {
 		this.vsyncOn = vsyncOn;
 	}
 
 
+	/**
+	 * Create's the multiple different batch's and viewpoints which will be used
+	 * throughout the game.
+	 */
     @Override
 	public void create() {
 		batch = new SpriteBatch();
 		shape = new ShapeRenderer();
-		camera = new Camera(2160f, 1080f, 1920f);
+		//Set viewport as same as width
+		camera = new Camera(1920f, 1080f, 1920f);
 		camera.getCamera().position.set(
 				camera.getCamera().viewportWidth / 2f ,
 				camera.getCamera().viewportHeight / 2f, 0);
@@ -78,21 +89,23 @@ public class Main extends Game implements Serializable {
 		//setScreen(new MapScreen(this));
 
 		assets = new AssetHandler();
-		//assets.load();
-		//assets.manager.finishLoading();
 
 		kryo = new Kryo();
+		//Every class needs to be registered before it can be saved.
 		kryo.setRegistrationRequired(true);
 		setUpSerializers();
+		//Sets up the loading screen.
 		setScreen(new LoadingScreen(this));
 	}
 
+	/**
+	 * Creates a sets up the registering of classes for kryo as well as what information which will be
+	 * stored within each class.
+	 */
 	public void setUpSerializers() {
 		kryo.register(com.mygdx.game.MapScreen.class, new Serializer<MapScreen>() {
 					@Override
 					public void write(Kryo kryo, Output output, MapScreen object) {
-						System.out.println("hit");
-
 						output.writeInt(PermanetPlayer.getPermanentPlayerInstance().getNumberOfMasks());
 						output.writeFloat(PermanetPlayer.getPermanentPlayerInstance().getHealingFluid());
 						output.writeFloat(PermanetPlayer.getPermanentPlayerInstance().getBurningFluid());
@@ -211,9 +224,6 @@ public class Main extends Game implements Serializable {
 						output.writeBoolean(StoryHandler.cutscene82Played);
 						output.writeBoolean(StoryHandler.cutscene83Played);
 						output.writeInt(StoryHandler.decisionNumber);
-
-
-						System.out.println("SAVED!");
 					}
 
 					@Override
@@ -378,12 +388,12 @@ public class Main extends Game implements Serializable {
 		batch.dispose();
 	}
 
+	/**
+	 * Returns the VSync method
+	 * @return vsyncOn which tells you if the vsync for the game is on or off.
+	 */
 	public Boolean getVsync() {
 		return vsyncOn;
-	}
-
-	public void setVsync(Boolean vsyncOn) {
-		this.vsyncOn =  vsyncOn;
 	}
 
 
