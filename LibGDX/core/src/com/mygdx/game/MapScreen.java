@@ -828,6 +828,13 @@ public class MapScreen implements Screen {
 			startCreatingCutscene("cutscene/ingame/scripts/Scene11.csv");
 			StoryHandler.cutscene82Played = true;
 		}
+
+		if(StoryHandler.cutscene82Played && currentCutsceneQuotes.size() == 0) {
+			float percentDead = Float.parseFloat(deadPercentage.getText().toString());
+			if(percentDead >= 40.0f)  {
+				startCreatingCutscene("cutscene/ingame/scripts/Scene14.csv");
+			}
+		}
 	}
 
 	/**
@@ -1731,7 +1738,7 @@ public class MapScreen implements Screen {
 		beforeEntry.setVisible(false);
 
 		beforeEntry.setSize(beforeEntry.getWidth(), beforeEntry.getHeight());
-		beforeEntry.setPosition(760f, 300f);
+		beforeEntry.setPosition(755f, 220f);
 		main.ui.addActor(beforeEntry);
 	}
 
