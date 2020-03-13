@@ -38,11 +38,18 @@ public class Node extends Renderable {
 	private boolean numberIllResearched = false;
 	/** Whether the player has researched the number of dead residents */
 	private boolean numberDeadResearched = false;
+	/** The URL for the image of the current node */
 	private String imageURL;
+	/** If the level4 variable has been researched - used as verification right now */
 	private boolean level4Researched = false;
 
-
-	
+	/**
+	 * Constructor used during new game where everything is newly defined
+	 * @param textureOfHouse String URL, for the image of the house
+	 * @param x The x value of the house.
+	 * @param y The y value of the house.
+	 * @param attributes The attributes of each house, floor, torches etc.
+	 */
 	public Node(String textureOfHouse, float x, float y, String[] attributes) {
 		illnessLevel = 0f;
 		super.setSprite(new Texture(Gdx.files.internal(textureOfHouse)), x, y);
@@ -55,6 +62,15 @@ public class Node extends Renderable {
 		this.house = new House(attributes);
 	}
 
+	/**
+	 *
+	 * @param house
+	 * @param residents
+	 * @param notes
+	 * @param imageURL
+	 * @param x
+	 * @param y
+	 */
 	public Node(House house, ArrayList<NPC> residents, List<Note> notes, String imageURL, float x, float y) {
 		super.setSprite(new Texture(Gdx.files.internal(imageURL)), x, y);
 		this.house = house;
@@ -65,6 +81,10 @@ public class Node extends Renderable {
 		this.notes = notes;
 	}
 
+	/**
+	 * Initially set all the villagers to their attributes in the text file.
+	 * @param attributes
+	 */
 	public void setAllVillagers(String[] attributes) {
 		for(String s : attributes) {
 			if(s.contains(",") && !s.contains("(")) {
@@ -83,19 +103,35 @@ public class Node extends Renderable {
 	public List<NPC> getNPCs() {
 		return residents;
 	}
-	
+
+	/**
+	 * The array of integers within a house.
+	 * @return House integer array
+	 */
 	public int[][] getArray() {
 		return house.getArray();
 	}
-	
+
+	/**
+	 * If the node is diseased
+	 * @return if the node is diseased.
+	 */
 	public Boolean isDiseased() {
 		return (illnessLevel > 0);
 	}
 
+	/**
+	 * Add nodes to the neighbours
+	 * @param neighbour
+	 */
 	public void addNeighbour(Node neighbour){
 		neighbours.add(neighbour);
 	}
-	
+
+	/**
+	 * Checks if all the villagers within the node are diseased
+	 * @return are diseased.
+	 */
 	public Boolean isAllInHouseDiseased() {
 		for(NPC n : residents) {
 			if(n.getStatus().equals("Alive")) {
@@ -107,7 +143,7 @@ public class Node extends Renderable {
 
 	/**
 	 * Returns the number of dead NPC's
-	 * @return Dead NPC's
+	 * @return Dead NPC's as integer
 	 */
 	public int getNumberOfDead()
 	{
@@ -122,7 +158,7 @@ public class Node extends Renderable {
 
 	/**
 	 * Returns the number of ill NPC's
-	 * @return Ill NPC's
+	 * @return Number of Ill NPC's as Integer
 	 */
 	public int getNumberOfSick()
 	{
@@ -133,7 +169,11 @@ public class Node extends Renderable {
 		}
 		return x;
 	}
-	
+
+	/**
+	 * Returns the number of ill NPC's
+	 * @return Number of Alive NPC's as Integer
+	 */
 	public int getNumberOfAlive()
 	{
 		int x = 0;
@@ -158,6 +198,10 @@ public class Node extends Renderable {
 		return alive;
 	}
 
+	/**
+	 * Check if all the villagers have been burnt.
+	 * @return if everyone is burnt.
+	 */
 	public Boolean everyoneBurnt()
 	{
 		for(NPC resident : residents)
@@ -166,7 +210,11 @@ public class Node extends Renderable {
 		}
 		return true;
 	}
-	
+
+	/**
+	 * Used to check whether the game should end, all might be BURNT or ALIVE
+	 * @return
+	 */
 	public Boolean shouldGameEnd()
 	{
 		for(NPC resident : residents)
@@ -184,7 +232,11 @@ public class Node extends Renderable {
 	public House getHouse() {
 		return house;
 	}
-	
+
+	/**
+	 * Get all the NPCs which are in the house right now
+	 * @return NPCs in node in arrayList
+	 */
 	public ArrayList<NPC> getResidents() {
 		return residents;
 	}
@@ -193,10 +245,18 @@ public class Node extends Renderable {
 		return notes;
 	}
 
+	/**
+	 * Add a note to the node
+	 * @param note
+	 */
 	public void addNotes(Note note) {
 		notes.add(note);
 	}
-	
+
+	/**
+	 * Temporarily store the vital health variables of the villagers so they can be reloaded at a separate time later
+	 * on if required.
+	 */
 	public void serializeVillagers() {    
 		FileHandle handle = Gdx.files.local("temp/villagers.temp");
 		StringBuilder s = new StringBuilder();
@@ -205,7 +265,10 @@ public class Node extends Renderable {
 		}
 		handle.writeString(s.toString(), false);
 	}
-	
+
+	/**
+	 * Reset all the villagers, to their values specified in the text file.
+	 */
 	public void resetVillagers() {
 		FileHandle handle = Gdx.files.local("temp/villagers.temp");
         String[] lines = handle.readString().split("\\r?\\n");
@@ -217,7 +280,10 @@ public class Node extends Renderable {
 			residents.add(n);
 		}
 	}
-	
+
+	/**
+	 * Upgrade the level of information known about the node.
+	 */
 	public void upgradeLevelKnown() {
 		if(!level4Researched && numberDeadResearched && numberIllResearched && numberAliveResearched) {
 			level4Researched = true;
@@ -232,7 +298,11 @@ public class Node extends Renderable {
 			numberAliveResearched = true;
 		}
 	}
-	
+
+	/**
+	 * If the player has learnt everything about the house
+	 * @return If the player has learnt everything about this node.
+	 */
 	public Boolean reachedMaxLevel() {
 		return numberDeadResearched;
 	}
@@ -272,7 +342,11 @@ public class Node extends Renderable {
 	public String getImageURL() {
 		return imageURL;
 	}
-	
+
+	/**
+	 * Check if all the villagers are dead
+	 * @return If all the villagers in this node are dead
+	 */
 	public boolean areAllDead() {
 		for(NPC npc : residents) {
 			if(!npc.getStatus().equals("Burnt")) {
@@ -281,7 +355,11 @@ public class Node extends Renderable {
 		}
 		return true;
 	}
-	
+
+	/**
+	 * A check for if all the villagers in this specific node are dead
+	 * @return If all villagers are dead.
+	 */
 	public boolean areAllAlive() {
 		for(NPC npc : residents) {
 			if(!npc.getStatus().equals("Alive")) {

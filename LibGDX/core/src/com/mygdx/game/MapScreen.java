@@ -190,7 +190,7 @@ public class MapScreen implements Screen {
 	private Boolean saveGame = false;
 
 	/**
-	 * Create the map screen, and handle the input and movements around the map.
+	 * Create the map screen, and handle the input and movements around the map. Used when starting a new game.
 	 * @author Inder, Vanessa, Leon
 	 * @param main The main class and shouldn't be null.
 	 */
@@ -253,6 +253,12 @@ public class MapScreen implements Screen {
 
 	}
 
+	/**
+	 * This also constructs the MapScreen
+	 * @param main The main class
+	 * @param day The day which the player was on
+	 * @param map The map information, no need to create a new one.
+	 */
 	public MapScreen(Main main, int day, Map map) {
 		darken = false;
 		cutsceneActive = false;
@@ -1237,7 +1243,13 @@ public class MapScreen implements Screen {
 			main.setScreen(new ShopScreen(main, shop, this));
 		}
 	}
-	
+
+	/**
+	 * This checks if the entity are currently being hovered over. If they are and the user has clicked enter then they
+	 * can enter a entity. The entity can a shop, church or house.
+	 * @param x X is the x value of the pointer sprite
+	 * @param y Y is the y value of the pointer sprite
+	 */
 	public void checkIfClicked(float x, float y) {
 		for(Node node : map.getNodes()) {
 			if(node != null) {
@@ -1275,25 +1287,12 @@ public class MapScreen implements Screen {
 
 	
     /**
-     * Holds the window for the pause menu.
+     * Creates all the UI, layering and the creation of most components are handled here. Layering problems should
+	 * be handled within this method.
      */
     public void createUI() {
 
-
-		/*
-    	 * This method is used to create the window elements for the pause menu
-    	 *
-    	 * Creates a window and then has two different text buttons within
-    	 *
-    	 *  - RESUME (hides window when clicked and allows movement)
-    	 *  - EXIT (exits the game)
-    	 *
-    	 * This is done through add listeners to each of the the buttons
-    	 *
-    	 * The window containing all the values is called pause
-    	 */
 		beforeEntry();
-
         //Adds it to the UI Screen.
 
 		dayLabel = new Label("DAY " + day , AssetHandler.fontSize48);
@@ -1386,11 +1385,26 @@ public class MapScreen implements Screen {
 		Gdx.input.setInputProcessor(multiplexer);
     }
 
-    public void pauseGame() {
+	/**
+	 * This sets up all the components for the pause menu as well as the listeners for each of the individual
+	 * components. Inside the pause menu.
+	 */
+	public void pauseGame() {
+		/*
+		 * This method is used to create the window elements for the pause menu
+		 *
+		 * Creates a window and then has two different text buttons within
+		 *
+		 *  - RESUME (hides window when clicked and allows movement)
+		 *  - EXIT (exits the game)
+		 *
+		 * This is done through add listeners to each of the the buttons
+		 *
+		 * The window containing all the values is called pause
+		 */
 		float windowWidth = 200, windowHeight = 200 ;
 		pause = new Window("", skin);
 		pause.setMovable(false); //So the user can't move the window
-		//final TextButton button1 = new TextButton("Resume", skin);
 
 		final Label button1 = new Label("RESUME", AssetHandler.fontSize24);
 		button1.setFontScale((windowHeight/200), (windowHeight/200));
@@ -1440,6 +1454,10 @@ public class MapScreen implements Screen {
 		main.ui.addActor(pause);
 	}
 
+	/**
+	 * This sets up the UI components required for decision making, as well as all the listeners for when
+	 * buttons are clicked within the game.
+	 */
 	public void decisionMaking() {
 		float windowWidth = 1000 , windowHeight = 500;
 		decisionWindow = new Window("", skin);
@@ -1514,11 +1532,18 @@ public class MapScreen implements Screen {
 		main.ui.addActor(decisionWindow);
 	}
 
+	/**
+	 * Set the decision window to invisible or visible
+	 * @param trueOrFalse A boolean value to represent if the window should be visible
+	 */
 	public void setDecisionWindowVisible(Boolean trueOrFalse) {
 		decisionWindow.setVisible(trueOrFalse);
     	isPaused = trueOrFalse;
 	}
 
+	/**
+	 * This sets up the UI components for each of the perishable selectables.
+	 */
 	public void beforeEntry() {
 
 		float windowWidth = 400, windowHeight = 600;
@@ -1764,7 +1789,8 @@ public class MapScreen implements Screen {
 	}*/
 
 	/**
-	 * Holds the authentication for the notes inventory.
+	 * Holds the authentication for the notes inventory. So the notes which haven't been collected yet should not
+	 * be interact-able by the user through the note inventory menu.
 	 */
 	public void showNotes() {
 		if(noteBackground.isVisible()) {
@@ -1955,7 +1981,7 @@ public class MapScreen implements Screen {
 		note2.setVisible(false);
 
 
-		note3 = new Label("Note 3", AssetHandler.fontSize24);
+		note3 = new Label("NOTE 3", AssetHandler.fontSize24);
 		note3.setPosition(50, 900-(note1.getHeight()*2));
 		note3.setWidth(note1.getWidth());
 		note3.setAlignment(Align.center);
@@ -1968,7 +1994,7 @@ public class MapScreen implements Screen {
 		});
 		note3.setVisible(false);
 
-		note4 = new Label("Note 4", AssetHandler.fontSize24);
+		note4 = new Label("NOTE 4", AssetHandler.fontSize24);
 		note4.setPosition(50, 900-(note1.getHeight()*3));
 		note4.setWidth(note1.getWidth());
 		note4.setAlignment(Align.center);
@@ -1981,7 +2007,7 @@ public class MapScreen implements Screen {
 		});
 		note4.setVisible(false);
 
-		note5 = new Label("Note 5", AssetHandler.fontSize24);
+		note5 = new Label("NOTE 5", AssetHandler.fontSize24);
 		note5.setPosition(50, 900-(note1.getHeight()*4));
 		note5.setWidth(note1.getWidth());
 		note5.setAlignment(Align.center);
@@ -1994,7 +2020,7 @@ public class MapScreen implements Screen {
 		});
 		note5.setVisible(false);
 
-		note6 = new Label("Note 6", AssetHandler.fontSize24);
+		note6 = new Label("NOTE 6", AssetHandler.fontSize24);
 		note6.setPosition(50, 900-(note1.getHeight()*5));
 		note6.setWidth(note1.getWidth());
 		note6.setAlignment(Align.center);
@@ -2006,7 +2032,7 @@ public class MapScreen implements Screen {
 		});
 		note6.setVisible(false);
 
-		note7 = new Label("Note 7", AssetHandler.fontSize24);
+		note7 = new Label("NOTE 7", AssetHandler.fontSize24);
 		note7.setPosition(50, 900-(note1.getHeight()*6));
 		note7.setWidth(note1.getWidth());
 		note7.setAlignment(Align.center);
@@ -2018,7 +2044,7 @@ public class MapScreen implements Screen {
 		});
 		note7.setVisible(false);
 
-		note8 = new Label("Note 8", AssetHandler.fontSize24);
+		note8 = new Label("NOTE 8", AssetHandler.fontSize24);
 		note8.setPosition(50, 900-(note1.getHeight()*7));
 		note8.setWidth(note1.getWidth());
 		note8.setAlignment(Align.center);
@@ -2030,7 +2056,7 @@ public class MapScreen implements Screen {
 		});
 		note8.setVisible(false);
 
-		note9 = new Label("Note 9", AssetHandler.fontSize24);
+		note9 = new Label("NOTE 9", AssetHandler.fontSize24);
 		note9.setPosition(50, 900-(note1.getHeight()*8));
 		note9.setWidth(note1.getWidth());
 		note9.setAlignment(Align.center);
@@ -2042,7 +2068,7 @@ public class MapScreen implements Screen {
 		});
 		note9.setVisible(false);
 
-		note10 = new Label("Note 10", AssetHandler.fontSize24);
+		note10 = new Label("NOTE 10", AssetHandler.fontSize24);
 		note10.setPosition(50, 900-(note1.getHeight()*9));
 		note10.setWidth(note1.getWidth());
 		note10.setAlignment(Align.center);
@@ -2054,7 +2080,7 @@ public class MapScreen implements Screen {
 		});
 		note10.setVisible(false);
 
-		note11 = new Label("Note 11", AssetHandler.fontSize24);
+		note11 = new Label("NOTE 11", AssetHandler.fontSize24);
 		note11.setPosition(50, 900-(note1.getHeight()*10));
 		note11.setWidth(note1.getWidth());
 		note11.setAlignment(Align.center);
@@ -2066,7 +2092,7 @@ public class MapScreen implements Screen {
 		});
 		note11.setVisible(false);
 
-		note12 = new Label("Note 12", AssetHandler.fontSize24);
+		note12 = new Label("NOTE 12", AssetHandler.fontSize24);
 		note12.setPosition(50, 900-(note1.getHeight()*11));
 		note12.setWidth(note1.getWidth());
 		note12.setAlignment(Align.center);
@@ -2078,7 +2104,7 @@ public class MapScreen implements Screen {
 		});
 		note12.setVisible(false);
 
-		note13 = new Label("Note 13", AssetHandler.fontSize24);
+		note13 = new Label("NOTE 13", AssetHandler.fontSize24);
 		note13.setPosition(50, 900-(note1.getHeight()*12));
 		note13.setWidth(note1.getWidth());
 		note13.setAlignment(Align.center);
@@ -2090,7 +2116,7 @@ public class MapScreen implements Screen {
 		});
 		note13.setVisible(false);
 
-		note14 = new Label("Note 14", AssetHandler.fontSize24);
+		note14 = new Label("NOTE 14", AssetHandler.fontSize24);
 		note14.setPosition(50, 900-(note1.getHeight()*13));
 		note14.setWidth(note1.getWidth());
 		note14.setAlignment(Align.center);
@@ -2102,7 +2128,7 @@ public class MapScreen implements Screen {
 		});
 		note14.setVisible(false);
 
-		note15 = new Label("Note 15", AssetHandler.fontSize24);
+		note15 = new Label("NOTE 15", AssetHandler.fontSize24);
 		note15.setPosition(50, 900-(note1.getHeight()*14));
 		note15.setWidth(note1.getWidth());
 		note15.setAlignment(Align.center);
@@ -2114,7 +2140,7 @@ public class MapScreen implements Screen {
 		});
 		note15.setVisible(false);
 
-		note16 = new Label("Note 16", AssetHandler.fontSize24);
+		note16 = new Label("NOTE 16", AssetHandler.fontSize24);
 		note16.setPosition(50, 900-(note1.getHeight()*15));
 		note16.setWidth(note1.getWidth());
 		note16.setAlignment(Align.center);
@@ -2126,7 +2152,7 @@ public class MapScreen implements Screen {
 		});
 		note16.setVisible(false);
 
-		note17 = new Label("Note 17", AssetHandler.fontSize24);
+		note17 = new Label("NOTE 17", AssetHandler.fontSize24);
 		note17.setPosition(50, 900-(note1.getHeight()*16));
 		note17.setWidth(note1.getWidth());
 		note17.setAlignment(Align.center);
@@ -2138,7 +2164,7 @@ public class MapScreen implements Screen {
 		});
 		note17.setVisible(false);
 
-		note18 = new Label("Note 18", AssetHandler.fontSize24);
+		note18 = new Label("NOTE 18", AssetHandler.fontSize24);
 		note18.setPosition(50, 900-(note1.getHeight()*17));
 		note18.setWidth(note1.getWidth());
 		note18.setAlignment(Align.center);
@@ -2150,7 +2176,7 @@ public class MapScreen implements Screen {
 		});
 		note18.setVisible(false);
 
-		note19 = new Label("Note 19", AssetHandler.fontSize24);
+		note19 = new Label("NOTE 19", AssetHandler.fontSize24);
 		note19.setPosition(50, 900-(note1.getHeight()*18));
 		note19.setWidth(note1.getWidth());
 		note19.setAlignment(Align.center);
@@ -2162,7 +2188,7 @@ public class MapScreen implements Screen {
 		});
 		note19.setVisible(false);
 
-		note20 = new Label("Note 20", AssetHandler.fontSize24);
+		note20 = new Label("NOTE 20", AssetHandler.fontSize24);
 		note20.setPosition(50, 900-(note1.getHeight()*19));
 		note20.setWidth(note1.getWidth());
 		note20.setAlignment(Align.center);

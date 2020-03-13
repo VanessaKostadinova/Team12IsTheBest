@@ -28,7 +28,7 @@ public class PermanetPlayer {
     private List<Note> notes;
     /** A list of items the player is holding. */
     private Item[] items;
-    /** */
+    /** The number of items the player chose for each perishable.*/
     private int[] chosenItems;
     /** Stores an instance of the Permanent Player class as per the singleton pattern. */
     private static PermanetPlayer instance;

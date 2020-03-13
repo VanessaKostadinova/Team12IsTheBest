@@ -33,9 +33,14 @@ public class LoadingScreen implements Screen {
 
 	/** the inner bar (actually moving) of the loading bar*/
 	private Label innerBar;
-	
+
+	/** The percentage which the AssetManager has currently loaded*/
 	private int loadedAmount = 0;
-	
+
+	/**
+	 * Used to create an instance of the Loading screen.
+	 * @param main The main class (contains Scene2D, Kyro and Renderer)
+	 */
 	public LoadingScreen(Main main) {
 		//Set up the scene.
 		this.main = main;
