@@ -210,7 +210,7 @@ public class MapScreen implements Screen {
 
 		cameraUI = new Camera(viewWidth, 1080, 1920);
 		cameraUI.getCamera().position.set(
-				cameraUI.getCamera().viewportWidth / 2f , 
+				cameraUI.getCamera().viewportWidth / 2f ,
 				cameraUI.getCamera().viewportHeight / 2f, 0);
 		cameraUI.setMaxValues(WORLD_WIDTH, WORLD_HEIGHT);
 
@@ -1561,7 +1561,7 @@ public class MapScreen implements Screen {
 		Table table2 = new Table();
 
 
-		final Image image1 = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("temp64x64.png")))));
+		final Image image1 = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icon/maskicon.png")))));
 		final Label amount1= new Label("1", AssetHandler.fontSize24);
 		amount1.setWidth(40);
 		amount1.setHeight(40);
@@ -1609,7 +1609,7 @@ public class MapScreen implements Screen {
 			remove1.setVisible(false);
 		}
 
-		final Image image2 = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("temp64x64.png")))));
+		final Image image2 = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icon/cureicon.png")))));
 		final Label amount2= new Label("0", AssetHandler.fontSize24);
 		amount2.setWidth(80);
 		amount2.setHeight(40);
@@ -1657,7 +1657,7 @@ public class MapScreen implements Screen {
 			remove2.setVisible(false);
 		}
 
-		final Image image3 = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("temp64x64.png")))));
+		final Image image3 = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icon/flameicon.png")))));
 		final Label amount3= new Label("0", AssetHandler.fontSize24);
 		amount3.setWidth(80);
 		amount3.setHeight(40);
@@ -1709,18 +1709,18 @@ public class MapScreen implements Screen {
 		}
 
 
-		table2.add(image1).pad(64).pad(5);
-		table2.add(amount1).width(20).pad(15);
+		table2.add(image1).pad(64).pad(0);
+		table2.add(amount1).width(20).pad(40);
 		table2.add(plus1).width(40).height(40).pad(0, 10, 0,0);
 		table2.add(remove1).width(40).height(40).row();
 
-		table2.add(image2).pad(64).pad(10);
-		table2.add(amount2).width(20).pad(10);
+		table2.add(image2).pad(64).pad(0);
+		table2.add(amount2).width(20).pad(40);
 		table2.add(plus2).width(40).height(40).pad(0, 10, 0,0);
 		table2.add(remove2).width(40).height(40).row();
 
-		table2.add(image3).pad(64).pad(10);
-		table2.add(amount3).width(20).pad(10);
+		table2.add(image3).pad(64).pad(0);
+		table2.add(amount3).width(20).pad(40);
 		table2.add(plus3).width(40).height(40).pad(0, 10, 0,0);
 		table2.add(remove3).width(40).height(40).row();
 
