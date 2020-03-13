@@ -1,7 +1,6 @@
 package com.mygdx.renderable;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -63,7 +62,7 @@ public class Player extends Renderable implements Living {
 		try {
 			PermanetPlayer.getPermanentPlayerInstance();
 		} catch (IllegalStateException e ) {
-			PermanetPlayer.createInventoryInstance(masks, amountOfHealingFluid, amountOfBurningFluid);
+			PermanetPlayer.createPermanentPlayerInstance(masks, amountOfHealingFluid, amountOfBurningFluid);
 		}
 		this.speed = 60f + (PermanetPlayer.getPermanentPlayerInstance().getItem(0).getLevel()*PermanetPlayer.getPermanentPlayerInstance().getItem(0).getIncreasingValue());
 

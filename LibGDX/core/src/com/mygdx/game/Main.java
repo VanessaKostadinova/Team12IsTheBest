@@ -235,7 +235,7 @@ public class Main extends Game implements Serializable {
 						float getSanity = input.readFloat();
 						int getEnergy = input.readInt();
 
-						PermanetPlayer.createInventoryInstance(numberOfMask, getHealingFluid, getBurningFluid);
+						PermanetPlayer.createPermanentPlayerInstance(numberOfMask, getHealingFluid, getBurningFluid);
 						PermanetPlayer.getPermanentPlayerInstance().setSanity(getSanity);
 						PermanetPlayer.getPermanentPlayerInstance().setEnergy(getEnergy);
 

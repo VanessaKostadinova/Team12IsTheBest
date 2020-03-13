@@ -48,6 +48,9 @@ public class Disease {
 		shapeRenderer.end();
 	}
 
+	/**
+	 * Calculates the illness level of a given house based on its sick residents.
+	 */
 	public float calculateHouseIllness(Node house){
 		float totalIllness = 0f;
 		for(NPC resident : house.getNPCs()){
@@ -62,6 +65,9 @@ public class Disease {
 		return totalIllness;
 	}
 
+	/**
+	 * Infects random residents in a given house based on that house's and it's neighbours illness levels.
+	 */
 	public void infectResidents(Node house){
 		Random random = new Random();
 		float illnessLikelihood = house.getIllnessLevel();

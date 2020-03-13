@@ -28,7 +28,7 @@ import java.util.List;
 
 public class ChurchScreen implements Screen {
 
-	
+	/** Whether screen is paused. */
 	private boolean isPaused = false;
 	private Main main;
 	private Church church;
