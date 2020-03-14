@@ -12,12 +12,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 * @author Inder Panesar
 *
 */
-public class Camera implements Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Camera {
+
 
 	/**
 	 * The instance of the camera.
@@ -59,13 +55,23 @@ public class Camera implements Serializable {
 		viewport.apply();
 		camera.update();
 	}
-	
+
+	/**
+	 * Sets the max bounds of the camera.
+	 * @param maxDx MAX DX of the camera. (maximum x value)
+	 * @param maxDy MAX DY of the camera. (maximum y value)
+	 */
 	public void setMaxValues (float maxDx, float maxDy) {
 		this.maxDx = maxDx;
 		this.maxDy = maxDy;
 	}
-	
-	
+
+
+	/**
+	 * Updates the position of the camera.
+	 * @param dx DX of the movement. The movement of the camera along the x-axis.
+	 * @param dy DY of the movement. The movement of the camera along the y-axis.
+	 */
 	public void updateCameraPosition(float dx, float dy) {
 		if(this.dx <= this.maxDx && this.dy < this.maxDy) {
 			this.dx += dx;
@@ -74,11 +80,11 @@ public class Camera implements Serializable {
 		}
 		camera.update();
 	}
-	
-	public void zoomOut(float dZoom) {
-		camera.update();
-	}
-	
+
+	/**
+	 * Zooming the camera in.
+	 * @param dZoom The amount of zoom
+	 */
 	public void zoomIn(float dZoom) {
 		if(camera.zoom+dZoom > 0) {
 			camera.zoom += dZoom;
@@ -108,14 +114,7 @@ public class Camera implements Serializable {
 	public void updateCamera() {
 		camera.update();
 	}
-	
-	public float getdx() {
-		return dx;
-	}
-	
-	public float getdy() {
-		return dy;
-	}
+
 	
 
 }

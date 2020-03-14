@@ -9,26 +9,30 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
+/**
+ * The NPCS within each of the houes.
+ * @author Inder, Vanessa
+ */
 public class NPC extends Renderable implements Living {
-	
-	private Animation<TextureRegion> walkAnimation;
-	private TextureRegion[] walkFrames;
+
+	/** The potential states of the npc */
 	private String status;
-	
-	private static final int FRAME_COLS = 2;
-	private static final int FRAME_ROWS = 2;
-	
+	/** The health of the npc */
 	private float health;
+	/** If the NPC has already given food to the player */
 	private boolean foodGiven;
+	/** If the NPC is healed*/
 	private boolean isHealed;
-
-	private int daysInStatus;
-
+	/** If the NPC has added to insanity of player */
 	private boolean sanityAdd;
-	
+	/** The collision rectangle for the player */
 	private Rectangle rectangle;
-	
+	/** The health bar of the NPC */
 	private Sprite healthBar;
+	/** Is the NPC aggressive */
+	private Boolean isAggressive;
+	/** The villager type */
+	private int villagerType;
 	
 	public NPC(float health) {
 		super();
@@ -37,51 +41,34 @@ public class NPC extends Renderable implements Living {
 		this.foodGiven = false;
 		healthBar = new Sprite(new Texture(Gdx.files.internal("house/UI/HEALTH.png")));
 		this.sanityAdd = false;
+		this.villagerType = new Random().nextInt((3 - 1) + 1) + 1;
 		this.update();
 	}
 	
-	public NPC(float health, float x, float y) {
+	public NPC(float health, float x, float y, int villagerType) {
 		super();
 		this.health = health;
 		this.isHealed = false;
 		this.foodGiven = false;
 		healthBar = new Sprite(new Texture(Gdx.files.internal("house/UI/HEALTH.png")));
 		this.sanityAdd = false;
-		super.updateSprite(x, y);
+		this.villagerType = villagerType;
 		this.update();
-	}
-	
-	public void loadWalkingAnimation() {
-		Texture walksheet = new Texture(Gdx.files.internal("badlogic.jpg"));
+		this.updateSprite(x, y);
 
-		TextureRegion[][] tmp = TextureRegion.split(walksheet,
-				walksheet.getWidth() / FRAME_COLS,
-				walksheet.getHeight() / FRAME_ROWS);
-
-		walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
-		int index = 0;
-		for (int i = 0; i < FRAME_ROWS; i++) {
-			for (int j = 0; j < FRAME_COLS; j++) {
-				walkFrames[index++] = tmp[i][j];
-			}
-		}
-
-		walkAnimation = new Animation<TextureRegion>(0.3f, walkFrames);
 	}
-	
-	public Animation<TextureRegion> getAnimation() {
-		return walkAnimation;
-	}
+
 	
 	/**
 	 * Update texture of the villager as it's state changes.
 	 */
 	public void updateTexture() {
-		Texture tempSprite = new Texture(Gdx.files.internal("NPC/" + status + "_NPC.gif"));
+		Texture tempSprite = new Texture(Gdx.files.internal("NPC/" + status + villagerType + ".gif"));
 		super.setSprite(tempSprite,super.getSprite().getX(),super.getSprite().getY());
-		changeStatus();
 	}
 
+	/** Updating the state of the NPC and health bar
+	 *  This includes state changes as well as health changes constraints */
 	public void update() {
 		if(health > 100) {
 			health = 100;
@@ -117,14 +104,6 @@ public class NPC extends Renderable implements Living {
 		}
 	}
 
-	private void changeStatus(){
-		daysInStatus = 0;
-	}
-
-	//TODO put this in
-	private void incrementStatus(){
-		daysInStatus += 1;
-	}
 
 	@Override
 	public void updateSprite(float dx, float dy) {
@@ -139,11 +118,19 @@ public class NPC extends Renderable implements Living {
 		health += deltaHealth;
 		update();
 	}
-	
+
+	/**
+	 * Get if the NPC is healed
+	 * @return if the NPC is healed
+	 */
 	public Boolean getHealed() {
 		return this.isHealed;
 	}
-	
+
+	/**
+	 * Get if the NPC status
+	 * @return the NPC status
+	 */
 	public String getStatus() {
 		return status;
 	}
@@ -160,15 +147,27 @@ public class NPC extends Renderable implements Living {
 		}
 		return false;
 	}
-	
+
+	/**
+	 * Return the food given
+	 * @return foodGiven
+	 */
 	public boolean foodGiven() {
 		return foodGiven;
 	}
-	
+
+	/**
+	 * Set if the food was given
+	 * @param given if food given
+	 */
 	public void setFoodGiven(boolean given) {
 		this.foodGiven = given;
 	}
 
+	/**
+	 * Check if the NPC is sick
+	 * @return if villager then true else false
+	 */
 	public boolean isSick(){
 		if(status == "Sick"){
 			return true;
@@ -178,20 +177,36 @@ public class NPC extends Renderable implements Living {
 		}
 	}
 
+	/**
+	 * Get if the NPC is aggressive
+	 * @return if the NPC is aggressive
+	 */
+	public boolean getAggressive() {
+		return false;
+	}
+
+	/**
+	 * Get the health bar of the NPC
+	 * @return sprite healthBar
+	 */
 	public Sprite getBar() {
 		return healthBar;
 	}
-	
+
+	/**
+	 * Get the NPC rectangle
+	 * @return rectangle
+	 */
 	public Rectangle getRectangle() {
 		return rectangle;
 	}
-	
+
+	/**
+	 * Set the sanity of the NPC
+	 * @param sanity if sanity has been added by NPC
+	 */
 	public void setSanity(Boolean sanity) {
 		this.sanityAdd = sanity;
-	}
-	
-	public Boolean getSanity() {
-		return this.sanityAdd;
 	}
 	
 	public Boolean isBurned() {
@@ -203,13 +218,29 @@ public class NPC extends Renderable implements Living {
 		}
 	}
 
+	/**
+	 * When infected update the state of the villager
+	 * Does not reduce there health
+	 */
 	public void infect() {
 		if(status.equals("Alive")){
 			status = "Sick";
 		}
 	}
-	
+
+	/**
+	 * Set the health of the villager
+	 * @param newHealth new health value
+	 */
 	public void setHealth(float newHealth) {
 		this.health = newHealth;
 	}
+
+	/**
+	 * Get the type of villager this is. Each type of villager has
+	 * a different type of sprite set.
+	 * @return a int showing villagerType
+	 */
+	public int getVillagerType() {return villagerType;}
+
 }

@@ -97,19 +97,19 @@ public class AssetHandler {
     private static final AssetDescriptor<Texture> scene1Part39 = new AssetDescriptor<Texture>("cutscene/1/45.png", Texture.class);
     private static final AssetDescriptor<Texture> scene1Part40 = new AssetDescriptor<Texture>("cutscene/1/46.png", Texture.class);
 
+    //Single instances of common font sizes and the UI skin used in the game.
     public static final Skin skinUI = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
     public static final LabelStyle fontSize24 = createLabelStyleWithBackground();
     public static final LabelStyle fontSize48 = createLabelStyleWithBackground2();
     public static final LabelStyle fontSize12Subtitles = createLabelStyleWithBackground(Color.WHITE);
     public static final LabelStyle fontSize32 = createLabelStyleWithBackground(32);
+    public static final LabelStyle fontSize15 = createLabelStyleWithBackground(15);
 
 
-
-
+    /**
+     * Load all the assets within the game.
+     */
     public void load() {
-        //manager.load(someTexture);
-        //manager.load(uiAtlas);
-        //manager.load(uiSkin);
     	manager.load(house1);
     	manager.load(shop);
     	manager.load(background);
@@ -265,6 +265,9 @@ public class AssetHandler {
         return labelStyle;
     }
 
+    /**
+     * Dispose of the manager.
+     */
     public void dispose() {
         manager.dispose();
     }

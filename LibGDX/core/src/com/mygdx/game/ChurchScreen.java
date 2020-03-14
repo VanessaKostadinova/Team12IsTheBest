@@ -26,36 +26,54 @@ import com.mygdx.shop.Item;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Church screen so the player is able to buy more perishables.
+ * Similar to the shop screen.
+ * @see ShopScreen
+ * @author Inder
+ */
+
 public class ChurchScreen implements Screen {
 
-	
+	/** Whether screen is paused. */
 	private boolean isPaused = false;
+	/** The main screen
+	 * @see Main
+	 */
 	private Main main;
+	/** Holds the information about the church */
 	private Church church;
-	
+	/** Table to hold some of the UI Scene2D Components */
 	private Table t;
+	/** The change of scale in item from one scale to another */
 	private float scaleItem;
-
 	/** The pause window. */
 	private Window pause;
-	
 	/** The ui skin. */
 	private Skin skin;
-	
+	/** Holds the list of selectable labels/buttons you can choose from */
 	private List<Label> items;
-	
+	/** The style of items which haven't been clicked */
 	private LabelStyle unClicked;
+	/** The style of items which have clicked */
 	private LabelStyle clicked;
-	
+	/** Holds description title */
 	private Label information;
+	/** Holds description about selected perishable */
 	private Label description;
+	/** Holds scale factor title */
 	private Label scaleFactor;
+	/** Holds scale factor information about selected perishable */
 	private Label sf;
+	/** Holds the level title */
 	private Label titleLevel;
+	/** Holds the current level of the item */
 	private Label level;
+	/** Holds the title cost */
 	private Label titleCost;
+	/** Holds the cost of buying the perishable*/
 	private Label cost;
-	
+	/** How much currency the player has. */
 	private Label playerGold;
 	
 	
@@ -65,6 +83,12 @@ public class ChurchScreen implements Screen {
 	private Item clickedShop;
 
 
+	/**
+	 * Initialise and set up the Church Screen.
+	 * @param main The main screen.
+	 * @param church The Church Class
+	 * @param mapScreen The mapScreen, used to return to map. Also is a final variable.
+	 */
 	public ChurchScreen(final Main main, Church church, final MapScreen mapScreen) {
 		this.main = main;
 		this.church = church;
@@ -86,7 +110,7 @@ public class ChurchScreen implements Screen {
 		
 		setCatagories();
 		
-		final Image Title = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.manager.get("shop/screen/SHOP.png", Texture.class))));
+		final Image Title = new Image(new TextureRegionDrawable(new TextureRegion(new Texture("shop/church/CHURCHLOGO.png"))));
 		Title.setScaling(Scaling.fit);
 		Title.setPosition(50f, main.ui.getHeight()- Title.getHeight() - 50f);
 		Title.setSize(Title.getWidth(), Title.getHeight());
@@ -106,7 +130,9 @@ public class ChurchScreen implements Screen {
 				if(!isPaused) {
 					dispose();
 					main.ui.clear();
+					mapScreen.createUI();
 					mapScreen.pauseGame();
+					mapScreen.inventory();
 					main.setScreen(mapScreen);
 				}
 		    }
@@ -216,23 +242,16 @@ public class ChurchScreen implements Screen {
 		level.setPosition((main.ui.getWidth())-40f-Leave.getWidth(), titleLevel.getY() - 60f);
 		level.setVisible(false);
 		main.ui.addActor(level);
-		
-
-		
 
 		Gdx.input.setInputProcessor(main.ui);
 		main.ui.addActor(t);
 		pauseGame();
 	}
-	
-	//private Player readPlayer() {
-		//FileHandle handle = Gdx.files.local("data/player.txt");
-		//String[] values= handle.readString().split(",");
-		//return new Player(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6]), Float.parseFloat(values[7]));
-		//return null;
-	//}
-	
-	
+
+
+	/**
+	 * Set the selectable catagories which the player is able to choose from.
+	 */
 	public void setCatagories() {
 		float spacing = 80f;
 		
@@ -318,54 +337,17 @@ public class ChurchScreen implements Screen {
 		});
 		items.add(cureStrength);
 		
-		/*final Label flameAmount = new Label("FLAME AMOUNT", unClicked);
-		flameAmount.setPosition(50, items.get(items.size()-1).getY() - spacing);
-		flameAmount.addListener(new ClickListener(){
-			@Override
-		    public void clicked(InputEvent event, float x, float y) {
-				if(!isPaused) {
-					if(flameAmount.getStyle().equals(unClicked)) {
-						resetLabel();
-						flameAmount.setStyle(clicked);
-						setLabels(shop.getUpgrade(4));
-					}
-					else {
-						flameAmount.setStyle(unClicked);
-						updateUI(false);
-					}
-				}
-		    }
-		});
-		items.add(flameAmount);
-		
-		final Label cureAmount = new Label("CURE AMOUNT", unClicked);
-		cureAmount.setPosition(50, items.get(items.size()-1).getY() - spacing);
-		cureAmount.addListener(new ClickListener(){
-			@Override
-		    public void clicked(InputEvent event, float x, float y) {
-				if(!isPaused) {
-					if(cureAmount.getStyle().equals(unClicked)) {
-						resetLabel();
-						cureAmount.setStyle(clicked);
-						setLabels(shop.getUpgrade(5));
-					}
-					else {
-						cureAmount.setStyle(unClicked);
-						updateUI(false);
-					}
-				}
-		    }
-		});
-		items.add(cureAmount);*/
-		
-		
 		for(Label label : items) {
 			t.addActor(label);
 		}
 
 	
 	}
-	
+
+	/**
+	 * Set the labels when a specific item is selected.
+	 * @param item The item selected
+	 */
 	public void setLabels(Item item) {
 		clickedShop = item;
 		description.setText(item.getDescription());
@@ -374,8 +356,11 @@ public class ChurchScreen implements Screen {
 		level.setText("Lvl. " + item.getLevel());
 		updateUI(true);
 	}
-	
-	
+
+
+	/**
+	 * Reset the labels to show no information once the item isn't selected.
+	 */
 	public void resetLabel() {
 		for(Label label : items) {
 			label.setStyle(unClicked);
@@ -436,8 +421,12 @@ public class ChurchScreen implements Screen {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
+
+
+	/**
+	 * Creation of the pause menu.
+	 * @see Main
+	 */
 	public void pauseGame() {
 	    	
 		/*
@@ -493,7 +482,12 @@ public class ChurchScreen implements Screen {
 	  
 
 	}
-    
+
+	/**
+	 * Used to define the style of a label's text
+	 * @param color The color of the label's text
+	 * @return A labelstyle with a font size of 60 and varied color depending on parameter.
+	 */
     private LabelStyle createLabelStyleWithBackground(Color color) {
     	///core/assets/font/Pixel.ttf
     	FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
@@ -512,17 +506,21 @@ public class ChurchScreen implements Screen {
 	private void togglePaused() {
 		isPaused = !isPaused;
 	}
-	
-    public void updateUI(Boolean hit) {
-    	information.setVisible(hit);
-    	description.setVisible(hit);
-    	scaleFactor.setVisible(hit);
-    	sf.setVisible(hit);
-    	Buy.setVisible(hit);
-    	titleCost.setVisible(hit);
-    	cost.setVisible(hit);
-    	titleLevel.setVisible(hit);
-    	level.setVisible(hit);
+
+	/**
+	 * Update the User Interface so that it shows/hides the items.
+	 * @param show show/hide the items
+	 */
+    public void updateUI(Boolean show) {
+    	information.setVisible(show);
+    	description.setVisible(show);
+    	scaleFactor.setVisible(show);
+    	sf.setVisible(show);
+    	Buy.setVisible(show);
+    	titleCost.setVisible(show);
+    	cost.setVisible(show);
+    	titleLevel.setVisible(show);
+    	level.setVisible(show);
     }
 	
 	

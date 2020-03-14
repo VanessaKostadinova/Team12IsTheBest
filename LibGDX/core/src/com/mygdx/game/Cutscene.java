@@ -23,14 +23,22 @@ import com.mygdx.renderable.Node;
  */
 public class Cutscene implements Screen {
 
-	//package-view attributes below, are self-explanatory
+	/** Amount of time in state */
 	float stateTime = 0f;
+	/** The main class */
 	Main main;
-	Node initialNode;
-	MapScreen mapScreen;
+	/** If the game should leave, if it is a ending cutscene*/
 	Boolean shouldLeave;
+	/** VideoPlayer instance
+	 * @see VideoPlayer
+	 */
 	VideoPlayer videoPlayer;
+
+	/** Camera instance
+	 * @see OrthographicCamera
+	 */
 	OrthographicCamera camera;
+	/** File handle of the video */
 	FileHandle videoFile;
 
 	/**
@@ -50,6 +58,7 @@ public class Cutscene implements Screen {
 
 		videoPlayer = VideoPlayerCreator.createVideoPlayer(viewport);
 		System.out.println(videoPlayer);
+		//Open gl to make the video creation more efficient.
 		Gdx.gl.glEnable(GL20.GL_CULL_FACE);
 		Gdx.gl.glCullFace(GL20.GL_BACK);
 
@@ -120,6 +129,7 @@ public class Cutscene implements Screen {
 
 
 	}
+
 
 	@Override
 	public void resize(int width, int height) {

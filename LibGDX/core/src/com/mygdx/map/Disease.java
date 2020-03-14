@@ -8,13 +8,23 @@ import com.mygdx.house.House;
 import com.mygdx.renderable.NPC;
 import com.mygdx.renderable.Node;
 
+/**
+ * This class handles the spread of disease between each node on the map as well as the spread between each node.
+ * @author Inder, Vanessa.
+ */
 public class Disease {
 
 	public final float spreadRadius = 250.0f;
 
-	public void draw(List<Node> disease, Node spreader, ShapeRenderer shapeRenderer) {
+	/**
+	 * Is able to draw the lines between the houses it is able to spread in between
+	 * @param houseOnMap the list of nodes on the map
+	 * @param spreader the node which is spreading the disease.
+	 * @param shapeRenderer The shape renderer to allow to draw lines and set them and render the lines on to the screen.
+	 */
+	public void draw(List<Node> houseOnMap, Node spreader, ShapeRenderer shapeRenderer) {
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-		for(Node reciever : disease) {
+		for(Node reciever : houseOnMap) {
 			if(!(spreader.equals(reciever))) {
 
 				float distance = spreader.getCentreCoords().dst(reciever.getCentreCoords());
@@ -48,6 +58,9 @@ public class Disease {
 		shapeRenderer.end();
 	}
 
+	/**
+	 * Calculates the illness level of a given house based on its sick residents.
+	 */
 	public float calculateHouseIllness(Node house){
 		float totalIllness = 0f;
 		for(NPC resident : house.getNPCs()){
@@ -62,7 +75,9 @@ public class Disease {
 		return totalIllness;
 	}
 
-	//TODO finish implementation
+	/**
+	 * Infects random residents in a given house based on that house's and it's neighbours illness levels.
+	 */
 	public void infectResidents(Node house){
 		Random random = new Random();
 		float illnessLikelihood = house.getIllnessLevel();
@@ -71,10 +86,17 @@ public class Disease {
 			illnessLikelihood += compareHouse.getIllnessLevel() * Math.pow(distance, (-1/3));
 		}
 
-		for(NPC resident : house.getAllAlive()){
-			if((random.nextInt(100) + 1) < illnessLikelihood){
-				resident.infect();
+		for(NPC resident : house.getNPCs()){
+			if (resident.getStatus().equals("Alive")) {
+				if((random.nextInt(100) + 1) < illnessLikelihood){
+					resident.infect();
+					resident.changeHealth(-10);
+				}
+			}
+			if(resident.getStatus().equals("Sick")) {
+				resident.changeHealth(-7.5f);
 			}
 		}
+
 	}
 }

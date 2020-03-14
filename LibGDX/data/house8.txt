@@ -4,6 +4,6 @@ house4.png
 700,400,90
 500,250,100
 level1.csv
-Wooden_Floor.gif
+marble-floor.gif
 Floor_Stone.gif
 Door.gif

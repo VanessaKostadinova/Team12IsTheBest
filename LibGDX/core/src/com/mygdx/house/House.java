@@ -3,6 +3,7 @@ package com.mygdx.house;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -17,19 +18,22 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.mygdx.renderable.Constants;
 import com.mygdx.renderable.NPC;
 
+/**
+ * House class stores the information about the house.
+ */
 public class House {
 	
 	private int[][] background;
 	private int[][] backgroundProperties;
-
 	private List<Torch> torches;
-
 	private HashMap<Integer, Texture> textures;
 	private String houseFile;
 	private int indicator = 0;
 	private String houseProperties;
 	private List<BodyDef> walls;
-	
+	public List<String> textureURL = new ArrayList<>();
+
+
 	public House(String[] attributes) {
 		textures = new HashMap<>();
 		torches = new ArrayList<>();
@@ -37,6 +41,15 @@ public class House {
 		setTextures(attributes);
 		createLevel();
 		createProperties();
+	}
+
+	public House(int[][] level, List<Torch> torches, HashMap<Integer, Texture> textures, List<String> textureURL) {
+		this.background = level;
+		this.torches = torches;
+		this.textures = textures;
+		this.textureURL = textureURL;
+		walls = new ArrayList<>();
+		createBodiesFromArray();
 	}
 
 	public int[][] getArray() {
@@ -51,11 +64,21 @@ public class House {
 			}
 		}
 		for(String attribute : attributes) {
-			if(attribute.contains(".gif") && !attribute.contains("house") && !attribute.contains("House")) {
+			if(attribute.contains(".gif")  && !attribute.contains("house") && !attribute.contains("House")) {
 				Texture t = new Texture(Gdx.files.internal("levels/" + attribute));
 				textures.put(indicator, t);
-
+				textureURL.add("levels/" + attribute);
 				indicator++;
+			}
+		}
+	}
+
+	public void createBodiesFromArray() {
+		for(int r=0; r<background.length; r++) {
+			for (int c = background[r].length-1; c > -1; c--) {
+				if (background[r][c] == 1) {
+					createBodyDef(r, c);
+				}
 			}
 		}
 	}
@@ -199,4 +222,6 @@ public class House {
 	public int[][] getLevel() {
 		return background;
 	}
+
+	public Map<Integer, Texture> getTextures() { return textures; }
 }

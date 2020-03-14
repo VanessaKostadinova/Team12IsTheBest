@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.renderable.Node;
+import com.mygdx.renderable.Player;
 
 /**
  * Used as a CheckPoint, so it is able to reset to the point to where
@@ -28,72 +29,42 @@ import com.mygdx.renderable.Node;
  * @version 1.0
  */
 public class CheckPoint implements Screen {
-	
+
+	/** Amount of time within this Screen */
 	float stateTime = 0f;
-	
+
+	/** The main class */
 	Main main;
+
+	/** initial node, is the node which the player is already in */
 	Node initialNode;
+
+	/** The map screen instance of the game */
 	MapScreen mapScreen;
+
+	/** Label to show someone is dead*/
 	Label dead;
 
-	//Three list used to hold the totalTime, subtitles and background.
-	private LinkedList<Float> totalTime;
-	private LinkedList<String> subtitles;
-	private LinkedList<TextureRegionDrawable> background;
+	/** Set the mask durability of the current mask */
+	private float maskDurablity;
 
-	//The background image.
-	private Image backgroundImage;
-
-	//The subtitle itself.
-	private Label subtitleLabel;
-
-	private float waitTime;
-	
-	public CheckPoint(Main main, Node initialNode, MapScreen mapScreen) {
+	/** Create an instance of the checkpoint
+	 *
+	 * @param main The main class
+	 * @param initialNode The initial node
+	 * @param mapScreen The current map screen
+	 * @param maskDurabilty The initial mask durabilty of the player on the last checkpoint.
+	 */
+	public CheckPoint(Main main, Node initialNode, MapScreen mapScreen, float maskDurabilty) {
 		this.main = main;
 		this.initialNode = initialNode;
 		this.mapScreen = mapScreen;
-		
-		totalTime = new LinkedList<>();
-		subtitles = new LinkedList<>();
-		background = new LinkedList<>();
-		
-		FileHandle handle = Gdx.files.internal("cutscene/properties/cutscene2.txt");
-		String[] properties = handle.readString().split("\\r?\\n");
-		for(String property : properties) {
-			if(property.contains(",")) {
-				String values[] = property.split("#");
-				System.out.println("cutscene/"+values[0]);
-				totalTime.add(Float.parseFloat(values[1]));
-				subtitles.add(values[2]);
-				background.add(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("cutscene/"+values[0])))));
-			}
-		}
+		this.maskDurablity = maskDurabilty;
+
 		
 		dead = new Label("YOU'RE DEAD...", createLabelStyleWithoutBackground(Color.WHITE));
 		dead.setPosition(main.ui.getWidth()/2-dead.getWidth()/2, main.ui.getHeight()/2-dead.getHeight()/2);
 		main.ui.addActor(dead);
-
-		
-		backgroundImage = new Image(background.remove());
-		backgroundImage.setWidth(main.ui.getWidth());
-		backgroundImage.setHeight(main.ui.getHeight());
-		backgroundImage.setVisible(false);
-		main.ui.addActor(backgroundImage);
-
-		subtitleLabel = new Label("VOID", createLabelStyleWithBackground(Color.WHITE));
-		subtitleLabel.setWidth(main.ui.getWidth()-50);
-		subtitleLabel.setHeight(300);
-		subtitleLabel.setWrap(true);
-		subtitleLabel.setFontScale(2f);
-		subtitleLabel.setAlignment(Align.center);
-		subtitleLabel.setPosition(main.ui.getWidth()/2-subtitleLabel.getWidth()/2, subtitleLabel.getHeight()/10);
-		subtitleLabel.setVisible(false);
-		main.ui.addActor(subtitleLabel);
-
-		subtitleLabel.setText(subtitles.remove());
-		waitTime = totalTime.remove();
-
 	}
 
 	@Override
@@ -116,17 +87,14 @@ public class CheckPoint implements Screen {
 		if(stateTime > 3 && dead.isVisible()) {
 			stateTime = 0;
 			dead.setVisible(false);
-			subtitleLabel.setVisible(true);
-			backgroundImage.setVisible(true);
-		}
-		else {
-			if(stateTime > waitTime) {
-				stateTime = stateTime - waitTime;
-				changeScreen();
-			}
+			changeScreen();
 		}
 	}
-	
+
+	/**
+	 * Create text with a font size of 128
+	 * @param color The colour of the text
+	 */
     private LabelStyle createLabelStyleWithoutBackground(Color color) {
     	///core/assets/font/Pixel.ttf
     	FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
@@ -138,8 +106,12 @@ public class CheckPoint implements Screen {
         labelStyle.fontColor = color;
         return labelStyle;
     }
-    
-    private LabelStyle createLabelStyleWithBackground(Color color) {
+
+	/**
+	 * Create text with a font size of 24
+	 * @param color The colour of the text
+	 */
+	private LabelStyle createLabelStyleWithBackground(Color color) {
     	///core/assets/font/Pixel.ttf
     	FileHandle fontFile = Gdx.files.internal("font/prstartk.ttf");
     	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
@@ -154,10 +126,14 @@ public class CheckPoint implements Screen {
         labelStyle.background = new SpriteDrawable(s);
         return labelStyle;
     }
-	
-	
+
+	/**
+	 * Change the screen the current player is on.
+	 */
 	public void changeScreen() {
 		main.ui.clear();
+		System.out.println("MASK DURABILITY: " + maskDurablity);
+		Player.getInstance().setCurrentMaskDuration(maskDurablity);
 		main.setScreen(new HouseScreen(main, initialNode, mapScreen));
 	}
 

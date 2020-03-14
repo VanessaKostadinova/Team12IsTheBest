@@ -21,14 +21,26 @@ import com.mygdx.game.MainMenu;
  * @version 1.0
  */
 public class LoadingScreen implements Screen {
-	
+
+	/** The main class */
 	private Main main;
+
+	/** the sprite for the loading texture */
 	private Sprite loading;
+
+	/** the outer bar of the loading bar */
 	private Label outerBar;
+
+	/** the inner bar (actually moving) of the loading bar*/
 	private Label innerBar;
-	
+
+	/** The percentage which the AssetManager has currently loaded*/
 	private int loadedAmount = 0;
-	
+
+	/**
+	 * Used to create an instance of the Loading screen.
+	 * @param main The main class (contains Scene2D, Kyro and Renderer)
+	 */
 	public LoadingScreen(Main main) {
 		//Set up the scene.
 		this.main = main;

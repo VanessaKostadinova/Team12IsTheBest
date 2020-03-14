@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.esotericsoftware.kryo.io.Input;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,13 +33,20 @@ import java.util.logging.FileHandler;
  */
 public final class MainMenu implements Screen {
 
-	Main main;
-	Table t;
-	Skin skin;
-	float scaleItem;
-	Image head;
-	Music sound;
-	MainMenu menu;
+	/** The main class */
+	private Main main;
+
+	/** The table to hold the Scene2D components in the menu */
+	private Table t;
+
+	/** Used to scale items. */
+	private float scaleItem;
+
+	/** The background music of the menu */
+	private Music sound;
+
+	/** the instance MainMenu */
+	private MainMenu menu;
 
 	public MainMenu(Main mainScreen) {
 		/*
@@ -142,7 +150,7 @@ public final class MainMenu implements Screen {
 		continueButton.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				/*sound.pause();
+				sound.pause();
 				dispose();
 				main.ui.clear();
 				MapScreen object2 = null;
@@ -154,8 +162,8 @@ public final class MainMenu implements Screen {
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
-				MapScreen screen = new MapScreen(main, object2.getDX(), object2.getDY(), object2.getDay(), object2.getMap());
-				main.setScreen(screen);*/
+				MapScreen screen = new MapScreen(main, object2.getDay(), object2.getMap());
+				main.setScreen(screen);
 			}
 			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0007_CONTINUE.png"))));
@@ -170,14 +178,14 @@ public final class MainMenu implements Screen {
 
 		float playBorder = 65;
 
-		/*try {
+		try {
 			Input input = new Input(new FileInputStream("save.bin"));
 		}
 		catch (FileNotFoundException e) {
 			continueButton.setVisible(false);
 			continueButton.setSize(0, 0);
 			playBorder -= 20;
-		}*/
+		}
 
 		/*
 		 * Essentially the same as above. Just to do with Play.
@@ -280,6 +288,11 @@ public final class MainMenu implements Screen {
 		sound.dispose();
 	}
 
+	/**
+	 * Check if the file exists in the directory which the game is in.
+	 * @param prefname "the name of the file"
+	 * @return If file exists
+	 */
 	public boolean if_exists ( String prefname )
 	{
 		Preferences tmprefs = Gdx.app.getPreferences ( prefname );

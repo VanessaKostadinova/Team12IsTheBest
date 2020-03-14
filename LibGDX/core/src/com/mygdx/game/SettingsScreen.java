@@ -18,32 +18,43 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.mygdx.assets.AssetHandler;
-import com.sun.org.apache.regexp.internal.RE;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+/**
+ * The screen to hold the game window settings.
+ * @author Inder
+ */
 public class SettingsScreen implements Screen {
 
+    /** Holds the main class */
     private Main main;
-    private MainMenu menu;
+    /** Possible resolutions */
     private String[] res;
-    private String currentAspectRatio;
+    /** Current resolutions */
     private String currentResolution;
+    /** If the window is fullscreen */
     private Boolean isFullscreen;
+    /** If V-Sync is on */
     private Boolean vsyncOn;
+    /** Map of Resolution String to Display Mode */
     private Map<String, Graphics.DisplayMode> resolutions;
+    /** The Resoltuion Index for the res array */
     private int resolutionIndex;
-    private int aspectRatioIndex;
+    /** The current display mode */
     private Graphics.DisplayMode current;
 
 
+    /**
+     * Creation of all the settings,
+     * @param main The main class
+     * @param menu The MainMenu Class
+     */
     public SettingsScreen(final Main main, final MainMenu menu) {
         this.main = main;
-        this.menu = menu;
         this.resolutionIndex = 0;
-        this.aspectRatioIndex = 0;
         this.resolutions = new TreeMap<>();
         this.current = Gdx.graphics.getDisplayMode();
 
@@ -68,11 +79,6 @@ public class SettingsScreen implements Screen {
         builder.append(Gdx.graphics.getHeight());
         this.currentResolution =  builder.toString();
 
-        System.out.println("Current Resolution: " + currentResolution);
-        System.out.println("Current Aspect Ratio: " + currentAspectRatio);
-
-
-
         for(int i = 0; i < res.length; i++) {
             if(res[i].equals(currentResolution)) {
                 resolutionIndex = i;
@@ -82,16 +88,11 @@ public class SettingsScreen implements Screen {
         this.isFullscreen = Gdx.graphics.isFullscreen();
         this.vsyncOn = main.getVsync();
 
-
         /*
          * This makes sure the UI fits within any size of screen
          * the elements were made with 1920 pixels of width in mind.
          */
         float width = Gdx.graphics.getWidth();
-
-
-
-
 
         /*
          * Setting the image of the title of the game
@@ -106,8 +107,6 @@ public class SettingsScreen implements Screen {
         title.setScaling(Scaling.fit);
         title.setPosition(20, main.ui.getHeight()-title.getHeight() - 20);
         title.setSize(title.getWidth(), title.getHeight());
-
-
 
         Image fullscreen = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/Fullscreen.png")))));
         fullscreen.setScaling(Scaling.fit);
@@ -308,12 +307,6 @@ public class SettingsScreen implements Screen {
             }
         });
 
-
-
-
-
-
-
         //Add all of the actors above to the stage.
         main.ui.addActor(title);
         main.ui.addActor(fullscreen);
@@ -327,34 +320,26 @@ public class SettingsScreen implements Screen {
         main.ui.addActor(exit);
         main.ui.addActor(apply);
 
-
-
-        //Start playing the UI Soundtrack.
-
         //Sets the input processor as Screen.ui as that is where the stage is contained.
         Gdx.input.setInputProcessor(main.ui);
     }
 
+    /**
+     * If the change mode is a valid change, as not all changes are valid.
+     * @param mode The current Graphics.DisplayMode
+     * @return if DisplayMode is valid
+     */
     public Boolean changeModValid(Graphics.DisplayMode mode) {
-
-
-
         if(mode.refreshRate != current.refreshRate) {
             return false;
         }
-
         if(mode.bitsPerPixel != current.bitsPerPixel) {
             return false;
         }
-
         if(mode.height > current.height || mode.width > current.width) {
             return false;
         }
-
         return true;
-
-
-
     }
 
 

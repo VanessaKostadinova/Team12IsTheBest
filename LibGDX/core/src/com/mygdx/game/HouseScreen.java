@@ -1,7 +1,7 @@
 package com.mygdx.game;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -24,17 +25,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.mygdx.assets.AssetHandler;
 import com.mygdx.camera.Camera;
 import com.mygdx.extras.PermanetPlayer;
 import com.mygdx.house.Torch;
-import com.mygdx.renderable.Constants;
-import com.mygdx.renderable.NPC;
-import com.mygdx.renderable.Node;
-import com.mygdx.renderable.Player;
+import com.mygdx.renderable.*;
 import box2dLight.Light;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
+import com.mygdx.story.Note;
+import com.mygdx.story.StoryHandler;
 
 /**
  * Contains the information of each of the houses.
@@ -42,63 +43,114 @@ import box2dLight.RayHandler;
  * @version 1.5
  */
 public class HouseScreen implements Screen {
-	
+
+	/** The main class instance */
 	private Main main;
+	/** The node class instance */
 	private Node node;
-
+	/** The stateTime of house screen */
 	private float stateTime;
+	/** Used to count when to decrement the mask */
 	private float secondCounter;
-	
-	
+	/** List of sprites which are pickups */
 	private List<Sprite> pickups;
+	/** The camera for the screen */
 	private Camera camera;
+	/** The Camera for cameraUI */
 	private Camera cameraUI;
-
+	/** The background for the image */
 	private Image letter;
+	/** Image icon to leave house */
 	private Image icon;
+	/** The label for the paragraph for note */
 	private Label paragraph;
-	
+	/** The houseinputhandler to handle the input and collision*/
 	private HouseInputHandler handler;
+	/** The instance of MapScreen to return to */
 	private MapScreen mapScreen;
+	/** The UI image */
 	private Image ui;
+	/** The current spray */
 	private Image uiCurrentSpray;
+	/** The label for amount of gold. */
 	private Label goldLabel;
-	//private Label sanityLabel;
-	
+	/** The label for player sanity. */
+	private Label sanityLabel;
+	/** The label for number of masks  */
+	private Label numberOfMasksLabel;
+	/** The label for amount of cure  */
+	private Label amountOfCureLabel;
+	/** The label for amount of burn  */
+	private Label amountOfBurnLabel;
+	/** The texture to show the mask bar */
 	private Texture maskBar;
+	/** The image for mask ui */
 	private Image bar;
-	
+	/** World entity for Box2D */
 	private World world;
+	/** RayHandler to handle the rays emitted by the torch */
 	private RayHandler rayHandler;
+	/** Darkness of the screen */
 	private float darkness;
-	
-
+	/** The scale of the item */
 	private float scaleItem;
+	/** The pause window */
 	private Window pause;
+	/** The UI Skin */
 	private Skin skin;
-	
+	/** The InputMultuplexer to combine different inputs */
 	private InputMultiplexer input;
-	
+	/** One point light used for the player spray */
 	private Light light;
-    //private Box2DDebugRenderer b2dr;
-    
-    
+	/** Set drawable for the fire  */
     private SpriteDrawable fire;
-    private SpriteDrawable cure;
-    
-    
-	
-		public HouseScreen(Main main, Node node, MapScreen mapScreen) {		
+	/** Set drawable for the cure  */
+	private SpriteDrawable cure;
+	/** A instance of a bullet  */
+	private Bullet bullet;
+	/** Images for cutscenes */
+	private Image overlayCutscene, dialogCutscene, speakerImage;
+	/** Label to set person speaking */
+	private Label personToSpeak;
+	/** Label to set the description of text */
+	private Label setDescriptionOfText;
+	/** A number of list for each cutscene  */
+	private List<String> currentCutsceneQuotes, currentCutscenePerson, currentCutsceneDuration;
+	/** The current cutscene sequence */
+	private int cutsceneSequence;
+	/** The amount of fake npc's */
+	private ArrayList<NPC> fakeNPCs;
+	/** Stores the number of initial number of masks */
+	private int initialNumberOfMasks;
+	/** Initial Amount of cure */
+	private float amountOfCure;
+	/** Initial Amount of flame */
+	private float amountOfFlame;
+	/** Texture for storyDoctor */
+	private Texture storyDoctor = null;
+	/** The mask durablity at the start */
+	private final float maskDurabiltyAtStart = Player.getInstance().getCurrentMaskDuration();
+
+	public HouseScreen(Main main, Node node, MapScreen mapScreen) {
+			this.mapScreen = mapScreen;
 			this.main = main;
 			this.node = node;
-			this.mapScreen = mapScreen;
+			this.bullet = null;
+
+			this.initialNumberOfMasks = PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[0];
+			this.amountOfCure = PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[1];
+			this.amountOfFlame = PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[2];
+
 			this.darkness = 0.2f;
 			this.skin = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
-	
+			this.fakeNPCs = new ArrayList<>();
 			cure = new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("house/UI/CureSpray.png"))));
 			fire = new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("house/UI/FireSpray.png"))));
 
-			
+			currentCutsceneQuotes = new LinkedList<>();
+			currentCutscenePerson = new LinkedList<>();
+			currentCutsceneDuration = new LinkedList<>();
+
 			float w = Gdx.graphics.getWidth();
 			scaleItem = w/1920;
 			
@@ -108,23 +160,31 @@ public class HouseScreen implements Screen {
 			cameraUI = new Camera(1920, 1080f, 1920f);
 			cameraUI.getCamera().position.set(cameraUI.getCamera().viewportWidth / 2f , cameraUI.getCamera().viewportHeight / 2f, 0);
 
-			if(Player.getInstance().getSprite().getX() == 0 && Player.getInstance().getSprite().getY() == 0) {
-				Player.getInstance().updateSprite(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2, camera.getViewport().getWorldHeight() / 2 - Player.getInstance().getSprite().getHeight() / 2);
-				Player.getInstance().getSpray().getSprite().setPosition(Player.getInstance().getSprite().getX() - Player.getInstance().getSprite().getWidth() / 2 + 10f, Player.getInstance().getSprite().getY() + Player.getInstance().getSprite().getHeight());
-				Player.getInstance().setRotation(90);
-			}
+			Player.getInstance().getSprite().setX(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2);
+			Player.getInstance().getSprite().setY(camera.getViewport().getWorldHeight() / 2 - Player.getInstance().getSprite().getHeight() / 2);
+			//Player.getInstance().updateSprite(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2, camera.getViewport().getWorldHeight() / 2 - Player.getInstance().getSprite().getHeight() / 2);
+			Player.getInstance().getSpray().getSprite().setPosition(Player.getInstance().getSprite().getX() - Player.getInstance().getSprite().getWidth() / 2 + 10f, Player.getInstance().getSprite().getY() + Player.getInstance().getSprite().getHeight());
+			Player.getInstance().setRotation(90);
+
 			setAllItemPickups();
-			
+
+			UIElements();
+
+			this.world = new World(new Vector2(0,0), false);
+
 			letter = new Image(new SpriteDrawable(new Sprite(AssetHandler.manager.get("pickups/letter/LETTER.png", Texture.class))));
 			letter.setPosition(main.ui.getWidth()/2-letter.getWidth()/2, main.ui.getHeight()/2-letter.getHeight()/2);
 			letter.setVisible(false);
 			main.ui.addActor(letter);
 
-			
-			UIElements();
-			
-			this.world = new World(new Vector2(0,0), false);
-			
+			paragraph = new Label("VOID", createLabelStyleWithBackground(Color.BLACK));
+			paragraph.setWidth(letter.getWidth()-90);
+			paragraph.setWrap(true);
+			paragraph.setPosition(main.ui.getWidth()/2+50, main.ui.getHeight()/2);
+			paragraph.setVisible(false);
+
+			main.ui.addActor(paragraph);
+			createInGameCutscene();
 			pauseGame();
 			handler = new HouseInputHandler(camera, node.getArray(), pause, node.getNPCs(), paragraph, letter, icon, world);
 	        handler.setPaused(false);
@@ -144,14 +204,160 @@ public class HouseScreen implements Screen {
 			player.setSoftnessLength(1f);
 			player.attachToBody(Player.getInstance().getBody());
 	        setTorchLights();
-	        //b2dr = new Box2DDebugRenderer();
+			spawnFakeNPC();
 
+			//b2dr = new Box2DDebugRenderer();
+			if(!StoryHandler.TutorialPart2) {
+				startCreatingCutscene("cutscene/ingame/scripts/Scene4.csv");
+				StoryHandler.TutorialPart2 = true;
+			}
 	        
 			input = new InputMultiplexer();
 			input.addProcessor(handler);
 			input.addProcessor(main.ui);
 	        Gdx.input.setInputProcessor(input);
+
+			initialStoryHandler();
 	        
+		}
+
+		/**
+		 * Used to draw and create the cutscene items on stream.
+		 */
+		public void createInGameCutscene() {
+			Sprite s = new Sprite(new Texture(Gdx.files.internal("cutscene/ingame/cutsceneOverlay.png")));
+			s.setAlpha(0.9f);
+			overlayCutscene = new Image(new SpriteDrawable(s));
+			overlayCutscene.setPosition(main.ui.getWidth()/2 - overlayCutscene.getWidth()/2 - 130, main.ui.getHeight()/2 - overlayCutscene.getHeight()/2 - 100);
+			overlayCutscene.setScale(2f);
+			overlayCutscene.setVisible(false);
+
+			Sprite s3 = new Sprite(new Texture(Gdx.files.internal("cutscene/ingame/characterImages/templateCutsceneSpeaker.png")));
+			speakerImage = new Image(new SpriteDrawable(s3));
+			speakerImage.setPosition(1080-speakerImage.getWidth()/2-150, 430);
+			speakerImage.setScale(2f);
+			speakerImage.setVisible(false);
+
+			Sprite s2 = new Sprite(AssetHandler.manager.get("player/MAPUI/dialog.png", Texture.class));
+			dialogCutscene = new Image(new SpriteDrawable(s2));
+			dialogCutscene.setPosition(50, 50);
+			dialogCutscene.setScaleY(0.5f);
+			dialogCutscene.setScaleX(3.45f);
+			dialogCutscene.setVisible(false);
+
+			personToSpeak = new Label("YOU:", AssetHandler.fontSize32);
+			personToSpeak.setPosition(90, 350F);
+			personToSpeak.setVisible(false);
+
+			setDescriptionOfText = new Label("YNSERT TEXT HERE PLEASE! ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss", AssetHandler.fontSize32);
+			setDescriptionOfText.setAlignment(Align.topLeft);
+			setDescriptionOfText.setWidth(1950);
+			setDescriptionOfText.setWrap(true);
+			setDescriptionOfText.setPosition(90, 300f);
+			setDescriptionOfText.setVisible(false);
+
+			main.ui.addActor(overlayCutscene);
+			main.ui.addActor(dialogCutscene);
+			main.ui.addActor(speakerImage);
+			main.ui.addActor(personToSpeak);
+			main.ui.addActor(setDescriptionOfText);
+		}
+
+		/**
+		 * Used to handle story throughout screen
+		 */
+		public void storyHandler() {
+			if(Player.getInstance().getCurrentMaskDuration() < 10 && !StoryHandler.TutorialPart3) {
+				startCreatingCutscene("cutscene/ingame/scripts/Scene5.csv");
+				StoryHandler.TutorialPart3 = true;
+			}
+		}
+
+		/**
+		 * Used to check the initial story handler.
+		 */
+		public void initialStoryHandler() {
+			if(PermanetPlayer.getPermanentPlayerInstance().getNotes().size() >= 12 && !StoryHandler.allNotesSequence) {
+				storyDoctor = new Texture(Gdx.files.internal("cutscene/ingame/storyTextures/OtherDoctor.png"));
+				startCreatingCutscene("cutscene/ingame/scripts/Scene10.csv");
+				StoryHandler.allNotesSequence =true;
+			}
+		}
+
+		/**
+		 * Updates visibility of cutscene
+		 * @param value True or False value depending if want to be visible.
+		 */
+		public void updateInGameCutscene(boolean value) {
+			this.overlayCutscene.setVisible(value);
+			this.speakerImage.setVisible(value);
+			this.dialogCutscene.setVisible(value);
+			this.personToSpeak.setVisible(value);
+			this.setDescriptionOfText.setVisible(value);
+			handler.setCutsceneActive(value);
+		}
+
+		/**
+		 * Updates the text of script
+		 * @param person Person's name.
+		 * @param text What the person is saying.
+		 */
+		public void updateInGameCutscene(String person, String text) {
+			this.personToSpeak.setText(person);
+			this.setDescriptionOfText.setText(text);
+		}
+
+		/**
+		 * Intialising the new cutscene based of a text file.
+		 * @param file The file of the .csv file for the cutscene.
+		 */
+		public void startCreatingCutscene(String file) {
+
+			System.out.println("HIT1");
+			FileHandle n = Gdx.files.internal(file);
+			System.out.println("HIT2");
+
+			cutsceneSequence = 0;
+			String textFile = n.readString();
+			String lines[] = textFile.split("\\r?\\n");
+			for(int i = 1; i < lines.length; i++) {
+				String line = lines[i];
+				String[] data = line.split(",");
+				/**
+				 * Data - ARRAY:
+				 * index 0 = Duration of line (potentially for voice acting)
+				 * index 1 = Person name
+				 * index 2 = Quote of what the person is saying.
+				 */
+				currentCutsceneDuration.add(data[0]);
+				currentCutscenePerson.add(data[1]);
+				currentCutsceneQuotes.add(data[2]);
+			}
+			updateInGameCutscene(true);
+			updateInGameCutscene(currentCutscenePerson.get(cutsceneSequence), currentCutsceneQuotes.get(cutsceneSequence));
+		}
+
+		/**
+		 * Handles the switching of the cutscene.
+		 */
+		public void sequenceOfCutscene() {
+			if(handler.getCutsceneActive()) {
+				if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && !handler.getPaused()) {
+					cutsceneSequence++;
+					if(cutsceneSequence == currentCutsceneDuration.size()) {
+						cutsceneSequence = 0;
+						updateInGameCutscene(false);
+					}
+					else {
+						updateInGameCutscene(currentCutscenePerson.get(cutsceneSequence), currentCutsceneQuotes.get(cutsceneSequence));
+					}
+				}
+			}
+			else {
+				currentCutsceneQuotes.clear();
+				currentCutscenePerson.clear();
+				currentCutsceneDuration.clear();
+			}
 		}
 
 		@Override
@@ -181,6 +387,14 @@ public class HouseScreen implements Screen {
 			main.batch.setProjectionMatrix(camera.getCamera().combined);
 			renderMap();
 			drawNPC(main.batch);
+			if(storyDoctor != null) {
+				main.batch.draw(
+						storyDoctor,
+						(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2) - 40,
+						(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2) + 40);
+			}
+			drawFakeNPC(main.batch);
+			updateAllBullets();
 			Player.getInstance().draw(main.batch);
 			drawTorchs();
 			drawAllItemPickups(main.batch);
@@ -196,7 +410,16 @@ public class HouseScreen implements Screen {
 			
 			
 			handler.sprayWithVillagerCollision(node.getNPCs());
-			handler.spray();
+
+			if(Player.getInstance().getSprayIndex() == 0) {
+				amountOfCure = handler.spray(amountOfCure);
+				amountOfCureLabel.setText( (int) amountOfCure + "");
+			}
+			if(Player.getInstance().getSprayIndex() == 1) {
+				amountOfFlame = handler.spray(amountOfFlame);
+				amountOfBurnLabel.setText( (int) amountOfFlame + "");
+			}
+
 			updateSprayLight();
 			handler.movement(Player.getInstance().getAnimation().getKeyFrame(stateTime, true), delta);
 			
@@ -207,9 +430,9 @@ public class HouseScreen implements Screen {
 	
 			//b2dr.render(world, camera.getCamera().combined);
 			rayHandler.updateAndRender();
-			
 			main.batch.end();
 			main.ui.draw();
+			sequenceOfCutscene();
 			
 			if(Gdx.input.isKeyJustPressed(Input.Keys.E)) {
 				if(icon.isVisible()) {
@@ -219,20 +442,52 @@ public class HouseScreen implements Screen {
 					Player.getInstance().getSprite().setX(0);
 					Player.getInstance().getSprite().setY(0);
 					main.ui.clear();
+					PermanetPlayer.getPermanentPlayerInstance().reduceNumberOfMasks(PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[0]-initialNumberOfMasks);
+					PermanetPlayer.getPermanentPlayerInstance().reduceCureSpray(PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[1]-(int) amountOfCure);
+					PermanetPlayer.getPermanentPlayerInstance().reduceBurnSpray(PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[2]-(int) amountOfCure);
+					mapScreen.createUI();
+					mapScreen.createInGameCutscene();
+					mapScreen.inventory();
+					mapScreen.decisionMaking();
 					mapScreen.pauseGame();
+					if(StoryHandler.TutorialPart2 && !StoryHandler.TutorialPart3) {
+						StoryHandler.TutorialPart3 = true;
+					}
+					if(!StoryHandler.TutorialDone) {
+						StoryHandler.didCureFirstHouse = true;
+						for(NPC n : node.getNPCs()) {
+							if(!n.getStatus().equals("Alive")) {
+								StoryHandler.didCureFirstHouse = false;
+							}
+						}
+					}
+					handler.stopAllMusicAndDispose();
 					main.setScreen(mapScreen);
 				}
 			}
-			
-	
+			AI();
+			storyHandler();
+			int value = 0;
+			for(Note n : node.getNotes()) {
+				if(!n.getHasBeenSeen()) {
+					value++;
+				}
+			}
+			System.out.println("NOTES IN HOUSE : " + value);
 		}
-		
+
+		/**
+		 * Used to reduce the mask if the scene allows the mask to be reduced.
+		 */
 		public void reduceMask() {
-			if(!handler.getPaused()) {
+			if(!handler.getPaused() && !handler.getCutsceneActive()) {
 				Player.getInstance().reduceMask();
 			}
 		}
-		
+
+		/**
+		 * Updates the spray light when the spray is changed
+		 */
 		public void updateSprayLight() {
 			light.setColor(Player.getInstance().getSpray().getColor());
 
@@ -247,19 +502,14 @@ public class HouseScreen implements Screen {
 			
 			light.setPosition(Player.getInstance().getSpray().getSprite().getX()+Player.getInstance().getSprite().getWidth()/2,Player.getInstance().getSpray().getSprite().getY()+Player.getInstance().getSpray().getSprite().getHeight()/2);
 			//light.setDirection(p.getSprite().getRotation());
-			light.setActive(handler.getPressed() && !handler.getPaused());
+			light.setActive(handler.getPressed() && !handler.getPaused() && !handler.getCutsceneActive() && Player.getInstance().getSpray().getIsActive());
 		}
-		
-		
+
+
+		/**
+		 * Create all the UI Elements for the House Screen
+		 */
 		public void UIElements() {
-	
-			paragraph = new Label("VOID", createLabelStyleWithBackground(Color.BLACK));
-			paragraph.setWidth(letter.getWidth()-90);
-			paragraph.setWrap(true);
-			paragraph.setPosition(main.ui.getWidth()/2+50, main.ui.getHeight()/2);
-			paragraph.setVisible(false);
-			
-			main.ui.addActor(paragraph);
 			
 			icon = new Image(new SpriteDrawable(new Sprite(AssetHandler.manager.get("player/icon/ICON.png", Texture.class))));
 			icon.setPosition(main.ui.getWidth()/2+Player.getInstance().getSprite().getWidth()+icon.getWidth(), main.ui.getHeight()/2+Player.getInstance().getSprite().getHeight()+icon.getHeight());
@@ -282,10 +532,25 @@ public class HouseScreen implements Screen {
 			goldLabel.setFontScale(0.6f);
 			main.ui.addActor(goldLabel);
 
-			//sanityLabel = new Label(p.getSanityLabel(), createLabelStyleWithBackground(Color.WHITE));
-			//sanityLabel.setPosition(240+uiCurrentSpray.getWidth(), main.ui.getHeight()-165);
-			//sanityLabel.setFontScale(0.6f);
-			//main.ui.addActor(sanityLabel);
+			sanityLabel = new Label(Player.getInstance().getSanityLabel(), createLabelStyleWithBackground(Color.WHITE));
+			sanityLabel.setPosition(240+uiCurrentSpray.getWidth(), main.ui.getHeight()-230);
+			sanityLabel.setFontScale(0.6f);
+			main.ui.addActor(sanityLabel);
+
+			numberOfMasksLabel = new Label(initialNumberOfMasks + "", createLabelStyleWithBackground(Color.WHITE));
+			numberOfMasksLabel.setPosition(375+uiCurrentSpray.getWidth(), main.ui.getHeight()-295);
+			numberOfMasksLabel.setFontScale(0.6f);
+			main.ui.addActor(numberOfMasksLabel);
+
+			amountOfBurnLabel = new Label((int) amountOfFlame + "", createLabelStyleWithBackground(Color.WHITE));
+			amountOfBurnLabel.setPosition(375+uiCurrentSpray.getWidth(), main.ui.getHeight()-360);
+			amountOfBurnLabel.setFontScale(0.6f);
+			main.ui.addActor(amountOfBurnLabel);
+
+			amountOfCureLabel = new Label((int) amountOfCure + "", createLabelStyleWithBackground(Color.WHITE));
+			amountOfCureLabel.setPosition(375+uiCurrentSpray.getWidth(), main.ui.getHeight()-425);
+			amountOfCureLabel.setFontScale(0.6f);
+			main.ui.addActor(amountOfCureLabel);
 			
 			maskBar = AssetHandler.manager.get("house/UI/BAR.png", Texture.class);
 			bar = new Image(new SpriteDrawable(new Sprite(maskBar)));
@@ -294,11 +559,76 @@ public class HouseScreen implements Screen {
 			main.ui.addActor(bar);
 			
 		}
-		
+
+
+		/**
+		 * Handling of the AI for each of NPC to allow for NPC to shoot Doctor.
+		 */
+		public void AI() {
+			for(NPC n : node.getNPCs()) {
+				if(n.getStatus().equals("Alive")) {
+
+					float rotation = (float) MathUtils.radiansToDegrees * MathUtils.atan2(n.getSprite().getY() - Player.getInstance().getSprite().getY(), n.getSprite().getX()-Player.getInstance().getSprite().getX());
+					rotation -= 90;
+					if (rotation < 0) rotation += 360;
+					n.getSprite().setRotation(rotation);
+
+					Vector2 villager = new Vector2(n.getSprite().getX(), n.getSprite().getY());
+					Vector2 player = new Vector2(Player.getInstance().getSprite().getX(), Player.getInstance().getSprite().getY());
+					System.out.println("VILLAGER: " + player.dst(villager));
+					if(n.getAggressive() && player.dst(villager) < 100) {
+						float dx = Player.getInstance().getSprite().getX() - n.getSprite().getX();
+						float dy = Player.getInstance().getSprite().getY() - n.getSprite().getY();
+
+						dx = dx/20f;
+						dy = dy/20f;
+
+						System.out.println(dx);
+						System.out.println(dy);
+
+						Bullet b = new Bullet(dx, dy, n.getSprite().getX()+16, n.getSprite().getY()+16, node.getArray() , rotation);
+						if(bullet == null) {
+							bullet = b;
+						}
+					}
+				}
+			}
+		}
+
+		/**
+		 * Update the drawing of the bullet as it moves across the map.
+		 */
+		public void updateAllBullets() {
+			if(bullet != null && !handler.getPaused() && !handler.getCutsceneActive()) {
+				System.out.println("HIT!");
+				bullet.draw(main.batch);
+				bullet.updateBullet();
+				if(bullet.getSprite().getY() < 0 || bullet.getSprite().getX() < 0) {
+					bullet = null;
+				}
+				else if(bullet.getSprite().getY() > node.getArray().length*32 || bullet.getSprite().getX() > node.getArray()[0].length*32 ) {
+					bullet = null;
+				}
+				else if(bullet.hasCollided()) {
+					bullet = null;
+				}
+
+			}
+
+		}
+
+
+		/**
+		 * Update the paragraph position as the text is changed.
+		 */
 		public void updateParagraphPosition() {
 			paragraph.setPosition(main.ui.getWidth()/2-letter.getWidth()/2 + 50, main.ui.getHeight()/2);
 		}
-		
+
+		/**
+		 * Draw the UI for house screen which are handled by the sprite batch.
+		 * @param batch SpriteBatch of the current screen
+		 */
 		public void drawUI(SpriteBatch batch) {
 			updateBar();
 			goldLabel.setText(Player.getInstance().getFood()+"");
@@ -337,7 +667,9 @@ public class HouseScreen implements Screen {
 			// TODO Auto-generated method stub
 	
 		}
-		
+		/**
+		 * Render the map on to the house screen.
+		 */
 		private void renderMap() {
 			int[][] workingArray = node.getHouse().getLevel();
 			int yCoord = 0;
@@ -353,13 +685,17 @@ public class HouseScreen implements Screen {
 			}
 	
 		}
-		
+		/**
+		 * Draw all the torch lights.
+		 */
 		private void drawTorchs() {
 			for(Torch t :node.getHouse().getTorches()) {
 				t.draw(main.batch);
 			}
 		}
-		
+		/**
+		 * Set all the torch lights.
+		 */
 		private void setTorchLights() {
 			for(Torch t :node.getHouse().getTorches()) {
 				Light l = new PointLight(rayHandler, 100, Color.ORANGE, 200f, t.getSprite().getX() + t.getSprite().getWidth()/2, t.getSprite().getY() + t.getSprite().getHeight()/2);
@@ -367,60 +703,86 @@ public class HouseScreen implements Screen {
 				
 			}
 		}
-		
+
+		/**
+		 * Set all the visible item pickups.
+		 */
 		private void setAllItemPickups() {
 			pickups = new ArrayList<>();
-			for(Vector2 vector : node.getNotes().keySet()) {
-				if(!node.getNoteValidation().get(node.getNotes().get(vector))) {
+			for(Note note : node.getNotes()) {
+				if(!note.getHasBeenSeen()) {
 					Sprite s = new Sprite(AssetHandler.manager.get("pickups/letter/PICKUP.png", Texture.class));
-					s.setPosition(vector.x, vector.y);
+					s.setPosition(note.getX(), note.getY());
 					pickups.add(s);
 				}
 			}
 		}
-		
+
+		/**
+		 * Draw all potential item picks ups. Rn just notes.
+		 * @param batch SpriteBatch for this screen.
+		 */
 		private void drawAllItemPickups(SpriteBatch batch) {
 			for(Sprite s : pickups) {
 				s.draw(batch);
 				
 				if(Player.getInstance().getSprite().getBoundingRectangle().overlaps(s.getBoundingRectangle()) && s.getColor().a == 1) {
-					String message = node.getNotes().get(new Vector2(s.getX(), s.getY()));
-					if(!node.getNoteValidation().get(message)) {
-						handler.setPaused(true);
-						paragraph.setText(message);
-						paragraph.setVisible(true);
-						updateParagraphPosition();
-						letter.setVisible(true);;
-						s.setAlpha(0);
-						node.setNoteSeen(message);
+					//String message = node.getNotes().get(new Vector2(s.getX(), s.getY()));
+					Note n = node.getNote(s.getX(), s.getY());
+					if(n != null) {
+						if (!n.getHasBeenSeen()) {
+							handler.setPaused(true);
+							paragraph.setText(n.getInfo());
+							paragraph.setVisible(true);
+							updateParagraphPosition();
+							letter.setVisible(true);
+							s.setAlpha(0);
+							n.noteSeen();
+							PermanetPlayer.getPermanentPlayerInstance().addNote(n);
+						}
 					}
 				}
 			}
 		}
-		
-		
+
+		/**
+		 * Update the mask bar of the UI, to reduce and check if the player is dead.
+		 */
 		private void updateBar() {
 			if((bar.getWidth() >= 1f)) {
+				System.out.println(" CURRENT DURATION: "  + Player.getInstance().getCurrentMaskDuration());
 				bar.setWidth(250 * (Player.getInstance().getCurrentMaskDuration()/Player.getInstance().getInitialMaskDuration()));
 			}
 			else {
-				bar.setWidth(0f);
-				darkness = 0f;
-				main.ui.clear();
-				
-				node.resetVillagers();
+				initialNumberOfMasks--;
+				numberOfMasksLabel.setText(initialNumberOfMasks);
+				if(initialNumberOfMasks <= 0) {
+					bar.setWidth(0f);
+					darkness = 0f;
+					main.ui.clear();
 
+					node.resetVillagers();
+
+					//Player.getInstance().resetMask();
+					//Player.getInstance().setMaskDurationSeconds(maskDurabiltyAtStart);
+
+					main.setScreen(new CheckPoint(main, node, mapScreen, maskDurabiltyAtStart));
+				}
+				bar.setWidth(250);
 				Player.getInstance().resetMask();
-				
-				main.setScreen(new CheckPoint(main, node, mapScreen));
 			}
 			
 			
 		}
-		
+
+		/**
+		 * Draw all of the NPC's on the screen and update their bar's
+		 * @param batch SpriteBatch of the screen
+		 */
 		private void drawNPC(SpriteBatch batch) {
 			for(NPC villager : node.getNPCs()) {
 				villager.getSprite().draw(batch);
+				villager.update();
 				if(villager.getHealth() >= 0) {
 					batch.draw(villager.getBar().getTexture(), villager.getBar().getX(), villager.getBar().getY(), 32*(villager.getHealth()/100), villager.getBar().getHeight());
 				}
@@ -430,12 +792,17 @@ public class HouseScreen implements Screen {
 				
 				if(villager.isBurned()) {
 					Player.getInstance().increaseSanity();
-					//sanityLabel.setText(p.getSanityLabel()+"");
+					sanityLabel.setText(Player.getInstance().getSanityLabel() +"");
 				}
 			}
 		}
-		
-	    private LabelStyle createLabelStyleWithBackground(Color color) {
+
+		/**
+		 * Sets the labelstyle (Font, Color etc)
+		 * @param color Color of the font
+		 * @return A labelstyle of font 60
+		 */
+		private LabelStyle createLabelStyleWithBackground(Color color) {
 	    	///core/assets/font/Pixel.ttf
 	    	FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
 	    	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
@@ -451,58 +818,103 @@ public class HouseScreen implements Screen {
 	     * Holds the window for the pause menu.
 	     */
 	    public void pauseGame() {
-	    	
-	    	/*
-	    	 * This method is used to create the window elements for the pause menu
-	    	 *
-	    	 * Creates a window and then has two different text buttons within
-	    	 *
-	    	 *  - RESUME (hides window when clicked and allows movement)
-	    	 *  - EXIT (exits the game)
-	    	 *
-	    	 * This is done through add listeners to each of the the buttons
-	    	 *
-	    	 * The window containing all the values is called pause
-	    	 */
-	        float windowWidth = 200*scaleItem, windowHeight = 200*scaleItem;
-	        pause = new Window("", skin);
-	        pause.setMovable(false); //So the user can't move the window
-	        //final TextButton button1 = new TextButton("Resume", skin);
-	        final Label button1 = new Label("RESUME", createLabelStyleWithBackground(Color.WHITE));
-	        button1.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
-	        button1.setFontScale(0.4f);
-	        button1.addListener(new ClickListener() {
-	            @Override
-	            public void clicked(InputEvent event, float x, float y) {
-	                handler.togglePaused();
-	                pause.setVisible(false);
-	            }
-	        });
-	        Label button2 = new Label("EXIT", createLabelStyleWithBackground(Color.WHITE));
-	        button2.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
-	        button2.setFontScale(0.4f);
-	        button2.addListener(new ClickListener() {
-	            @Override
-	            public void clicked(InputEvent event, float x, float y) {
-	                System.exit(0);
-	            }
-	        });
-	
-	        pause.add(button1).row();
-	        pause.row();
-	        pause.add(button2).row();
-	        pause.pack(); //Important! Correctly scales the window after adding new elements
-	
-	        //Centre window on screen.
-	        pause.setBounds(((main.ui.getWidth() - windowWidth*scaleItem  ) / 2),
-	        (main.ui.getHeight() - windowHeight*scaleItem) / 2, windowWidth  , windowHeight );
-	        //Sets the menu as invisible
-	        pause.setVisible(false);
-	        
-	        pause.setSize(pause.getWidth()*scaleItem, pause.getHeight()*scaleItem);
-	        //Adds it to the UI Screen.
-	        main.ui.addActor(pause);
+
+			float windowWidth = 200 * scaleItem, windowHeight = 200 * scaleItem;
+			pause = new Window("", skin);
+			pause.setMovable(false); //So the user can't move the window
+			//final TextButton button1 = new TextButton("Resume", skin);
+
+			final Label button1 = new Label("RESUME", AssetHandler.fontSize24);
+			button1.setFontScale((windowHeight/200) * scaleItem, (windowHeight/200) * scaleItem);
+			button1.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					handler.togglePaused();
+					pause.setVisible(false);
+				}
+			});
+
+
+			Label button3 = new Label("EXIT", AssetHandler.fontSize24);
+			button3.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
+			button3.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					System.exit(0);
+				}
+			});
+
+			pause.add(button1).row();
+			pause.row();
+			pause.add(button3).row();
+			pause.row();
+			pause.pack(); //Important! Correctly scales the window after adding new elements
+
+			//Centre window on screen.
+			pause.setBounds(((main.ui.getWidth() - windowWidth*scaleItem  ) / 2),
+					(main.ui.getHeight() - windowHeight*scaleItem) / 2, windowWidth  , windowHeight );
+			//Sets the menu as invisible
+			pause.setVisible(false);
+
+			pause.setSize(pause.getWidth() * scaleItem, pause.getHeight()*scaleItem);
+			main.ui.addActor(pause);
 	    }
+
+
+	/**
+	 * Used to spawn fake npc's if sanity allows.
+	 */
+	private void spawnFakeNPC()
+	{
+		int x=0;
+		if(Player.getInstance().getSanityLabel()=="VEXED") x=1;
+
+		if(Player.getInstance().getSanityLabel()=="RISKY") x=2;
+
+		if(Player.getInstance().getSanityLabel()=="INSANE") x=3;
+
+		for(int i =0; i< x;i++)
+		{
+			Random rand = new Random();
+			//Level height and width
+			int width = node.getArray().length;
+			int height = node.getArray()[0].length;
+
+			NPC fake = new NPC(60+rand.nextInt(40),0,0, 1);
+			fakeNPCs.add(fake);
+
+			//Check if npc is inside wall
+			while(handler.collision(fake.getSprite().getX(), fake.getSprite().getY()))
+			{
+				//Player must be respawned
+				fake.updateSprite(rand.nextInt(width)*32 - fake.getSprite().getX(), rand.nextInt(height)*32 - fake.getSprite().getY());
+
+			}
+		}
+
+	}
+
+	/**
+	 * Draw a fake npc if there are fake npc's
+	 * @param batch SpriteBatch to draw the npc's
+	 */
+	private void drawFakeNPC(SpriteBatch batch)
+	{
+		System.out.println("NUMBER OF FAKE NPC'S: " + fakeNPCs.size());
+		for(NPC fake : fakeNPCs) {
+			fake.getSprite().draw(batch);
+			if(fake.getHealth() >= 0) {
+				batch.draw(fake.getBar().getTexture(), fake.getBar().getX(), fake.getBar().getY(), 32*(fake.getHealth()/100), fake.getBar().getHeight());
+			}
+			else {
+				batch.draw(fake.getBar().getTexture(), fake.getBar().getX(), fake.getBar().getY(), 32*(fake.getHealth()/-100), fake.getBar().getHeight());
+			}
+
+
+		}
+	}
+
+
 	    
 	    
 	

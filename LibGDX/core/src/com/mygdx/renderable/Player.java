@@ -1,7 +1,6 @@
 package com.mygdx.renderable;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -14,52 +13,59 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.extras.PermanetPlayer;
 
+/**
+ * The player class which hold the player information.
+ */
 public class Player extends Renderable implements Living {
-	
+
+	/** The animation of the player */
 	private Animation<TextureRegion> walkAnimation;
+	/** The array of the walk frames for the player */
 	private TextureRegion[] walkFrames;
-	
+	/** Columns in the sprite sheet for player*/
 	private static final int FRAME_COLS = 2;
+	/** Rows in the sprite sheet for player*/
 	private static final int FRAME_ROWS = 2;
+	/** Speed of the player */
 	private float speed;
-	private PermanetPlayer permanetPlayer;
+	/** Constant sanity factor increase for the player*/
 	private static final float sanityFactor = 0.2f;
-	
+	/** The mask reduction rate */
 	private float maskDurationSeconds;
-	
+	/** The sprays which the player has*/
 	private Spray[] sprays;
+	/** Current spray the player is using*/
 	private int sprayIndex;
-
-	private float amountOfHealingFluid;
-	private float amountOfBurningFluid;
-
+	/** The current rate of mask durability */
 	private float currentMaskDuration;
+	/** Number of masks the player has */
 	private int numberOfMasks;
-	
+	/** Amount of food the player has*/
 	private float amountOfFood;
-	
+	/** The box2D body of the player*/
 	private Body body;
-	//private Body sprayBody;
 
+	/** The instance of player */
 	private static Player player = null;
 
+	/** Constructor of player
+	 * @param masks Number of masks
+	 * @param amountOfHealingFluid Amount of fluid on player
+	 * @param amountOfBurningFluid Amount of burning fluid on player
+	 */
 	private Player(int masks, float amountOfHealingFluid, float amountOfBurningFluid) {
 		super();
 		loadWalkingAnimation();
 		setSprite(walkFrames[0], 0, 0);
 		this.amountOfFood = 1000;
 		this.numberOfMasks = masks;
-		PermanetPlayer.createInventoryInstance(masks, amountOfHealingFluid, amountOfBurningFluid);
+		try {
+			PermanetPlayer.getPermanentPlayerInstance();
+		} catch (IllegalStateException e ) {
+			PermanetPlayer.createPermanentPlayerInstance(masks, amountOfHealingFluid, amountOfBurningFluid);
+		}
 		this.speed = 60f + (PermanetPlayer.getPermanentPlayerInstance().getItem(0).getLevel()*PermanetPlayer.getPermanentPlayerInstance().getItem(0).getIncreasingValue());
-		this.amountOfHealingFluid = amountOfHealingFluid;
-		this.amountOfBurningFluid = amountOfBurningFluid;
 
-		/**
-		 * Why are you trying to figure out the mask decrement?
-		 * Since this implementation has already been added.
-		 * Don't try to over-complicate things.
-		 * -Inder
-		 */
 		this.maskDurationSeconds = 1f;
 
 		float cureSprayStrength = PermanetPlayer.getPermanentPlayerInstance().getItem(2).getLevel();
@@ -72,6 +78,13 @@ public class Player extends Renderable implements Living {
 		this.currentMaskDuration = PermanetPlayer.getPermanentPlayerInstance().getItem(1).getLevel() * PermanetPlayer.getPermanentPlayerInstance().getItem(1).getIncreasingValue();
 	}
 
+	/**
+	 * Create an instance of player using the singleton method
+	 * @param masks Initial Number of masks.
+	 * @param amountOfHealingFluid Initial amount of healing fluid.
+	 * @param amountOfBurningFluid Initial amount of burning fluid.
+	 * @return
+	 */
 	public static Boolean init(int masks, float amountOfHealingFluid, float amountOfBurningFluid) {
 		if(player == null) {
 			player = new Player(masks, amountOfHealingFluid, amountOfBurningFluid);
@@ -80,6 +93,10 @@ public class Player extends Renderable implements Living {
 		return false;
 	}
 
+	/**
+	 * Get the player instance
+	 * @return The player instance
+	 */
 	public static Player getInstance() {
 		if(player != null) {
 			return player;
@@ -89,16 +106,9 @@ public class Player extends Renderable implements Living {
 
 
 	/**
-	 * DONT REMOVE THIS METHOD,
-	 * IT GOING TO BE VITAL FOR THE RECONSTRUCTION OF THE PLAYER CLASS
-	 * AND SHOULDN'T BE REMOVED ANYWAY AS IT ALREADY SERVES ON FUNCTION OF SAVING THE PLAYER ATTRIBUTES
-	 * -Inder
+	 * Allow the player to switch between sprays and correctly update the new spray
+	 * so that is able to work.
 	 */
-	/*public Player(float gold, float mask, float sanity, float maskDurationSeconds, float cureSprayStrength, float fireSprayStrength, float speed, float energy) {
-		super();
-	}*/
-
-
 	public void switchSpray() {
 		if(sprayIndex == 0) {
 			sprayIndex = 1;
@@ -110,12 +120,18 @@ public class Player extends Renderable implements Living {
 			sprays[sprayIndex].setRotation(sprays[1].getRotation());
 		}
 	}
-	
+
+	/**
+	 * Get the spray that the player is currently using
+	 * @return spray
+	 */
 	public Spray getSpray() {
-		System.out.println(sprayIndex);
 		return sprays[sprayIndex];
 	}
-		
+
+	/**
+	 * Load the walking animation and set the walk frames of the player.
+	 */
 	public void loadWalkingAnimation() {
 		Texture walksheet = new Texture(Gdx.files.internal("player/The_Doctor_Walk.png"));
 
@@ -135,32 +151,61 @@ public class Player extends Renderable implements Living {
 	}
 
 
+	/**
+	 * Get the initial mask duration of the mask
+	 * @return intital mask duration
+	 */
 	public float getInitialMaskDuration() { return PermanetPlayer.getPermanentPlayerInstance().getItem(1).getLevel() * PermanetPlayer.getPermanentPlayerInstance().getItem(1).getIncreasingValue(); }
 
+	/**
+	 * Get the current mask duration
+	 * @return current mask duration
+	 */
 	public float getCurrentMaskDuration() {
 		return currentMaskDuration;
 	}
 
+	/**
+	 * Set the current mask duration
+	 * @param currentMaskDuration new currentmaskduration level
+	 */
+	public void setCurrentMaskDuration(float currentMaskDuration) {
+		this.currentMaskDuration = currentMaskDuration;
+		System.out.println("CURRENT DURATION PLAYER: " +currentMaskDuration);
+	}
+
+	/**
+	 * Reset the mask of the player
+	 */
 	public void resetMask() {
 		this.currentMaskDuration = getInitialMaskDuration();
 	}
 
-
+	/**
+	 * Get the animation of the player
+	 * @return Animation of the player
+	 * @see Animation
+	 */
 	public Animation<TextureRegion> getAnimation() {
 		return walkAnimation;
 	}
-	
+
+	/**
+	 * Get the amount of food the player has
+	 * @return return the amount of food the player has
+	 */
 	public float getFood() {
 		return amountOfFood;
 	}
-	
+
+	/**
+	 * Get set the amount of food the player has
+	 * @param f new food value
+	 */
 	public void setFood(float f) {
 		amountOfFood =+ f;
 	}
-	
-	public float getEnergy() {
-		return permanetPlayer.getEnergy();
-	}
+
 
 	@Override
 	public void changeHealth(float deltaHealth) {
@@ -179,61 +224,83 @@ public class Player extends Renderable implements Living {
 		}
 		return false;
 	}
-	
+
+	/**
+	 * Get the speed of the player
+	 * @return speed of player
+	 */
 	public float getSpeed() {
 		return speed;
 	}
-	
-	public void setSpeed(float speed) {
-		this.speed = speed;
-	}
-	
-	public void updateSpeed(float newSpeed) {
-		this.speed = this.speed + newSpeed*60f;
-	}
-	
+
+	/**
+	 * Get the current spray index
+	 * @return spray index
+	 */
 	public float getSprayIndex() {
 		return sprayIndex;
 	}
 
+	/**
+	 * Increase the sanity of the player
+	 */
 	public void increaseSanity() {
-		//permanetPlayer.changeSanity(sanityFactor);
+		PermanetPlayer.getPermanentPlayerInstance().changeSanity(sanityFactor);
 	}
 
-	public float getSanity() {
-		return permanetPlayer.getSanity();
-	}
-
-	public float getNumberOfMasks() {
+	/**
+	 * Get the number of masks the player has
+	 * @return number of masks
+	 */
+	public int getNumberOfMasks() {
 		return numberOfMasks;
 	}
 
+	/**
+	 * Set the new number of masks the player has
+	 * @param numberOfMasks new number of masks
+	 */
+	public void setNumberOfMasks(int numberOfMasks) {
+		this.numberOfMasks = numberOfMasks;
+	}
+
+	/**
+	 * Reduce the mask durability
+	 */
 	public void reduceMask() {
 		this.currentMaskDuration -= getMaskDurationSeconds();
 	}
-	
+
+	/**
+	 * Get the total mask duration/
+	 * @return mask duration
+	 */
 	public float getMaskDurationSeconds() {
 		return maskDurationSeconds;
 	}
-	
+
+	/**
+	 * Set the mask duration seconds
+	 * @param maskDurationSeconds new number of mask duration
+	 */
 	public void setMaskDurationSeconds(float maskDurationSeconds) {
 		this.maskDurationSeconds = maskDurationSeconds;
 	}
-	
-	public void updateMaskDurationSeconds(float addSeconds) {
-		this.maskDurationSeconds = maskDurationSeconds+addSeconds;
-	}
-	
-	public void updateSprays(int index, float strength) {
-		sprays[index].addStrength(strength);
-	}
-	
+
+	/**
+	 * Update the amount of food
+	 * @param addFood the new food gained by player
+	 */
 	public void updateFood(float addFood) {
 		this.amountOfFood = this.amountOfFood + addFood;
 	}
-	
+
+	/**
+	 * Return the sanity type of the player!
+	 * @return get the sanity classification of the player.
+	 */
 	public String getSanityLabel() {
-		float sanity = permanetPlayer.getSanity();
+		float sanity = PermanetPlayer.getPermanentPlayerInstance().getSanity();
 		if(sanity < 100) {
 			return "SANE";
 		}
@@ -251,7 +318,12 @@ public class Player extends Renderable implements Living {
 		}
 		
 	}
-	
+
+	/**
+	 * Set the body of the player
+	 * @param world The world value for the house
+	 * @return the body of the player
+	 */
 	public Body setBody(World world) {
 		
 		BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("player/player.json"));
@@ -269,54 +341,35 @@ public class Player extends Renderable implements Living {
         FixtureDef fixtureDef2 = new FixtureDef();
         fixtureDef2.density = 1.0f; 
         fixtureDef2.filter.categoryBits = Constants.PLAYER;
-       
 
 
         loader.attachFixture(body, "Name", fixtureDef2, 32f);
 
-
         return body;
     }
-	
-	/*public Body setSprayBody(World world) {
-		
-		BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("spray/spray.json"));
 
-        BodyDef bodyDef3 = new BodyDef();
-        bodyDef3.type = BodyType.DynamicBody;
-        bodyDef3.position.set(0, 0);
-        bodyDef3.fixedRotation = true;
-
-        sprayBody = world.createBody(bodyDef3);
-        sprayBody.setTransform(getSprite().getX()+16, getSprite().getY()+16, getSpray().getSprite().getRotation());
-        
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.density = 1.0f; 
-       
-        loader.attachFixture(sprayBody, "Name", fixtureDef, 32f);
-
-        return sprayBody;
-    }
-
-    public void updateSpray(float rotation) {
-		sprayBody.setTransform(getSprite().getX()+16, getSprite().getY()+16, rotation);
-	}
-	
-	public void updateSprayPosition() {
-		sprayBody.setTransform(getSprite().getX()+16, getSprite().getY()+16, sprayBody.getAngle());
-	}*/
-	
+	/**
+	 * Update the body position
+	 * @param dx delta x value
+	 * @param dy delta y value
+	 */
 	public void updateBody(float dx, float dy) {
 		body.setTransform(sprite.getX()+16-dx/1.5f, sprite.getY()+16-dy/1.5f, body.getAngle());
 	}
-	
+
+	/**
+	 * Update the rotation of the body
+	 * @param rotation float value of the body
+	 */
 	public void updateRotation(float rotation) {
 		body.setTransform(sprite.getX()+16, sprite.getY()+16, rotation);
-		//body.setTransform(sprite.getX(), sprite.getY(), body.getAngle());
 	}
 
+	/**
+	 * Get the body of the player
+	 * @return body of the player
+	 */
 	public Body getBody() {
-		// TODO Auto-generated method stub
 		return body;
 	}
 

@@ -7,15 +7,21 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
 /**
- *
+ * A simple contact listener to check whether the body has collided.
+ * @author Inder
  */
 public class MyContactListener implements ContactListener {
 	
-	
+
+	/** If the body has collided with a wall or object */
 	public Boolean WallHit = false;
+	/** If the body north point is hitting the wall */
 	public Boolean WHit = false;
+	/** If the body east point is hitting the wall */
 	public Boolean DHit = false;
+	/** If the body west point is hitting the wall */
 	public Boolean AHit = false;
+	/** If the body south point is hitting the wall */
 	public Boolean SHit = false;
 
 	@Override
