@@ -1,4 +1,4 @@
-house1.gif
+House1.gif
 1080	
 680
 700,400,90
