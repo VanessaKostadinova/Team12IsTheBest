@@ -136,7 +136,7 @@ public class PermanetPlayer {
     }
 
     public void changeEnergy(int energyDelta){
-        energy -= energyDelta;
+        energy += energyDelta;
     }
 
     public void resetEnergy(){
