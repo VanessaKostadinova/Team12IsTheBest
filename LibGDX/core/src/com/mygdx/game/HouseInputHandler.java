@@ -82,11 +82,16 @@ public class HouseInputHandler implements InputProcessor {
 	/** A potential background music for the game*/
 	private Music backgroundSound1, backgroundSound2, backgroundSound3;
 
+	/** The input value for moving the character up */
 	private int UP = Input.Keys.W;
+	/** The input value for moving the character left */
 	private int LEFT = Input.Keys.A;
+	/** The input value for moving the character right */
 	private int RIGHT = Input.Keys.D;
+	/** The input value for moving the character down */
 	private int DOWN = Input.Keys.S;
 
+	/** The state time of the input handler. - How long has the class been running for. */
 	private float stateTime;
 
 
