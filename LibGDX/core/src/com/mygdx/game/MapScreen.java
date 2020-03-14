@@ -829,18 +829,69 @@ public class MapScreen implements Screen {
 			StoryHandler.cutscene83Played = true;
 		}
 
-		System.out.println("DECISION NUMBER :" + StoryHandler.decisionNumber);
 		if(StoryHandler.decision2Made && StoryHandler.toldVillagers && !StoryHandler.cutscene82Played) {
 			startCreatingCutscene("cutscene/ingame/scripts/Scene11.csv");
 			StoryHandler.cutscene82Played = true;
 		}
 
-		if(StoryHandler.cutscene82Played && currentCutsceneQuotes.size() == 0) {
+		if(StoryHandler.cutscene82Played &&  !StoryHandler.cutscene84Played  && currentCutsceneQuotes.size() == 0) {
 			float percentDead = Float.parseFloat(deadPercentage.getText().toString());
-			if(percentDead >= 40.0f)  {
+			if (percentDead >= 40.0f) {
 				startCreatingCutscene("cutscene/ingame/scripts/Scene14.csv");
+				StoryHandler.cutscene84Played = true;
+			}
+
+			if(isAllHousesOnMapCured()) {
+				//Ending 4
 			}
 		}
+
+
+		if(StoryHandler.toldVillagers) {
+			if(StoryHandler.cutscene82Played && currentCutsceneQuotes.size() == 0) {
+				float percentDead = Float.parseFloat(deadPercentage.getText().toString());
+				if(percentDead >= 80.0f)  {
+					//Ending 6
+				}
+				else {
+					if(isAllHousesOnMapCured()) {
+						//Ending 5
+					}
+				}
+			}
+		}
+
+		if(!StoryHandler.toldVillagers) {
+			if(StoryHandler.cutscene84Played && currentCutsceneQuotes.size() == 0) {
+				float percentDead = Float.parseFloat(deadPercentage.getText().toString());
+				if(percentDead >= 60.0f)  {
+					//Ending 2
+				}
+				else {
+					if(isAllHousesOnMapCured()){
+						//Ending 3
+					}
+				}
+			}
+		}
+
+		if(!StoryHandler.cutscene84Played && !StoryHandler.cutscene82Played) {
+			//Ending 1
+		}
+
+	}
+
+	/**
+	 * If all the houses on the map have been cured.
+	 * @return if all nodes cured
+	 */
+	public boolean isAllHousesOnMapCured() {
+		for(Node n : map.getNodes()) {
+			if(!n.areAllAlive()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -2306,6 +2357,7 @@ public class MapScreen implements Screen {
 	 */
 	public void checkSaveGame() {
 		if(saveGame) {
+			Gdx.files.local("save.bin").delete();
 			try {
 				Output output = new Output(new FileOutputStream("save.bin"));
 				MapScreen m = this;

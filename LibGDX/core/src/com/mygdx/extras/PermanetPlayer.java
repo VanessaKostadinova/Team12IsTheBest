@@ -132,7 +132,7 @@ public class PermanetPlayer {
     }
 
     public void changeSanity(float sanityDelta){
-        sanity -= sanityDelta;
+        sanity += sanityDelta;
     }
 
     public void changeEnergy(int energyDelta){

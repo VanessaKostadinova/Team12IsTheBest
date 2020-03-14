@@ -82,6 +82,14 @@ public class HouseInputHandler implements InputProcessor {
 	/** A potential background music for the game*/
 	private Music backgroundSound1, backgroundSound2, backgroundSound3;
 
+	private int UP = Input.Keys.W;
+	private int LEFT = Input.Keys.A;
+	private int RIGHT = Input.Keys.D;
+	private int DOWN = Input.Keys.S;
+
+	private float stateTime;
+
+
 	/**
 	 * The constructor for the HouseInputHandler.
 	 * @param camera Camera of the house from SpriteBatch
@@ -111,7 +119,7 @@ public class HouseInputHandler implements InputProcessor {
 		this.cureSoundEffect = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/healing-spray.wav"));
 		this.fireSoundEffect = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/flame-thrower-fire-with-air.wav"));
 		this.leatherAndJeansEffect = Gdx.audio.newMusic(Gdx.files.internal(	"soundeffects/leathers-and-jeans-moving.wav"));
-
+		this.stateTime = 0f;
 		this.backgroundSound1 = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/big-creepy-sound.wav"));
 		this.backgroundSound2 = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/creepy-sound-one.wav"));
 		this.backgroundSound3 = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/creepy-sound-two.wav"));
@@ -172,9 +180,37 @@ public class HouseInputHandler implements InputProcessor {
 	public void movement(TextureRegion region, float delta) {
 		float playerX = Player.getInstance().getSprite().getX();
 		float playerY = Player.getInstance().getSprite().getY();
-		
-		
-		
+		stateTime = stateTime + delta;
+		if(Player.getInstance().getSanityLabel()=="RISKY") {
+			if(stateTime % 10 < 1) {
+				UP = Input.Keys.S;
+				DOWN = Input.Keys.W;
+				LEFT = Input.Keys.D;
+				RIGHT = Input.Keys.A;
+			}
+			else {
+				UP = Input.Keys.W;
+				DOWN = Input.Keys.S;
+				LEFT = Input.Keys.A;
+				RIGHT = Input.Keys.D;
+			}
+		}
+
+		if(Player.getInstance().getSanityLabel()=="INSANE") {
+			if(stateTime % 5 < 1) {
+				UP = Input.Keys.S;
+				DOWN = Input.Keys.W;
+				LEFT = Input.Keys.D;
+				RIGHT = Input.Keys.A;
+			}
+			else {
+				UP = Input.Keys.W;
+				DOWN = Input.Keys.S;
+				LEFT = Input.Keys.A;
+				RIGHT = Input.Keys.D;
+			}
+		}
+
 		if(lastInput.length() > 2) {
 			lastInput = "";
 		}
@@ -189,7 +225,7 @@ public class HouseInputHandler implements InputProcessor {
 		 */
 		if(!isPaused && !cutsceneActive) {
 			playBackgroundMusic();
-			if(Gdx.input.isKeyPressed(Input.Keys.W)) {
+			if(Gdx.input.isKeyPressed(UP)) {
 				if(!collision(playerX, playerY + playerHeight) && !collision(playerX + playerWidth - speed*delta, playerY + playerHeight)) {
 					camera.getCamera().translate(0f, speed* delta);
 					Player.getInstance().updateSprite(0, speed* delta);
@@ -207,7 +243,7 @@ public class HouseInputHandler implements InputProcessor {
 					lastInput = lastInput + "W";
 				}
 			}
-			if(Gdx.input.isKeyPressed(Input.Keys.A)) {
+			if(Gdx.input.isKeyPressed(LEFT)) {
 				if(!collision(playerX - speed*delta, playerY+2) && !collision(playerX - speed*delta, playerY + playerHeight - 2)) {
 					camera.getCamera().translate(-speed*delta, 0f);
 					camera.updateCamera();
@@ -226,7 +262,7 @@ public class HouseInputHandler implements InputProcessor {
 				}
 			}
 			
-			if(Gdx.input.isKeyPressed(Input.Keys.S)) {
+			if(Gdx.input.isKeyPressed(DOWN)) {
 				if(!collision(playerX+2, playerY - speed*delta) && !collision(playerX + playerWidth - speed*delta, playerY - speed*delta)) {
 					camera.getCamera().translate(0f, -speed*delta);
 					Player.getInstance().updateSprite(0,-speed*delta);
@@ -245,7 +281,7 @@ public class HouseInputHandler implements InputProcessor {
 				}
 			}
 			
-			if(Gdx.input.isKeyPressed(Input.Keys.D)) {
+			if(Gdx.input.isKeyPressed(RIGHT)) {
 				if(!collision(playerX + playerWidth, playerY+2) && !collision(playerX + playerWidth, playerY + playerHeight - 2)) {
 					Player.getInstance().updateSprite(speed* delta, 0);
 					camera.getCamera().translate(speed*delta, 0);

@@ -33,6 +33,7 @@ public class StoryHandler {
     public static Boolean cutscene81Played = false;
     public static Boolean cutscene82Played = false;
     public static Boolean cutscene83Played = false;
+    public static Boolean cutscene84Played = false;
 
 
     public static int decisionNumber = 1;
