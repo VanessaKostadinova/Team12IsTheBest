@@ -392,9 +392,7 @@ public class MapScreen implements Screen {
 	 * @param file The file of the .csv file for the cutscene.
 	 */
 	public void startCreatingCutscene(String file) {
-		System.out.println("HIT1");
 		FileHandle n = Gdx.files.internal(file);
-		System.out.println("HIT2");
 		cutsceneSequence = 0;
 		String textFile = n.readString();
 		String lines[] = textFile.split("\\r?\\n");
@@ -651,16 +649,12 @@ public class MapScreen implements Screen {
 		}
 
 		if(Gdx.input.isKeyJustPressed(Keys.I)) {
-			System.out.println("HIT");
 			if(!isPaused) {
-				System.out.println("ACTIVATED");
 
 				if(noteBackground.isVisible()) {
-					System.out.println("ACTIVATED");
 					inventoryVisible(false);
 				}
 				else {
-					System.out.println("ACTIVATED");
 					inventoryVisible(true);
 				}
 			}
@@ -1014,7 +1008,6 @@ public class MapScreen implements Screen {
 			for(String key : 		checkForKC) {
 				value.append(key);
 			}
-			System.out.println(value.toString());
 			if(value.toString().equals("UPUPDOWNDOWNLEFTRIGHTLEFTRIGHTRIGHT")) {
 				for(Node n : map.getNodes()) {
 					for(NPC v : n.getResidents()) {
@@ -1214,7 +1207,6 @@ public class MapScreen implements Screen {
 	 */
 	public void fadeAnimationShopUI() {
 		if(shopHit) {
-			System.out.println("HIT2");
 			if(shopAlpha < 1) {
 				shopAlpha += (1f/10f);
 				shopText.setAlpha(shopAlpha);
@@ -1327,7 +1319,6 @@ public class MapScreen implements Screen {
 		}
 
 		if(map.getShop().pointIsWithinSprite(x, y)) {
-			System.out.println("HIT");
 			enterShop(map.getShop());
 		}
 		else {
@@ -1472,7 +1463,7 @@ public class MapScreen implements Screen {
 		button2.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("SAVE!");
+				System.out.println("SAVED!");
 				saveGame = true;
 			}
 		});
@@ -1626,7 +1617,6 @@ public class MapScreen implements Screen {
 		plus1.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("HIT!");
 				int amount = Integer.parseInt(amount1.getText().toString());
 				amount++;
 				amount1.setText(amount);
@@ -1674,7 +1664,6 @@ public class MapScreen implements Screen {
 		plus2.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("HIT!");
 				int amount = Integer.parseInt(amount2.getText().toString());
 				amount++;
 				amount2.setText(amount);
@@ -1722,7 +1711,6 @@ public class MapScreen implements Screen {
 		plus3.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("HIT!");
 				int amount = Integer.parseInt(amount3.getText().toString());
 				amount++;
 				amount3.setText(amount);
@@ -2006,7 +1994,6 @@ public class MapScreen implements Screen {
 		note1.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("HIT1");
 				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(0));
 			}
 		});
@@ -2025,7 +2012,6 @@ public class MapScreen implements Screen {
 		note2.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("HIT2");
 				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(1));
 			}
 		});
@@ -2039,7 +2025,6 @@ public class MapScreen implements Screen {
 		note3.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("HIT3");
 				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(2));
 			}
 		});
@@ -2052,7 +2037,6 @@ public class MapScreen implements Screen {
 		note4.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("HIT4");
 				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(3));
 			}
 		});
@@ -2065,7 +2049,6 @@ public class MapScreen implements Screen {
 		note5.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("HIT5");
 				showNote(PermanetPlayer.getPermanentPlayerInstance().getNotes().get(4));
 			}
 		});
