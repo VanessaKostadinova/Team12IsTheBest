@@ -828,7 +828,8 @@ public class MapScreen implements Screen {
 			StoryHandler.cutscene82Played = true;
 		}
 
-		if(StoryHandler.cutscene82Played &&  !StoryHandler.cutscene84Played  && currentCutsceneQuotes.size() == 0) {
+
+		if(StoryHandler.cutscene83Played &&  !StoryHandler.cutscene84Played  && currentCutsceneQuotes.size() == 0) {
 			float percentDead = Float.parseFloat(deadPercentage.getText().toString());
 			if (percentDead >= 40.0f) {
 				startCreatingCutscene("cutscene/ingame/scripts/Scene14.csv");
@@ -836,7 +837,7 @@ public class MapScreen implements Screen {
 			}
 
 			if(isAllHousesOnMapCured()) {
-				//Ending 4
+				System.out.println("Ending 4");
 			}
 		}
 
@@ -844,12 +845,13 @@ public class MapScreen implements Screen {
 		if(StoryHandler.toldVillagers) {
 			if(StoryHandler.cutscene82Played && currentCutsceneQuotes.size() == 0) {
 				float percentDead = Float.parseFloat(deadPercentage.getText().toString());
-				if(percentDead >= 80.0f)  {
-					//Ending 6
+				float percentAlive = Float.parseFloat(alivePercentage.getText().toString());
+				if(percentDead >= 60.0f)  {
+					System.out.println("Ending 6");
 				}
 				else {
-					if(isAllHousesOnMapCured()) {
-						//Ending 5
+					if(isAllHousesOnMapCured()){
+						System.out.println("Ending 5");
 					}
 				}
 			}
@@ -858,19 +860,23 @@ public class MapScreen implements Screen {
 		if(!StoryHandler.toldVillagers) {
 			if(StoryHandler.cutscene84Played && currentCutsceneQuotes.size() == 0) {
 				float percentDead = Float.parseFloat(deadPercentage.getText().toString());
+				float percentAlive = Float.parseFloat(alivePercentage.getText().toString());
 				if(percentDead >= 60.0f)  {
-					//Ending 2
+					System.out.println("Ending 2");
 				}
 				else {
 					if(isAllHousesOnMapCured()){
-						//Ending 3
+						System.out.println("Ending 3");
 					}
 				}
 			}
 		}
 
 		if(!StoryHandler.cutscene84Played && !StoryHandler.cutscene82Played) {
-			//Ending 1
+			float percentDead = Float.parseFloat(deadPercentage.getText().toString());
+			if(percentDead >= 60.0f) {
+				System.out.println("Ending 1");
+			}
 		}
 
 	}
@@ -881,7 +887,7 @@ public class MapScreen implements Screen {
 	 */
 	public boolean isAllHousesOnMapCured() {
 		for(Node n : map.getNodes()) {
-			if(!n.areAllAlive()) {
+			if(!n.shouldGameEnd()) {
 				return false;
 			}
 		}

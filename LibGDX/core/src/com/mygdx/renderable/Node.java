@@ -222,9 +222,6 @@ public class Node extends Renderable {
 			if(resident.getStatus().equals("Sick")) {
 				return false;
 			}
-			else if(resident.getStatus().equals("Dead")) {
-				return false;
-			}
 		}
 		return true;
 	}

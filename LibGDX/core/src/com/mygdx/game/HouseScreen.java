@@ -883,12 +883,27 @@ public class HouseScreen implements Screen {
 			NPC fake = new NPC(60+rand.nextInt(40),0,0, 1);
 			fakeNPCs.add(fake);
 
+			boolean isValidPosition  = false;
 			//Check if npc is inside wall
-			while(handler.collision(fake.getSprite().getX(), fake.getSprite().getY()))
+			while(!isValidPosition)
 			{
 				//Player must be respawned
 				fake.updateSprite(rand.nextInt(width)*32 - fake.getSprite().getX(), rand.nextInt(height)*32 - fake.getSprite().getY());
-
+				if(handler.collision(fake.getSprite().getX()+32, fake.getSprite().getY()+32)) {
+					isValidPosition = false;
+				}
+				else if(handler.collision(fake.getSprite().getX()+32, fake.getSprite().getY()+64)) {
+					isValidPosition = false;
+				}
+				else if(handler.collision(fake.getSprite().getX()+64, fake.getSprite().getY()+64)) {
+					isValidPosition = false;
+				}
+				else if(handler.collision(fake.getSprite().getX(), fake.getSprite().getY())) {
+					isValidPosition = false;
+				}
+				else {
+					isValidPosition = true;
+				}
 			}
 		}
 

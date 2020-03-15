@@ -398,9 +398,13 @@ public class HouseInputHandler implements InputProcessor {
 	    	arrayY = (int) (y/32);
 	    }
 
-	    if(level[arrayY][arrayX] == 1) {
-	    	return true;
-	    }
+	    try {
+			if (level[arrayY][arrayX] == 1) {
+				return true;
+			}
+		} catch (ArrayIndexOutOfBoundsException exception) {
+	    	return false;
+		}
 	    
 	    if(y < 0 || x < 0) {
 	    	return true;
