@@ -57,6 +57,20 @@ public class AssetHandler {
     private static final AssetDescriptor<Texture> HEALTHBAR = new AssetDescriptor<Texture>("house/UI/HEALTH.png", Texture.class);
     private static final AssetDescriptor<Texture> DialogPlayer = new AssetDescriptor<Texture>("player/MAPUI/dialog.png", Texture.class);
 
+
+    private static final AssetDescriptor<Texture> npc1alive = new AssetDescriptor<Texture>("NPC/Alive1.gif", Texture.class);
+    private static final AssetDescriptor<Texture> npc2alive = new AssetDescriptor<Texture>("NPC/Alive2.gif", Texture.class);
+    private static final AssetDescriptor<Texture> npc3alive = new AssetDescriptor<Texture>("NPC/Alive3.gif", Texture.class);
+    private static final AssetDescriptor<Texture> npc1sick = new AssetDescriptor<Texture>("NPC/Sick1.gif", Texture.class);
+    private static final AssetDescriptor<Texture> npc2sick = new AssetDescriptor<Texture>("NPC/Sick2.gif", Texture.class);
+    private static final AssetDescriptor<Texture> npc3sick = new AssetDescriptor<Texture>("NPC/Sick3.gif", Texture.class);
+    private static final AssetDescriptor<Texture> npc1dead = new AssetDescriptor<Texture>("NPC/Dead1.gif", Texture.class);
+    private static final AssetDescriptor<Texture> npc2dead = new AssetDescriptor<Texture>("NPC/Dead2.gif", Texture.class);
+    private static final AssetDescriptor<Texture> npc3dead = new AssetDescriptor<Texture>("NPC/Dead3.gif", Texture.class);
+    private static final AssetDescriptor<Texture> npc1burnt = new AssetDescriptor<Texture>("NPC/Dead1.gif", Texture.class);
+    private static final AssetDescriptor<Texture> npc2burnt = new AssetDescriptor<Texture>("NPC/Dead2.gif", Texture.class);
+    private static final AssetDescriptor<Texture> npc3burnt = new AssetDescriptor<Texture>("NPC/Dead3.gif", Texture.class);
+
     //Single instances of common font sizes and the UI skin used in the game.
     public static final Skin skinUI = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
     public static final LabelStyle fontSize24 = createLabelStyleWithBackground();
@@ -97,6 +111,19 @@ public class AssetHandler {
     	
     	manager.load(pickup);
     	manager.load(letter);
+
+        manager.load(npc1alive);
+        manager.load(npc2alive);
+        manager.load(npc3alive);
+        manager.load(npc1sick);
+        manager.load(npc2sick);
+        manager.load(npc3sick);
+        manager.load(npc1dead);
+        manager.load(npc2dead);
+        manager.load(npc3dead);
+        manager.load(npc1burnt);
+        manager.load(npc2burnt);
+        manager.load(npc3burnt);
     	
     	manager.load(E);
     	manager.load(UI);
