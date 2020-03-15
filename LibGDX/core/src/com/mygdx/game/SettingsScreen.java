@@ -339,6 +339,7 @@ public class SettingsScreen implements Screen {
         if(mode.height > current.height || mode.width > current.width) {
             return false;
         }
+
         return true;
     }
 

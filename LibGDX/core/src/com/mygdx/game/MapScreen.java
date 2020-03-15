@@ -3,7 +3,6 @@ package com.mygdx.game;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,11 +21,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -189,6 +185,8 @@ public class MapScreen implements Screen {
 	/** If the save game flag has been flagged*/
 	private Boolean saveGame = false;
 
+	private Label enter;
+
 	/**
 	 * Create the map screen, and handle the input and movements around the map. Used when starting a new game.
 	 * @author Inder, Vanessa, Leon
@@ -263,7 +261,6 @@ public class MapScreen implements Screen {
 		darken = false;
 		cutsceneActive = false;
 		this.viewWidth = 256;
-		Player.init(5, 100, 100);
 		isPaused = false;
 		cameraMap = new Camera(viewWidth, -1080, -1920);
 		cameraMap.getCamera().position.set(
@@ -1610,7 +1607,7 @@ public class MapScreen implements Screen {
 
 
 		final Image image1 = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icon/maskicon.png")))));
-		final Label amount1= new Label("1", AssetHandler.fontSize24);
+		final Label amount1= new Label("0", AssetHandler.fontSize24);
 		amount1.setWidth(40);
 		amount1.setHeight(40);
 		final Label plus1= new Label("+", AssetHandler.fontSize48);
@@ -1630,8 +1627,9 @@ public class MapScreen implements Screen {
 					plus1.setVisible(false);
 				}
 
-				if(amount > 1) {
+				if(amount > 0) {
 					remove1.setVisible(true);
+					enter.setVisible(true);
 				}
 			}
 		});
@@ -1642,8 +1640,9 @@ public class MapScreen implements Screen {
 				int amount = Integer.parseInt(amount1.getText().toString());
 				amount--;
 				amount1.setText(amount);
-				if(amount == 1) {
+				if(amount == 0) {
 					remove1.setVisible(false);
+					enter.setVisible(false);
 				}
 				if(amount < PermanetPlayer.getPermanentPlayerInstance().getNumberOfMasks()) {
 					plus1.setVisible(true);
@@ -1651,6 +1650,10 @@ public class MapScreen implements Screen {
 
 			}
 		});
+
+		if(PermanetPlayer.getPermanentPlayerInstance().getNumberOfMasks() == 0) {
+			plus1.setVisible(false);
+		}
 
 		if(Integer.parseInt(amount1.getText().toString()) == 0) {
 			remove1.setVisible(false);
@@ -1698,6 +1701,10 @@ public class MapScreen implements Screen {
 
 			}
 		});
+
+		if(PermanetPlayer.getPermanentPlayerInstance().getHealingFluid() == 0) {
+			plus1.setVisible(false);
+		}
 
 		if(Integer.parseInt(amount2.getText().toString()) == 0) {
 			remove2.setVisible(false);
@@ -1749,6 +1756,10 @@ public class MapScreen implements Screen {
 		remove2.setVisible(false);
 		remove3.setVisible(false);
 
+		if(PermanetPlayer.getPermanentPlayerInstance().getBurningFluid() == 0) {
+			plus1.setVisible(false);
+		}
+
 		if(Integer.parseInt(amount3.getText().toString()) == 0) {
 			remove3.setVisible(false);
 		}
@@ -1780,7 +1791,7 @@ public class MapScreen implements Screen {
 			}
 		});
 
-		Label enter = new Label("ENTER", AssetHandler.fontSize32);
+		enter = new Label("ENTER", AssetHandler.fontSize32);
 		enter.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -1793,6 +1804,7 @@ public class MapScreen implements Screen {
 				enterHouse();
 			}
 		});
+		enter.setVisible(false);
 
 		table3.add(exit).width(exit.getWidth()).pad(20);
 		table3.add(enter).width(enter.getWidth()).row();
