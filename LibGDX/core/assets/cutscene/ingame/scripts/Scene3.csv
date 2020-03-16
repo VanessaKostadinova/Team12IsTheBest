@@ -13,4 +13,5 @@ Duration,Person Speaking,Quote
 0,GAME,Green lines show that both houses in the connection are diseased.
 0,GAME,Red lines show that the current house you are looking at can be diseased from.
 0,GAME,Blue lines show that the current house you are looking at can spread the disease to others which are not diseased.
+0,GAME,You can track the current objective and the notes you found by pressing the I Key.
 0,Objective,Enter a house!

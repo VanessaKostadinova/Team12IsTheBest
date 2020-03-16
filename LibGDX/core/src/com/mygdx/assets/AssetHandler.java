@@ -31,6 +31,8 @@ public class AssetHandler {
     //All the assets we are loading as well as making them constants as they shouldn't change.
     private static final AssetDescriptor<Texture> house1 = new AssetDescriptor<Texture>("house/House1.gif", Texture.class);
     private static final AssetDescriptor<Texture> shop = new AssetDescriptor<Texture>("house/Shop.gif", Texture.class);
+    private static final AssetDescriptor<Texture> churchImage = new AssetDescriptor<Texture>("house/Church.png", Texture.class);
+
     private static final AssetDescriptor<Texture> background = new AssetDescriptor<Texture>("house/background.png", Texture.class);
     private static final AssetDescriptor<Texture> water = new AssetDescriptor<Texture>("house/water.png", Texture.class);
     private static final AssetDescriptor<Texture> mapTarget = new AssetDescriptor<Texture>("house/aim.png", Texture.class);
@@ -164,6 +166,7 @@ public class AssetHandler {
     	manager.load(alivePercentage);
     	manager.load(deadPercentage);
     	manager.load(sickPercentage);
+    	manager.load(churchImage);
 
 
     	manager.load("cutscene/1/Intro.mp3", Music.class);

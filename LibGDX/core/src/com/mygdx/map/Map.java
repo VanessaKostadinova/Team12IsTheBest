@@ -46,7 +46,7 @@ public class Map {
 		nodes = new ArrayList<>();
 		readMapFile();
 		setNotes();
-		church = new Church(AssetHandler.manager.get("house/Shop.gif", Texture.class), 900.0f, 470.0f);
+		church = new Church(AssetHandler.manager.get("house/Church.png", Texture.class), 910.0f, 490.0f);
 		shop = new Shop(AssetHandler.manager.get("house/Shop.gif", Texture.class), 760.0f, 500.0f);
 		checkIfPlayerExist();
 		resetPlayerFile();
@@ -62,7 +62,7 @@ public class Map {
 	 */
 	public Map(List<Node> nodes) {
 		this.nodes = nodes;
-		church = new Church(AssetHandler.manager.get("house/Shop.gif", Texture.class), 900.0f, 470.0f);
+		church = new Church(AssetHandler.manager.get("house/Church.png", Texture.class), 910.0f, 490.0f);
 		shop = new Shop(AssetHandler.manager.get("house/Shop.gif", Texture.class), 760.0f, 500.0f);
 		checkIfPlayerExist();
 		setNeighbours();
