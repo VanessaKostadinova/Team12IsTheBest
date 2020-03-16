@@ -151,6 +151,19 @@ public class Node extends Renderable {
 		for(NPC resident : residents)
 		{
 			if(resident.getStatus().equals("Dead")) x++;
+		}
+		return x;
+	}
+
+	/**
+	 * Returns the number of burnt NPC's
+	 * @return burnt NPC's as integer
+	 */
+	public int getNumberOfBurnt()
+	{
+		int x = 0;
+		for(NPC resident : residents)
+		{
 			if(resident.getStatus().equals("Burnt")) x++;
 		}
 		return x;
@@ -282,6 +295,7 @@ public class Node extends Renderable {
 	 * Upgrade the level of information known about the node.
 	 */
 	public void upgradeLevelKnown() {
+		System.out.println(level4Researched);
 		if(!level4Researched && numberDeadResearched && numberIllResearched && numberAliveResearched) {
 			level4Researched = true;
 		}
@@ -301,7 +315,7 @@ public class Node extends Renderable {
 	 * @return If the player has learnt everything about this node.
 	 */
 	public Boolean reachedMaxLevel() {
-		return numberDeadResearched;
+		return level4Researched;
 	}
 	
 	public Boolean getLevel1() {
@@ -317,7 +331,7 @@ public class Node extends Renderable {
 	}
 	
 	public Boolean getLevel4() {
-		return numberDeadResearched;
+		return level4Researched;
 	}
 	
 	public Boolean setLevel1(Boolean value) {

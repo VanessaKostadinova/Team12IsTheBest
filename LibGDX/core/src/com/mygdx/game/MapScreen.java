@@ -150,6 +150,10 @@ public class MapScreen implements Screen {
 	private Label numberOfcharacterDiseasedTitle;
 	/** Label to show if number of diseased characters known */
 	private Label numberOfCharacterDiseased;
+	/** Label to show if number of diseased characters known title*/
+	private Label numberOfcharacterBurntTitle;
+	/** Label to show if number of diseased characters known */
+	private Label numberOfCharacterBurnt;
 	/** The current node the pointer is hovering over */
 	private Node hoverNode;
 	/** The overlay to darken the scene behind cutscene */
@@ -467,8 +471,8 @@ public class MapScreen implements Screen {
 		this.inspectDialog = new Sprite(AssetHandler.manager.get("player/MAPUI/dialog.png", Texture.class));
 		inspectDialog.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
 		inspectDialog.setScale(0.125f);
-		inspectDialog.setScale(0.128f, 0.053f);
-		inspectDialog.setPosition(-252, -260);
+		inspectDialog.setScale(0.128f, 0.1f);
+		inspectDialog.setPosition(-252, -277);
 		inspectDialog.setAlpha(houseAlpha);
 		
 		this.houseText = new Sprite(AssetHandler.manager.get("house/MAP_HOUSE.png", Texture.class));
@@ -944,6 +948,8 @@ public class MapScreen implements Screen {
 				numberOfCharacterSick.setVisible(false);
 				numberOfcharacterDiseasedTitle.setVisible(false);
 				numberOfCharacterDiseased.setVisible(false);
+				numberOfCharacterBurnt.setVisible(false);
+				numberOfcharacterBurntTitle.setVisible(false);
 				if(darkness >= 0) {
 					darkness -= (1f/60f);
 					if(darkness <= 0) {
@@ -967,6 +973,8 @@ public class MapScreen implements Screen {
 					numberOfCharacterSick.setVisible(false);
 					numberOfcharacterDiseasedTitle.setVisible(false);
 					numberOfCharacterDiseased.setVisible(false);
+					numberOfCharacterBurnt.setVisible(false);
+					numberOfcharacterBurntTitle.setVisible(false);
 				}
 			}
 			else {
@@ -1095,6 +1103,12 @@ public class MapScreen implements Screen {
 		} else {
 			numberOfCharacterDiseased.setText("NOT KNOWN");
 		}
+
+		if(n.getLevel4()) {
+			numberOfCharacterBurnt.setText(n.getNumberOfBurnt());
+		} else {
+			numberOfCharacterBurnt.setText("NOT KNOWN");
+		}
 	}
 
 	/**
@@ -1112,6 +1126,9 @@ public class MapScreen implements Screen {
 			numberOfCharacterSick.setVisible(false);
 			numberOfcharacterDiseasedTitle.setVisible(false);
 			numberOfCharacterDiseased.setVisible(false);
+			numberOfCharacterBurnt.setVisible(false);
+			numberOfcharacterBurntTitle.setVisible(false);
+
 			
 			dayAnimationTime = dayAnimationTime + delta;
 			
@@ -1126,6 +1143,8 @@ public class MapScreen implements Screen {
 					numberOfCharacterSick.setVisible(false);
 					numberOfcharacterDiseasedTitle.setVisible(false);
 					numberOfCharacterDiseased.setVisible(false);
+					numberOfCharacterBurnt.setVisible(false);
+					numberOfcharacterBurntTitle.setVisible(false);
 				}
 				if(darkness >= 1 && !initialDone) {
 					initialDone = true;
@@ -1136,6 +1155,8 @@ public class MapScreen implements Screen {
 					numberOfCharacterSick.setVisible(false);
 					numberOfcharacterDiseasedTitle.setVisible(false);
 					numberOfCharacterDiseased.setVisible(false);
+					numberOfCharacterBurnt.setVisible(false);
+					numberOfcharacterBurntTitle.setVisible(false);
 				}
 			}
 		}
@@ -1188,6 +1209,8 @@ public class MapScreen implements Screen {
 				numberOfCharacterSick.setVisible(true);
 				numberOfcharacterDiseasedTitle.setVisible(true);
 				numberOfCharacterDiseased.setVisible(true);
+				numberOfCharacterBurnt.setVisible(true);
+				numberOfcharacterBurntTitle.setVisible(true);
 			}
 		}
 		else {
@@ -1210,6 +1233,8 @@ public class MapScreen implements Screen {
 				numberOfCharacterSick.setVisible(false);
 				numberOfcharacterDiseasedTitle.setVisible(false);
 				numberOfCharacterDiseased.setVisible(false);
+				numberOfCharacterBurnt.setVisible(false);
+				numberOfcharacterBurntTitle.setVisible(false);
 			}
 		}
 	}
@@ -1456,6 +1481,20 @@ public class MapScreen implements Screen {
 		numberOfCharacterDiseased.setVisible(false);
 
 		main.ui.addActor(numberOfCharacterDiseased);
+
+		numberOfcharacterBurntTitle = new Label("NUMBER OF BURNT: ", AssetHandler.fontSize24);
+		numberOfcharacterBurntTitle.setWidth(500f);
+		numberOfcharacterBurntTitle.setFontScale(1.3f);
+		numberOfcharacterBurntTitle.setPosition(90, main.ui.getHeight() - 150 -numberOfCharacterSick.getHeight()-numberOfcharacterSickTitle.getHeight()-numberOfCharacter.getHeight()-numberOfcharacterTitle.getHeight()-numberOfCharacterDiseased.getHeight()-numberOfCharacterDiseased.getHeight());
+		numberOfcharacterBurntTitle.setVisible(false);
+		main.ui.addActor(numberOfcharacterBurntTitle);
+
+		numberOfCharacterBurnt = new Label("NOT KNOWN", AssetHandler.fontSize24);
+		numberOfCharacterBurnt.setWidth(500f);
+		numberOfCharacterBurnt.setPosition(90, main.ui.getHeight() - 150 -numberOfcharacterDiseasedTitle.getHeight() -numberOfCharacterSick.getHeight()-numberOfcharacterSickTitle.getHeight()-numberOfCharacter.getHeight()-numberOfcharacterTitle.getHeight()-numberOfCharacterDiseased.getHeight()-numberOfCharacterDiseased.getHeight());
+		numberOfCharacterBurnt.setVisible(false);
+
+		main.ui.addActor(numberOfCharacterBurnt);
 
 		createInGameCutscene();
 
