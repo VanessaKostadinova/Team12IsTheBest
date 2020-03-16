@@ -199,7 +199,7 @@ public final class MainMenu implements Screen {
 				sound.pause();
 				dispose();
 				main.ui.clear();
-				main.setScreen(new Cutscene(main, "video/Cutscene 1.ogg", false));
+				main.setScreen(new Cutscene(main, "video/cutscene1.ogg", false));
 			}
 			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0006_PLAY.png"))));

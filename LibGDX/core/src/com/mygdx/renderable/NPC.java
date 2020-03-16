@@ -109,6 +109,11 @@ public class NPC extends Renderable implements Living {
 		}
 	}
 
+	public void dispose() {
+		healthbar.dispose();
+		getSprite().getTexture().dispose();
+	}
+
 
 
 	@Override

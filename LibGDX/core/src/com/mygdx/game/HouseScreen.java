@@ -144,8 +144,8 @@ public class HouseScreen implements Screen {
 			this.darkness = 0.2f;
 			this.skin = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
 			this.fakeNPCs = new ArrayList<>();
-			cure = new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("house/UI/CureSpray.png"))));
-			fire = new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("house/UI/FireSpray.png"))));
+			cure = new SpriteDrawable(new Sprite(AssetHandler.manager.get("house/UI/CureSpray.png", Texture.class)));
+			fire = new SpriteDrawable(new Sprite(AssetHandler.manager.get("house/UI/FireSpray.png", Texture.class)));
 
 			currentCutsceneQuotes = new LinkedList<>();
 			currentCutscenePerson = new LinkedList<>();
@@ -177,7 +177,7 @@ public class HouseScreen implements Screen {
 			letter.setVisible(false);
 			main.ui.addActor(letter);
 
-			paragraph = new Label("VOID", createLabelStyleWithBackground(Color.BLACK));
+			paragraph = new Label("VOID", AssetHandler.fontSize60SubtitlesBlack);
 			paragraph.setWidth(letter.getWidth()-90);
 			paragraph.setWrap(true);
 			paragraph.setPosition(main.ui.getWidth()/2+50, main.ui.getHeight()/2);
@@ -225,14 +225,14 @@ public class HouseScreen implements Screen {
 		 * Used to draw and create the cutscene items on stream.
 		 */
 		public void createInGameCutscene() {
-			Sprite s = new Sprite(new Texture(Gdx.files.internal("cutscene/ingame/cutsceneOverlay.png")));
+			Sprite s = new Sprite(AssetHandler.manager.get("cutscene/ingame/cutsceneOverlay.png", Texture.class));
 			s.setAlpha(0.9f);
 			overlayCutscene = new Image(new SpriteDrawable(s));
 			overlayCutscene.setPosition(main.ui.getWidth()/2 - overlayCutscene.getWidth()/2 - 130, main.ui.getHeight()/2 - overlayCutscene.getHeight()/2 - 100);
 			overlayCutscene.setScale(2f);
 			overlayCutscene.setVisible(false);
 
-			Sprite s3 = new Sprite(new Texture(Gdx.files.internal("cutscene/ingame/characterImages/templateCutsceneSpeaker.png")));
+			Sprite s3 = new Sprite(AssetHandler.manager.get("cutscene/ingame/storyTextures/OtherDoctor.png", Texture.class));
 			speakerImage = new Image(new SpriteDrawable(s3));
 			speakerImage.setPosition(1080-speakerImage.getWidth()/2-150, 430);
 			speakerImage.setScale(2f);
@@ -527,27 +527,27 @@ public class HouseScreen implements Screen {
 			main.ui.addActor(ui);
 			
 
-			goldLabel = new Label(Player.getInstance().getFood()+"", createLabelStyleWithBackground(Color.WHITE));
+			goldLabel = new Label(Player.getInstance().getFood()+"", AssetHandler.fontSize60SubtitlesWhite);
 			goldLabel.setPosition(200+uiCurrentSpray.getWidth(), main.ui.getHeight()-100);
 			goldLabel.setFontScale(0.6f);
 			main.ui.addActor(goldLabel);
 
-			sanityLabel = new Label(Player.getInstance().getSanityLabel(), createLabelStyleWithBackground(Color.WHITE));
+			sanityLabel = new Label(Player.getInstance().getSanityLabel(), AssetHandler.fontSize60SubtitlesWhite);
 			sanityLabel.setPosition(240+uiCurrentSpray.getWidth(), main.ui.getHeight()-230);
 			sanityLabel.setFontScale(0.6f);
 			main.ui.addActor(sanityLabel);
 
-			numberOfMasksLabel = new Label(initialNumberOfMasks + "", createLabelStyleWithBackground(Color.WHITE));
+			numberOfMasksLabel = new Label(initialNumberOfMasks + "", AssetHandler.fontSize60SubtitlesWhite);
 			numberOfMasksLabel.setPosition(375+uiCurrentSpray.getWidth(), main.ui.getHeight()-295);
 			numberOfMasksLabel.setFontScale(0.6f);
 			main.ui.addActor(numberOfMasksLabel);
 
-			amountOfBurnLabel = new Label((int) amountOfFlame + "", createLabelStyleWithBackground(Color.WHITE));
+			amountOfBurnLabel = new Label((int) amountOfFlame + "", AssetHandler.fontSize60SubtitlesWhite);
 			amountOfBurnLabel.setPosition(375+uiCurrentSpray.getWidth(), main.ui.getHeight()-360);
 			amountOfBurnLabel.setFontScale(0.6f);
 			main.ui.addActor(amountOfBurnLabel);
 
-			amountOfCureLabel = new Label((int) amountOfCure + "", createLabelStyleWithBackground(Color.WHITE));
+			amountOfCureLabel = new Label((int) amountOfCure + "", AssetHandler.fontSize60SubtitlesWhite);
 			amountOfCureLabel.setPosition(375+uiCurrentSpray.getWidth(), main.ui.getHeight()-425);
 			amountOfCureLabel.setFontScale(0.6f);
 			main.ui.addActor(amountOfCureLabel);
@@ -664,8 +664,10 @@ public class HouseScreen implements Screen {
 	
 		@Override
 		public void dispose() {
-			// TODO Auto-generated method stub
-	
+			for(NPC n : fakeNPCs) {
+				n.dispose();
+			}
+			Player.getInstance().getSpray().dispose();
 		}
 		/**
 		 * Render the map on to the house screen.
@@ -802,17 +804,7 @@ public class HouseScreen implements Screen {
 		 * @param color Color of the font
 		 * @return A labelstyle of font 60
 		 */
-		private LabelStyle createLabelStyleWithBackground(Color color) {
-	    	///core/assets/font/Pixel.ttf
-	    	FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
-	    	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
-	    	FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-	    	parameter.size = 60;
-	        LabelStyle labelStyle = new LabelStyle();
-	        labelStyle.font = generator.generateFont(parameter);
-	        labelStyle.fontColor = color;
-	        return labelStyle;
-	    }
+
 	    
 	    /**
 	     * Holds the window for the pause menu.
@@ -924,8 +916,6 @@ public class HouseScreen implements Screen {
 			else {
 				batch.draw(fake.getBar().getTexture(), fake.getBar().getX(), fake.getBar().getY(), 32*(fake.getHealth()/-100), fake.getBar().getHeight());
 			}
-
-
 		}
 	}
 

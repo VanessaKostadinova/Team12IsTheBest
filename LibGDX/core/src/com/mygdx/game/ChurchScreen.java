@@ -95,8 +95,8 @@ public class ChurchScreen implements Screen {
 		this.t = new Table();
 		clickedShop = null;
 		
-		unClicked = createLabelStyleWithBackground(Color.WHITE);
-		clicked = createLabelStyleWithBackground(Color.CYAN);
+		unClicked = AssetHandler.fontSize60SubtitlesWhite;
+		clicked = AssetHandler.fontSize60SubtitlesCyan;
 		
 		this.skin = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
 		this.items = new ArrayList<>();
@@ -446,7 +446,7 @@ public class ChurchScreen implements Screen {
 		pause = new Window("", skin);
 		pause.setMovable(false); //So the user can't move the window
 		//final TextButton button1 = new TextButton("Resume", skin);
-		final Label button1 = new Label("RESUME", createLabelStyleWithBackground(Color.WHITE));
+		final Label button1 = new Label("RESUME", AssetHandler.fontSize60SubtitlesWhite);
 		button1.setFontScale(24f/60f);
 		button1.addListener(new ClickListener() {
 			@Override
@@ -455,7 +455,7 @@ public class ChurchScreen implements Screen {
 				pause.setVisible(false);
 	        }
 		});
-		Label button2 = new Label("EXIT", createLabelStyleWithBackground(Color.WHITE));
+		Label button2 = new Label("EXIT", AssetHandler.fontSize60SubtitlesWhite);
 		button2.setFontScale(24f/60f);
 		button2.addListener(new ClickListener() {
 	        @Override
@@ -483,23 +483,6 @@ public class ChurchScreen implements Screen {
 
 	}
 
-	/**
-	 * Used to define the style of a label's text
-	 * @param color The color of the label's text
-	 * @return A labelstyle with a font size of 60 and varied color depending on parameter.
-	 */
-    private LabelStyle createLabelStyleWithBackground(Color color) {
-    	///core/assets/font/Pixel.ttf
-    	FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
-    	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
-    	FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-    	parameter.size = 60;
-        LabelStyle labelStyle = new LabelStyle();
-        labelStyle.font = generator.generateFont(parameter);
-        labelStyle.fontColor = color;
-        return labelStyle;
-    }
-    
 	/**
 	 * Toggle isPaused variable.
 	 */

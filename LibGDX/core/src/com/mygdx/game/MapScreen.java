@@ -322,7 +322,8 @@ public class MapScreen implements Screen {
 	 * Used to draw and create the cutscene items on stream.
 	 */
 	public void createInGameCutscene() {
-		Sprite s = new Sprite(new Texture(Gdx.files.internal("cutscene/ingame/cutsceneOverlay.png")));
+		System.out.println();
+		Sprite s = new Sprite(AssetHandler.manager.get("cutscene/ingame/cutsceneOverlay.png", Texture.class));
 		s.setAlpha(0.9f);
 		cutsceneSequence = 0;
 		overlayCutscene = new Image(new SpriteDrawable(s));
@@ -330,7 +331,7 @@ public class MapScreen implements Screen {
 		overlayCutscene.setScale(2f);
 		overlayCutscene.setVisible(false);
 
-		Sprite s3 = new Sprite(new Texture(Gdx.files.internal("cutscene/ingame/characterImages/templateCutsceneSpeaker.png")));
+		Sprite s3 = new Sprite(AssetHandler.manager.get("cutscene/ingame/characterImages/templateCutsceneSpeaker.png", Texture.class));
 		speakerImage = new Image(new SpriteDrawable(s3));
 		speakerImage.setPosition(660, 430);
 		speakerImage.setScale(2f);
@@ -481,12 +482,12 @@ public class MapScreen implements Screen {
 		shopText.setPosition(-64.5f, 72.5f);
 		shopText.setAlpha(shopAlpha);
 
-		this.enterChurch = new Sprite(new Texture(Gdx.files.internal("shop/church/ENTER_CHURCH.png")));
+		this.enterChurch = new Sprite(AssetHandler.manager.get("shop/church/ENTER_CHURCH.png", Texture.class));
 		enterChurch.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
 		enterChurch.setPosition(-72.5f, -80);
 		enterChurch.setAlpha(churchAlpha);
 
-		this.churchText = new Sprite(new Texture(Gdx.files.internal("shop/church/CHURCH.png")));
+		this.churchText = new Sprite(AssetHandler.manager.get("shop/church/CHURCH.png", Texture.class));
 		churchText.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
 		churchText.setPosition(-75.5f, 72.5f);
 		churchText.setAlpha(churchAlpha);
@@ -499,15 +500,15 @@ public class MapScreen implements Screen {
 		foodLabel.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
 		foodLabel.setPosition(47, 74.5f);
 
-		this.alivePercentageLabel = new Sprite(new Texture("player/MAPUI/ALIVEPERCENTAGE.png"));
+		this.alivePercentageLabel = new Sprite(AssetHandler.manager.get("player/MAPUI/ALIVEPERCENTAGE.png", Texture.class));
 		alivePercentageLabel.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
 		alivePercentageLabel.setPosition(47, 66.5f);
 
-		this.sickPercentageLabel = new Sprite(new Texture("player/MAPUI/SICKPERCENTAGE.png"));
+		this.sickPercentageLabel = new Sprite(AssetHandler.manager.get("player/MAPUI/SICKPERCENTAGE.png", Texture.class));
 		sickPercentageLabel.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
 		sickPercentageLabel.setPosition(47, 58.5f);
 
-		this.deadPercentageLabel = new Sprite(new Texture("player/MAPUI/DEADPERCENTAGE.png"));
+		this.deadPercentageLabel = new Sprite(AssetHandler.manager.get("player/MAPUI/DEADPERCENTAGE.png", Texture.class));
 		deadPercentageLabel.setScale((cameraUI.getCamera().viewportWidth/1920), (cameraUI.getCamera().viewportHeight/1080));
 		deadPercentageLabel.setPosition(47, 50.5f);
 
@@ -1606,7 +1607,7 @@ public class MapScreen implements Screen {
 		Table table2 = new Table();
 
 
-		final Image image1 = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icon/maskicon.png")))));
+		final Image image1 = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.manager.get("icon/maskicon.png", Texture.class))));
 		final Label amount1= new Label("0", AssetHandler.fontSize24);
 		amount1.setWidth(40);
 		amount1.setHeight(40);
@@ -1659,7 +1660,7 @@ public class MapScreen implements Screen {
 			remove1.setVisible(false);
 		}
 
-		final Image image2 = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icon/cureicon.png")))));
+		final Image image2 = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.manager.get("icon/cureicon.png", Texture.class))));
 		final Label amount2= new Label("0", AssetHandler.fontSize24);
 		amount2.setWidth(80);
 		amount2.setHeight(40);
@@ -1710,7 +1711,7 @@ public class MapScreen implements Screen {
 			remove2.setVisible(false);
 		}
 
-		final Image image3 = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icon/flameicon.png")))));
+		final Image image3 = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.manager.get("icon/flameicon.png", Texture.class))));
 		final Label amount3= new Label("0", AssetHandler.fontSize24);
 		amount3.setWidth(80);
 		amount3.setHeight(40);
@@ -2280,7 +2281,7 @@ public class MapScreen implements Screen {
 		letter.setVisible(false);
 		main.ui.addActor(letter);
 
-		paragraph = new Label("", createLabelStyleWithBackground(Color.BLACK));
+		paragraph = new Label("", AssetHandler.fontSize60SubtitlesBlack);
 		paragraph.setWidth(letter.getWidth()-90);
 		paragraph.setWrap(true);
 		paragraph.setPosition(main.ui.getWidth()/2, main.ui.getHeight()/2);
@@ -2318,23 +2319,6 @@ public class MapScreen implements Screen {
 		note20.setVisible(visible);
 	}
 
-
-	/**
-	 * Create a label style with a specific color.
-	 * @param color Color type
-	 * @return A label style with a specific color and font size and 60.
-	 */
-	private Label.LabelStyle createLabelStyleWithBackground(Color color) {
-		///core/assets/font/Pixel.ttf
-		FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
-		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		parameter.size = 60;
-		Label.LabelStyle labelStyle = new Label.LabelStyle();
-		labelStyle.font = generator.generateFont(parameter);
-		labelStyle.fontColor = color;
-		return labelStyle;
-	}
 
 	/**
 	 * Get the map.

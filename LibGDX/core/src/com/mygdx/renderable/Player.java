@@ -319,6 +319,10 @@ public class Player extends Renderable implements Living {
 		
 	}
 
+	public void dispose() {
+		getSprite().getTexture().dispose();
+	}
+
 	/**
 	 * Set the body of the player
 	 * @param world The world value for the house

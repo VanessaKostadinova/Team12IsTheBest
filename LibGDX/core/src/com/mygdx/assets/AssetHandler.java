@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
+import java.io.File;
+
 /**
  * Used to load assets into the game before playing the game, this reduces the load on a PC as well
  * the loading times as assets are loaded before making loading times from a few seconds to a less than a millisecond.
@@ -71,6 +73,22 @@ public class AssetHandler {
     private static final AssetDescriptor<Texture> npc2burnt = new AssetDescriptor<Texture>("NPC/Dead2.gif", Texture.class);
     private static final AssetDescriptor<Texture> npc3burnt = new AssetDescriptor<Texture>("NPC/Dead3.gif", Texture.class);
 
+    private static final AssetDescriptor<Texture> cure = new AssetDescriptor<Texture>("house/UI/CureSpray.png", Texture.class);
+    private static final AssetDescriptor<Texture> fire = new AssetDescriptor<Texture>("house/UI/FireSpray.png", Texture.class);
+    private static final AssetDescriptor<Texture> cutsceneOverlay = new AssetDescriptor<Texture>("cutscene/ingame/cutsceneOverlay.png", Texture.class);
+    private static final AssetDescriptor<Texture> cutsceneSpeaker = new AssetDescriptor<Texture>("cutscene/ingame/characterImages/templateCutsceneSpeaker.png", Texture.class);
+    private static final AssetDescriptor<Texture> otherDoctor = new AssetDescriptor<Texture>("cutscene/ingame/storyTextures/OtherDoctor.png", Texture.class);
+
+
+    private static final AssetDescriptor<Texture> maskIcon = new AssetDescriptor<Texture>("icon/maskicon.png", Texture.class);
+    private static final AssetDescriptor<Texture> cureIcon = new AssetDescriptor<Texture>("icon/cureicon.png", Texture.class);
+    private static final AssetDescriptor<Texture> flameIcon = new AssetDescriptor<Texture>("icon/flameicon.png", Texture.class);
+    private static final AssetDescriptor<Texture> enterChurch = new AssetDescriptor<Texture>("shop/church/ENTER_CHURCH.png", Texture.class);
+    private static final AssetDescriptor<Texture> church = new AssetDescriptor<Texture>("shop/church/CHURCH.png", Texture.class);
+    private static final AssetDescriptor<Texture> alivePercentage = new AssetDescriptor<Texture>("player/MAPUI/ALIVEPERCENTAGE.png", Texture.class);
+    private static final AssetDescriptor<Texture> sickPercentage = new AssetDescriptor<Texture>("player/MAPUI/SICKPERCENTAGE.png", Texture.class);
+    private static final AssetDescriptor<Texture> deadPercentage = new AssetDescriptor<Texture>("player/MAPUI/DEADPERCENTAGE.png", Texture.class);
+
     //Single instances of common font sizes and the UI skin used in the game.
     public static final Skin skinUI = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
     public static final LabelStyle fontSize24 = createLabelStyleWithBackground();
@@ -78,7 +96,9 @@ public class AssetHandler {
     public static final LabelStyle fontSize12Subtitles = createLabelStyleWithBackground(Color.WHITE);
     public static final LabelStyle fontSize32 = createLabelStyleWithBackground(32);
     public static final LabelStyle fontSize15 = createLabelStyleWithBackground(15);
-
+    public static final LabelStyle fontSize60SubtitlesBlack = createLabelStyleWithBackground(Color.BLACK, 2);
+    public static final LabelStyle fontSize60SubtitlesWhite = createLabelStyleWithBackground(Color.WHITE, 2);
+    public static final LabelStyle fontSize60SubtitlesCyan = createLabelStyleWithBackground(Color.CYAN, 2);
 
     /**
      * Load all the assets within the game.
@@ -130,6 +150,22 @@ public class AssetHandler {
     	manager.load(BAR);
     	manager.load(HEALTHBAR);
 
+    	manager.load(cure);
+    	manager.load(fire);
+    	manager.load(cutsceneOverlay);
+    	manager.load(cutsceneSpeaker);
+    	manager.load(otherDoctor);
+
+    	manager.load(maskIcon);
+    	manager.load(flameIcon);
+    	manager.load(cureIcon);
+    	manager.load(enterChurch);
+    	manager.load(church);
+    	manager.load(alivePercentage);
+    	manager.load(deadPercentage);
+    	manager.load(sickPercentage);
+
+
     	manager.load("cutscene/1/Intro.mp3", Music.class);
 
 
@@ -151,6 +187,18 @@ public class AssetHandler {
         labelStyle.font = generator.generateFont(parameter);
         labelStyle.fontColor = Color.WHITE;
 
+        return labelStyle;
+    }
+
+    private static LabelStyle createLabelStyleWithBackground(Color color, int value) {
+        ///core/assets/font/Pixel.ttf
+        FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.size = 60;
+        LabelStyle labelStyle = new LabelStyle();
+        labelStyle.font = generator.generateFont(parameter);
+        labelStyle.fontColor = color;
         return labelStyle;
     }
 
