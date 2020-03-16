@@ -127,7 +127,7 @@ public class HouseScreen implements Screen {
 	/** Initial Amount of flame */
 	private float amountOfFlame;
 	/** Texture for storyDoctor */
-	private Texture storyDoctor = null;
+	private Sprite storyDoctor = null;
 	/** The mask durablity at the start */
 	private final float maskDurabiltyAtStart = Player.getInstance().getCurrentMaskDuration();
 
@@ -232,7 +232,7 @@ public class HouseScreen implements Screen {
 			overlayCutscene.setScale(2f);
 			overlayCutscene.setVisible(false);
 
-			Sprite s3 = new Sprite(AssetHandler.manager.get("cutscene/ingame/storyTextures/OtherDoctor.png", Texture.class));
+			Sprite s3 = new Sprite(AssetHandler.manager.get("cutscene/ingame/characterImages/templateCutsceneSpeaker.png", Texture.class));
 			speakerImage = new Image(new SpriteDrawable(s3));
 			speakerImage.setPosition(1080-speakerImage.getWidth()/2-150, 430);
 			speakerImage.setScale(2f);
@@ -242,16 +242,16 @@ public class HouseScreen implements Screen {
 			dialogCutscene = new Image(new SpriteDrawable(s2));
 			dialogCutscene.setPosition(50, 50);
 			dialogCutscene.setScaleY(0.5f);
-			dialogCutscene.setScaleX(3.45f);
+			dialogCutscene.setScaleX(3.0666f);
 			dialogCutscene.setVisible(false);
 
 			personToSpeak = new Label("YOU:", AssetHandler.fontSize32);
 			personToSpeak.setPosition(90, 350F);
 			personToSpeak.setVisible(false);
 
-			setDescriptionOfText = new Label("YNSERT TEXT HERE PLEASE! ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss", AssetHandler.fontSize32);
+			setDescriptionOfText = new Label("NULL", AssetHandler.fontSize32);
 			setDescriptionOfText.setAlignment(Align.topLeft);
-			setDescriptionOfText.setWidth(1950);
+			setDescriptionOfText.setWidth(1710);
 			setDescriptionOfText.setWrap(true);
 			setDescriptionOfText.setPosition(90, 300f);
 			setDescriptionOfText.setVisible(false);
@@ -278,9 +278,19 @@ public class HouseScreen implements Screen {
 		 */
 		public void initialStoryHandler() {
 			if(PermanetPlayer.getPermanentPlayerInstance().getNotes().size() >= 12 && !StoryHandler.allNotesSequence) {
-				storyDoctor = new Texture(Gdx.files.internal("cutscene/ingame/storyTextures/OtherDoctor.png"));
+				storyDoctor = new Sprite(AssetHandler.manager.get("cutscene/ingame/storyTextures/OtherDoctor.png", Texture.class));
+				storyDoctor.setPosition(
+						(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2) - 40,
+						(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2) + 40);
 				startCreatingCutscene("cutscene/ingame/scripts/Scene10.csv");
 				StoryHandler.allNotesSequence =true;
+			}
+
+			if(StoryHandler.allNotesSequence && !StoryHandler.killedOtherGuy) {
+				storyDoctor = new Sprite(AssetHandler.manager.get("cutscene/ingame/storyTextures/OtherDoctor.png", Texture.class));
+				storyDoctor.setPosition(
+						(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2) - 40,
+						(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2) + 40);
 			}
 		}
 
@@ -387,12 +397,7 @@ public class HouseScreen implements Screen {
 			main.batch.setProjectionMatrix(camera.getCamera().combined);
 			renderMap();
 			drawNPC(main.batch);
-			if(storyDoctor != null) {
-				main.batch.draw(
-						storyDoctor,
-						(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2) - 40,
-						(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2) + 40);
-			}
+
 			drawFakeNPC(main.batch);
 			updateAllBullets();
 			Player.getInstance().draw(main.batch);
@@ -407,8 +412,25 @@ public class HouseScreen implements Screen {
 			if(Player.getInstance().getSprayIndex() == 1) {
 				uiCurrentSpray.setDrawable(fire);
 			}
-			
-			
+
+			if(storyDoctor != null) {
+				storyDoctor.draw(main.batch);
+				if(Player.getInstance().getSpray().getIsActive()) {
+					if(Player.getInstance().getSprayIndex() == 1) {
+						if(storyDoctor.getBoundingRectangle().overlaps(Player.getInstance().getSpray().getSprite().getBoundingRectangle())) {
+							System.out.println("HIT");
+							StoryHandler.killedOtherGuy = true;
+							StoryHandler.allNotesSequence = true;
+							storyDoctor.setAlpha(0);
+						}
+					}
+				}
+			}
+
+			System.out.println(StoryHandler.killedOtherGuy);
+
+
+
 			handler.sprayWithVillagerCollision(node.getNPCs());
 
 			if(Player.getInstance().getSprayIndex() == 0) {
@@ -664,10 +686,7 @@ public class HouseScreen implements Screen {
 	
 		@Override
 		public void dispose() {
-			for(NPC n : fakeNPCs) {
-				n.dispose();
-			}
-			Player.getInstance().getSpray().dispose();
+			// TODO Auto-generated method stub
 		}
 		/**
 		 * Render the map on to the house screen.

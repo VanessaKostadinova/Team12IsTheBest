@@ -54,6 +54,7 @@ public class Map {
 		if(!notesAlreadyExists()) {
 			setNotes();
 		}
+
 	}
 
 	/**

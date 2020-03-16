@@ -22,6 +22,7 @@ public class StoryHandler {
     public static Boolean falseCure1 = false;
     public static Boolean falseCure2 = false;
 
+    public static Boolean killedOtherGuy = false;
     public static Boolean allNotesSequence = false;
 
     public static Boolean haveBeenReCured = false;

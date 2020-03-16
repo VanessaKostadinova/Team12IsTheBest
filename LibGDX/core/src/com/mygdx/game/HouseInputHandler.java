@@ -345,7 +345,7 @@ public class HouseInputHandler implements InputProcessor {
 	 * @return the new amount of spray the player has.
 	 */
 	public float spray(float value) {
-		if(!isPaused) {
+		if(!isPaused && !cutsceneActive) {
 			Player.getInstance().getSpray().setVisible(mousePressed);
 			if(Player.getInstance().getSpray().getIsActive()) {
 				if((int)value < 1) {

@@ -13,12 +13,10 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -178,6 +176,10 @@ public class MapScreen implements Screen {
 	private Label decisionFirst, decisionSecond;
 	/** Collection of note UI Labels */
 	private Label noteTitle, note1, note2, note3, note4, note5, note6, note7, note8, note9, note10, note11, note12, note13, note14, note15, note16, note17, note18, note19, note20;
+
+	/**The objectiveTitle and objective text*/
+	private Label objectiveTitle, objective;
+
 	/** The background image for the note */
 	private Image letter;
 	/** The paragraph for the note */
@@ -247,6 +249,7 @@ public class MapScreen implements Screen {
 		if(!StoryHandler.introductionPart1) {
 			startCreatingCutscene("cutscene/ingame/scripts/Scene1.csv");
 			StoryHandler.introductionPart1 = true;
+			objective.setText("Inspect a house using the E key!");
 		}
 
 	}
@@ -314,6 +317,7 @@ public class MapScreen implements Screen {
 		if(!StoryHandler.introductionPart1) {
 			startCreatingCutscene("cutscene/ingame/scripts/Scene1.csv");
 			StoryHandler.introductionPart1 = true;
+			objective.setText("Inspect a house using the E key!");
 		}
 
 	}
@@ -726,27 +730,35 @@ public class MapScreen implements Screen {
 		if(StoryHandler.tutorialDecisionMade && !StoryHandler.TutorialPart1) {
 			startCreatingCutscene("cutscene/ingame/scripts/Scene3.csv");
 			StoryHandler.TutorialPart1 = true;
+			objective.setText("Enter a house!");
 
 		}
 		if(StoryHandler.TutorialPart1 && StoryHandler.TutorialPart2 && StoryHandler.TutorialPart3 && !StoryHandler.TutorialDone) {
 			if(StoryHandler.didCureFirstHouse) {
 				startCreatingCutscene("cutscene/ingame/scripts/Scene6.1.csv");
 				StoryHandler.TutorialDone = true;
+				objective.setText("Find 6 notes & cure the city!");
 			}
 			else {
 				startCreatingCutscene("cutscene/ingame/scripts/Scene6.2.csv");
 				StoryHandler.TutorialDone = true;
+				objective.setText("Find 6 notes & cure the city!");
 			}
 		}
 
 		if(StoryHandler.TutorialDone && !StoryHandler.transitionEndOfDayTutorial && currentCutsceneQuotes.size() == 0) {
 			darken = true;
 			StoryHandler.transitionEndOfDayTutorial = true;
+			objective.setText("Find 6 notes & cure the city!");
 		}
 
 		if(PermanetPlayer.getPermanentPlayerInstance().getNotes().size() >=  6 && !StoryHandler.interactedWithSylvia) {
 			startCreatingCutscene("cutscene/ingame/scripts/Scene7.csv");
 			StoryHandler.interactedWithSylvia = true;
+			objective.setText("Cure the city!");
+		}
+		else if (StoryHandler.tutorialDecisionMade){
+			objective.setText("Find 6 notes & cure the city!");
 		}
 
 		if(StoryHandler.interactedWithSylvia && !StoryHandler.falseCure1) {
@@ -760,12 +772,19 @@ public class MapScreen implements Screen {
 			if (haveBeenCured) {
 				startCreatingCutscene("cutscene/ingame/scripts/Scene8.csv");
 				StoryHandler.falseCure1 = true;
+				objective.setText("Recure the city and find 6 more notes");
 			}
+			objective.setText("Cure the city!");
 		}
+
 
 		if(StoryHandler.falseCure1 && !StoryHandler.falseCure2 && currentCutsceneQuotes.size() == 0) {
 			darken = true;
 			StoryHandler.falseCure2 = true;
+			objective.setText("Recure the city and find 6 more notes");
+		}
+		else if(StoryHandler.interactedWithSylvia) {
+			objective.setText("Recure the city and find 6 more notes");
 		}
 
 		if(StoryHandler.falseCure1 && StoryHandler.falseCure2 && !StoryHandler.haveBeenReCured && !darken) {
@@ -789,18 +808,27 @@ public class MapScreen implements Screen {
 			});
 			map.setNotes();
 			StoryHandler.haveBeenReCured = true;
+			objective.setText("Find 6 more notes and find the mysterious man!");
 		}
 
-		if(StoryHandler.allNotesSequence && !StoryHandler.oDNotesPlaced) {
+		System.out.println("1: " + StoryHandler.allNotesSequence);
+		System.out.println("2: " + StoryHandler.killedOtherGuy);
+		System.out.println("3: " + StoryHandler.oDNotesPlaced);
+
+		if(StoryHandler.allNotesSequence && StoryHandler.killedOtherGuy && !StoryHandler.oDNotesPlaced) {
 			map.nextNoteLevel(new String[]{
 					"POPULATION CONFIRMED TO BE DECLINING HOWEVER THE RATE IS LOWER THAN INITIALLY PREDICTED.",
 					"I ESTIMATE IT WILL TAKE IS ANOTHER SEASON TO REACH THE 40 PERCENT DEATH COUNT." ,
 					"WISH I COULD GO HOME SOONER. I WILL BE ADMINISTERING THE VIRUS TO MORE HOUSES NEXT TIME." ,
 					"HE HAD EVERYONE CURED BUT I MANAGED TO INFECT SOME PEOPLE IN TIME."
 			});
+			objective.setText("FIND 4 FINAL NOTES");
 			map.setNotes();
 			StoryHandler.oDNotesPlaced=true;
 			StoryHandler.decisionNumber = 1;
+		}
+		else if(StoryHandler.allNotesSequence && StoryHandler.killedOtherGuy && StoryHandler.oDNotesPlaced) {
+			objective.setText("FIND 4 FINAL NOTES");
 		}
 
 		if(PermanetPlayer.getPermanentPlayerInstance().getNotes().size() >=  16  && !StoryHandler.decision2Created) {
@@ -813,12 +841,14 @@ public class MapScreen implements Screen {
 		if(StoryHandler.decision2Made &&  !StoryHandler.toldVillagers && !StoryHandler.cutscene81Played) {
 			startCreatingCutscene("cutscene/ingame/scripts/Scene12.csv");
 			StoryHandler.cutscene81Played = true;
+			objective.setText("Follow or disobey the order");
 		}
 
 		if(StoryHandler.cutscene81Played && !StoryHandler.cutscene83Played && currentCutsceneQuotes.size() == 0) {
 			darken = true;
 			startCreatingCutscene("cutscene/ingame/scripts/Scene13.csv");
 			StoryHandler.cutscene83Played = true;
+			objective.setText("Follow or disobey the order");
 		}
 
 		if(StoryHandler.decision2Made && StoryHandler.toldVillagers && !StoryHandler.cutscene82Played) {
@@ -828,6 +858,7 @@ public class MapScreen implements Screen {
 
 
 		if(StoryHandler.cutscene83Played &&  !StoryHandler.cutscene84Played  && currentCutsceneQuotes.size() == 0) {
+			objective.setText("Follow or disobey the order");
 			float percentDead = Float.parseFloat(deadPercentage.getText().toString());
 			if (percentDead >= 40.0f) {
 				startCreatingCutscene("cutscene/ingame/scripts/Scene14.csv");
@@ -842,6 +873,7 @@ public class MapScreen implements Screen {
 
 		if(StoryHandler.toldVillagers) {
 			if(StoryHandler.cutscene82Played && currentCutsceneQuotes.size() == 0) {
+				objective.setText("CURE OR KILL THE CITY - YOUR DECISION");
 				float percentDead = Float.parseFloat(deadPercentage.getText().toString());
 				float percentAlive = Float.parseFloat(alivePercentage.getText().toString());
 				if(percentDead >= 60.0f)  {
@@ -857,6 +889,7 @@ public class MapScreen implements Screen {
 
 		if(!StoryHandler.toldVillagers) {
 			if(StoryHandler.cutscene84Played && currentCutsceneQuotes.size() == 0) {
+				objective.setText("CURE OR KILL THE CITY - YOUR DECISION");
 				float percentDead = Float.parseFloat(deadPercentage.getText().toString());
 				float percentAlive = Float.parseFloat(alivePercentage.getText().toString());
 				if(percentDead >= 60.0f)  {
@@ -2024,6 +2057,21 @@ public class MapScreen implements Screen {
 		noteTitle.setAlignment(Align.center);
 		noteTitle.setVisible(false);
 
+		objectiveTitle = new Label("OBJECTIVE:", AssetHandler.fontSize32);
+		objectiveTitle.setPosition(1500, 1000);
+		objectiveTitle.setAlignment(Align.center);
+		objectiveTitle.setVisible(false);
+
+		objective = new Label("NULL", AssetHandler.fontSize24);
+		objective.setPosition(1420, 950);
+		objective.setWidth(420);
+		objective.setAlignment(Align.topLeft);
+		objective.setWrap(true);
+		objective.setVisible(false);
+
+
+
+
 		note2 = new Label("NOTE 2", AssetHandler.fontSize24);
 		note2.setPosition(50, 900-note1.getHeight());
 		note2.setWidth(note1.getWidth());
@@ -2254,6 +2302,8 @@ public class MapScreen implements Screen {
 		note20.setVisible(false);
 
 		main.ui.addActor(noteBackground);
+		main.ui.addActor(objectiveTitle);
+		main.ui.addActor(objective);
 		main.ui.addActor(noteTitle);
 		main.ui.addActor(note1);
 		main.ui.addActor(note2);
@@ -2296,6 +2346,8 @@ public class MapScreen implements Screen {
 	 */
 	public void inventoryVisible(boolean visible)  {
 		noteBackground.setVisible(visible);
+		objectiveTitle.setVisible(visible);
+		objective.setVisible(visible);
 		noteTitle.setVisible(visible);
 		note1.setVisible(visible);
 		note2.setVisible(visible);

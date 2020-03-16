@@ -56,10 +56,9 @@ public class SettingsScreen implements Screen {
         this.main = main;
         this.resolutionIndex = 0;
         this.resolutions = new TreeMap<>();
-        this.current = Gdx.graphics.getDisplayMode();
-
 
         Graphics.Monitor primary = Gdx.graphics.getPrimaryMonitor();
+        this.current = Gdx.graphics.getDisplayMode(primary);
         Graphics.DisplayMode[] modes = Gdx.graphics.getDisplayModes(primary);
 
         for(Graphics.DisplayMode mode : modes) {
@@ -258,6 +257,7 @@ public class SettingsScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 main.ui.clear();
+
                 main.setScreen(new MainMenu(main));
             }
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
@@ -278,6 +278,7 @@ public class SettingsScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.graphics.setVSync(vsyncOn);
+                main.vsyncOn = vsyncOn;
                 Gdx.graphics.setResizable(false);
                 System.out.println("HIT");
                 if(isFullscreen) {

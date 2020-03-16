@@ -57,7 +57,7 @@ public class Main extends Game implements Serializable {
 	private Camera camera;
 
 	/** A variable to store whether V-Sync is On Or Off*/
-	private Boolean vsyncOn;
+	public Boolean vsyncOn;
 
 	/** A variable to store the kryo instance used to save the game!*/
 	public Kryo kryo;
@@ -224,6 +224,7 @@ public class Main extends Game implements Serializable {
 						output.writeBoolean(StoryHandler.cutscene82Played);
 						output.writeBoolean(StoryHandler.cutscene83Played);
 						output.writeBoolean(StoryHandler.cutscene84Played);
+						output.writeBoolean(StoryHandler.killedOtherGuy);
 						output.writeInt(StoryHandler.decisionNumber);
 					}
 
@@ -366,6 +367,7 @@ public class Main extends Game implements Serializable {
 						StoryHandler.cutscene82Played = input.readBoolean();
 						StoryHandler.cutscene83Played = input.readBoolean();
 						StoryHandler.cutscene84Played = input.readBoolean();
+						StoryHandler.killedOtherGuy = input.readBoolean();
 						StoryHandler.decisionNumber = input.readInt();
 
 						return screen;
