@@ -234,7 +234,7 @@ public class HouseScreen implements Screen {
 
 			Sprite s3 = new Sprite(AssetHandler.manager.get("cutscene/ingame/characterImages/templateCutsceneSpeaker.png", Texture.class));
 			speakerImage = new Image(new SpriteDrawable(s3));
-			speakerImage.setPosition(1080-speakerImage.getWidth()/2-150, 430);
+			speakerImage.setPosition(660, 430);
 			speakerImage.setScale(2f);
 			speakerImage.setVisible(false);
 

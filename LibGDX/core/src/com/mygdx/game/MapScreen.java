@@ -395,7 +395,7 @@ public class MapScreen implements Screen {
 
 	/**
 	 * Intialising the new cutscene based of a text file.
-	 * @param file The file of the .csv file for the cutscene.
+	 * @param file The file of the .csv file for the cutscene - String not FileHandle.
 	 */
 	public void startCreatingCutscene(String file) {
 		FileHandle n = Gdx.files.internal(file);
@@ -416,6 +416,33 @@ public class MapScreen implements Screen {
 			currentCutsceneQuotes.add(data[2]);
 		}
 		updateInGameCutscene(true);
+		updateInGameCutscene(currentCutscenePerson.get(cutsceneSequence), currentCutsceneQuotes.get(cutsceneSequence));
+	}
+
+	/**
+	 * Intialising the new cutscene based of a text file.
+	 * @param file The file of the .csv file for the cutscene - FileHandle not String.
+	 */
+	public void startCreatingCutscene(FileHandle file) {
+		FileHandle n = file;
+		cutsceneSequence = 0;
+		String textFile = n.readString();
+		String lines[] = textFile.split("\\r?\\n");
+		for(int i = 1; i < lines.length; i++) {
+			String line = lines[i];
+			String[] data = line.split(",");
+			/**
+			 * Data - ARRAY:
+			 * index 0 = Duration of line (potentially for voice acting)
+			 * index 1 = Person name
+			 * index 2 = Quote of what the person is saying.
+			 */
+			currentCutsceneDuration.add(data[0]);
+			currentCutscenePerson.add(data[1]);
+			currentCutsceneQuotes.add(data[2]);
+		}
+		updateInGameCutscene(true);
+		speakerImage.setVisible(false);
 		updateInGameCutscene(currentCutscenePerson.get(cutsceneSequence), currentCutsceneQuotes.get(cutsceneSequence));
 	}
 
@@ -694,6 +721,9 @@ public class MapScreen implements Screen {
 					if (PermanetPlayer.getPermanentPlayerInstance().getEnergy() >= ENERGY_FOR_RESEARCH && !hoverNode.reachedMaxLevel()) {
 						hoverNode.upgradeLevelKnown();
 						PermanetPlayer.getPermanentPlayerInstance().changeEnergy(-ENERGY_FOR_RESEARCH);
+					}
+					else {
+						startCreatingCutscene(AssetHandler.notEnoughEnergyError);
 					}
 				}
 				else {
@@ -1318,7 +1348,10 @@ public class MapScreen implements Screen {
 			beforeEntry.setVisible(true);
 			isPaused = true;
 
-		}	
+		}
+		else if(enterBuilding && (PermanetPlayer.getPermanentPlayerInstance().getEnergy() < ENERGY_FOR_ENTER_HOUSE)) {
+			startCreatingCutscene(AssetHandler.notEnoughEnergyError);
+		}
 	}
 
 

@@ -103,6 +103,7 @@ public class AssetHandler {
     public static final LabelStyle fontSize60SubtitlesWhite = createLabelStyleWithBackground(Color.WHITE, 2);
     public static final LabelStyle fontSize60SubtitlesCyan = createLabelStyleWithBackground(Color.CYAN, 2);
     public static final LabelStyle fontSize128White = createLabelStyleWithoutBackground(Color.WHITE, 128);
+    public static final FileHandle notEnoughEnergyError = Gdx.files.internal("error/notenoughenergy.csv");
 
 
     /**
