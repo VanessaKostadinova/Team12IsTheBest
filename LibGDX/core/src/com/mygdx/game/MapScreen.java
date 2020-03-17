@@ -808,16 +808,15 @@ public class MapScreen implements Screen {
 					"I SAW THE NEW GUY HANGING ABOUT THE CHURCH IN THE MIDDLE OF THE NIGHT THOUGHT HE HAD BEEN SLEEPING BUT I CANNOT MAKE CONTACT.",
 					"I MAY ASK FOR MORE BACKUP CULTIVATING, RVH IS NOT AS EASY AS THE GUYS BACK AT CAPITAL MADE IT SOUND. THEY DON’T KNOW HOW GOOD THEY HAVE IT.",
 					"SOMEONES BEEN COMING IN HERE, I CANNOT FIND SOME PAGES AND I SWEAR THEY WERE HERE EARLIER.",
-					"I MAY NEED TO LOCK THIS PLACE DOWN, THOUGHT BEING OUT HERE WOULD MEAN I WAS NOT DISTURBED, SYLVIAS BECOMING A REAL PEST."
+					"I MAY NEED TO LOCK THIS PLACE DOWN, THOUGHT BEING OUT HERE WOULD MEAN I WAS NOT DISTURBED, SYLVIA IS BECOMING A REAL PEST."
 			});
 			map.setNotes();
 			StoryHandler.haveBeenReCured = true;
 			objective.setText("Find 6 more notes and find the mysterious man!");
 		}
-
-		System.out.println("1: " + StoryHandler.allNotesSequence);
-		System.out.println("2: " + StoryHandler.killedOtherGuy);
-		System.out.println("3: " + StoryHandler.oDNotesPlaced);
+		else if(StoryHandler.haveBeenReCured && !StoryHandler.oDNotesPlaced) {
+			objective.setText("Find 6 more notes and find the mysterious man!");
+		}
 
 		if(StoryHandler.allNotesSequence && StoryHandler.killedOtherGuy && !StoryHandler.oDNotesPlaced) {
 			map.nextNoteLevel(new String[]{

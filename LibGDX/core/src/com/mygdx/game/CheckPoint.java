@@ -1,23 +1,10 @@
 package com.mygdx.game;
 
-import java.util.LinkedList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
+import com.mygdx.assets.AssetHandler;
 import com.mygdx.renderable.Node;
 import com.mygdx.renderable.Player;
 
@@ -62,7 +49,7 @@ public class CheckPoint implements Screen {
 		this.maskDurablity = maskDurabilty;
 
 		
-		dead = new Label("YOU'RE DEAD...", createLabelStyleWithoutBackground(Color.WHITE));
+		dead = new Label("YOU'RE DEAD...", AssetHandler.fontSize128White);
 		dead.setPosition(main.ui.getWidth()/2-dead.getWidth()/2, main.ui.getHeight()/2-dead.getHeight()/2);
 		main.ui.addActor(dead);
 	}
@@ -91,41 +78,8 @@ public class CheckPoint implements Screen {
 		}
 	}
 
-	/**
-	 * Create text with a font size of 128
-	 * @param color The colour of the text
-	 */
-    private LabelStyle createLabelStyleWithoutBackground(Color color) {
-    	///core/assets/font/Pixel.ttf
-    	FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
-    	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
-    	FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-    	parameter.size = 128;
-        LabelStyle labelStyle = new LabelStyle();
-        labelStyle.font = generator.generateFont(parameter);
-        labelStyle.fontColor = color;
-        return labelStyle;
-    }
 
-	/**
-	 * Create text with a font size of 24
-	 * @param color The colour of the text
-	 */
-	private LabelStyle createLabelStyleWithBackground(Color color) {
-    	///core/assets/font/Pixel.ttf
-    	FileHandle fontFile = Gdx.files.internal("font/prstartk.ttf");
-    	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
-    	FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-    	parameter.size = 24;
-        LabelStyle labelStyle = new LabelStyle();
-        labelStyle.font = generator.generateFont(parameter);
-        labelStyle.fontColor = color;
-        Sprite s = new Sprite(new Texture(Gdx.files.internal("misc/white.png")));
-        s.setColor(Color.BLACK);
-        s.setAlpha(0.75f);
-        labelStyle.background = new SpriteDrawable(s);
-        return labelStyle;
-    }
+
 
 	/**
 	 * Change the screen the current player is on.

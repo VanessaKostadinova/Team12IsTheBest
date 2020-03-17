@@ -231,10 +231,9 @@ public class HouseInputHandler implements InputProcessor {
 		if(!isPaused && !cutsceneActive) {
 			playBackgroundMusic();
 			if(Gdx.input.isKeyPressed(UP)) {
-				if(!collision(playerX, playerY + playerHeight) && !collision(playerX + playerWidth - speed*delta, playerY + playerHeight)) {
+				if(!collision(playerX, playerY + playerHeight) && !collision(playerX + playerWidth - speed*delta -2, playerY + playerHeight)) {
 					camera.getCamera().translate(0f, speed* delta);
 					Player.getInstance().updateSprite(0, speed* delta);
-					//player.updateSprayPosition();
 					Player.getInstance().updateBody(0, speed* delta);
 					camera.updateCamera();
 					Player.getInstance().getSprite().setRegion(region);
@@ -249,7 +248,7 @@ public class HouseInputHandler implements InputProcessor {
 				}
 			}
 			if(Gdx.input.isKeyPressed(LEFT)) {
-				if(!collision(playerX - speed*delta, playerY+2) && !collision(playerX - speed*delta, playerY + playerHeight - 2)) {
+				if(!collision(playerX - speed*delta, playerY+2) && !collision(playerX - speed*delta, playerY + playerHeight - 4)) {
 					camera.getCamera().translate(-speed*delta, 0f);
 					camera.updateCamera();
 					Player.getInstance().updateSprite(-speed*delta, 0);
@@ -268,7 +267,7 @@ public class HouseInputHandler implements InputProcessor {
 			}
 			
 			if(Gdx.input.isKeyPressed(DOWN)) {
-				if(!collision(playerX+2, playerY - speed*delta) && !collision(playerX + playerWidth - speed*delta, playerY - speed*delta)) {
+				if(!collision(playerX+2, playerY - speed*delta) && !collision(playerX + playerWidth - speed*delta - 2, playerY - speed*delta)) {
 					camera.getCamera().translate(0f, -speed*delta);
 					Player.getInstance().updateSprite(0,-speed*delta);
 					//player.updateSprayPosition();
@@ -287,7 +286,7 @@ public class HouseInputHandler implements InputProcessor {
 			}
 			
 			if(Gdx.input.isKeyPressed(RIGHT)) {
-				if(!collision(playerX + playerWidth, playerY+2) && !collision(playerX + playerWidth, playerY + playerHeight - 2)) {
+				if(!collision(playerX + playerWidth, playerY+2) && !collision(playerX + playerWidth, playerY + playerHeight - 4)) {
 					Player.getInstance().updateSprite(speed* delta, 0);
 					camera.getCamera().translate(speed*delta, 0);
 					camera.updateCamera();

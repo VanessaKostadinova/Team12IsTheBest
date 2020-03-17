@@ -29,7 +29,7 @@ public class Player extends Renderable implements Living {
 	/** Speed of the player */
 	private float speed;
 	/** Constant sanity factor increase for the player*/
-	private static final float sanityFactor = 0.2f;
+	private static final float sanityFactor = 3.0f;
 	/** The mask reduction rate */
 	private float maskDurationSeconds;
 	/** The sprays which the player has*/

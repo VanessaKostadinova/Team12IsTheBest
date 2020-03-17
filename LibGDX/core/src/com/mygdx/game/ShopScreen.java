@@ -3,13 +3,9 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -87,7 +83,7 @@ public class ShopScreen implements Screen {
 		unClicked = AssetHandler.fontSize60SubtitlesWhite;
 		clicked = AssetHandler.fontSize60SubtitlesCyan;
 		
-		this.skin = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
+		this.skin = AssetHandler.skinUI;
 		this.t = new Table();
 		this.t.setFillParent(true);
 		

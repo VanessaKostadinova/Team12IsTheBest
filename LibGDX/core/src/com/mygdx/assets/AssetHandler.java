@@ -71,9 +71,9 @@ public class AssetHandler {
     private static final AssetDescriptor<Texture> npc1dead = new AssetDescriptor<Texture>("NPC/Dead1.gif", Texture.class);
     private static final AssetDescriptor<Texture> npc2dead = new AssetDescriptor<Texture>("NPC/Dead2.gif", Texture.class);
     private static final AssetDescriptor<Texture> npc3dead = new AssetDescriptor<Texture>("NPC/Dead3.gif", Texture.class);
-    private static final AssetDescriptor<Texture> npc1burnt = new AssetDescriptor<Texture>("NPC/Dead1.gif", Texture.class);
-    private static final AssetDescriptor<Texture> npc2burnt = new AssetDescriptor<Texture>("NPC/Dead2.gif", Texture.class);
-    private static final AssetDescriptor<Texture> npc3burnt = new AssetDescriptor<Texture>("NPC/Dead3.gif", Texture.class);
+    private static final AssetDescriptor<Texture> npc1burnt = new AssetDescriptor<Texture>("NPC/Burnt1.gif", Texture.class);
+    private static final AssetDescriptor<Texture> npc2burnt = new AssetDescriptor<Texture>("NPC/Burnt2.gif", Texture.class);
+    private static final AssetDescriptor<Texture> npc3burnt = new AssetDescriptor<Texture>("NPC/Burnt3.gif", Texture.class);
 
     private static final AssetDescriptor<Texture> cure = new AssetDescriptor<Texture>("house/UI/CureSpray.png", Texture.class);
     private static final AssetDescriptor<Texture> fire = new AssetDescriptor<Texture>("house/UI/FireSpray.png", Texture.class);
@@ -91,6 +91,7 @@ public class AssetHandler {
     private static final AssetDescriptor<Texture> sickPercentage = new AssetDescriptor<Texture>("player/MAPUI/SICKPERCENTAGE.png", Texture.class);
     private static final AssetDescriptor<Texture> deadPercentage = new AssetDescriptor<Texture>("player/MAPUI/DEADPERCENTAGE.png", Texture.class);
 
+    private static final AssetDescriptor<Texture> sprayImage = new AssetDescriptor<Texture>("house/UI/CureSpray.png", Texture.class);
     //Single instances of common font sizes and the UI skin used in the game.
     public static final Skin skinUI = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
     public static final LabelStyle fontSize24 = createLabelStyleWithBackground();
@@ -101,6 +102,8 @@ public class AssetHandler {
     public static final LabelStyle fontSize60SubtitlesBlack = createLabelStyleWithBackground(Color.BLACK, 2);
     public static final LabelStyle fontSize60SubtitlesWhite = createLabelStyleWithBackground(Color.WHITE, 2);
     public static final LabelStyle fontSize60SubtitlesCyan = createLabelStyleWithBackground(Color.CYAN, 2);
+    public static final LabelStyle fontSize128White = createLabelStyleWithoutBackground(Color.WHITE, 128);
+
 
     /**
      * Load all the assets within the game.
@@ -168,6 +171,8 @@ public class AssetHandler {
     	manager.load(sickPercentage);
     	manager.load(churchImage);
 
+    	manager.load(sprayImage);
+
 
     	manager.load("cutscene/1/Intro.mp3", Music.class);
 
@@ -199,6 +204,18 @@ public class AssetHandler {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = 60;
+        LabelStyle labelStyle = new LabelStyle();
+        labelStyle.font = generator.generateFont(parameter);
+        labelStyle.fontColor = color;
+        return labelStyle;
+    }
+
+    private static LabelStyle createLabelStyleWithoutBackground(Color color, int size) {
+        ///core/assets/font/Pixel.ttf
+        FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.size = size;
         LabelStyle labelStyle = new LabelStyle();
         labelStyle.font = generator.generateFont(parameter);
         labelStyle.fontColor = color;

@@ -142,7 +142,7 @@ public class HouseScreen implements Screen {
 			this.amountOfFlame = PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[2];
 
 			this.darkness = 0.2f;
-			this.skin = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
+			this.skin = AssetHandler.skinUI;
 			this.fakeNPCs = new ArrayList<>();
 			cure = new SpriteDrawable(new Sprite(AssetHandler.manager.get("house/UI/CureSpray.png", Texture.class)));
 			fire = new SpriteDrawable(new Sprite(AssetHandler.manager.get("house/UI/FireSpray.png", Texture.class)));
@@ -464,9 +464,10 @@ public class HouseScreen implements Screen {
 					Player.getInstance().getSprite().setX(0);
 					Player.getInstance().getSprite().setY(0);
 					main.ui.clear();
-					PermanetPlayer.getPermanentPlayerInstance().reduceNumberOfMasks(PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[0]-initialNumberOfMasks);
-					PermanetPlayer.getPermanentPlayerInstance().reduceCureSpray(PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[1]-(int) amountOfCure);
-					PermanetPlayer.getPermanentPlayerInstance().reduceBurnSpray(PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[2]-(int) amountOfCure);
+					PermanetPlayer.getPermanentPlayerInstance().reduceNumberOfMasks(PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[0]);
+					PermanetPlayer.getPermanentPlayerInstance().reduceCureSpray(PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[1]);
+					PermanetPlayer.getPermanentPlayerInstance().reduceBurnSpray(PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[2]);
+					Player.getInstance().resetMask();
 					mapScreen.createUI();
 					mapScreen.createInGameCutscene();
 					mapScreen.inventory();
@@ -538,7 +539,7 @@ public class HouseScreen implements Screen {
 			icon.setVisible(false);
 			main.ui.addActor(icon);
 			
-			uiCurrentSpray = new Image(new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("house/UI/CureSpray.png")))));
+			uiCurrentSpray = new Image(new SpriteDrawable(new Sprite(AssetHandler.manager.get("house/UI/CureSpray.png", Texture.class))));
 			//ui.setDrawable(new SpriteDrawable(new Sprite(main.assets.manager.get("house/UI/MAPUI.png", Texture.class))));
 			uiCurrentSpray.setPosition(10, main.ui.getHeight() - uiCurrentSpray.getHeight() - 10);		
 			main.ui.addActor(uiCurrentSpray);
