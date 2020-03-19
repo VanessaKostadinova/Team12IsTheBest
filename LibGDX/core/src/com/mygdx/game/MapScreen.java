@@ -352,11 +352,11 @@ public class MapScreen implements Screen {
 		dialogCutscene.setScaleX(3.0666f);
 		dialogCutscene.setVisible(false);
 
-		personToSpeak = new Label("YOU:", AssetHandler.fontSize32);
+		personToSpeak = new Label("YOU:", AssetHandler.fontSizeCutScene24);
 		personToSpeak.setPosition(90, 350);
 		personToSpeak.setVisible(false);
 
-		setDescriptionOfText = new Label("YNSERT TEXT HERE PLEASE! ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss", AssetHandler.fontSize32);
+		setDescriptionOfText = new Label("VOID", AssetHandler.fontSizeCutScene24);
 		setDescriptionOfText.setAlignment(Align.topLeft);
 		setDescriptionOfText.setWidth(1710);
 		setDescriptionOfText.setWrap(true);
@@ -756,8 +756,8 @@ public class MapScreen implements Screen {
 	public void storyChecker() {
 		if(StoryHandler.startedIntroPart2 && !StoryHandler.introductionPart2 && currentCutsceneQuotes.size() == 0) {
 			StoryHandler.introductionPart2 = true;
-			decisionFirst.setText("Yes, I will get right on it, over and out");
-			decisionSecond.setText("Could you remind me?");
+			decisionFirst.setText("YES, I WILL GET RIGHT ON IT, OVER");
+			decisionSecond.setText("COULD YOU REMIND ME?");
 			setDecisionWindowVisible(true);
 
 		}
@@ -865,8 +865,8 @@ public class MapScreen implements Screen {
 		}
 
 		if(PermanetPlayer.getPermanentPlayerInstance().getNotes().size() >=  16  && !StoryHandler.decision2Created) {
-			decisionFirst.setText("Tell the people what you have found");
-			decisionSecond.setText("Keep it to yourself");
+			decisionFirst.setText("TELL THE PEOPLE WHAT YOU HAVE FOUND");
+			decisionSecond.setText("KEEP IT TO YOURSELF");
 			setDecisionWindowVisible(true);
 			StoryHandler.decision2Created = true;
 		}

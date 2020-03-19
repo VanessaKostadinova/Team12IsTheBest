@@ -245,11 +245,11 @@ public class HouseScreen implements Screen {
 			dialogCutscene.setScaleX(3.0666f);
 			dialogCutscene.setVisible(false);
 
-			personToSpeak = new Label("YOU:", AssetHandler.fontSize32);
+			personToSpeak = new Label("YOU:", AssetHandler.fontSizeCutScene24);
 			personToSpeak.setPosition(90, 350F);
 			personToSpeak.setVisible(false);
 
-			setDescriptionOfText = new Label("NULL", AssetHandler.fontSize32);
+			setDescriptionOfText = new Label("NULL", AssetHandler.fontSizeCutScene24);
 			setDescriptionOfText.setAlignment(Align.topLeft);
 			setDescriptionOfText.setWidth(1710);
 			setDescriptionOfText.setWrap(true);
@@ -831,13 +831,13 @@ public class HouseScreen implements Screen {
 	     */
 	    public void pauseGame() {
 
-			float windowWidth = 200 * scaleItem, windowHeight = 200 * scaleItem;
+			float windowWidth = 200, windowHeight = 200;
 			pause = new Window("", skin);
 			pause.setMovable(false); //So the user can't move the window
 			//final TextButton button1 = new TextButton("Resume", skin);
 
 			final Label button1 = new Label("RESUME", AssetHandler.fontSize24);
-			button1.setFontScale((windowHeight/200) * scaleItem, (windowHeight/200) * scaleItem);
+			button1.setFontScale((windowHeight/200), (windowHeight/200));
 			button1.addListener(new ClickListener() {
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
@@ -848,7 +848,7 @@ public class HouseScreen implements Screen {
 
 
 			Label button3 = new Label("EXIT", AssetHandler.fontSize24);
-			button3.setFontScale((windowHeight/200)*scaleItem, (windowHeight/200)*scaleItem );
+			button3.setFontScale((windowHeight/200), (windowHeight/200) );
 			button3.addListener(new ClickListener() {
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
@@ -863,12 +863,12 @@ public class HouseScreen implements Screen {
 			pause.pack(); //Important! Correctly scales the window after adding new elements
 
 			//Centre window on screen.
-			pause.setBounds(((main.ui.getWidth() - windowWidth*scaleItem  ) / 2),
-					(main.ui.getHeight() - windowHeight*scaleItem) / 2, windowWidth  , windowHeight );
+			pause.setBounds(((main.ui.getWidth() - windowWidth  ) / 2),
+					(main.ui.getHeight() - windowHeight) / 2, windowWidth  , windowHeight );
 			//Sets the menu as invisible
 			pause.setVisible(false);
 
-			pause.setSize(pause.getWidth() * scaleItem, pause.getHeight()*scaleItem);
+			pause.setSize(pause.getWidth(), pause.getHeight());
 			main.ui.addActor(pause);
 	    }
 

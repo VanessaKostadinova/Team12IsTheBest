@@ -96,8 +96,8 @@ public class AssetHandler {
     public static final Skin skinUI = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
     public static final LabelStyle fontSize24 = createLabelStyleWithBackground();
     public static final LabelStyle fontSize48 = createLabelStyleWithBackground2();
-    public static final LabelStyle fontSize12Subtitles = createLabelStyleWithBackground(Color.WHITE);
     public static final LabelStyle fontSize32 = createLabelStyleWithBackground(32);
+    public static final LabelStyle fontSizeCutScene24 = createLabelStyleWithBackgroundCutscene(24);
     public static final LabelStyle fontSize15 = createLabelStyleWithBackground(15);
     public static final LabelStyle fontSize60SubtitlesBlack = createLabelStyleWithBackground(Color.BLACK, 2);
     public static final LabelStyle fontSize60SubtitlesWhite = createLabelStyleWithBackground(Color.WHITE, 2);
@@ -182,13 +182,32 @@ public class AssetHandler {
 
 
     /**
-     * Used to create a label with no background and a font size of 24
+     * Used to create a label with no background and a font size of parameter size
+     * @param size Font Size
      * @return LabelStyle which is the settings/looks of the label.
      */
     private static LabelStyle createLabelStyleWithBackground(int size) {
 
         ///core/assets/font/Pixel.ttf
         FileHandle fontFile = Gdx.files.internal("font/Pixel.ttf");
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.size = size;
+        LabelStyle labelStyle = new LabelStyle();
+        labelStyle.font = generator.generateFont(parameter);
+        labelStyle.fontColor = Color.WHITE;
+
+        return labelStyle;
+    }
+
+    /**
+     * Used to create a label with no background and a font size of 24
+     * @return LabelStyle which is the settings/looks of the label.
+     */
+    private static LabelStyle createLabelStyleWithBackgroundCutscene(int size) {
+
+        ///core/assets/font/Pixel.ttf
+        FileHandle fontFile = Gdx.files.internal("font/prstartk.ttf");
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = size;
