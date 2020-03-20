@@ -83,10 +83,10 @@ public class LoadingScreen implements Screen {
 		main.batch.end();
 
 		//If Asset Manager not complete then get loaded percentage. Otherwise change screen.
-		if (!AssetHandler.manager.update()) {
-			loadedAmount = (int) (AssetHandler.manager.getProgress()*100);
+		if (!AssetHandler.MANAGER.update()) {
+			loadedAmount = (int) (AssetHandler.MANAGER.getProgress()*100);
 			innerBar.setText(loadedAmount + "%");
-			innerBar.setWidth(AssetHandler.manager.getProgress() * 450);
+			innerBar.setWidth(AssetHandler.MANAGER.getProgress() * 450);
 		} else {
 			innerBar.setText("Loaded!");
 			main.setScreen(new MainMenu(main));

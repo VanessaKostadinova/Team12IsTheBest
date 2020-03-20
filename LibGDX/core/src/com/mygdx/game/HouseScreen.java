@@ -12,8 +12,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -22,7 +20,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -142,10 +139,10 @@ public class HouseScreen implements Screen {
 			this.amountOfFlame = PermanetPlayer.getPermanentPlayerInstance().getChosenItems()[2];
 
 			this.darkness = 0.2f;
-			this.skin = AssetHandler.skinUI;
+			this.skin = AssetHandler.SKIN_UI;
 			this.fakeNPCs = new ArrayList<>();
-			cure = new SpriteDrawable(new Sprite(AssetHandler.manager.get("house/UI/CureSpray.png", Texture.class)));
-			fire = new SpriteDrawable(new Sprite(AssetHandler.manager.get("house/UI/FireSpray.png", Texture.class)));
+			cure = new SpriteDrawable(new Sprite(AssetHandler.MANAGER.get("house/UI/CureSpray.png", Texture.class)));
+			fire = new SpriteDrawable(new Sprite(AssetHandler.MANAGER.get("house/UI/FireSpray.png", Texture.class)));
 
 			currentCutsceneQuotes = new LinkedList<>();
 			currentCutscenePerson = new LinkedList<>();
@@ -172,12 +169,12 @@ public class HouseScreen implements Screen {
 
 			this.world = new World(new Vector2(0,0), false);
 
-			letter = new Image(new SpriteDrawable(new Sprite(AssetHandler.manager.get("pickups/letter/LETTER.png", Texture.class))));
+			letter = new Image(new SpriteDrawable(new Sprite(AssetHandler.MANAGER.get("pickups/letter/LETTER.png", Texture.class))));
 			letter.setPosition(main.ui.getWidth()/2-letter.getWidth()/2, main.ui.getHeight()/2-letter.getHeight()/2);
 			letter.setVisible(false);
 			main.ui.addActor(letter);
 
-			paragraph = new Label("VOID", AssetHandler.fontSize60SubtitlesBlack);
+			paragraph = new Label("VOID", AssetHandler.FONT_SIZE_60_SUBTITLES_BLACK);
 			paragraph.setWidth(letter.getWidth()-90);
 			paragraph.setWrap(true);
 			paragraph.setPosition(main.ui.getWidth()/2+50, main.ui.getHeight()/2);
@@ -225,31 +222,31 @@ public class HouseScreen implements Screen {
 		 * Used to draw and create the cutscene items on stream.
 		 */
 		public void createInGameCutscene() {
-			Sprite s = new Sprite(AssetHandler.manager.get("cutscene/ingame/cutsceneOverlay.png", Texture.class));
+			Sprite s = new Sprite(AssetHandler.MANAGER.get("cutscene/ingame/cutsceneOverlay.png", Texture.class));
 			s.setAlpha(0.9f);
 			overlayCutscene = new Image(new SpriteDrawable(s));
 			overlayCutscene.setPosition(main.ui.getWidth()/2 - overlayCutscene.getWidth()/2 - 130, main.ui.getHeight()/2 - overlayCutscene.getHeight()/2 - 100);
 			overlayCutscene.setScale(2f);
 			overlayCutscene.setVisible(false);
 
-			Sprite s3 = new Sprite(AssetHandler.manager.get("cutscene/ingame/characterImages/templateCutsceneSpeaker.png", Texture.class));
+			Sprite s3 = new Sprite(AssetHandler.MANAGER.get("cutscene/ingame/characterImages/templateCutsceneSpeaker.png", Texture.class));
 			speakerImage = new Image(new SpriteDrawable(s3));
 			speakerImage.setPosition(660, 430);
 			speakerImage.setScale(2f);
 			speakerImage.setVisible(false);
 
-			Sprite s2 = new Sprite(AssetHandler.manager.get("player/MAPUI/dialog.png", Texture.class));
+			Sprite s2 = new Sprite(AssetHandler.MANAGER.get("player/MAPUI/dialog.png", Texture.class));
 			dialogCutscene = new Image(new SpriteDrawable(s2));
 			dialogCutscene.setPosition(50, 50);
 			dialogCutscene.setScaleY(0.5f);
 			dialogCutscene.setScaleX(3.0666f);
 			dialogCutscene.setVisible(false);
 
-			personToSpeak = new Label("YOU:", AssetHandler.fontSizeCutScene24);
+			personToSpeak = new Label("YOU:", AssetHandler.FONT_SIZE_CUT_SCENE_24);
 			personToSpeak.setPosition(90, 350F);
 			personToSpeak.setVisible(false);
 
-			setDescriptionOfText = new Label("NULL", AssetHandler.fontSizeCutScene24);
+			setDescriptionOfText = new Label("NULL", AssetHandler.FONT_SIZE_CUT_SCENE_24);
 			setDescriptionOfText.setAlignment(Align.topLeft);
 			setDescriptionOfText.setWidth(1710);
 			setDescriptionOfText.setWrap(true);
@@ -278,7 +275,7 @@ public class HouseScreen implements Screen {
 		 */
 		public void initialStoryHandler() {
 			if(PermanetPlayer.getPermanentPlayerInstance().getNotes().size() >= 12 && !StoryHandler.allNotesSequence) {
-				storyDoctor = new Sprite(AssetHandler.manager.get("cutscene/ingame/storyTextures/OtherDoctor.png", Texture.class));
+				storyDoctor = new Sprite(AssetHandler.MANAGER.get("cutscene/ingame/storyTextures/OtherDoctor.png", Texture.class));
 				storyDoctor.setPosition(
 						(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2) - 40,
 						(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2) + 40);
@@ -287,7 +284,7 @@ public class HouseScreen implements Screen {
 			}
 
 			if(StoryHandler.allNotesSequence && !StoryHandler.killedOtherGuy) {
-				storyDoctor = new Sprite(AssetHandler.manager.get("cutscene/ingame/storyTextures/OtherDoctor.png", Texture.class));
+				storyDoctor = new Sprite(AssetHandler.MANAGER.get("cutscene/ingame/storyTextures/OtherDoctor.png", Texture.class));
 				storyDoctor.setPosition(
 						(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2) - 40,
 						(camera.getViewport().getWorldWidth() / 2 - Player.getInstance().getSprite().getWidth() / 2) + 40);
@@ -534,48 +531,48 @@ public class HouseScreen implements Screen {
 		 */
 		public void UIElements() {
 			
-			icon = new Image(new SpriteDrawable(new Sprite(AssetHandler.manager.get("player/icon/ICON.png", Texture.class))));
+			icon = new Image(new SpriteDrawable(new Sprite(AssetHandler.MANAGER.get("player/icon/ICON.png", Texture.class))));
 			icon.setPosition(main.ui.getWidth()/2+Player.getInstance().getSprite().getWidth()+icon.getWidth(), main.ui.getHeight()/2+Player.getInstance().getSprite().getHeight()+icon.getHeight());
 			icon.setVisible(false);
 			main.ui.addActor(icon);
 			
-			uiCurrentSpray = new Image(new SpriteDrawable(new Sprite(AssetHandler.manager.get("house/UI/CureSpray.png", Texture.class))));
+			uiCurrentSpray = new Image(new SpriteDrawable(new Sprite(AssetHandler.MANAGER.get("house/UI/CureSpray.png", Texture.class))));
 			//ui.setDrawable(new SpriteDrawable(new Sprite(main.assets.manager.get("house/UI/MAPUI.png", Texture.class))));
 			uiCurrentSpray.setPosition(10, main.ui.getHeight() - uiCurrentSpray.getHeight() - 10);		
 			main.ui.addActor(uiCurrentSpray);
 			
-			ui = new Image(new SpriteDrawable(new Sprite(AssetHandler.manager.get("house/UI/MAPUI.png", Texture.class))));
+			ui = new Image(new SpriteDrawable(new Sprite(AssetHandler.MANAGER.get("house/UI/MAPUI.png", Texture.class))));
 			//ui.setDrawable(new SpriteDrawable(new Sprite(main.assets.manager.get("house/UI/MAPUI.png", Texture.class))));
 			ui.setPosition(10+uiCurrentSpray.getWidth(), main.ui.getHeight() - ui.getHeight() - 10);		
 			main.ui.addActor(ui);
 			
 
-			goldLabel = new Label(Player.getInstance().getFood()+"", AssetHandler.fontSize60SubtitlesWhite);
+			goldLabel = new Label(Player.getInstance().getFood()+"", AssetHandler.FONT_SIZE_60_SUBTITLES_WHITE);
 			goldLabel.setPosition(200+uiCurrentSpray.getWidth(), main.ui.getHeight()-100);
 			goldLabel.setFontScale(0.6f);
 			main.ui.addActor(goldLabel);
 
-			sanityLabel = new Label(Player.getInstance().getSanityLabel(), AssetHandler.fontSize60SubtitlesWhite);
+			sanityLabel = new Label(Player.getInstance().getSanityLabel(), AssetHandler.FONT_SIZE_60_SUBTITLES_WHITE);
 			sanityLabel.setPosition(240+uiCurrentSpray.getWidth(), main.ui.getHeight()-230);
 			sanityLabel.setFontScale(0.6f);
 			main.ui.addActor(sanityLabel);
 
-			numberOfMasksLabel = new Label(initialNumberOfMasks + "", AssetHandler.fontSize60SubtitlesWhite);
+			numberOfMasksLabel = new Label(initialNumberOfMasks + "", AssetHandler.FONT_SIZE_60_SUBTITLES_WHITE);
 			numberOfMasksLabel.setPosition(375+uiCurrentSpray.getWidth(), main.ui.getHeight()-295);
 			numberOfMasksLabel.setFontScale(0.6f);
 			main.ui.addActor(numberOfMasksLabel);
 
-			amountOfBurnLabel = new Label((int) amountOfFlame + "", AssetHandler.fontSize60SubtitlesWhite);
+			amountOfBurnLabel = new Label((int) amountOfFlame + "", AssetHandler.FONT_SIZE_60_SUBTITLES_WHITE);
 			amountOfBurnLabel.setPosition(375+uiCurrentSpray.getWidth(), main.ui.getHeight()-360);
 			amountOfBurnLabel.setFontScale(0.6f);
 			main.ui.addActor(amountOfBurnLabel);
 
-			amountOfCureLabel = new Label((int) amountOfCure + "", AssetHandler.fontSize60SubtitlesWhite);
+			amountOfCureLabel = new Label((int) amountOfCure + "", AssetHandler.FONT_SIZE_60_SUBTITLES_WHITE);
 			amountOfCureLabel.setPosition(375+uiCurrentSpray.getWidth(), main.ui.getHeight()-425);
 			amountOfCureLabel.setFontScale(0.6f);
 			main.ui.addActor(amountOfCureLabel);
 			
-			maskBar = AssetHandler.manager.get("house/UI/BAR.png", Texture.class);
+			maskBar = AssetHandler.MANAGER.get("house/UI/BAR.png", Texture.class);
 			bar = new Image(new SpriteDrawable(new Sprite(maskBar)));
 			bar.setPosition(200+uiCurrentSpray.getWidth(), main.ui.getHeight()-125);
 			bar.setWidth(250 * (Player.getInstance().getCurrentMaskDuration()/Player.getInstance().getInitialMaskDuration()));
@@ -733,7 +730,7 @@ public class HouseScreen implements Screen {
 			pickups = new ArrayList<>();
 			for(Note note : node.getNotes()) {
 				if(!note.getHasBeenSeen()) {
-					Sprite s = new Sprite(AssetHandler.manager.get("pickups/letter/PICKUP.png", Texture.class));
+					Sprite s = new Sprite(AssetHandler.MANAGER.get("pickups/letter/PICKUP.png", Texture.class));
 					s.setPosition(note.getX(), note.getY());
 					pickups.add(s);
 				}
@@ -836,7 +833,7 @@ public class HouseScreen implements Screen {
 			pause.setMovable(false); //So the user can't move the window
 			//final TextButton button1 = new TextButton("Resume", skin);
 
-			final Label button1 = new Label("RESUME", AssetHandler.fontSize24);
+			final Label button1 = new Label("RESUME", AssetHandler.FONT_SIZE_24);
 			button1.setFontScale((windowHeight/200), (windowHeight/200));
 			button1.addListener(new ClickListener() {
 				@Override
@@ -847,7 +844,7 @@ public class HouseScreen implements Screen {
 			});
 
 
-			Label button3 = new Label("EXIT", AssetHandler.fontSize24);
+			Label button3 = new Label("EXIT", AssetHandler.FONT_SIZE_24);
 			button3.setFontScale((windowHeight/200), (windowHeight/200) );
 			button3.addListener(new ClickListener() {
 				@Override

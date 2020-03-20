@@ -8,7 +8,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.assets.AssetHandler;
-import com.mygdx.extras.PermanetPlayer;
 import com.mygdx.renderable.NPC;
 import com.mygdx.renderable.Node;
 import com.mygdx.shop.Church;
@@ -46,8 +45,8 @@ public class Map {
 		nodes = new ArrayList<>();
 		readMapFile();
 		setNotes();
-		church = new Church(AssetHandler.manager.get("house/Church.png", Texture.class), 910.0f, 490.0f);
-		shop = new Shop(AssetHandler.manager.get("house/Shop.gif", Texture.class), 760.0f, 500.0f);
+		church = new Church(AssetHandler.MANAGER.get("house/Church.png", Texture.class), 910.0f, 490.0f);
+		shop = new Shop(AssetHandler.MANAGER.get("house/Shop.gif", Texture.class), 760.0f, 500.0f);
 		checkIfPlayerExist();
 		resetPlayerFile();
 		setNeighbours();
@@ -62,8 +61,8 @@ public class Map {
 	 */
 	public Map(List<Node> nodes) {
 		this.nodes = nodes;
-		church = new Church(AssetHandler.manager.get("house/Church.png", Texture.class), 910.0f, 490.0f);
-		shop = new Shop(AssetHandler.manager.get("house/Shop.gif", Texture.class), 760.0f, 500.0f);
+		church = new Church(AssetHandler.MANAGER.get("house/Church.png", Texture.class), 910.0f, 490.0f);
+		shop = new Shop(AssetHandler.MANAGER.get("house/Shop.gif", Texture.class), 760.0f, 500.0f);
 		checkIfPlayerExist();
 		setNeighbours();
 	}

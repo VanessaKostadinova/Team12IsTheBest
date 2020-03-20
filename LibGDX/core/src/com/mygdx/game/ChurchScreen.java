@@ -91,10 +91,10 @@ public class ChurchScreen implements Screen {
 		this.t = new Table();
 		clickedShop = null;
 		
-		unClicked = AssetHandler.fontSize60SubtitlesWhite;
-		clicked = AssetHandler.fontSize60SubtitlesCyan;
+		unClicked = AssetHandler.FONT_SIZE_60_SUBTITLES_WHITE;
+		clicked = AssetHandler.FONT_SIZE_60_SUBTITLES_CYAN;
 		
-		this.skin = AssetHandler.skinUI;
+		this.skin = AssetHandler.SKIN_UI;
 		this.items = new ArrayList<>();
 		this.t = new Table();
 		this.t.setFillParent(true);
@@ -116,7 +116,7 @@ public class ChurchScreen implements Screen {
 		playerGold .setPosition(50f, Title.getY() - 100f);
 		main.ui.addActor(playerGold);
 
-		Leave = new Image(new TextureRegionDrawable(new TextureRegion(new TextureRegion(AssetHandler.manager.get("shop/screen/LEAVE.png", Texture.class)))));
+		Leave = new Image(new TextureRegionDrawable(new TextureRegion(new TextureRegion(AssetHandler.MANAGER.get("shop/screen/LEAVE.png", Texture.class)))));
 		Leave.setScaling(Scaling.fit);
 		Leave.setPosition((main.ui.getWidth())-40f-Leave.getWidth(),40f);
 		Leave.setSize(Leave.getWidth(), Leave.getHeight());
@@ -134,13 +134,13 @@ public class ChurchScreen implements Screen {
 		    }
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 				if(!isPaused) {
-					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(AssetHandler.manager.get("shop/screen/LEAVEMOUSE.png", Texture.class))));
+					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(AssetHandler.MANAGER.get("shop/screen/LEAVEMOUSE.png", Texture.class))));
 					Leave.setDrawable(t);
 				}
 		    }
 		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
 				if(!isPaused) {
-					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(AssetHandler.manager.get("shop/screen/LEAVE.png", Texture.class))));
+					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(AssetHandler.MANAGER.get("shop/screen/LEAVE.png", Texture.class))));
 					Leave.setDrawable(t);
 				}
 		    }
@@ -148,7 +148,7 @@ public class ChurchScreen implements Screen {
 		t.addActor(Leave);
 		
 
-		Buy = new Image(new TextureRegionDrawable((new TextureRegion(AssetHandler.manager.get("shop/screen/BUY.png", Texture.class)))));
+		Buy = new Image(new TextureRegionDrawable((new TextureRegion(AssetHandler.MANAGER.get("shop/screen/BUY.png", Texture.class)))));
 		Buy.setScaling(Scaling.fit);
 		Buy.setPosition((main.ui.getWidth())-40f-Buy.getWidth(),40f*2f + Leave.getHeight());
 		Buy.setSize(Buy.getWidth(), Buy.getHeight());
@@ -182,13 +182,13 @@ public class ChurchScreen implements Screen {
 			}
 		    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 				if(!isPaused) {
-					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(AssetHandler.manager.get("shop/screen/BUYMOUSE.png", Texture.class))));
+					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(AssetHandler.MANAGER.get("shop/screen/BUYMOUSE.png", Texture.class))));
 					Buy.setDrawable(t);
 				}
 		    }
 		    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
 				if(!isPaused) {
-					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(AssetHandler.manager.get("shop/screen/BUY.png", Texture.class))));
+					TextureRegionDrawable t = new TextureRegionDrawable((new TextureRegion(AssetHandler.MANAGER.get("shop/screen/BUY.png", Texture.class))));
 					Buy.setDrawable(t);
 				}
 		    }
@@ -442,7 +442,7 @@ public class ChurchScreen implements Screen {
 		pause = new Window("", skin);
 		pause.setMovable(false); //So the user can't move the window
 		//final TextButton button1 = new TextButton("Resume", skin);
-		final Label button1 = new Label("RESUME", AssetHandler.fontSize60SubtitlesWhite);
+		final Label button1 = new Label("RESUME", AssetHandler.FONT_SIZE_60_SUBTITLES_WHITE);
 		button1.setFontScale(24f/60f);
 		button1.addListener(new ClickListener() {
 			@Override
@@ -451,7 +451,7 @@ public class ChurchScreen implements Screen {
 				pause.setVisible(false);
 	        }
 		});
-		Label button2 = new Label("EXIT", AssetHandler.fontSize60SubtitlesWhite);
+		Label button2 = new Label("EXIT", AssetHandler.FONT_SIZE_60_SUBTITLES_WHITE);
 		button2.setFontScale(24f/60f);
 		button2.addListener(new ClickListener() {
 	        @Override

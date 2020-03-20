@@ -3,9 +3,6 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.ai.pfa.Graph;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -19,9 +16,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.mygdx.assets.AssetHandler;
 
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 /**
  * The screen to hold the game window settings.
@@ -200,7 +195,7 @@ public class SettingsScreen implements Screen {
         sResolution.setPosition(20, vsync.getY() - sResolution.getHeight() - 50);
         sResolution.setSize(sResolution.getWidth(), sResolution.getHeight());
 
-        final Label resolutionLabel = new Label(res[resolutionIndex], AssetHandler.fontSize48);
+        final Label resolutionLabel = new Label(res[resolutionIndex], AssetHandler.FONT_SIZE_48);
         resolutionLabel.setPosition(main.ui.getWidth()/2 + 200, sResolution.getY());
         resolutionLabel.setSize(500, vsync.getHeight());
         resolutionLabel.setAlignment(Align.center);

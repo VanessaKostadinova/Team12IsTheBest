@@ -49,7 +49,7 @@ public class CheckPoint implements Screen {
 		this.maskDurablity = maskDurabilty;
 
 		
-		dead = new Label("YOU'RE DEAD...", AssetHandler.fontSize128White);
+		dead = new Label("YOU'RE DEAD...", AssetHandler.FONT_SIZE_128_WHITE);
 		dead.setPosition(main.ui.getWidth()/2-dead.getWidth()/2, main.ui.getHeight()/2-dead.getHeight()/2);
 		main.ui.addActor(dead);
 	}

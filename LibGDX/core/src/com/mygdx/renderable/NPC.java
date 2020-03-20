@@ -4,9 +4,7 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.assets.AssetHandler;
 
@@ -68,7 +66,7 @@ public class NPC extends Renderable implements Living {
 	 * Update texture of the villager as it's state changes.
 	 */
 	public void updateTexture() {
-		Texture tempSprite = ((AssetHandler.manager.get("NPC/" + status + villagerType + ".gif", Texture.class)));
+		Texture tempSprite = ((AssetHandler.MANAGER.get("NPC/" + status + villagerType + ".gif", Texture.class)));
 		super.setSprite(tempSprite,super.getSprite().getX(),super.getSprite().getY());
 	}
 
