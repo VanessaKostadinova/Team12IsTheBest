@@ -190,7 +190,7 @@ public class MapScreen implements Screen {
 	private Label paragraph;
 	/** If the save game flag has been flagged*/
 	private Boolean saveGame = false;
-
+	/** The label to enter the house  */
 	private Label enter;
 
 	/**
