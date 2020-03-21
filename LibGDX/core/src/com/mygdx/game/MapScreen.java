@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
@@ -183,7 +182,6 @@ public class MapScreen implements Screen {
 
 	/**The objectiveTitle and objective text*/
 	private Label objectiveTitle, objective;
-
 	/** The background image for the note */
 	private Image letter;
 	/** The paragraph for the note */

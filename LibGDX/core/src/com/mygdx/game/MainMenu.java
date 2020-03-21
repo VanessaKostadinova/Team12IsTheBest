@@ -4,25 +4,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.esotericsoftware.kryo.io.Input;
+import com.mygdx.assets.AssetHandler;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Map;
-import java.util.logging.FileHandler;
 
 /**
  * The Main Menu of the game. Is the second scene the player will see and the first interactive scene
@@ -66,7 +63,7 @@ public final class MainMenu implements Screen {
 		 */
 		this.main = mainScreen;
 
-		Image background = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/mainMenu.png")))));
+		Image background = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("main_menu_assets/mainMenu.png", Texture.class))));
 		background.setPosition(0, 0);
 		background.setSize( main.ui.getCamera().viewportWidth, main.ui.getCamera().viewportHeight);
 		main.ui.addActor(background);
@@ -80,7 +77,7 @@ public final class MainMenu implements Screen {
 		 * 	> + 20 : is used to act as the border to make sure it is not exactly up against the top of the window.
 		 * Set the size of the Item to scale.
 		 */
-		Image title = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0002_PLAGUE-DOCTOR.png")))));
+		Image title = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("main_menu_assets/doctormask_0002_PLAGUE-DOCTOR.png", Texture.class))));
 		title.setScaling(Scaling.fit);
 		title.setPosition(20, main.ui.getHeight()-title.getHeight()-30);
 		title.setSize(title.getWidth(), title.getHeight());
@@ -88,7 +85,7 @@ public final class MainMenu implements Screen {
 		/*
 		 * Essentially the same as above however, adding the height of the title to Y and Border Spacing so the top of Subtitle isn't the bottom of title.
 		 */
-		Image subtitle = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0001_The-Price-of-our-Sins.png")))));
+		Image subtitle = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("main_menu_assets/doctormask_0001_The-Price-of-our-Sins.png", Texture.class))));
 		subtitle.setScaling(Scaling.fit);
 		subtitle.setPosition(20, title.getY()-subtitle.getHeight()-10);
 		subtitle.setSize(subtitle.getWidth(), subtitle.getHeight());
@@ -105,7 +102,7 @@ public final class MainMenu implements Screen {
 		 * If it does leave, the image reverts to its original image to show to the user the mouse has left.
 		 */
 
-		final Image exit = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/_0000_EXIT.png")))));
+		final Image exit = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("main_menu_assets/_0000_EXIT.png", Texture.class))));
 		exit.setPosition(20,  exit.getHeight()*(1f));
 		exit.addListener(new ClickListener(){
 			@Override
@@ -114,16 +111,16 @@ public final class MainMenu implements Screen {
 				System.exit(0);
 			}
 			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/_0000_EXIT_2.png"))));
+				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("main_menu_assets/_0000_EXIT_2.png", Texture.class)));
 				exit.setDrawable(t);
 			}
 			public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/_0000_EXIT.png"))));
+				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("main_menu_assets/_0000_EXIT.png", Texture.class)));
 				exit.setDrawable(t);
 			}
 		});
 
-		final Image settings = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0004_SETTINGS.png")))));
+		final Image settings = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("main_menu_assets/doctormask_0004_SETTINGS.png", Texture.class))));
 		settings.setPosition(20,   settings.getHeight()+exit.getHeight() + 25);
 		settings.setSize(settings.getWidth() * settings.getHeight()/exit.getHeight() , exit.getHeight());
 		settings.addListener(new ClickListener(){
@@ -135,16 +132,16 @@ public final class MainMenu implements Screen {
 				main.setScreen(new SettingsScreen(main, menu));
 			}
 			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0003_SETTINGS.png"))));
+				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("main_menu_assets/doctormask_0003_SETTINGS.png", Texture.class)));
 				settings.setDrawable(t);
 			}
 			public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0004_SETTINGS.png"))));
+				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("main_menu_assets/doctormask_0004_SETTINGS.png", Texture.class)));
 				settings.setDrawable(t);
 			}
 		});
 
-		final Image continueButton = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0008_CONTINUE.png")))));
+		final Image continueButton = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("main_menu_assets/doctormask_0008_CONTINUE.png", Texture.class))));
 		continueButton.setPosition(20,   continueButton.getHeight()+exit.getHeight()+continueButton.getHeight() + 35);
 		continueButton.setSize(continueButton.getWidth() * continueButton.getHeight()/exit.getHeight() , exit.getHeight());
 		continueButton.addListener(new ClickListener(){
@@ -166,11 +163,11 @@ public final class MainMenu implements Screen {
 				main.setScreen(screen);
 			}
 			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0007_CONTINUE.png"))));
+				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("main_menu_assets/doctormask_0007_CONTINUE.png", Texture.class)));
 				continueButton.setDrawable(t);
 			}
 			public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0008_CONTINUE.png"))));
+				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("main_menu_assets/doctormask_0008_CONTINUE.png", Texture.class)));
 				continueButton.setDrawable(t);
 			}
 		});
@@ -179,7 +176,7 @@ public final class MainMenu implements Screen {
 		float playBorder = 65;
 
 		try {
-			Input input = new Input(new FileInputStream("save.bin"));
+			new Input(new FileInputStream("save.bin"));
 		}
 		catch (FileNotFoundException e) {
 			continueButton.setVisible(false);
@@ -190,7 +187,7 @@ public final class MainMenu implements Screen {
 		/*
 		 * Essentially the same as above. Just to do with Play.
 		 */
-		final Image play = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0005_PLAY.png")))));
+		final Image play = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("main_menu_assets/doctormask_0005_PLAY.png", Texture.class))));
 		play.setPosition(20,  settings.getHeight()+play.getHeight()+exit.getHeight()+continueButton.getHeight() + playBorder);
 		play.setSize(play.getWidth() * play.getHeight()/exit.getHeight() , exit.getHeight());
 		play.addListener(new ClickListener(){
@@ -202,16 +199,16 @@ public final class MainMenu implements Screen {
 				main.setScreen(new Cutscene(main, "video/cutscene1.ogg", false));
 			}
 			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0006_PLAY.png"))));
+				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("main_menu_assets/doctormask_0006_PLAY.png", Texture.class)));
 				play.setDrawable(t);
 			}
 			public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/doctormask_0005_PLAY.png"))));
+				TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("main_menu_assets/doctormask_0005_PLAY.png", Texture.class)));
 				play.setDrawable(t);
 			}
 		});
 
-		final Image logo = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("main_menu_assets/Team12_Logo.png")))));
+		final Image logo = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("main_menu_assets/Team12_Logo.png", Texture.class))));
 		logo.setScaling(Scaling.fit);
 		logo.setSize(100, 100);
 		logo.setPosition((1080*2)-200, exit.getHeight()*(1f));
@@ -288,22 +285,6 @@ public final class MainMenu implements Screen {
 		sound.dispose();
 	}
 
-	/**
-	 * Check if the file exists in the directory which the game is in.
-	 * @param prefname "the name of the file"
-	 * @return If file exists
-	 */
-	public boolean if_exists ( String prefname )
-	{
-		Preferences tmprefs = Gdx.app.getPreferences ( prefname );
-
-		Map tmpmap = tmprefs.get();
-
-		if ( tmpmap.isEmpty() == true )
-			return false;
-		else
-			return true;
-	}
 
 
 }

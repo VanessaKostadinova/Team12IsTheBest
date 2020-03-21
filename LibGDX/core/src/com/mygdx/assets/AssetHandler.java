@@ -84,58 +84,113 @@ public class AssetHandler {
     /** The texture - dialog for the cutscenes */
     private static final AssetDescriptor<Texture> DIALOG_PLAYER = new AssetDescriptor<>("player/MAPUI/dialog.png", Texture.class);
     /** The texture - the villager alive texture -1  */
-    private static final AssetDescriptor<Texture> NPC_1_ALIVE = new AssetDescriptor<Texture>("NPC/Alive1.gif", Texture.class);
+    private static final AssetDescriptor<Texture> NPC_1_ALIVE = new AssetDescriptor<>("NPC/Alive1.gif", Texture.class);
     /** The texture - the villager alive texture -2  */
-    private static final AssetDescriptor<Texture> NPC_2_ALIVE = new AssetDescriptor<Texture>("NPC/Alive2.gif", Texture.class);
+    private static final AssetDescriptor<Texture> NPC_2_ALIVE = new AssetDescriptor<>("NPC/Alive2.gif", Texture.class);
     /** The texture - the villager alive texture -3  */
-    private static final AssetDescriptor<Texture> NPC_3_ALIVE = new AssetDescriptor<Texture>("NPC/Alive3.gif", Texture.class);
+    private static final AssetDescriptor<Texture> NPC_3_ALIVE = new AssetDescriptor<>("NPC/Alive3.gif", Texture.class);
     /** The texture - the villager sick texture -1  */
-    private static final AssetDescriptor<Texture> NPC_1_SICK = new AssetDescriptor<Texture>("NPC/Sick1.gif", Texture.class);
+    private static final AssetDescriptor<Texture> NPC_1_SICK = new AssetDescriptor<>("NPC/Sick1.gif", Texture.class);
     /** The texture - the villager sick texture -2  */
-    private static final AssetDescriptor<Texture> NPC_2_SICK = new AssetDescriptor<Texture>("NPC/Sick2.gif", Texture.class);
+    private static final AssetDescriptor<Texture> NPC_2_SICK = new AssetDescriptor<>("NPC/Sick2.gif", Texture.class);
     /** The texture - the villager sick texture -3  */
-    private static final AssetDescriptor<Texture> NPC_3_SICK = new AssetDescriptor<Texture>("NPC/Sick3.gif", Texture.class);
+    private static final AssetDescriptor<Texture> NPC_3_SICK = new AssetDescriptor<>("NPC/Sick3.gif", Texture.class);
     /** The texture - the villager dead texture -1  */
-    private static final AssetDescriptor<Texture> NPC_1_DEAD = new AssetDescriptor<Texture>("NPC/Dead1.gif", Texture.class);
+    private static final AssetDescriptor<Texture> NPC_1_DEAD = new AssetDescriptor<>("NPC/Dead1.gif", Texture.class);
     /** The texture - the villager dead texture -2  */
-    private static final AssetDescriptor<Texture> NPC_2_DEAD = new AssetDescriptor<Texture>("NPC/Dead2.gif", Texture.class);
+    private static final AssetDescriptor<Texture> NPC_2_DEAD = new AssetDescriptor<>("NPC/Dead2.gif", Texture.class);
     /** The texture - the villager dead texture -3  */
-    private static final AssetDescriptor<Texture> NPC_3_DEAD = new AssetDescriptor<Texture>("NPC/Dead3.gif", Texture.class);
+    private static final AssetDescriptor<Texture> NPC_3_DEAD = new AssetDescriptor<>("NPC/Dead3.gif", Texture.class);
     /** The texture - the villager burnt texture -1  */
-    private static final AssetDescriptor<Texture> NPC_1_BURNT = new AssetDescriptor<Texture>("NPC/Burnt1.gif", Texture.class);
+    private static final AssetDescriptor<Texture> NPC_1_BURNT = new AssetDescriptor<>("NPC/Burnt1.gif", Texture.class);
     /** The texture - the villager burnt texture -2  */
-    private static final AssetDescriptor<Texture> NPC_2_BURNT = new AssetDescriptor<Texture>("NPC/Burnt2.gif", Texture.class);
+    private static final AssetDescriptor<Texture> NPC_2_BURNT = new AssetDescriptor<>("NPC/Burnt2.gif", Texture.class);
     /** The texture - the villager burnt texture -3  */
-    private static final AssetDescriptor<Texture> NPC_3_BURNT = new AssetDescriptor<Texture>("NPC/Burnt3.gif", Texture.class);
+    private static final AssetDescriptor<Texture> NPC_3_BURNT = new AssetDescriptor<>("NPC/Burnt3.gif", Texture.class);
     /** The texture for the cure spray  */
-    private static final AssetDescriptor<Texture> CURE = new AssetDescriptor<Texture>("house/UI/CureSpray.png", Texture.class);
+    private static final AssetDescriptor<Texture> CURE = new AssetDescriptor<>("house/UI/CureSpray.png", Texture.class);
     /** The texture for the fire spray */
-    private static final AssetDescriptor<Texture> FIRE = new AssetDescriptor<Texture>("house/UI/FireSpray.png", Texture.class);
+    private static final AssetDescriptor<Texture> FIRE = new AssetDescriptor<>("house/UI/FireSpray.png", Texture.class);
     /** The texture for cutscene overlays to darken the screen  */
-    private static final AssetDescriptor<Texture> CUTSCENE_OVERLAY = new AssetDescriptor<Texture>("cutscene/ingame/cutsceneOverlay.png", Texture.class);
+    private static final AssetDescriptor<Texture> CUTSCENE_OVERLAY = new AssetDescriptor<>("cutscene/ingame/cutsceneOverlay.png", Texture.class);
     /** The texture for the cutscene speaker  */
-    private static final AssetDescriptor<Texture> CUTSCENE_SPEAKER = new AssetDescriptor<Texture>("cutscene/ingame/characterImages/templateCutsceneSpeaker.png", Texture.class);
+    private static final AssetDescriptor<Texture> CUTSCENE_SPEAKER = new AssetDescriptor<>("cutscene/ingame/characterImages/templateCutsceneSpeaker.png", Texture.class);
     /** The texture for the other doctor  */
-    private static final AssetDescriptor<Texture> OTHER_DOCTOR = new AssetDescriptor<Texture>("cutscene/ingame/storyTextures/OtherDoctor.png", Texture.class);
+    private static final AssetDescriptor<Texture> OTHER_DOCTOR = new AssetDescriptor<>("cutscene/ingame/storyTextures/OtherDoctor.png", Texture.class);
     /** The texture for the mask icon in inventory selection  */
-    private static final AssetDescriptor<Texture> MASK_ICON = new AssetDescriptor<Texture>("icon/maskicon.png", Texture.class);
+    private static final AssetDescriptor<Texture> MASK_ICON = new AssetDescriptor<>("icon/maskicon.png", Texture.class);
     /** The texture for the cure icon in inventory selection */
-    private static final AssetDescriptor<Texture> CURE_ICON = new AssetDescriptor<Texture>("icon/cureicon.png", Texture.class);
+    private static final AssetDescriptor<Texture> CURE_ICON = new AssetDescriptor<>("icon/cureicon.png", Texture.class);
     /** The texture for the flame icon in inventory selection  */
-    private static final AssetDescriptor<Texture> FLAME_ICON = new AssetDescriptor<Texture>("icon/flameicon.png", Texture.class);
+    private static final AssetDescriptor<Texture> FLAME_ICON = new AssetDescriptor<>("icon/flameicon.png", Texture.class);
     /** The texture for enter church  */
-    private static final AssetDescriptor<Texture> ENTER_CHURCH = new AssetDescriptor<Texture>("shop/church/ENTER_CHURCH.png", Texture.class);
+    private static final AssetDescriptor<Texture> ENTER_CHURCH = new AssetDescriptor<>("shop/church/ENTER_CHURCH.png", Texture.class);
     /** The texture for church title */
-    private static final AssetDescriptor<Texture> CHURCH = new AssetDescriptor<Texture>("shop/church/CHURCH.png", Texture.class);
+    private static final AssetDescriptor<Texture> CHURCH = new AssetDescriptor<>("shop/church/CHURCH.png", Texture.class);
     /** The texture for number of alive UI on map screen  */
-    private static final AssetDescriptor<Texture> ALIVE_PERCENTAGE = new AssetDescriptor<Texture>("player/MAPUI/ALIVEPERCENTAGE.png", Texture.class);
+    private static final AssetDescriptor<Texture> ALIVE_PERCENTAGE = new AssetDescriptor<>("player/MAPUI/ALIVEPERCENTAGE.png", Texture.class);
     /** The texture for number of sick UI on map screen  */
-    private static final AssetDescriptor<Texture> SICK_PERCENTAGE = new AssetDescriptor<Texture>("player/MAPUI/SICKPERCENTAGE.png", Texture.class);
+    private static final AssetDescriptor<Texture> SICK_PERCENTAGE = new AssetDescriptor<>("player/MAPUI/SICKPERCENTAGE.png", Texture.class);
     /** The texture for number of dead UI on map screen  */
-    private static final AssetDescriptor<Texture> DEAD_PERCENTAGE = new AssetDescriptor<Texture>("player/MAPUI/DEADPERCENTAGE.png", Texture.class);
+    private static final AssetDescriptor<Texture> DEAD_PERCENTAGE = new AssetDescriptor<>("player/MAPUI/DEADPERCENTAGE.png", Texture.class);
     /** The texture for the spray image  */
-    private static final AssetDescriptor<Texture> SPRAY_IMAGE = new AssetDescriptor<Texture>("house/UI/CureSpray.png", Texture.class);
-
+    private static final AssetDescriptor<Texture> SPRAY_IMAGE = new AssetDescriptor<>("house/UI/CureSpray.png", Texture.class);
+    /** The main menu background image */
+    private static final AssetDescriptor<Texture> MAIN_MENU_IMAGE = new AssetDescriptor<>("main_menu_assets/mainMenu.png", Texture.class);
+    /** The main menu title image*/
+    private static final AssetDescriptor<Texture> MAIN_MENU_TITLE = new AssetDescriptor<>("main_menu_assets/doctormask_0002_PLAGUE-DOCTOR.png", Texture.class);
+    /** The main menu subtitle image*/
+    private static final AssetDescriptor<Texture> MAIN_MENU_SUBTITLE = new AssetDescriptor<>("main_menu_assets/doctormask_0001_The-Price-of-our-Sins.png", Texture.class);
+    /** The exit button variation 1 */
+    private static final AssetDescriptor<Texture> MAIN_MENU_EXIT_BUTTON_1 = new AssetDescriptor<>("main_menu_assets/_0000_EXIT.png", Texture.class);
+    /** The exit button variation 2 */
+    private static final AssetDescriptor<Texture> MAIN_MENU_EXIT_BUTTON_2 = new AssetDescriptor<>("main_menu_assets/_0000_EXIT_2.png", Texture.class);
+    /** The settings button variation 1 */
+    private static final AssetDescriptor<Texture> MAIN_MENU_SETTINGS_1 = new AssetDescriptor<>("main_menu_assets/doctormask_0004_SETTINGS.png", Texture.class);
+    /** The settings button variation 2 */
+    private static final AssetDescriptor<Texture> MAIN_MENU_SETTINGS_2 = new AssetDescriptor<>("main_menu_assets/doctormask_0003_SETTINGS.png", Texture.class);
+    /** The continue button variation 1 */
+    private static final AssetDescriptor<Texture> MAIN_MENU_CONTINUE_1 = new AssetDescriptor<>("main_menu_assets/doctormask_0008_CONTINUE.png", Texture.class);
+    /** The continue button variation 2 */
+    private static final AssetDescriptor<Texture> MAIN_MENU_CONTINUE_2 = new AssetDescriptor<>("main_menu_assets/doctormask_0007_CONTINUE.png", Texture.class);
+    /** The play button variation 1 */
+    private static final AssetDescriptor<Texture> MAIN_MENU_PLAY_1 = new AssetDescriptor<>("main_menu_assets/doctormask_0005_PLAY.png", Texture.class);
+    /** The play button variation 2 */
+    private static final AssetDescriptor<Texture> MAIN_MENU_PLAY_2 = new AssetDescriptor<>("main_menu_assets/doctormask_0006_PLAY.png", Texture.class);
+    /** The team logo */
+    private static final AssetDescriptor<Texture> TEAM_LOGO = new AssetDescriptor<>("main_menu_assets/Team12_Logo.png", Texture.class);
+    /** Settings logo */
+    private static final AssetDescriptor<Texture> SETTINGS = new AssetDescriptor<>("settings/Settings.png", Texture.class);
+    /** Fullscreen title logo */
+    private static final AssetDescriptor<Texture> FULLSCREEN_TITLE = new AssetDescriptor<>("settings/Fullscreen.png", Texture.class);
+    /** Box deactivated texture */
+    private static final AssetDescriptor<Texture> BOX_DEACTIVATED = new AssetDescriptor<>("settings/Deactivated.png", Texture.class);
+    /** Box deactivated texture */
+    private static final AssetDescriptor<Texture> BOX_DEACTIVATED_HOVER = new AssetDescriptor<>("settings/DeactivatedHover.png", Texture.class);
+    /** Box activated texture */
+    private static final AssetDescriptor<Texture> BOX_ACTIVATED_HOVER = new AssetDescriptor<>("settings/ActivatedHover.png", Texture.class);
+    /** Box activated texture */
+    private static final AssetDescriptor<Texture> BOX_ACTIVATED = new AssetDescriptor<>("settings/Activated.png", Texture.class);
+    /** V-SYNC title */
+    private static final AssetDescriptor<Texture> V_SYNC_TITLE = new AssetDescriptor<>("settings/V-Sync.png", Texture.class);
+    /** Screen Resolution Title texture */
+    private static final AssetDescriptor<Texture> SCREEN_RESOLUTION_TITLE = new AssetDescriptor<>("settings/Screen Resolution.png", Texture.class);
+    /** Left Arrow texture */
+    private static final AssetDescriptor<Texture> LEFT_ARROW = new AssetDescriptor<>("settings/Left.png", Texture.class);
+    /** Left Arrow Hover */
+    private static final AssetDescriptor<Texture> LEFT_ARROW_HOVER = new AssetDescriptor<>("settings/HoverLeft.png", Texture.class);
+    /** Right Arrow texture */
+    private static final AssetDescriptor<Texture> RIGHT_ARROW = new AssetDescriptor<>("settings/Right.png", Texture.class);
+    /** Right Arrow hover */
+    private static final AssetDescriptor<Texture> RIGHT_ARROW_HOVER = new AssetDescriptor<>("settings/HoverRight.png", Texture.class);
+    /** Return texture */
+    private static final AssetDescriptor<Texture> RETURN = new AssetDescriptor<>("settings/Return.png", Texture.class);
+    /** Return Hover texture */
+    private static final AssetDescriptor<Texture> RETURN_HOVER = new AssetDescriptor<>("settings/ReturnHover.png", Texture.class);
+    /** Apply texture */
+    private static final AssetDescriptor<Texture> APPLY = new AssetDescriptor<>("settings/Apply.png", Texture.class);
+    /** Apply Hover Texture */
+    private static final AssetDescriptor<Texture> APPLY_HOVER = new AssetDescriptor<>("settings/ApplyHover.png", Texture.class);
     /** Single instances of common font sizes and the UI skin used in the game. */
     public static final Skin SKIN_UI = new Skin(Gdx.files.internal("skin/terra-mother-ui.json"));
     /** A static instance of the cutscene font */
@@ -149,7 +204,7 @@ public class AssetHandler {
     /** A static instance of label style of font size 32 and color white  */
     public static final LabelStyle FONT_SIZE_32 = createLabelStyleWithoutBackground(Color.WHITE, 32);
     /** A static instance of label style of font size 24 and color white specifically for cutscenes  */
-    public static final LabelStyle FONT_SIZE_CUT_SCENE_24 = createLabelStyleWithoutBackgroundCutscene(24);
+    public static final LabelStyle FONT_SIZE_CUT_SCENE_24 = createLabelStyleWithoutBackgroundCutscene();
     /** A static instance of label style of font size 15 and color white  */
     public static final LabelStyle FONT_SIZE_15 = createLabelStyleWithoutBackground(Color.WHITE, 15);
     /** A static instance of label style of font size 60 and color black  */
@@ -224,18 +279,45 @@ public class AssetHandler {
     	MANAGER.load(SICK_PERCENTAGE);
     	MANAGER.load(CHURCH_IMAGE);
     	MANAGER.load(SPRAY_IMAGE);
+        MANAGER.load(MAIN_MENU_IMAGE);
+        MANAGER.load(MAIN_MENU_TITLE);
+        MANAGER.load(MAIN_MENU_SUBTITLE);
+        MANAGER.load(MAIN_MENU_EXIT_BUTTON_1);
+        MANAGER.load(MAIN_MENU_EXIT_BUTTON_2);
+        MANAGER.load(MAIN_MENU_SETTINGS_1);
+        MANAGER.load(MAIN_MENU_SETTINGS_2);
+        MANAGER.load(MAIN_MENU_CONTINUE_1);
+        MANAGER.load(MAIN_MENU_CONTINUE_2);
+        MANAGER.load(MAIN_MENU_PLAY_1);
+        MANAGER.load(MAIN_MENU_PLAY_2);
+        MANAGER.load(TEAM_LOGO);
+        MANAGER.load(SETTINGS);
+        MANAGER.load(FULLSCREEN_TITLE);
+        MANAGER.load(BOX_DEACTIVATED_HOVER);
+        MANAGER.load(BOX_DEACTIVATED);
+        MANAGER.load(BOX_ACTIVATED);
+        MANAGER.load(BOX_ACTIVATED_HOVER);
+        MANAGER.load(V_SYNC_TITLE);
+        MANAGER.load(SCREEN_RESOLUTION_TITLE);
+        MANAGER.load(LEFT_ARROW);
+        MANAGER.load(LEFT_ARROW_HOVER);
+        MANAGER.load(RIGHT_ARROW);
+        MANAGER.load(RIGHT_ARROW_HOVER);
+        MANAGER.load(RETURN);
+        MANAGER.load(RETURN_HOVER);
+        MANAGER.load(APPLY);
+        MANAGER.load(APPLY_HOVER);
     	MANAGER.load("cutscene/1/Intro.mp3", Music.class);
     }
 
     /**
      * Used to create a label with no background for cutscenes
-     * @param size the size of the font.
      * @return LabelStyle which is the settings/looks of the label.
      */
-    private static LabelStyle createLabelStyleWithoutBackgroundCutscene(int size) {
+    private static LabelStyle createLabelStyleWithoutBackgroundCutscene() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(CUTSCENE_FONT);
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        parameter.size = size;
+        parameter.size = 24;
         LabelStyle labelStyle = new LabelStyle();
         labelStyle.font = generator.generateFont(parameter);
         labelStyle.fontColor = Color.WHITE;

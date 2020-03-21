@@ -178,7 +178,7 @@ public class HouseInputHandler implements InputProcessor {
 
 
 	/**
-	 * Used to handle the movement of the player itself
+	 * Used to handle the movement of the player itself and update all of the bodies attached to it.
 	 * @param region The current texture of the player
 	 * @param delta The delta of the player to ensure lag catchup occurs if it does occur.
 	 */
@@ -252,7 +252,6 @@ public class HouseInputHandler implements InputProcessor {
 					camera.getCamera().translate(-speed*delta, 0f);
 					camera.updateCamera();
 					Player.getInstance().updateSprite(-speed*delta, 0);
-					//player.updateSprayPosition();
 					Player.getInstance().updateBody(-speed*delta, 0f);
 					Player.getInstance().getSprite().setRegion(region);
 					Player.getInstance().getSpray().updateSprite(-speed*delta, 0);
@@ -270,7 +269,6 @@ public class HouseInputHandler implements InputProcessor {
 				if(!collision(playerX+2, playerY - speed*delta) && !collision(playerX + playerWidth - speed*delta - 2, playerY - speed*delta)) {
 					camera.getCamera().translate(0f, -speed*delta);
 					Player.getInstance().updateSprite(0,-speed*delta);
-					//player.updateSprayPosition();
 					Player.getInstance().updateBody(0f, -speed*delta);
 					camera.updateCamera();
 					Player.getInstance().getSprite().setRegion(region);
@@ -290,7 +288,6 @@ public class HouseInputHandler implements InputProcessor {
 					Player.getInstance().updateSprite(speed* delta, 0);
 					camera.getCamera().translate(speed*delta, 0);
 					camera.updateCamera();
-					//player.updateSprayPosition();
 					Player.getInstance().updateBody(speed*delta, 0);
 					Player.getInstance().getSprite().setRegion(region);
 					Player.getInstance().getSpray().updateSprite(speed*delta, 0f);
