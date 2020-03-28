@@ -168,7 +168,7 @@ public class MapScreen implements Screen {
 	/** Set the background of the note */
 	private Image noteBackground;
 	/** Collection of strings used for the cutscene */
-	private List<String> currentCutsceneQuotes, currentCutscenePerson, currentCutsceneDuration;
+	private List<String> currentCutsceneQuotes, currentCutscenePerson, currentCutsceneImages;
 	/** Used to check for the cheat codes */
 	private List<String> checkForKC;
 	/** Used to check the sequence of the cutscenes */
@@ -199,7 +199,7 @@ public class MapScreen implements Screen {
 	public MapScreen(Main main) {
 		cutsceneActive = false;
 		this.viewWidth = 256;
-		Player.init(5, 100, 100);
+		Player.init(10, 100, 100);
 		isPaused = false;
 		cameraMap = new Camera(viewWidth, -1080, -1920);
 		cameraMap.getCamera().position.set(
@@ -222,7 +222,7 @@ public class MapScreen implements Screen {
 
 		currentCutsceneQuotes = new LinkedList<>();
 		currentCutscenePerson = new LinkedList<>();
-		currentCutsceneDuration = new LinkedList<>();
+		currentCutsceneImages = new LinkedList<>();
 
 
 		this.darkness = 0f;
@@ -231,7 +231,7 @@ public class MapScreen implements Screen {
 		this.rayHandler.setAmbientLight(darkness);
 		this.darken = false;
 		this.main = main;
-		this.map = new Map();
+		this.map = main.getMap();
 		this.disease = map.getDisease();
 		this.initialDone = false;
 
@@ -288,7 +288,7 @@ public class MapScreen implements Screen {
 
 		currentCutsceneQuotes = new LinkedList<>();
 		currentCutscenePerson = new LinkedList<>();
-		currentCutsceneDuration = new LinkedList<>();
+		currentCutsceneImages = new LinkedList<>();
 
 
 		this.darkness = 0f;
@@ -386,9 +386,10 @@ public class MapScreen implements Screen {
 	 * @param person Person's name.
 	 * @param text What the person is saying.
 	 */
-	public void updateInGameCutscene(String person, String text) {
+	public void updateInGameCutscene(String person, String text, String URL) {
 		this.personToSpeak.setText(person);
 		this.setDescriptionOfText.setText(text);
+		this.speakerImage.setDrawable(new TextureRegionDrawable(AssetHandler.MANAGER.get("cutscene/ingame/characterImages/" + URL, Texture.class)));
 	}
 
 	/**
@@ -409,12 +410,12 @@ public class MapScreen implements Screen {
 			 * index 1 = Person name
 			 * index 2 = Quote of what the person is saying.
 			 */
-			currentCutsceneDuration.add(data[0]);
+			currentCutsceneImages.add(data[0]);
 			currentCutscenePerson.add(data[1]);
 			currentCutsceneQuotes.add(data[2]);
 		}
 		updateInGameCutscene(true);
-		updateInGameCutscene(currentCutscenePerson.get(cutsceneSequence), currentCutsceneQuotes.get(cutsceneSequence));
+		updateInGameCutscene(currentCutscenePerson.get(cutsceneSequence), currentCutsceneQuotes.get(cutsceneSequence), currentCutsceneImages.get(cutsceneSequence));
 	}
 
 	/**
@@ -435,13 +436,13 @@ public class MapScreen implements Screen {
 			 * index 1 = Person name
 			 * index 2 = Quote of what the person is saying.
 			 */
-			currentCutsceneDuration.add(data[0]);
+			currentCutsceneImages.add(data[0]);
 			currentCutscenePerson.add(data[1]);
 			currentCutsceneQuotes.add(data[2]);
 		}
 		updateInGameCutscene(true);
 		speakerImage.setVisible(false);
-		updateInGameCutscene(currentCutscenePerson.get(cutsceneSequence), currentCutsceneQuotes.get(cutsceneSequence));
+		updateInGameCutscene(currentCutscenePerson.get(cutsceneSequence), currentCutsceneQuotes.get(cutsceneSequence), currentCutsceneImages.get(cutsceneSequence));
 	}
 
 	/**
@@ -451,19 +452,19 @@ public class MapScreen implements Screen {
 		if(cutsceneActive) {
 			if(Gdx.input.isKeyJustPressed(Keys.ENTER) && !isPaused) {
 				cutsceneSequence++;
-				if(cutsceneSequence == currentCutsceneDuration.size()) {
+				if(cutsceneSequence == currentCutsceneImages.size()) {
 					cutsceneSequence = 0;
 					updateInGameCutscene(false);
 				}
 				else {
-					updateInGameCutscene(currentCutscenePerson.get(cutsceneSequence), currentCutsceneQuotes.get(cutsceneSequence));
+					updateInGameCutscene(currentCutscenePerson.get(cutsceneSequence), currentCutsceneQuotes.get(cutsceneSequence), currentCutsceneImages.get(cutsceneSequence));
 				}
 			}
 		}
 		else {
 			currentCutsceneQuotes.clear();
 			currentCutscenePerson.clear();
-			currentCutsceneDuration.clear();
+			currentCutsceneImages.clear();
 		}
 	}
 
@@ -645,7 +646,7 @@ public class MapScreen implements Screen {
 	 * @param delta
 	 */
 	public void localInputHandler(float delta) {
-		float movement = (12000f / 60f);
+		float movement = (18000f / 60f);
 		if(Gdx.input.isKeyPressed(Keys.W) && !isPaused && !cutsceneActive) {
 			if(pointer.getY()+pointer.getHeight()+ movement *delta < background.getHeight()) {
 				cameraMap.updateCameraPosition(0 , movement *delta);

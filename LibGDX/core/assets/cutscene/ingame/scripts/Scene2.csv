@@ -1,11 +1,11 @@
 Duration,Person Speaking,Quote
-0,,You inspect the house and finds an ID Badge
-0,Badge,Dr S.W. : Infectious Disease Physician
-0,,You contact The Order
-0,Plague Doctor,Hello I have arrived in M-Attan.
-0,The Order,Good to hear from you Doctor. Anything to report?
-0,Plague Doctor,I have found some belongings of a Dr S.W. Is that the missing doctor?
-0,The Order,Dr S.W. was posted here before you. She went crazy. We think her mask must have been leaking and the fumes got to her brain. She started behaving very strangely all of a sudden and went silent. We have had no contact with her since then.
-0,Plague Doctor,I see. What do you want me to do about her situation?
-0,The Order,Find her and see what happened. Report all findings to us immediately. Remember that she may have lost her mind if she is even still alive. If all you find is a corpse at least bring back her gear. Other than that I assume you remember what to do?
-0,Objective,Find all 6 notes
+templateCutsceneSpeaker.png,,You inspect the house and finds an ID Badge
+templateCutsceneSpeaker.png,Badge,Dr S.W. : Infectious Disease Physician
+templateCutsceneSpeaker.png,,You contact The Order
+templateCutsceneSpeaker.png,Plague Doctor,Hello I have arrived in M-Attan.
+templateCutsceneSpeaker.png,The Order,Good to hear from you Doctor. Anything to report?
+templateCutsceneSpeaker.png,Plague Doctor,I have found some belongings of a Dr S.W. Is that the missing doctor?
+templateCutsceneSpeaker.png,The Order,Dr S.W. was posted here before you. She went crazy. We think her mask must have been leaking and the fumes got to her brain. She started behaving very strangely all of a sudden and went silent. We have had no contact with her since then.
+templateCutsceneSpeaker.png,Plague Doctor,I see. What do you want me to do about her situation?
+templateCutsceneSpeaker.png,The Order,Find her and see what happened. Report all findings to us immediately. Remember that she may have lost her mind if she is even still alive. If all you find is a corpse at least bring back her gear. Other than that I assume you remember what to do?
+templateCutsceneSpeaker.png,Objective,Find all 6 notes

@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.Main;
 import com.mygdx.game.MainMenu;
+import com.mygdx.map.Map;
 
 /**
  * Creating the loading screen for showing the amount of progress in loading the assets in assetManager.
@@ -89,6 +90,7 @@ public class LoadingScreen implements Screen {
 			innerBar.setWidth(AssetHandler.MANAGER.getProgress() * 450);
 		} else {
 			innerBar.setText("Loaded!");
+			main.setMap(new Map());
 			main.setScreen(new MainMenu(main));
 		}
 

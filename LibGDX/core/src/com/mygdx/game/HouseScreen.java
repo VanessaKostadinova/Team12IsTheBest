@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.assets.AssetHandler;
 import com.mygdx.camera.Camera;
@@ -112,7 +113,7 @@ public class HouseScreen implements Screen {
 	/** Label to set the description of text */
 	private Label setDescriptionOfText;
 	/** A number of list for each cutscene  */
-	private List<String> currentCutsceneQuotes, currentCutscenePerson, currentCutsceneDuration;
+	private List<String> currentCutsceneQuotes, currentCutscenePerson, currentCutsceneImage;
 	/** The current cutscene sequence */
 	private int cutsceneSequence;
 	/** The amount of fake npc's */
@@ -146,7 +147,7 @@ public class HouseScreen implements Screen {
 
 			currentCutsceneQuotes = new LinkedList<>();
 			currentCutscenePerson = new LinkedList<>();
-			currentCutsceneDuration = new LinkedList<>();
+			currentCutsceneImage = new LinkedList<>();
 
 			float w = Gdx.graphics.getWidth();
 			scaleItem = w/1920;
@@ -309,9 +310,10 @@ public class HouseScreen implements Screen {
 		 * @param person Person's name.
 		 * @param text What the person is saying.
 		 */
-		public void updateInGameCutscene(String person, String text) {
+		public void updateInGameCutscene(String person, String text, String URL) {
 			this.personToSpeak.setText(person);
 			this.setDescriptionOfText.setText(text);
+			this.speakerImage.setDrawable(new TextureRegionDrawable(AssetHandler.MANAGER.get("cutscene/ingame/characterImages/" + URL, Texture.class)));
 		}
 
 		/**
@@ -320,9 +322,7 @@ public class HouseScreen implements Screen {
 		 */
 		public void startCreatingCutscene(String file) {
 
-			System.out.println("HIT1");
 			FileHandle n = Gdx.files.internal(file);
-			System.out.println("HIT2");
 
 			cutsceneSequence = 0;
 			String textFile = n.readString();
@@ -336,12 +336,12 @@ public class HouseScreen implements Screen {
 				 * index 1 = Person name
 				 * index 2 = Quote of what the person is saying.
 				 */
-				currentCutsceneDuration.add(data[0]);
+				currentCutsceneImage.add(data[0]);
 				currentCutscenePerson.add(data[1]);
 				currentCutsceneQuotes.add(data[2]);
 			}
 			updateInGameCutscene(true);
-			updateInGameCutscene(currentCutscenePerson.get(cutsceneSequence), currentCutsceneQuotes.get(cutsceneSequence));
+			updateInGameCutscene(currentCutscenePerson.get(cutsceneSequence), currentCutsceneQuotes.get(cutsceneSequence), currentCutsceneImage.get(cutsceneSequence));
 		}
 
 		/**
@@ -351,19 +351,19 @@ public class HouseScreen implements Screen {
 			if(handler.getCutsceneActive()) {
 				if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && !handler.getPaused()) {
 					cutsceneSequence++;
-					if(cutsceneSequence == currentCutsceneDuration.size()) {
+					if(cutsceneSequence == currentCutsceneImage.size()) {
 						cutsceneSequence = 0;
 						updateInGameCutscene(false);
 					}
 					else {
-						updateInGameCutscene(currentCutscenePerson.get(cutsceneSequence), currentCutsceneQuotes.get(cutsceneSequence));
+						updateInGameCutscene(currentCutscenePerson.get(cutsceneSequence), currentCutsceneQuotes.get(cutsceneSequence), currentCutsceneImage.get(cutsceneSequence));
 					}
 				}
 			}
 			else {
 				currentCutsceneQuotes.clear();
 				currentCutscenePerson.clear();
-				currentCutsceneDuration.clear();
+				currentCutsceneImage.clear();
 			}
 		}
 
@@ -415,7 +415,6 @@ public class HouseScreen implements Screen {
 				if(Player.getInstance().getSpray().getIsActive()) {
 					if(Player.getInstance().getSprayIndex() == 1) {
 						if(storyDoctor.getBoundingRectangle().overlaps(Player.getInstance().getSpray().getSprite().getBoundingRectangle())) {
-							System.out.println("HIT");
 							StoryHandler.killedOtherGuy = true;
 							StoryHandler.allNotesSequence = true;
 							storyDoctor.setAlpha(0);
@@ -423,8 +422,6 @@ public class HouseScreen implements Screen {
 					}
 				}
 			}
-
-			System.out.println(StoryHandler.killedOtherGuy);
 
 
 
@@ -493,7 +490,6 @@ public class HouseScreen implements Screen {
 					value++;
 				}
 			}
-			System.out.println("NOTES IN HOUSE : " + value);
 		}
 
 		/**
@@ -595,7 +591,6 @@ public class HouseScreen implements Screen {
 
 					Vector2 villager = new Vector2(n.getSprite().getX(), n.getSprite().getY());
 					Vector2 player = new Vector2(Player.getInstance().getSprite().getX(), Player.getInstance().getSprite().getY());
-					System.out.println("VILLAGER: " + player.dst(villager));
 					if(n.getAggressive() && player.dst(villager) < 100) {
 						float dx = Player.getInstance().getSprite().getX() - n.getSprite().getX();
 						float dy = Player.getInstance().getSprite().getY() - n.getSprite().getY();
@@ -603,8 +598,6 @@ public class HouseScreen implements Screen {
 						dx = dx/20f;
 						dy = dy/20f;
 
-						System.out.println(dx);
-						System.out.println(dy);
 
 						Bullet b = new Bullet(dx, dy, n.getSprite().getX()+16, n.getSprite().getY()+16, node.getArray() , rotation);
 						if(bullet == null) {
@@ -620,7 +613,6 @@ public class HouseScreen implements Screen {
 		 */
 		public void updateAllBullets() {
 			if(bullet != null && !handler.getPaused() && !handler.getCutsceneActive()) {
-				System.out.println("HIT!");
 				bullet.draw(main.batch);
 				bullet.updateBullet();
 				if(bullet.getSprite().getY() < 0 || bullet.getSprite().getX() < 0) {
@@ -769,7 +761,6 @@ public class HouseScreen implements Screen {
 		 */
 		private void updateBar() {
 			if((bar.getWidth() >= 1f)) {
-				System.out.println(" CURRENT DURATION: "  + Player.getInstance().getCurrentMaskDuration());
 				bar.setWidth(250 * (Player.getInstance().getCurrentMaskDuration()/Player.getInstance().getInitialMaskDuration()));
 			}
 			else {
@@ -924,7 +915,6 @@ public class HouseScreen implements Screen {
 	 */
 	private void drawFakeNPC(SpriteBatch batch)
 	{
-		System.out.println("NUMBER OF FAKE NPC'S: " + fakeNPCs.size());
 		for(NPC fake : fakeNPCs) {
 			fake.getSprite().draw(batch);
 			if(fake.getHealth() >= 0) {

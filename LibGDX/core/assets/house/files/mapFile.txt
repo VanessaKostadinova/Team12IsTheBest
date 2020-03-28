@@ -13,3 +13,8 @@ house12.txt
 house13.txt
 house14.txt
 house15.txt
+house16.txt
+house17.txt
+house18.txt
+house19.txt
+house20.txt

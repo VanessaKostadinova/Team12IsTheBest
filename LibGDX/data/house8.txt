@@ -5,8 +5,6 @@ house4.png
 400,100,100
 130,400,90
 120,580,90
-350,680,90
-560,580,90
 level1.csv
 marble-floor.gif
 Floor_Stone.gif

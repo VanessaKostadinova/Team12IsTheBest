@@ -219,6 +219,7 @@ public class AssetHandler {
     public static final FileHandle NOT_ENOUGH_ENERGY_ERROR = Gdx.files.internal("error/notenoughenergy.csv");
 
 
+
     /**
      * Load all the assets within the game.
      */
@@ -308,6 +309,45 @@ public class AssetHandler {
         MANAGER.load(APPLY);
         MANAGER.load(APPLY_HOVER);
     	MANAGER.load("cutscene/1/Intro.mp3", Music.class);
+    	MANAGER.load("levels/Carpet_Blue.gif", Texture.class);
+        MANAGER.load("levels/Carpet_Brown.gif", Texture.class);
+        MANAGER.load("levels/Carpet_Red.gif", Texture.class);
+        MANAGER.load("levels/Door.gif", Texture.class);
+        MANAGER.load("levels/Floor_Marble.gif", Texture.class);
+        MANAGER.load("levels/Floor_Marble_Cracked.gif", Texture.class);
+        MANAGER.load("levels/Floor_Rubble.gif", Texture.class);
+        MANAGER.load("levels/Floor_Stone.gif", Texture.class);
+        MANAGER.load("levels/Floor_Stone3.gif", Texture.class);
+        MANAGER.load("levels/Floor_Stone4.gif", Texture.class);
+        MANAGER.load("levels/marble-cracked.gif", Texture.class);
+        MANAGER.load("levels/marble-floor.gif", Texture.class);
+        MANAGER.load("levels/Mattress1.gif", Texture.class);
+        MANAGER.load("levels/Mattress2.gif", Texture.class);
+        MANAGER.load("levels/Rug2_Vertical.gif", Texture.class);
+        MANAGER.load("levels/Stool_Stone1.gif", Texture.class);
+        MANAGER.load("levels/Stool_Stone2.gif", Texture.class);
+        MANAGER.load("levels/Stool_Wood1.gif", Texture.class);
+        MANAGER.load("levels/Stool_Wood2.gif", Texture.class);
+        MANAGER.load("levels/Table_Stone.gif", Texture.class);
+        MANAGER.load("levels/Table_Wood.gif", Texture.class);
+        MANAGER.load("levels/Tiled_Floor1.gif", Texture.class);
+        MANAGER.load("levels/Tiled_Floor1_Water2.gif", Texture.class);
+        MANAGER.load("levels/Tiled_Floor1_Water3.gif", Texture.class);
+        MANAGER.load("levels/Tiled_Floor2.gif", Texture.class);
+        MANAGER.load("levels/Tiled_Floor2_Water1.gif", Texture.class);
+        MANAGER.load("levels/Wall_Brick.gif", Texture.class);
+        MANAGER.load("levels/Wall_Concrete.gif", Texture.class);
+        MANAGER.load("levels/Wall_Concrete2.gif", Texture.class);
+        MANAGER.load("levels/Wooden_Floor.gif", Texture.class);
+        MANAGER.load("levels/Wooden_Floor2.gif", Texture.class);
+        MANAGER.load("levels/Wooden_Floor3.gif", Texture.class);
+        MANAGER.load("levels/Wooden_Floor3_Water1.gif", Texture.class);
+        MANAGER.load("levels/Wooden_Floor3_Water2.gif", Texture.class);
+        MANAGER.load("levels/Wooden_Floor3_Water3.gif", Texture.class);
+        MANAGER.load("levels/Wooden_Floor3_Water4.gif", Texture.class);
+        MANAGER.load("levels/TORCH.gif", Texture.class);
+
+
     }
 
     /**

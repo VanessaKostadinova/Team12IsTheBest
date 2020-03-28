@@ -65,10 +65,10 @@ public class Disease {
 		float totalIllness = 0f;
 		for(NPC resident : house.getNPCs()){
 			if(resident.isSick()){
-				totalIllness += (10);
+				totalIllness += (1.5);
 			}
 			else if (resident.isDead()){
-				totalIllness += (20);
+				totalIllness += (2.5);
 			}
 		}
 		house.setIllnessLevel(totalIllness);

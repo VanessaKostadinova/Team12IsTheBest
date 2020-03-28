@@ -1,18 +1,13 @@
 House1.gif
 1300
 250
-200,100,100
-500,250,70
-500,450,20
+150,100,100
+350,250,70
+600,250,70
+650,700,20
+300,680,20
 75,875,50
-200,600,70
-400,600,80
-350,850,67
-670,870,45
-750,700,100
-900,400,99
-900,100,99
-level7.csv
+level11.csv
 Wooden_Floor2.gif
 Wall_Concrete.gif
 Door.gif
@@ -37,5 +32,12 @@ Wooden_Floor3_Water2.gif
 Wooden_Floor3_Water3.gif
 Wooden_Floor3_Water4.gif
 Wooden_Floor3_Water1.gif
-(THEY ARE NOT WHO YOU THINK THEY ARE DON'T TRUST THEM.,150,200
-(THIS DISEASE WILL NEVER END.,90,150
+Rug2_Vertical.gif
+Stool_Stone1.gif
+Stool_Stone2.gif
+Stool_Wood2.gif
+Stool_Wood1.gif
+Mattress2.gif
+Mattress1.gif
+Table_Stone.gif
+Table_Wood.gif

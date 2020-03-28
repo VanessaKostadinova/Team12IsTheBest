@@ -53,7 +53,7 @@ public class PermanetPlayer {
     private Item[] createItems(){
         Item[] tempItems = new Item[4];
         tempItems[0] = new Item("BOOTS", "Faster footwear", 75f, 400);
-        tempItems[1] = new Item("MASKS", "Better plague protection TM", 20f, 400);
+        tempItems[1] = new Item("MASKS", "Better plague protection TM", 30f, 400);
         tempItems[2] = new Item("HEALING STRENGTH", "Better healing", 0.1f, 400);
         tempItems[3] = new Item("BURNING STRENGTH", "Burn baby burn but better", 10f, 400);
         return tempItems;

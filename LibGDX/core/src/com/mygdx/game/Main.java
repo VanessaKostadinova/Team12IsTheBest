@@ -70,6 +70,8 @@ public class Main extends Game implements Serializable {
 		this.vsyncOn = vsyncOn;
 	}
 
+	private Map map;
+
 
 	/**
 	 * Create's the multiple different batch's and viewpoints which will be used
@@ -375,6 +377,13 @@ public class Main extends Game implements Serializable {
 		});
 	}
 
+	public Map getMap() {
+		return map;
+	}
+
+	public void setMap(Map map) {
+		this.map = map;
+	}
 
 	/* (non-Javadoc)
 	 * @see com.badlogic.gdx.Game#render()

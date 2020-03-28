@@ -1,17 +1,17 @@
 Duration,Person Speaking,Quote
-0,GAME,WASD to move
-0,Order,You should have a map with you.  The map will show all the residential building and information about them.
-0,GAME,Scroll over a house in order to interact with it.
-0,Order,Before you enter it is safest to inspect that way there are no surprises. Just do not overexert yourself.
-0,GAME,Press E to inspect house.
-0,Order,You are going to need to head inside if you want to help anyone.
-0,GAME,Use Enter to enter a house.
-0,Order,Make sure to take enough supplies with you in the house.
-0,GAME,Use the + and - buttons to increase and decrease supplies.
-0,GAME,Black lines show that everyone inside that emitter is dead.
-0,GAME,White lines show that everyone inside that house cannot emit the disease to others.
-0,GAME,Green lines show that both houses in the connection are diseased.
-0,GAME,Red lines show that the current house you are looking at can be diseased from.
-0,GAME,Blue lines show that the current house you are looking at can spread the disease to others which are not diseased.
-0,GAME,You can track the current objective and the notes you found by pressing the I Key.
-0,Objective,Enter a house!
+templateCutsceneSpeaker.png,GAME,WASD to move
+templateCutsceneSpeaker.png,Order,You should have a map with you.  The map will show all the residential building and information about them.
+templateCutsceneSpeaker.png,GAME,Scroll over a house in order to interact with it.
+templateCutsceneSpeaker.png,Order,Before you enter it is safest to inspect that way there are no surprises. Just do not overexert yourself.
+templateCutsceneSpeaker.png,GAME,Press E to inspect house.
+templateCutsceneSpeaker.png,Order,You are going to need to head inside if you want to help anyone.
+templateCutsceneSpeaker.png,GAME,Use Enter to enter a house.
+templateCutsceneSpeaker.png,Order,Make sure to take enough supplies with you in the house.
+templateCutsceneSpeaker.png,GAME,Use the + and - buttons to increase and decrease supplies.
+templateCutsceneSpeaker.png,GAME,Black lines show that everyone inside that emitter is dead.
+templateCutsceneSpeaker.png,GAME,White lines show that everyone inside that house cannot emit the disease to others.
+templateCutsceneSpeaker.png,GAME,Green lines show that both houses in the connection are diseased.
+templateCutsceneSpeaker.png,GAME,Red lines show that the current house you are looking at can be diseased from.
+templateCutsceneSpeaker.png,GAME,Blue lines show that the current house you are looking at can spread the disease to others which are not diseased.
+templateCutsceneSpeaker.png,GAME,You can track the current objective and the notes you found by pressing the I Key.
+templateCutsceneSpeaker.png,Objective,Enter a house!

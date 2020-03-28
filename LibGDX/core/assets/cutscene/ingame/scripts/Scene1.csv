@@ -1,16 +1,16 @@
 Duration,Person Speaking,Quote
-0,,You walk to town hall into Sylvias office and finds her journal. You begin to read through journal.
-0,Page 1,7th April : I have just arrived in the town. There is a very murky atmosphere here. Everything is very dark and eerie almost chilling to be here. I have feeling this will not end well.
-0,Page 2,13th June : This plague is worse than I thought it might be. I have tried everything in my power to get rid of it but it just will not go! I need to find a better way to attack this.
-0,Page 3,19th September : Something must be going on; things are not what they appear to be in this town. The plague is not behaving normally. There seems to be a lot I am unaware of The Order may be keeping things from me. The suffering that these poor civilians are having to go through can be stopped. I need to investigate
-0,Page 4,28th November : I am starting to see things. A couple of colleagues from The Order. I might need to check my mask for leaks. . .
-0,,You gets interrupted while reading journal as overseer walks in on him.
-0,Overseer,Aah I see you are becoming acquainted with your new office.
-0,Plague Doctor,Hello I am the new Doctor assigned to you by The Order
-0,Overseer,We were expecting you to visit sooner after the previous Doctor disappeared.
-0,Plague Doctor,I was told a bit about this already. We think it was a mask leak.
-0,Overseer,Look I do not care if she sprouted wings called herself a bird and fucked off South with the rest of those feathered bastard.
-0,Overseer,I just want the best for this town
-0,Overseer,I am sick of the damage this plague is causing. Finish the job and go. I do not want trouble in this town.
-0,Doctor,Protocol states . . . Oh . . . he is gone.
-0,Objective,Inspect a house!.
+templateCutsceneSpeaker.png,,You walk to town hall into Sylvias office and finds her journal. You begin to read through journal.
+templateCutsceneSpeaker.png,Page 1,7th April : I have just arrived in the town. There is a very murky atmosphere here. Everything is very dark and eerie almost chilling to be here. I have feeling this will not end well.
+templateCutsceneSpeaker.png,Page 2,13th June : This plague is worse than I thought it might be. I have tried everything in my power to get rid of it but it just will not go! I need to find a better way to attack this.
+templateCutsceneSpeaker.png,Page 3,19th September : Something must be going on; things are not what they appear to be in this town. The plague is not behaving normally. There seems to be a lot I am unaware of The Order may be keeping things from me. The suffering that these poor civilians are having to go through can be stopped. I need to investigate
+templateCutsceneSpeaker.png,Page 4,28th November : I am starting to see things. A couple of colleagues from The Order. I might need to check my mask for leaks. . .
+templateCutsceneSpeaker.png,,You gets interrupted while reading journal as overseer walks in on him.
+templateCutsceneSpeaker.png,Overseer,Aah I see you are becoming acquainted with your new office.
+templateCutsceneSpeaker.png,Plague Doctor,Hello I am the new Doctor assigned to you by The Order
+templateCutsceneSpeaker.png,Overseer,We were expecting you to visit sooner after the previous Doctor disappeared.
+templateCutsceneSpeaker.png,Plague Doctor,I was told a bit about this already. We think it was a mask leak.
+templateCutsceneSpeaker.png,Overseer,Look I do not care if she sprouted wings called herself a bird and fucked off South with the rest of those feathered bastard.
+templateCutsceneSpeaker.png,Overseer,I just want the best for this town
+templateCutsceneSpeaker.png,Overseer,I am sick of the damage this plague is causing. Finish the job and go. I do not want trouble in this town.
+templateCutsceneSpeaker.png,Doctor,Protocol states . . . Oh . . . he is gone.
+templateCutsceneSpeaker.png,Objective,Inspect a house!.

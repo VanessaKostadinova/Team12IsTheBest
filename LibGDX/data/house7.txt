@@ -1,13 +1,13 @@
 house3.png
-1150	
+1150
 730
 700,400,90
 400,100,100
-120,400,90
+120,400,100
 140,580,90
 340,680,90
-550,580,90
-level1.csv
+550,580,100
+level2.csv
 Wooden_Floor.gif
 Floor_Stone.gif
 Door.gif
