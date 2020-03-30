@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 /**
  * Used to load assets into the game before playing the game, this reduces the load on a PC as well
  * the loading times as assets are loaded before making loading times from a few seconds to a less than a millisecond.
- *
+ * This makes the game quicker and uses less ram as textures don't have to be reloaded.
  * @author Inder Panesar (Team 12)
  * @version 1.0
  */
