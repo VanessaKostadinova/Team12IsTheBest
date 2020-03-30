@@ -71,11 +71,6 @@ public final class MainMenu implements Screen {
 		/*
 		 * Setting the image of the title of the game
 		 * Scale it so it fits within the screen.
-		 * Set the Position of the title
-		 * 	> X: The GDX.graphics.getWidth - title.getWidth() this sets it at the top right of the screen. Width*Scale ensure that the image is adjusted correctly for scale.
-		 * 	> Y: The GDX.graphics.getHeight - title.getHeight() this sets it at the top right of the screen. Height*Scale ensure that the image is adjusted correctly for scale.
-		 * 	> + 20 : is used to act as the border to make sure it is not exactly up against the top of the window.
-		 * Set the size of the Item to scale.
 		 */
 		Image title = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("main_menu_assets/doctormask_0002_PLAGUE-DOCTOR.png", Texture.class))));
 		title.setScaling(Scaling.fit);

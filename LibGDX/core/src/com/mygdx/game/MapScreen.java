@@ -199,7 +199,7 @@ public class MapScreen implements Screen {
 	public MapScreen(Main main) {
 		cutsceneActive = false;
 		this.viewWidth = 256;
-		Player.init(10, 100, 100);
+		Player.init(1000, 100, 100);
 		isPaused = false;
 		cameraMap = new Camera(viewWidth, -1080, -1920);
 		cameraMap.getCamera().position.set(
@@ -635,10 +635,7 @@ public class MapScreen implements Screen {
 				endGame = false;
 			}
 		}
-		
-		if(endGame && StoryHandler.haveBeenReCured) {
 
-		}
 	}
 
 	/**
@@ -938,7 +935,8 @@ public class MapScreen implements Screen {
 		if(!StoryHandler.cutscene84Played && !StoryHandler.cutscene82Played) {
 			float percentDead = Float.parseFloat(deadPercentage.getText().toString());
 			if(percentDead >= 60.0f) {
-				System.out.println("Ending 1");
+				main.ui.clear();
+				main.setScreen(new Cutscene(main, "video/ending1.ogv", true));
 			}
 		}
 

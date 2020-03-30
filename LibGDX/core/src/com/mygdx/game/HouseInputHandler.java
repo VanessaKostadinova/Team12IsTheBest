@@ -185,7 +185,6 @@ public class HouseInputHandler implements InputProcessor {
 	public void movement(TextureRegion region, float delta) {
 		float playerX = Player.getInstance().getSprite().getX();
 		float playerY = Player.getInstance().getSprite().getY();
-		System.out.println(playerX+","+playerY+","+100);
 		stateTime = stateTime + delta;
 		if(Player.getInstance().getSanityLabel()=="RISKY") {
 			if(stateTime % 10 < 1) {
@@ -455,7 +454,6 @@ public class HouseInputHandler implements InputProcessor {
 	public boolean keyDown(int keycode) {
 		if(keycode == Keys.Q) {
 			Player.getInstance().switchSpray();
-			System.out.println(Player.getInstance().getSprayIndex());
 		}
 		return false;
 	}

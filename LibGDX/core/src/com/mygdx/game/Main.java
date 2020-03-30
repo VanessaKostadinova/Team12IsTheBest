@@ -31,7 +31,7 @@ import com.mygdx.story.StoryHandler;
 
 /**
  * The Main class, which initialises the main assets and values in the game,
- * @author Inder Panesar
+ * @author Inder
  * @version 1.5
  */
 public class Main extends Game implements Serializable {

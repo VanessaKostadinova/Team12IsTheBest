@@ -490,6 +490,7 @@ public class HouseScreen implements Screen {
 					value++;
 				}
 			}
+			System.out.println("NUMBER OF NOTES: " + value);
 		}
 
 		/**
