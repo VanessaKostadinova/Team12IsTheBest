@@ -1574,7 +1574,6 @@ public class MapScreen implements Screen {
 		button2.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("SAVED!");
 				saveGame = true;
 			}
 		});
@@ -2468,6 +2467,8 @@ public class MapScreen implements Screen {
 	 */
 	public void checkSaveGame() {
 		if(saveGame) {
+			togglePaused();
+			pause.setVisible(isPaused);
 			Gdx.files.local("save.bin").delete();
 			try {
 				Output output = new Output(new FileOutputStream("save.bin"));
@@ -2478,6 +2479,7 @@ public class MapScreen implements Screen {
 				e.printStackTrace();
 			}
 			saveGame = false;
+			startCreatingCutscene(AssetHandler.SAVED);
 		}
 	}
 

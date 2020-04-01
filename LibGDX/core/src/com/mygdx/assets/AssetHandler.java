@@ -217,7 +217,8 @@ public class AssetHandler {
     public static final LabelStyle FONT_SIZE_128_WHITE = createLabelStyleWithoutBackground(Color.WHITE, 128);
     /** A static instance of file handle which holds the error message for not enough energy  */
     public static final FileHandle NOT_ENOUGH_ENERGY_ERROR = Gdx.files.internal("error/notenoughenergy.csv");
-
+    /** A static instance of file handle which holds the message for the game being saved  */
+    public static final FileHandle SAVED = Gdx.files.internal("error/saved.csv");
 
 
     /**
