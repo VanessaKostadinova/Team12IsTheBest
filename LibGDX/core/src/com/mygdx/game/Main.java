@@ -161,7 +161,6 @@ public class Main extends Game implements Serializable {
 
 
 							output.writeInt(n.getHouse().getTextures().size());
-							System.out.println(n.getHouse().getTextures().size());
 							for(int x = 0; x < n.getHouse().getTextures().size(); x++) {
 								StringBuilder s = new StringBuilder();
 								s.append(n.getHouse().textureURL.get(x) +"");
@@ -187,7 +186,6 @@ public class Main extends Game implements Serializable {
 								output.writeInt(resident.getVillagerType());
 								output.writeFloat(resident.getRotation());
 								output.writeBoolean(resident.foodGiven());
-								System.out.println(resident.foodGiven());
 							}
 							output.writeString(n.getImageURL());
 							output.writeFloat(n.getSprite().getX());
@@ -228,6 +226,7 @@ public class Main extends Game implements Serializable {
 						output.writeBoolean(StoryHandler.cutscene84Played);
 						output.writeBoolean(StoryHandler.killedOtherGuy);
 						output.writeInt(StoryHandler.decisionNumber);
+						Gdx.app.log("SAVE GAME", "GAME SAVED");
 					}
 
 					@Override
@@ -371,7 +370,7 @@ public class Main extends Game implements Serializable {
 						StoryHandler.cutscene84Played = input.readBoolean();
 						StoryHandler.killedOtherGuy = input.readBoolean();
 						StoryHandler.decisionNumber = input.readInt();
-
+						Gdx.app.log("SAVE GAME", "GAME LOADED");
 						return screen;
 					}
 		});

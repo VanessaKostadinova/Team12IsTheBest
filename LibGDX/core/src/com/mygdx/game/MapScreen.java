@@ -403,7 +403,7 @@ public class MapScreen implements Screen {
 		String lines[] = textFile.split("\\r?\\n");
 		for(int i = 1; i < lines.length; i++) {
 			String line = lines[i];
-			String[] data = line.split(",");
+			String[] data = line.split(",", 3);
 			/**
 			 * Data - ARRAY:
 			 * index 0 = Duration of line (potentially for voice acting)
@@ -429,7 +429,8 @@ public class MapScreen implements Screen {
 		String lines[] = textFile.split("\\r?\\n");
 		for(int i = 1; i < lines.length; i++) {
 			String line = lines[i];
-			String[] data = line.split(",");
+			String[] data = line.split(",", 3);
+			System.out.println(data[0]);
 			/**
 			 * Data - ARRAY:
 			 * index 0 = Duration of line (potentially for voice acting)
@@ -832,7 +833,7 @@ public class MapScreen implements Screen {
 					"I SAW TRACES OF HER AGAIN TODAY, SHE THINKS SHE IS BEING SNEAKY BUT WE ARE NOT STUPID, CANNOT BELIEVE THEY WILL NOT LET ME TAKE CARE OF IT.",
 					"THIS NEW GUY IS CLEARING RVH-67 TOO QUICKLY, WE NEED TO GIVE IT MORE TIME TO INCUBATE. I WILL BE PLANTING MORE SAMPLES AGAIN LATER TODAY.",
 					"I SAW THE NEW GUY HANGING ABOUT THE CHURCH IN THE MIDDLE OF THE NIGHT THOUGHT HE HAD BEEN SLEEPING BUT I CANNOT MAKE CONTACT.",
-					"I MAY ASK FOR MORE BACKUP CULTIVATING, RVH IS NOT AS EASY AS THE GUYS BACK AT CAPITAL MADE IT SOUND. THEY DON’T KNOW HOW GOOD THEY HAVE IT.",
+					"I MAY ASK FOR MORE BACKUP CULTIVATING, RVH IS NOT AS EASY AS THE GUYS BACK AT CAPITAL MADE IT SOUND. THEY DON NOT KNOW HOW GOOD THEY HAVE IT.",
 					"SOMEONES BEEN COMING IN HERE, I CANNOT FIND SOME PAGES AND I SWEAR THEY WERE HERE EARLIER.",
 					"I MAY NEED TO LOCK THIS PLACE DOWN, THOUGHT BEING OUT HERE WOULD MEAN I WAS NOT DISTURBED, SYLVIA IS BECOMING A REAL PEST."
 			});
@@ -896,6 +897,7 @@ public class MapScreen implements Screen {
 
 			if(isAllHousesOnMapCured()) {
 				System.out.println("Ending 4");
+				//main.setScreen(new Cutscene(main, "video/ending4.ogg", true));
 			}
 		}
 
@@ -907,10 +909,12 @@ public class MapScreen implements Screen {
 				float percentAlive = Float.parseFloat(alivePercentage.getText().toString());
 				if(percentDead >= 60.0f)  {
 					System.out.println("Ending 6");
+					//main.setScreen(new Cutscene(main, "video/ending6.ogg", true));
 				}
 				else {
 					if(isAllHousesOnMapCured()){
 						System.out.println("Ending 5");
+						//main.setScreen(new Cutscene(main, "video/ending5.ogg", true));
 					}
 				}
 			}
@@ -923,10 +927,12 @@ public class MapScreen implements Screen {
 				float percentAlive = Float.parseFloat(alivePercentage.getText().toString());
 				if(percentDead >= 60.0f)  {
 					System.out.println("Ending 2");
+					//main.setScreen(new Cutscene(main, "video/ending2.ogg", true));
 				}
 				else {
 					if(isAllHousesOnMapCured()){
 						System.out.println("Ending 3");
+						//main.setScreen(new Cutscene(main, "video/ending3.ogg", true));
 					}
 				}
 			}

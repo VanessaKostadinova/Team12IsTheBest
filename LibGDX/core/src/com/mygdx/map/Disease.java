@@ -90,11 +90,13 @@ public class Disease {
 			if (resident.getStatus().equals("Alive")) {
 				if((random.nextInt(100) + 1) < illnessLikelihood){
 					resident.infect();
-					resident.changeHealth(-10);
+					int initialDecrease = random.nextInt((15 - 10) + 1) + 10;
+					resident.changeHealth(-initialDecrease);
 				}
 			}
 			if(resident.getStatus().equals("Sick")) {
-				resident.changeHealth(-7.5f);
+				int initialDecrease = random.nextInt((10 - 5) + 1) + 5;
+				resident.changeHealth(-initialDecrease);
 			}
 		}
 

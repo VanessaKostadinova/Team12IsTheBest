@@ -129,6 +129,9 @@ public class HouseScreen implements Screen {
 	/** The mask durablity at the start */
 	private final float maskDurabiltyAtStart = Player.getInstance().getCurrentMaskDuration();
 
+	/** The sanity level at the start */
+	private final float sanityAtStart = PermanetPlayer.getPermanentPlayerInstance().getSanity();
+
 	public HouseScreen(Main main, Node node, MapScreen mapScreen) {
 			this.mapScreen = mapScreen;
 			this.main = main;
@@ -776,7 +779,7 @@ public class HouseScreen implements Screen {
 
 					//Player.getInstance().resetMask();
 					//Player.getInstance().setMaskDurationSeconds(maskDurabiltyAtStart);
-
+					PermanetPlayer.getPermanentPlayerInstance().setSanity(sanityAtStart);
 					main.setScreen(new CheckPoint(main, node, mapScreen, maskDurabiltyAtStart));
 				}
 				bar.setWidth(250);

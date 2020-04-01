@@ -1,5 +1,5 @@
 Duration,Person Speaking,Quote
-templateCutsceneSpeaker.png,GAME,WASD to move
+templateCutsceneSpeaker.png,GAME,Use WASD to move.
 templateCutsceneSpeaker.png,Order,You should have a map with you.  The map will show all the residential building and information about them.
 templateCutsceneSpeaker.png,GAME,Scroll over a house in order to interact with it.
 templateCutsceneSpeaker.png,Order,Before you enter it is safest to inspect that way there are no surprises. Just do not overexert yourself.
@@ -13,5 +13,6 @@ templateCutsceneSpeaker.png,GAME,White lines show that everyone inside that hous
 templateCutsceneSpeaker.png,GAME,Green lines show that both houses in the connection are diseased.
 templateCutsceneSpeaker.png,GAME,Red lines show that the current house you are looking at can be diseased from.
 templateCutsceneSpeaker.png,GAME,Blue lines show that the current house you are looking at can spread the disease to others which are not diseased.
-templateCutsceneSpeaker.png,GAME,You can track the current objective and the notes you found by pressing the I Key.
-templateCutsceneSpeaker.png,Objective,Enter a house!
+templateCutsceneSpeaker.png,GAME,You can track the current objective and the notes you found by pressing I.
+templateCutsceneSpeaker.png,Objective,Enter a house.
+
