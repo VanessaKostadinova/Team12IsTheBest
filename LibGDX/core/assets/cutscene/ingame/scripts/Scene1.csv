@@ -1,17 +1,15 @@
 Duration,Person Speaking,Quote
-templateCutsceneSpeaker.png,,You walk to town hall into Sylvia's office and finds her journal. You begin to read through the journal.
-templateCutsceneSpeaker.png,Page 1,7th April : I have just arrived in the town. There is a very murky atmosphere here. Everything is very dark and eerie almost chilling to be here. I have feeling this will not end well.
-templateCutsceneSpeaker.png,Page 2,13th June : This plague is worse than I thought it might be. I have tried everything in my power to get rid of it but it just will not go! I need to find a better way to attack this.
-templateCutsceneSpeaker.png,Page 3,19th September : Something must be going on; things are not what they appear to be in this town. The plague is not behaving normally. There seems to be a lot I am unaware of. The Order may be keeping things from me. The suffering that these poor civilians are having to go through can be stopped. I need to investigate.
-templateCutsceneSpeaker.png,Page 4,28th November : I am starting to see things. A couple of colleagues from The Order. I might need to check my mask for leaks. . .
-templateCutsceneSpeaker.png,,You get interrupted while reading the journal as the Overseer walks in on you.
-templateCutsceneSpeaker.png,Overseer,Aah I see you are becoming acquainted with your new office.
-templateCutsceneSpeaker.png,Plague Doctor,Hello I am the new Doctor assigned to you by The Order.
-templateCutsceneSpeaker.png,Overseer,We were expecting you to visit sooner after the previous Doctor disappeared.
-templateCutsceneSpeaker.png,Plague Doctor,I was told a bit about this already. We think it was a mask leak.
-templateCutsceneSpeaker.png,Overseer,Look I do not care if she sprouted wings called herself a bird and fucked off South with the rest of those feathered bastard.
-templateCutsceneSpeaker.png,Overseer,I just want the best for this town.
-templateCutsceneSpeaker.png,Overseer,I am sick of the damage this plague is causing. Finish the job and go. I do not want trouble in this town.
-templateCutsceneSpeaker.png,Doctor,Protocol states . . . Oh . . . he is gone.
-templateCutsceneSpeaker.png,Objective,Inspect a house.
-
+templateCutsceneSpeaker.png,,You walk to the town hall and into what looks like the office of the previous Doctor. On a table by the window you find a small leather book. You begin to read through it.
+templateCutsceneSpeaker.png,Page 1,7th April : I have just arrived in the town. There is a very murky atmosphere here. The residents seem very distrusting and angry. I have a feeling this will not end well.
+templateCutsceneSpeaker.png,Page 2,13th June : This plague is worse than I initially thought. I have tried everything in my power to get rid of it but it just will not go! I need to find a better way to attack this.
+templateCutsceneSpeaker.png,Page 3,19th September : Something must be going on; things are not what they appear to be in this town. The plague is behaving abnormally. There seems to be a lot I am unaware of. The Order has been telling me not to worry. No wonder the people here are so depressed if this is what they have been dealing with. I need to investigate further.
+templateCutsceneSpeaker.png,Page 4,"28th November : I'm starting to see things. Namely a couple of colleagues from the capital. I might need to check my mask for leaks, the last thing I need right now is to get infected."
+templateCutsceneSpeaker.png,,You get interrupted just as you finish the last page when a portly man walks in on you and loudly clears his throat.
+templateCutsceneSpeaker.png,Overseer,"Aah I see you are becoming acquainted with your new office, nice of you to drop in and say hi."
+templateCutsceneSpeaker.png,Plague Doctor,Hello I am the new Doctor assigned to your village.
+templateCutsceneSpeaker.png,Overseer,"We were expecting you to visit a lot sooner, the last quack disappeared ages ago."
+templateCutsceneSpeaker.png,Plague Doctor,I was briefed on the situation here already.
+templateCutsceneSpeaker.png,Overseer,"For all anyone knows she sprouted wings, called herself a bird and fucked off South with the rest of those feathered bastards."
+templateCutsceneSpeaker.png,Overseer,"I'm just here to do my job and cure this plague, not go chasing after missing colleagues."
+templateCutsceneSpeaker.png,Overseer,Get on with it then! I am sick of the damage this plague is causing. Finish the job and get out of here. I do not want to deal with more of your kind.
+templateCutsceneSpeaker.png,Doctor,Protocol states that when my work is fin- Oh... he's gone.

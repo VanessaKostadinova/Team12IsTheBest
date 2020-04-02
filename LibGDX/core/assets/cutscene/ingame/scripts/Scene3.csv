@@ -2,17 +2,16 @@ Duration,Person Speaking,Quote
 templateCutsceneSpeaker.png,GAME,Use WASD to move.
 templateCutsceneSpeaker.png,Order,You should have a map with you.  The map will show all the residential building and information about them.
 templateCutsceneSpeaker.png,GAME,Scroll over a house in order to interact with it.
-templateCutsceneSpeaker.png,Order,Before you enter it is safest to inspect that way there are no surprises. Just do not overexert yourself.
+templateCutsceneSpeaker.png,Order,"Before you enter it is safest to inspect the place, that way there are no surprises. Just do not overexert yourself."
 templateCutsceneSpeaker.png,GAME,Press E to inspect house.
 templateCutsceneSpeaker.png,Order,You are going to need to head inside if you want to help anyone.
 templateCutsceneSpeaker.png,GAME,Use Enter to enter a house.
-templateCutsceneSpeaker.png,Order,Make sure to take enough supplies with you in the house.
+templateCutsceneSpeaker.png,Order,Make sure to take enough supplies with you into the house.
 templateCutsceneSpeaker.png,GAME,Use the + and - buttons to increase and decrease supplies.
-templateCutsceneSpeaker.png,GAME,Black lines show that everyone inside that emitter is dead.
-templateCutsceneSpeaker.png,GAME,White lines show that everyone inside that house cannot emit the disease to others.
+templateCutsceneSpeaker.png,GAME,Black lines show that everyone inside that house is dead.
+templateCutsceneSpeaker.png,GAME,White lines show that everyone inside that house cannot spread the disease to others.
 templateCutsceneSpeaker.png,GAME,Green lines show that both houses in the connection are diseased.
-templateCutsceneSpeaker.png,GAME,Red lines show that the current house you are looking at can be diseased from.
+templateCutsceneSpeaker.png,GAME,Red lines show that the current house you are looking at can be diseased from its connection.
 templateCutsceneSpeaker.png,GAME,Blue lines show that the current house you are looking at can spread the disease to others which are not diseased.
 templateCutsceneSpeaker.png,GAME,You can track the current objective and the notes you found by pressing I.
 templateCutsceneSpeaker.png,Objective,Enter a house.
-
