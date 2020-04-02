@@ -906,7 +906,7 @@ public class MapScreen implements Screen {
 			if(StoryHandler.cutscene82Played && currentCutsceneQuotes.size() == 0) {
 				objective.setText("CURE OR KILL THE CITY - YOUR DECISION");
 				float percentDead = Float.parseFloat(deadPercentage.getText().toString());
-				if(percentDead >= 60.0f)  {
+				if(percentDead >= 50.0f)  {
 					main.setScreen(new Cutscene(main, "video/Tell-Everyone-But-Fail-To-Save-V.ogg", true));
 				}
 				else {
@@ -921,7 +921,7 @@ public class MapScreen implements Screen {
 			if(StoryHandler.cutscene84Played && currentCutsceneQuotes.size() == 0) {
 				objective.setText("CURE OR KILL THE CITY - YOUR DECISION");
 				float percentDead = Float.parseFloat(deadPercentage.getText().toString());
-				if(percentDead >= 60.0f)  {
+				if(percentDead >= 50.0f)  {
 					main.setScreen(new Cutscene(main, "video/Assassinated-by-Order.ogg", true));
 				}
 				else {
@@ -934,7 +934,7 @@ public class MapScreen implements Screen {
 
 		if(!StoryHandler.cutscene84Played && !StoryHandler.cutscene82Played) {
 			float percentDead = Float.parseFloat(deadPercentage.getText().toString());
-			if(percentDead >= 60.0f) {
+			if(percentDead >= 50.0f) {
 				main.ui.clear();
 				main.setScreen(new Cutscene(main, "video/Killed-By-Order-No-Notes-Collect.ogg", true));
 			}
