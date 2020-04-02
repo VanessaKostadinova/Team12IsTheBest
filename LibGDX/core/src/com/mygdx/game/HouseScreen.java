@@ -569,6 +569,7 @@ public class HouseScreen implements Screen {
 			bar = new Image(new SpriteDrawable(new Sprite(maskBar)));
 			bar.setPosition(200+uiCurrentSpray.getWidth(), main.ui.getHeight()-125);
 			bar.setWidth(250 * (Player.getInstance().getCurrentMaskDuration()/Player.getInstance().getInitialMaskDuration()));
+			System.out.println(Player.getInstance().getCurrentMaskDuration());
 			main.ui.addActor(bar);
 			
 		}
