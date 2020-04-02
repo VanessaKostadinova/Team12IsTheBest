@@ -274,14 +274,8 @@ public class SettingsScreen implements Screen {
                 Gdx.graphics.setVSync(vsyncOn);
                 main.vsyncOn = vsyncOn;
                 Gdx.graphics.setResizable(false);
-                System.out.println("HIT");
                 if(isFullscreen) {
-                    System.out.println(res[resolutionIndex]);
                     Graphics.DisplayMode mode = resolutions.get(res[resolutionIndex]);
-                    System.out.println(mode.height);
-                    System.out.println(mode.bitsPerPixel);
-                    System.out.println(mode.refreshRate);
-                    System.out.println(mode.width);
                     Gdx.graphics.setFullscreenMode(mode);
                 }
                 else {

@@ -328,7 +328,6 @@ public class MapScreen implements Screen {
 	 * Used to draw and create the cutscene items on stream.
 	 */
 	public void createInGameCutscene() {
-		System.out.println();
 		Sprite s = new Sprite(AssetHandler.MANAGER.get("cutscene/ingame/cutsceneOverlay.png", Texture.class));
 		s.setAlpha(0.9f);
 		cutsceneSequence = 0;
@@ -430,7 +429,6 @@ public class MapScreen implements Screen {
 		for(int i = 1; i < lines.length; i++) {
 			String line = lines[i];
 			String[] data = line.split(",", 3);
-			System.out.println(data[0]);
 			/**
 			 * Data - ARRAY:
 			 * index 0 = Duration of line (potentially for voice acting)
@@ -720,16 +718,19 @@ public class MapScreen implements Screen {
 						PermanetPlayer.getPermanentPlayerInstance().changeEnergy(-ENERGY_FOR_RESEARCH);
 					}
 					else {
-						startCreatingCutscene(AssetHandler.NOT_ENOUGH_ENERGY_ERROR);
+						if(hoverNode.reachedMaxLevel()) {
+							startCreatingCutscene(AssetHandler.REACHED_MAX_LEVEL);
+						}
+						else {
+							startCreatingCutscene(AssetHandler.NOT_ENOUGH_ENERGY_ERROR);
+						}
 					}
 				}
 				else {
 					startCreatingCutscene("cutscene/ingame/scripts/Scene2.csv");
 					StoryHandler.startedIntroPart2 = true;
 				}
-			} catch(NullPointerException e) {
-				Gdx.app.log("E pressed outside of house", "Caught exception outside of the house.");
-			}
+			} catch(NullPointerException e) { }
 		}
 		
 		if(Gdx.input.isKeyJustPressed(Keys.UP)) {
@@ -896,8 +897,7 @@ public class MapScreen implements Screen {
 			}
 
 			if(isAllHousesOnMapCured()) {
-				System.out.println("Ending 4");
-				//main.setScreen(new Cutscene(main, "video/ending4.ogg", true));
+				main.setScreen(new Cutscene(main, "video/PD-Join-Sylvia.ogg", true));
 			}
 		}
 
@@ -906,15 +906,12 @@ public class MapScreen implements Screen {
 			if(StoryHandler.cutscene82Played && currentCutsceneQuotes.size() == 0) {
 				objective.setText("CURE OR KILL THE CITY - YOUR DECISION");
 				float percentDead = Float.parseFloat(deadPercentage.getText().toString());
-				float percentAlive = Float.parseFloat(alivePercentage.getText().toString());
-				if(percentDead >= 60.0f)  {
-					System.out.println("Ending 6");
-					//main.setScreen(new Cutscene(main, "video/ending6.ogg", true));
+				if(percentDead >= 50.0f)  {
+					main.setScreen(new Cutscene(main, "video/Tell-Everyone-But-Fail-To-Save-V.ogg", true));
 				}
 				else {
 					if(isAllHousesOnMapCured()){
-						System.out.println("Ending 5");
-						//main.setScreen(new Cutscene(main, "video/ending5.ogg", true));
+						main.setScreen(new Cutscene(main, "video/Rebel-And-Save-Everyone.ogg", true));
 					}
 				}
 			}
@@ -924,15 +921,12 @@ public class MapScreen implements Screen {
 			if(StoryHandler.cutscene84Played && currentCutsceneQuotes.size() == 0) {
 				objective.setText("CURE OR KILL THE CITY - YOUR DECISION");
 				float percentDead = Float.parseFloat(deadPercentage.getText().toString());
-				float percentAlive = Float.parseFloat(alivePercentage.getText().toString());
-				if(percentDead >= 60.0f)  {
-					System.out.println("Ending 2");
-					//main.setScreen(new Cutscene(main, "video/ending2.ogg", true));
+				if(percentDead >= 50.0f)  {
+					main.setScreen(new Cutscene(main, "video/Assassinated-by-Order.ogg", true));
 				}
 				else {
 					if(isAllHousesOnMapCured()){
-						System.out.println("Ending 3");
-						//main.setScreen(new Cutscene(main, "video/ending3.ogg", true));
+						main.setScreen(new Cutscene(main, "video/Join-order.ogg", true));
 					}
 				}
 			}
@@ -940,9 +934,9 @@ public class MapScreen implements Screen {
 
 		if(!StoryHandler.cutscene84Played && !StoryHandler.cutscene82Played) {
 			float percentDead = Float.parseFloat(deadPercentage.getText().toString());
-			if(percentDead >= 60.0f) {
+			if(percentDead >= 50.0f) {
 				main.ui.clear();
-				main.setScreen(new Cutscene(main, "video/cutscene1.ogg", true));
+				main.setScreen(new Cutscene(main, "video/Killed-By-Order-No-Notes-Collect.ogg", true));
 			}
 		}
 

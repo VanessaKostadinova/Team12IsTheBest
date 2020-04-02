@@ -12,7 +12,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.video.VideoPlayer;
 import com.badlogic.gdx.video.VideoPlayerCreator;
 import com.mygdx.camera.Camera;
+import com.mygdx.extras.PermanetPlayer;
 import com.mygdx.renderable.Node;
+import com.mygdx.renderable.Player;
 
 /**
  * Class used to generate a cut-scene and a lot of things to do.
@@ -57,7 +59,6 @@ public class Cutscene implements Screen {
 		viewport.setScreenPosition(0, 0);
 
 		videoPlayer = VideoPlayerCreator.createVideoPlayer(viewport);
-		System.out.println(videoPlayer);
 		//Open gl to make the video creation more efficient.
 		Gdx.gl.glEnable(GL20.GL_CULL_FACE);
 		Gdx.gl.glCullFace(GL20.GL_BACK);
@@ -120,7 +121,7 @@ public class Cutscene implements Screen {
 					camera.getCamera().viewportWidth / 2f ,
 					camera.getCamera().viewportHeight / 2f, 0);
 			main.ui = new Stage(camera.getViewport());
-			main.setScreen(new MainMenu(main));
+			System.exit(0);
 		}
 		else {
 			//main.ui.clear();

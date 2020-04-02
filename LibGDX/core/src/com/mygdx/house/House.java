@@ -67,7 +67,6 @@ public class House {
 		for(String attribute : attributes) {
 			if(attribute.contains(".gif")  && !attribute.contains("house") && !attribute.contains("House")) {
 				Texture t = AssetHandler.MANAGER.get("levels/" + attribute, Texture.class);
-				System.out.println("NUMBER :" + indicator);
 				textures.put(indicator, t);
 				textureURL.add("levels/" + attribute);
 				indicator++;
