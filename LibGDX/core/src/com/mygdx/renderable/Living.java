@@ -2,6 +2,7 @@ package com.mygdx.renderable;
 
 /**
  * An interface to be implemented by any classes which are living.
+ * @author Vanessa
  */
 public interface Living {
 

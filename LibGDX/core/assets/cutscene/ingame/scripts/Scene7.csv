@@ -1,15 +1,15 @@
 Duration,Person Speaking,Quote
-0,Narrator,Plague Doctor investigates the church and finds Sylvia.
-0,Plague Doctor,Dr Sylvia?
-0,S.W,You! How did you find me? Stay away, I will hurt you if you come anywhere near me
-0,S.W,I know what you bastards have been doing, how did you think you could get away with it?
-0,Plague Doctor,Calm down! I am not here to cause you any harm. I was sent here after you disappeared to clean up the mess you left.
-0,Plague Doctor,I have been ordered to bring you back so we can take care of you. I read your journal and we think you may be infected. The Order will be glad to know you are still alive.
-0,S.W,I am assuming they asked you to bring me in? To get me to talk? Said they would look after me? That I was crazy? They told you find me for my own good? Bullshit
-0,S.W,Assuming what you have just said is not a lie. Let me tell you something, they are just using you for their ends, I saw them, they�re here, and they are after me.
-0,S.W,If you are not careful they will come for you too. They are watching, little eyes, all around and they will not stop.
-0,Plague Doctor,When did you start experiencing symptoms?
-0,S.W,Did you listen to me just now? They are coming! They will know I am here; I suggest you stop being their dog and look around for yourself. I am not crazy.
-0,Plague Doctor,What is that supposed to mean?
-0,S.W,That is all I'm telling you
-0,Narrator,S.W runs away from the church.
+templateCutsceneSpeaker.png,,You investigate the church and find Sylvia.
+templateCutsceneSpeaker.png,Plague Doctor,Dr Sylvia?
+templateCutsceneSpeaker.png,Sylvia,You! How did you find me? Stay away! I will hurt you if you come anywhere near me
+templateCutsceneSpeaker.png,Sylvia,I know what you bastards have been doing. How did you think you could get away with it?
+templateCutsceneSpeaker.png,Plague Doctor,Calm down! I am not here to cause you any harm. I was sent here after you disappeared to clean up the mess you left.
+templateCutsceneSpeaker.png,Plague Doctor,I have been ordered to bring you back so we can take care of you. I read your journal and we think you may be infected. The Order will be glad to know you are still alive.
+templateCutsceneSpeaker.png,Sylvia,I am assuming they asked you to bring me in? To get me to talk? Said they would look after me? That I was crazy? They told you to find me for my own good? Bullshit!
+templateCutsceneSpeaker.png,Sylvia,Assuming what you have just said is not a lie. Let me tell you something. They are just using you for their ends. I saw them. They're here and they are after me.
+templateCutsceneSpeaker.png,Sylvia,If you are not careful they will come for you too. They are watching. Little eyes all around. They will not stop.
+templateCutsceneSpeaker.png,Plague Doctor,When did you start experiencing symptoms?
+templateCutsceneSpeaker.png,Sylvia,Did you listen to me just now? They are coming! They will know I am here. I suggest you stop being their dog and look around for yourself. I am not crazy.
+templateCutsceneSpeaker.png,Plague Doctor,What is that supposed to mean?
+templateCutsceneSpeaker.png,Sylvia,That is all I'm telling you.
+templateCutsceneSpeaker.png,,Sylvia runs away from the church.

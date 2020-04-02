@@ -1,4 +1,4 @@
-house1.gif
+House1.gif
 1500	
 600
 700,400,90

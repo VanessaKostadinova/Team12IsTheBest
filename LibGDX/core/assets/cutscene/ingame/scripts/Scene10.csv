@@ -1,16 +1,17 @@
 Duration,Person Speaking,Quote
-0,Bad Dude,Ahh you scared me there.
-0,Plague Doctor,Who are you? Why are you here? I thought I was the only one stationed here.
-0,Bad Dude,"Ahh right yes of course . . . They . . . They did not tell you! I . . . Umm . . . I have been assigned to this village too! I am working towards a vaccine for the towns folk."
-0,Plague Doctor,Interesting I assume they did not tell me because . . .
-0,Plague Doctor,"ahh I have got nothing I do not know why they would not tell me. How much progress have you made with this vaccine of yours."
-0,Bad Dude,I would be further along if that crazy witch was not trying to hinder me at every step. All she does is steal my things.
-0,Bad Dude,SHE CANNOT EVEN USE THEM! WHY DOES SHE NEED POTASSIUM? What is she doing with it!? Nothing! Shes lost her damn mind.
-0,Plague Doctor,She did mention some interesting things about the order.
-0,Bad Dude,All false of course.
-0,Plague Doctor,Of course. I am more interested in what you have been saying.
-0,Bad Dude,What?
-0,Plague Doctor,Ahh nothing. Ignore me.
-0,Bad Dude,So are you just going to sit there? Do you not have work to be doing?
-0,Plague Doctor,Yeah I just have one patient to take care of here.
-0,Objective,Finish the job!
+templateCutsceneSpeaker.png,Bad Dude,Ahh you scared me there.
+templateCutsceneSpeaker.png,Plague Doctor,Who are you? Why are you here? I thought I was the only one stationed here.
+templateCutsceneSpeaker.png,Bad Dude,Ahh right yes of course . . . They . . . They did not tell you! I . . . Umm . . . I have been assigned to this village too! I am working towards a vaccine for the towns folk.
+templateCutsceneSpeaker.png,Plague Doctor,Interesting I assume they did not tell me because . . .
+templateCutsceneSpeaker.png,Plague Doctor, I have got nothing I do not know why they would not tell me. How much progress have you made with this vaccine of yours?
+templateCutsceneSpeaker.png,Bad Dude,I would be further along if that crazy witch was not trying to hinder me at every step. All she does is steal my things.
+templateCutsceneSpeaker.png,Bad Dude,SHE CANNOT EVEN USE THEM! WHY DOES SHE NEED POTASSIUM? What is she doing with it!? Nothing! Shes lost her damn mind.
+templateCutsceneSpeaker.png,Plague Doctor,She did mention some interesting things about the Order.
+templateCutsceneSpeaker.png,Bad Dude,All false of course.
+templateCutsceneSpeaker.png,Plague Doctor,Of course. I am more interested in what you have been saying.
+templateCutsceneSpeaker.png,Bad Dude,What?
+templateCutsceneSpeaker.png,Plague Doctor,Ahh nothing. Ignore me.
+templateCutsceneSpeaker.png,Bad Dude,So are you just going to sit there? Do you not have work to be doing?
+templateCutsceneSpeaker.png,Plague Doctor,Yeah I just have one patient to take care of here.
+templateCutsceneSpeaker.png,Objective,Finish the job!
+

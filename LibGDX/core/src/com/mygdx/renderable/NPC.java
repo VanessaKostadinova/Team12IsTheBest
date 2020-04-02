@@ -4,10 +4,9 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.assets.AssetHandler;
 
 /**
  * The NPCS within each of the houes.
@@ -33,6 +32,10 @@ public class NPC extends Renderable implements Living {
 	private Boolean isAggressive;
 	/** The villager type */
 	private int villagerType;
+
+	private Texture healthbar = new Texture(Gdx.files.internal("house/UI/HEALTH.png"));
+	private Texture healthbarsick = new Texture(Gdx.files.internal("house/UI/HEALTHSICK.png"));
+	private Texture healthbarfull = new Texture(Gdx.files.internal("house/UI/HEALTHFULL.png"));
 	
 	public NPC(float health) {
 		super();
@@ -63,7 +66,7 @@ public class NPC extends Renderable implements Living {
 	 * Update texture of the villager as it's state changes.
 	 */
 	public void updateTexture() {
-		Texture tempSprite = new Texture(Gdx.files.internal("NPC/" + status + villagerType + ".gif"));
+		Texture tempSprite = ((AssetHandler.MANAGER.get("NPC/" + status + villagerType + ".gif", Texture.class)));
 		super.setSprite(tempSprite,super.getSprite().getX(),super.getSprite().getY());
 	}
 
@@ -73,36 +76,42 @@ public class NPC extends Renderable implements Living {
 		if(health > 100) {
 			health = 100;
 		}
-		
+
 		if(health < -100) {
 			health = -100;
 		}
-		
+
 		if(health == -100) {
 			status = "Burnt";
 			updateTexture();
 			healthBar.setAlpha(0);
 		}
-		
+
 		else if(health <= 0) {
 			status = "Dead";
 			updateTexture();
-			healthBar.setTexture(new Texture(Gdx.files.internal("house/UI/HEALTH.png")));
+			healthBar.setTexture(healthbar);
 		}
-		
+
 		else if(health < 100 && health > 0) {
 			status = "Sick";
 			updateTexture();
-			healthBar.setTexture(new Texture(Gdx.files.internal("house/UI/HEALTHSICK.png")));
+			healthBar.setTexture(healthbarsick);
 		}
-		
+
 		else if(health == 100) {
 			status = "Alive";
 			isHealed = true;
 			updateTexture();
-			healthBar.setTexture(new Texture(Gdx.files.internal("house/UI/HEALTHFULL.png")));
+			healthBar.setTexture(healthbarfull);
 		}
 	}
+
+	public void dispose() {
+		healthbar.dispose();
+		getSprite().getTexture().dispose();
+	}
+
 
 
 	@Override

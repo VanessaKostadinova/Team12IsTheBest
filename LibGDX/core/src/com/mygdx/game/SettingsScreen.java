@@ -3,9 +3,6 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.ai.pfa.Graph;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,10 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.mygdx.assets.AssetHandler;
-
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 /**
  * The screen to hold the game window settings.
@@ -56,10 +50,9 @@ public class SettingsScreen implements Screen {
         this.main = main;
         this.resolutionIndex = 0;
         this.resolutions = new TreeMap<>();
-        this.current = Gdx.graphics.getDisplayMode();
-
 
         Graphics.Monitor primary = Gdx.graphics.getPrimaryMonitor();
+        this.current = Gdx.graphics.getDisplayMode(primary);
         Graphics.DisplayMode[] modes = Gdx.graphics.getDisplayModes(primary);
 
         for(Graphics.DisplayMode mode : modes) {
@@ -103,20 +96,20 @@ public class SettingsScreen implements Screen {
          * 	> + 20 : is used to act as the border to make sure it is not exactly up against the top of the window.
          * Set the size of the Item to scale.
          */
-        Image title = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/Settings.png")))));
+        Image title = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/Settings.png", Texture.class))));
         title.setScaling(Scaling.fit);
         title.setPosition(20, main.ui.getHeight()-title.getHeight() - 20);
         title.setSize(title.getWidth(), title.getHeight());
 
-        Image fullscreen = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/Fullscreen.png")))));
+        Image fullscreen = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/Fullscreen.png", Texture.class))));
         fullscreen.setScaling(Scaling.fit);
         fullscreen.setPosition(20, title.getY() - fullscreen.getHeight() - 150);
         fullscreen.setSize(fullscreen.getWidth(), fullscreen.getHeight());
 
-        final Image fBox = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/Deactivated.png")))));
+        final Image fBox = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/Deactivated.png", Texture.class))));
 
         if(isFullscreen) {
-            TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/ActivatedHover.png"))));
+            TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/ActivatedHover.png", Texture.class)));
             fBox.setDrawable(t);
         }
 
@@ -131,37 +124,37 @@ public class SettingsScreen implements Screen {
             }
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if(isFullscreen) {
-                    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/Activated.png"))));
+                    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/Activated.png", Texture.class)));
                     fBox.setDrawable(t);
                 }
                 else {
-                    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/DeactivatedHover.png"))));
+                    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/DeactivatedHover.png", Texture.class)));
                     fBox.setDrawable(t);
                 }
 
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 if(isFullscreen) {
-                    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/ActivatedHover.png"))));
+                    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/ActivatedHover.png", Texture.class)));
                     fBox.setDrawable(t);
                 }
                 else {
-                    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/Deactivated.png"))));
+                    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/Deactivated.png", Texture.class)));
                     fBox.setDrawable(t);
                 }
 
             }
         });
 
-        final Image vsync = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/V-Sync.png")))));
+        final Image vsync = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/V-Sync.png", Texture.class))));
         vsync.setScaling(Scaling.fit);
         vsync.setPosition(20, fullscreen.getY() - vsync.getHeight() - 50);
         vsync.setSize(vsync.getWidth(), vsync.getHeight());
 
-        final Image vBox = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/Deactivated.png")))));
+        final Image vBox = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/Deactivated.png", Texture.class))));
 
         if(vsyncOn) {
-            TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/ActivatedHover.png"))));
+            TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/ActivatedHover.png", Texture.class)));
             vBox.setDrawable(t);
         }
         vBox.setScaling(Scaling.fit);
@@ -174,39 +167,39 @@ public class SettingsScreen implements Screen {
             }
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if(vsyncOn) {
-                    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/Activated.png"))));
+                    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/Activated.png", Texture.class)));
                     vBox.setDrawable(t);
                 }
                 else {
-                    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/DeactivatedHover.png"))));
+                    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/DeactivatedHover.png", Texture.class)));
                     vBox.setDrawable(t);
                 }
 
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 if(vsyncOn) {
-                    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/ActivatedHover.png"))));
+                    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/ActivatedHover.png", Texture.class)));
                     vBox.setDrawable(t);
                 }
                 else {
-                    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/Deactivated.png"))));
+                    TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/Deactivated.png", Texture.class)));
                     vBox.setDrawable(t);
                 }
 
             }
         });
 
-        Image sResolution = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/Screen Resolution.png")))));
+        Image sResolution = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/Screen Resolution.png", Texture.class))));
         sResolution.setScaling(Scaling.fit);
         sResolution.setPosition(20, vsync.getY() - sResolution.getHeight() - 50);
         sResolution.setSize(sResolution.getWidth(), sResolution.getHeight());
 
-        final Label resolutionLabel = new Label(res[resolutionIndex], AssetHandler.fontSize48);
+        final Label resolutionLabel = new Label(res[resolutionIndex], AssetHandler.FONT_SIZE_48);
         resolutionLabel.setPosition(main.ui.getWidth()/2 + 200, sResolution.getY());
         resolutionLabel.setSize(500, vsync.getHeight());
         resolutionLabel.setAlignment(Align.center);
 
-        final Image sLeft = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/Left.png")))));
+        final Image sLeft = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/Left.png", Texture.class))));
         sLeft.setScaling(Scaling.fit);
         sLeft.setPosition(main.ui.getWidth()/2 + 100, sResolution.getY());
         sLeft.setSize(sLeft.getWidth(), sLeft.getHeight());
@@ -220,17 +213,17 @@ public class SettingsScreen implements Screen {
                 resolutionLabel.setText(res[resolutionIndex]);
             }
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/HoverLeft.png"))));
+                TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/HoverLeft.png", Texture.class)));
                 sLeft.setDrawable(t);
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/Left.png"))));
+                TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/Left.png", Texture.class)));
                 sLeft.setDrawable(t);
             }
         });
 
 
-        final Image sRight = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/Right.png")))));
+        final Image sRight = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/Right.png", Texture.class))));
         sRight.setScaling(Scaling.fit);
         sRight.setPosition(main.ui.getWidth()/2 + 800, sResolution.getY());
         sRight.setSize(sRight.getWidth(), sRight.getHeight());
@@ -241,16 +234,16 @@ public class SettingsScreen implements Screen {
                 resolutionLabel.setText(res[resolutionIndex]);
             }
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/HoverRight.png"))));
+                TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/HoverRight.png", Texture.class)));
                 sRight.setDrawable(t);
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/Right.png"))));
+                TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/Right.png", Texture.class)));
                 sRight.setDrawable(t);
             }
         });
 
-        final Image exit = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/Return.png")))));
+        final Image exit = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/Return.png", Texture.class))));
         exit.setScaling(Scaling.fit);
         exit.setPosition(main.ui.getWidth() - exit.getWidth() - 40f, 40);
         exit.setSize(exit.getWidth(), exit.getHeight());
@@ -258,19 +251,20 @@ public class SettingsScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 main.ui.clear();
+
                 main.setScreen(new MainMenu(main));
             }
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/ReturnHover.png"))));
+                TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/ReturnHover.png", Texture.class)));
                 exit.setDrawable(t);
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/Return.png"))));
+                TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/Return.png", Texture.class)));
                 exit.setDrawable(t);
             }
         });
 
-        final Image apply = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/Apply.png")))));
+        final Image apply = new Image(new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/Apply.png", Texture.class))));
         apply.setScaling(Scaling.fit);
         apply.setPosition(0, 40);
         apply.setSize(exit.getWidth(), exit.getHeight());
@@ -278,6 +272,7 @@ public class SettingsScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.graphics.setVSync(vsyncOn);
+                main.vsyncOn = vsyncOn;
                 Gdx.graphics.setResizable(false);
                 System.out.println("HIT");
                 if(isFullscreen) {
@@ -298,11 +293,11 @@ public class SettingsScreen implements Screen {
                 main.setScreen(new MainMenu(main));
             }
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/ApplyHover.png"))));
+                TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/ApplyHover.png", Texture.class)));
                 apply.setDrawable(t);
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings/Apply.png"))));
+                TextureRegionDrawable t = new TextureRegionDrawable(new TextureRegion(AssetHandler.MANAGER.get("settings/Apply.png", Texture.class)));
                 apply.setDrawable(t);
             }
         });
@@ -339,6 +334,7 @@ public class SettingsScreen implements Screen {
         if(mode.height > current.height || mode.width > current.width) {
             return false;
         }
+
         return true;
     }
 

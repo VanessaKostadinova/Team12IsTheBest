@@ -12,12 +12,11 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		Dimension dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 
-		config.height = (int) dimension.getHeight();
-		config.width = (int) dimension.getWidth();
+		config.height = 720;
+		config.width = 1280;
 		config.title = "Plague Doctor";
-		config.fullscreen = true;
+		config.fullscreen = false;
 		config.addIcon("icon.png", FileType.Internal);
-		config.resizable = false;
 		config.vSyncEnabled = true;
 		new LwjglApplication(new Main(true), config);
 	}

@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.Main;
 import com.mygdx.game.MainMenu;
+import com.mygdx.map.Map;
 
 /**
  * Creating the loading screen for showing the amount of progress in loading the assets in assetManager.
@@ -33,9 +34,14 @@ public class LoadingScreen implements Screen {
 
 	/** the inner bar (actually moving) of the loading bar*/
 	private Label innerBar;
-	
+
+	/** The percentage which the AssetManager has currently loaded*/
 	private int loadedAmount = 0;
-	
+
+	/**
+	 * Used to create an instance of the Loading screen.
+	 * @param main The main class (contains Scene2D, Kyro and Renderer)
+	 */
 	public LoadingScreen(Main main) {
 		//Set up the scene.
 		this.main = main;
@@ -78,12 +84,13 @@ public class LoadingScreen implements Screen {
 		main.batch.end();
 
 		//If Asset Manager not complete then get loaded percentage. Otherwise change screen.
-		if (!AssetHandler.manager.update()) {
-			loadedAmount = (int) (AssetHandler.manager.getProgress()*100);
+		if (!AssetHandler.MANAGER.update()) {
+			loadedAmount = (int) (AssetHandler.MANAGER.getProgress()*100);
 			innerBar.setText(loadedAmount + "%");
-			innerBar.setWidth(AssetHandler.manager.getProgress() * 450);
+			innerBar.setWidth(AssetHandler.MANAGER.getProgress() * 450);
 		} else {
 			innerBar.setText("Loaded!");
+			main.setMap(new Map());
 			main.setScreen(new MainMenu(main));
 		}
 

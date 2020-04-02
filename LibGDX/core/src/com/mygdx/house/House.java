@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.mygdx.assets.AssetHandler;
 import com.mygdx.renderable.Constants;
 import com.mygdx.renderable.NPC;
 
@@ -65,7 +66,8 @@ public class House {
 		}
 		for(String attribute : attributes) {
 			if(attribute.contains(".gif")  && !attribute.contains("house") && !attribute.contains("House")) {
-				Texture t = new Texture(Gdx.files.internal("levels/" + attribute));
+				Texture t = AssetHandler.MANAGER.get("levels/" + attribute, Texture.class);
+				System.out.println("NUMBER :" + indicator);
 				textures.put(indicator, t);
 				textureURL.add("levels/" + attribute);
 				indicator++;

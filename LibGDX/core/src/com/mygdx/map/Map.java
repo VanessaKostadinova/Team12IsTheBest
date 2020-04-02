@@ -8,7 +8,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.assets.AssetHandler;
-import com.mygdx.extras.PermanetPlayer;
 import com.mygdx.renderable.NPC;
 import com.mygdx.renderable.Node;
 import com.mygdx.shop.Church;
@@ -32,7 +31,7 @@ public class Map {
 	/** Holds the current set of notes */
 	private String[] notes = {
 			"MY MASK FILTER IS RUNNING LOW, I NEED TO SOURCE A REPLACEMENT SOON",
-			"ANTONIO HAS FIGURED OUT HOW TO MAKE EXTRA MASKS, I MAY NOT NEED ORGANIZE ANY SUPPLY RUNS SOON",
+			"ANTONIO HAS FIGURED OUT HOW TO MAKE EXTRA MASKS, I MAY NOT NEED TO ORGANIZE ANY SUPPLY RUNS SOON",
 			"WEIRD FOOTPRINTS, I HAVE SEEN THIS TREAD BEFORE.",
 			"CANNOT BELIEVE THIS, THEY COULD NEVER DO SUCH A THING -",
 			"DO THEY EVEN CARE? WHY COULD THEY DOING THIS, CONTACTING ANYONE AT THIS STAGE MAY BE UNWISE",
@@ -46,14 +45,15 @@ public class Map {
 		nodes = new ArrayList<>();
 		readMapFile();
 		setNotes();
-		church = new Church(AssetHandler.manager.get("house/Shop.gif", Texture.class), 900.0f, 470.0f);
-		shop = new Shop(AssetHandler.manager.get("house/Shop.gif", Texture.class), 760.0f, 500.0f);
+		church = new Church(AssetHandler.MANAGER.get("house/Church.png", Texture.class), 910.0f, 490.0f);
+		shop = new Shop(AssetHandler.MANAGER.get("house/Shop.gif", Texture.class), 760.0f, 500.0f);
 		checkIfPlayerExist();
 		resetPlayerFile();
 		setNeighbours();
 		if(!notesAlreadyExists()) {
 			setNotes();
 		}
+
 	}
 
 	/**
@@ -61,8 +61,8 @@ public class Map {
 	 */
 	public Map(List<Node> nodes) {
 		this.nodes = nodes;
-		church = new Church(AssetHandler.manager.get("house/Shop.gif", Texture.class), 900.0f, 470.0f);
-		shop = new Shop(AssetHandler.manager.get("house/Shop.gif", Texture.class), 760.0f, 500.0f);
+		church = new Church(AssetHandler.MANAGER.get("house/Church.png", Texture.class), 910.0f, 490.0f);
+		shop = new Shop(AssetHandler.MANAGER.get("house/Shop.gif", Texture.class), 760.0f, 500.0f);
 		checkIfPlayerExist();
 		setNeighbours();
 	}

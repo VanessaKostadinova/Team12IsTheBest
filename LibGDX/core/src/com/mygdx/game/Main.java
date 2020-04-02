@@ -31,7 +31,7 @@ import com.mygdx.story.StoryHandler;
 
 /**
  * The Main class, which initialises the main assets and values in the game,
- * @author Inder Panesar
+ * @author Inder
  * @version 1.5
  */
 public class Main extends Game implements Serializable {
@@ -57,7 +57,7 @@ public class Main extends Game implements Serializable {
 	private Camera camera;
 
 	/** A variable to store whether V-Sync is On Or Off*/
-	private Boolean vsyncOn;
+	public Boolean vsyncOn;
 
 	/** A variable to store the kryo instance used to save the game!*/
 	public Kryo kryo;
@@ -69,6 +69,8 @@ public class Main extends Game implements Serializable {
 	public Main(Boolean vsyncOn) {
 		this.vsyncOn = vsyncOn;
 	}
+
+	private Map map;
 
 
 	/**
@@ -159,7 +161,6 @@ public class Main extends Game implements Serializable {
 
 
 							output.writeInt(n.getHouse().getTextures().size());
-							System.out.println(n.getHouse().getTextures().size());
 							for(int x = 0; x < n.getHouse().getTextures().size(); x++) {
 								StringBuilder s = new StringBuilder();
 								s.append(n.getHouse().textureURL.get(x) +"");
@@ -185,7 +186,6 @@ public class Main extends Game implements Serializable {
 								output.writeInt(resident.getVillagerType());
 								output.writeFloat(resident.getRotation());
 								output.writeBoolean(resident.foodGiven());
-								System.out.println(resident.foodGiven());
 							}
 							output.writeString(n.getImageURL());
 							output.writeFloat(n.getSprite().getX());
@@ -223,7 +223,10 @@ public class Main extends Game implements Serializable {
 						output.writeBoolean(StoryHandler.cutscene81Played);
 						output.writeBoolean(StoryHandler.cutscene82Played);
 						output.writeBoolean(StoryHandler.cutscene83Played);
+						output.writeBoolean(StoryHandler.cutscene84Played);
+						output.writeBoolean(StoryHandler.killedOtherGuy);
 						output.writeInt(StoryHandler.decisionNumber);
+						Gdx.app.log("SAVE GAME", "GAME SAVED");
 					}
 
 					@Override
@@ -235,7 +238,7 @@ public class Main extends Game implements Serializable {
 						float getSanity = input.readFloat();
 						int getEnergy = input.readInt();
 
-						PermanetPlayer.createInventoryInstance(numberOfMask, getHealingFluid, getBurningFluid);
+						PermanetPlayer.createPermanentPlayerInstance(numberOfMask, getHealingFluid, getBurningFluid);
 						PermanetPlayer.getPermanentPlayerInstance().setSanity(getSanity);
 						PermanetPlayer.getPermanentPlayerInstance().setEnergy(getEnergy);
 
@@ -364,13 +367,22 @@ public class Main extends Game implements Serializable {
 						StoryHandler.cutscene81Played = input.readBoolean();
 						StoryHandler.cutscene82Played = input.readBoolean();
 						StoryHandler.cutscene83Played = input.readBoolean();
+						StoryHandler.cutscene84Played = input.readBoolean();
+						StoryHandler.killedOtherGuy = input.readBoolean();
 						StoryHandler.decisionNumber = input.readInt();
-
+						Gdx.app.log("SAVE GAME", "GAME LOADED");
 						return screen;
 					}
 		});
 	}
 
+	public Map getMap() {
+		return map;
+	}
+
+	public void setMap(Map map) {
+		this.map = map;
+	}
 
 	/* (non-Javadoc)
 	 * @see com.badlogic.gdx.Game#render()

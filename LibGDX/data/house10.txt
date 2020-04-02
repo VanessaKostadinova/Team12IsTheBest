@@ -1,9 +1,11 @@
 House1.gif
-1500	
+1500
 600
 700,400,90
-500,250,100
-level1.csv
+400,100,100
+120,400,100
+140,580,90
+level5.csv
 Wooden_Floor.gif
 Floor_Stone.gif
 Door.gif

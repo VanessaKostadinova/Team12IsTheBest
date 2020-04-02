@@ -1,7 +1,6 @@
 package com.mygdx.renderable;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -30,7 +29,7 @@ public class Player extends Renderable implements Living {
 	/** Speed of the player */
 	private float speed;
 	/** Constant sanity factor increase for the player*/
-	private static final float sanityFactor = 0.2f;
+	private static final float sanityFactor = 3.0f;
 	/** The mask reduction rate */
 	private float maskDurationSeconds;
 	/** The sprays which the player has*/
@@ -63,7 +62,7 @@ public class Player extends Renderable implements Living {
 		try {
 			PermanetPlayer.getPermanentPlayerInstance();
 		} catch (IllegalStateException e ) {
-			PermanetPlayer.createInventoryInstance(masks, amountOfHealingFluid, amountOfBurningFluid);
+			PermanetPlayer.createPermanentPlayerInstance(masks, amountOfHealingFluid, amountOfBurningFluid);
 		}
 		this.speed = 60f + (PermanetPlayer.getPermanentPlayerInstance().getItem(0).getLevel()*PermanetPlayer.getPermanentPlayerInstance().getItem(0).getIncreasingValue());
 
@@ -318,6 +317,10 @@ public class Player extends Renderable implements Living {
 			return "INSANE";
 		}
 		
+	}
+
+	public void dispose() {
+		getSprite().getTexture().dispose();
 	}
 
 	/**
