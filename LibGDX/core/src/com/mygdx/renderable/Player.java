@@ -94,6 +94,13 @@ public class Player extends Renderable implements Living {
 	}
 
 	/**
+	 * Reset set class to null after the game ends.
+	 */
+	public static void reset() {
+		player = null;
+	}
+
+	/**
 	 * Get the player instance
 	 * @return The player instance
 	 */
@@ -171,7 +178,6 @@ public class Player extends Renderable implements Living {
 	 */
 	public void setCurrentMaskDuration(float currentMaskDuration) {
 		this.currentMaskDuration = currentMaskDuration;
-		System.out.println("CURRENT DURATION PLAYER: " +currentMaskDuration);
 	}
 
 	/**

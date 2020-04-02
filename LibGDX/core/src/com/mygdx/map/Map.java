@@ -148,7 +148,6 @@ public class Map {
 			i++;
 			nodes.get(index).addNotes(new Note(note, x, y));
 		}
-		System.out.println("NOTES GENERATED: "  + i);
 	}
 
 	/**

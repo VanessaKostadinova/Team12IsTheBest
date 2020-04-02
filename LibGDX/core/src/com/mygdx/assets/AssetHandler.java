@@ -219,6 +219,8 @@ public class AssetHandler {
     public static final FileHandle NOT_ENOUGH_ENERGY_ERROR = Gdx.files.internal("error/notenoughenergy.csv");
     /** A static instance of file handle which holds the message for the game being saved  */
     public static final FileHandle SAVED = Gdx.files.internal("error/saved.csv");
+    /** A static instance of file handle which holds the message when the max research level has been reached  */
+    public static final FileHandle REACHED_MAX_LEVEL = Gdx.files.internal("error/reachedmaxlevel.csv");
 
 
     /**

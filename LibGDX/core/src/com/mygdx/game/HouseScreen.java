@@ -487,13 +487,6 @@ public class HouseScreen implements Screen {
 			}
 			AI();
 			storyHandler();
-			int value = 0;
-			for(Note n : node.getNotes()) {
-				if(!n.getHasBeenSeen()) {
-					value++;
-				}
-			}
-			System.out.println("NUMBER OF NOTES: " + value);
 		}
 
 		/**

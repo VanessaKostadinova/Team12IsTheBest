@@ -35,7 +35,6 @@ public class Spray extends Renderable {
 	public Spray(float deltaValue, Color color) {
 		this.isActive = false;
 		this.deltaValue = deltaValue;
-		System.out.println("DELTA VALUE: " + deltaValue);
 		this.colorLight = color;
 		start();
 	}
@@ -79,7 +78,6 @@ public class Spray extends Renderable {
 	 */
 	public Boolean collision(List<NPC> list, float f, Player p) {
 		for(NPC npc : list) {
-			System.out.println("IS SPRAY NULL? :" + sprite.getBoundingRectangle() != null);
 			if(npc.getRectangle().overlaps(sprite.getBoundingRectangle())) {
 				if(isActive) {
 					if(npc.getStatus().equals("Dead") && f == 1) {

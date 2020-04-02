@@ -77,7 +77,6 @@ public class Node extends Renderable {
 		this.imageURL = imageURL;
 		this.residents = residents;
 		neighbours = new ArrayList<>();
-		System.out.println(residents.size());
 		this.notes = notes;
 	}
 
@@ -295,7 +294,6 @@ public class Node extends Renderable {
 	 * Upgrade the level of information known about the node.
 	 */
 	public void upgradeLevelKnown() {
-		System.out.println(level4Researched);
 		if(!level4Researched && numberDeadResearched && numberIllResearched && numberAliveResearched) {
 			level4Researched = true;
 		}

@@ -26,31 +26,28 @@ public class Camera {
 	 */
 	private Viewport viewport;
 	
+
+	/** The delta y value of the camera */
+	private float dx = 0;
+	/** The delta y value of the camera */
+	private float dy = 0;
+
+	/** The max X value the camera can move to */
+	private float maxDx = 0;
+	/** The max Y value the camera can move to */
+	private float maxDy = 0;
+
+
 	/**
 	 * Constructor for Camera.
-	 * Sets initialises the camera. 
-	 * 
-	 * @param viewWidth The width which the camera can see.  
+	 * Sets initialises the camera.
+	 *
+	 * @param viewWidth The width which the camera can see.
 	 * @param height The height of the window.
 	 * @param width The width of the window.
 	 */
-	
-	private float dx = 0;
-	private float dy = 0;
-	
-	private float maxDx = 0;
-	private float maxDy = 0;
-	
-	
-	
 	public Camera(float viewWidth, float height, float width) {
 		camera = new OrthographicCamera(viewWidth,viewWidth*(height/width));
-		/*
-		 * This can be changed, but FitViewport makes sure when the window is resized the ratio is the same
-		 * and we also see ~ the same as we were before.
-		 * 
-		 * The others are shown here: https://github.com/libgdx/libgdx/wiki/Viewports/
-		 */
 		viewport = new FitViewport(viewWidth, viewWidth*(height/width),camera);
 		viewport.apply();
 		camera.update();
@@ -86,7 +83,7 @@ public class Camera {
 	 * @param dZoom The amount of zoom
 	 */
 	public void zoomIn(float dZoom) {
-		if(camera.zoom+dZoom > 0) {
+		if(camera.zoom+dZoom > 0 && camera.zoom+dZoom < 7) {
 			camera.zoom += dZoom;
 			camera.update();
 		}
