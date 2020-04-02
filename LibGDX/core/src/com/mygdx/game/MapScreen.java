@@ -190,6 +190,8 @@ public class MapScreen implements Screen {
 	private Boolean saveGame = false;
 	/** The label to enter the house  */
 	private Label enter;
+	/** Is currently on a house */
+	private Boolean isCurrentOnHouse;
 
 	/**
 	 * Create the map screen, and handle the input and movements around the map. Used when starting a new game.
@@ -727,8 +729,10 @@ public class MapScreen implements Screen {
 					}
 				}
 				else {
-					startCreatingCutscene("cutscene/ingame/scripts/Scene2.csv");
-					StoryHandler.startedIntroPart2 = true;
+					if(isCurrentOnHouse) {
+						startCreatingCutscene("cutscene/ingame/scripts/Scene2.csv");
+						StoryHandler.startedIntroPart2 = true;
+					}
 				}
 			} catch(NullPointerException e) { }
 		}
@@ -1388,6 +1392,7 @@ public class MapScreen implements Screen {
 		for(Node node : map.getNodes()) {
 			if(node != null) {
 				if(node.pointIsWithinSprite(x, y)) {
+					isCurrentOnHouse = true;
 					enterHouse(node);
 					disease.draw(map.getNodes(), node, main.shape);
 					break;
@@ -1397,6 +1402,7 @@ public class MapScreen implements Screen {
 						houseHit = false;
 						//node = null;
 					}
+					isCurrentOnHouse = false;
 					//disease.clear();
 				}
 			}

@@ -64,12 +64,12 @@ public class Player extends Renderable implements Living {
 		} catch (IllegalStateException e ) {
 			PermanetPlayer.createPermanentPlayerInstance(masks, amountOfHealingFluid, amountOfBurningFluid);
 		}
-		this.speed = 60f + (PermanetPlayer.getPermanentPlayerInstance().getItem(0).getLevel()*PermanetPlayer.getPermanentPlayerInstance().getItem(0).getIncreasingValue());
+		this.speed = 110f + (PermanetPlayer.getPermanentPlayerInstance().getItem(0).getLevel()*PermanetPlayer.getPermanentPlayerInstance().getItem(0).getIncreasingValue());
 
 		this.maskDurationSeconds = 1f;
 
-		float cureSprayStrength = PermanetPlayer.getPermanentPlayerInstance().getItem(2).getLevel();
-		float fireSprayStrength = PermanetPlayer.getPermanentPlayerInstance().getItem(3).getLevel()*(-PermanetPlayer.getPermanentPlayerInstance().getItem(3).getIncreasingValue());
+		float cureSprayStrength = PermanetPlayer.getPermanentPlayerInstance().getItem(2).getLevel() * PermanetPlayer.getPermanentPlayerInstance().getItem(2).getIncreasingValue();
+		float fireSprayStrength = (-PermanetPlayer.getPermanentPlayerInstance().getItem(3).getIncreasingValue()) * PermanetPlayer.getPermanentPlayerInstance().getItem(3).getLevel();
 
 		sprays = new Spray[2];
 		sprays[0] = new Spray(cureSprayStrength, Color.CYAN);
@@ -91,6 +91,22 @@ public class Player extends Renderable implements Living {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Update the values of the sprays the player has.
+	 */
+	public void updateSprayValues() {
+		float cureSprayLevel = PermanetPlayer.getPermanentPlayerInstance().getItem(2).getLevel();
+		float cureSprayValue = PermanetPlayer.getPermanentPlayerInstance().getItem(2).getIncreasingValue();
+		float cureSprayStrength = cureSprayLevel * cureSprayValue;
+
+		float fireSprayLevel = PermanetPlayer.getPermanentPlayerInstance().getItem(3).getLevel();
+		float fireSprayValue = (-PermanetPlayer.getPermanentPlayerInstance().getItem(3).getIncreasingValue());
+		float fireSprayStrength = fireSprayLevel * fireSprayValue;
+
+		sprays[0].setValue(cureSprayStrength);
+		sprays[1].setValue(fireSprayStrength);
 	}
 
 	/**
@@ -126,6 +142,14 @@ public class Player extends Renderable implements Living {
 			sprays[sprayIndex].getSprite().setPosition(sprays[1].getSprite().getX(), sprays[1].getSprite().getY());
 			sprays[sprayIndex].setRotation(sprays[1].getRotation());
 		}
+	}
+
+	/**
+	 * Get the sprays that the player is has
+	 * @return sprays
+	 */
+	public Spray[] getSprays() {
+		return sprays;
 	}
 
 	/**
@@ -174,7 +198,7 @@ public class Player extends Renderable implements Living {
 
 	/**
 	 * Set the current mask duration
-	 * @param currentMaskDuration new currentmaskduration level
+	 * @param currentMaskDuration new current mask duration level
 	 */
 	public void setCurrentMaskDuration(float currentMaskDuration) {
 		this.currentMaskDuration = currentMaskDuration;
@@ -236,7 +260,7 @@ public class Player extends Renderable implements Living {
 	 * @return speed of player
 	 */
 	public float getSpeed() {
-		return speed;
+		return 110f + (PermanetPlayer.getPermanentPlayerInstance().getItem(0).getLevel()*PermanetPlayer.getPermanentPlayerInstance().getItem(0).getIncreasingValue());
 	}
 
 	/**

@@ -44,6 +44,13 @@ public class Spray extends Renderable {
 		return deltaValue;
 	}
 
+	/** Set the delta health value of the spray
+	 * @param newDeltaValue the new delta value of the spray.
+	 */
+	public void setValue(float newDeltaValue) {
+		 this.deltaValue = newDeltaValue;
+	}
+
 	/**
 	 * This changes the texture of the spray depending on whether or not
 	 * the boolean value is true or false.

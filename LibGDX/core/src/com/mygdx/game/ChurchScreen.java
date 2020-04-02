@@ -156,11 +156,11 @@ public class ChurchScreen implements Screen {
 		Buy.addListener(new ClickListener(){
 			@Override
 		    public void clicked(InputEvent event, float x, float y) {
-				System.out.println(clickedShop.getName());
 				if(clickedShop.getName().equals("MASKS") && Player.getInstance().getFood() >= clickedShop.getCost()) {
 					Player.getInstance().setFood(Player.getInstance().getFood()-clickedShop.getCost());
 					PermanetPlayer.getPermanentPlayerInstance().getItem(1).upgrade();
 					setLabels(PermanetPlayer.getPermanentPlayerInstance().getItem(1));
+					Player.getInstance().resetMask();
 				}
 				else if(clickedShop.getName().equals("BOOTS") && Player.getInstance().getFood() >= clickedShop.getCost()) {
 					Player.getInstance().setFood(Player.getInstance().getFood()-clickedShop.getCost());
@@ -171,11 +171,14 @@ public class ChurchScreen implements Screen {
 					Player.getInstance().setFood(Player.getInstance().getFood()-clickedShop.getCost());
 					PermanetPlayer.getPermanentPlayerInstance().getItem(3).upgrade();
 					setLabels(PermanetPlayer.getPermanentPlayerInstance().getItem(3));
+					Player.getInstance().updateSprayValues();
+
 				}
 				else if(clickedShop.getName().equals("HEALING STRENGTH") && Player.getInstance().getFood() >= clickedShop.getCost()) {
 					Player.getInstance().setFood(Player.getInstance().getFood()-clickedShop.getCost());
 					PermanetPlayer.getPermanentPlayerInstance().getItem(2).upgrade();
 					setLabels(PermanetPlayer.getPermanentPlayerInstance().getItem(2));
+					Player.getInstance().updateSprayValues();
 				}
 				playerGold.setText("PLAYER FOOD: " + Player.getInstance().getFood());
 
