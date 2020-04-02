@@ -402,6 +402,10 @@ public class MapScreen implements Screen {
 		cutsceneSequence = 0;
 		String textFile = n.readString();
 		String lines[] = textFile.split("\\r?\\n");
+		if(isPaused) {
+			beforeEntry.setVisible(false);
+			isPaused = false;
+		}
 		for(int i = 1; i < lines.length; i++) {
 			String line = lines[i];
 			String[] data = line.split(",", 3);
