@@ -696,7 +696,7 @@ public class MapScreen implements Screen {
 
 
 
-		enterBuilding = Gdx.input.isKeyJustPressed(Keys.ENTER) && !isPaused && !cutsceneActive && StoryHandler.introductionPart2;
+		enterBuilding = Gdx.input.isKeyJustPressed(Keys.ENTER) && !isPaused && !cutsceneActive && StoryHandler.introductionPart2 && (darkness >= 1);
 
 
 
