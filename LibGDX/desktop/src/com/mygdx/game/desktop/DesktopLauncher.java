@@ -11,7 +11,6 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		Dimension dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-
 		config.height = 720;
 		config.width = 1280;
 		config.title = "Plague Doctor";
