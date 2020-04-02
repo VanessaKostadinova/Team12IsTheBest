@@ -43,7 +43,7 @@ public class PermanetPlayer {
         this.burningFluid = burningFluid;
         this.notes = new ArrayList<>(100);
         this.items = createItems();
-        this.sanity = 500f;
+        this.sanity = 0f;
         this.energy = 100;
     }
 
